@@ -1,0 +1,427 @@
+.center {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	background-color: #363946;
+	z-index: 1;
+
+	&.fullscreen {
+		object-fit: contain;
+		position: fixed !important;
+		top: 0px !important;
+		right: 0px !important;
+		bottom: 0px !important;
+		left: 0px !important;
+		box-sizing: border-box !important;
+		min-width: 0px !important;
+		max-width: none !important;
+		min-height: 0px !important;
+		max-height: none !important;
+		width: 100% !important;
+		height: 100% !important;
+		transform: none !important;
+		margin: 0px !important;
+	}
+}
+
+#kanban {
+	outline: dashed red 1px;
+	transition: background-image 0.5s;
+
+	&:before {
+		content: '';
+		display: flex;
+	}
+
+	&.preview {
+		.vdr-custom-style {
+			outline: none;
+
+			&:after,
+			&:before {
+				display: none;
+			}
+		}
+	}
+}
+
+.ref-line {
+	background-color: #00ffff;
+}
+
+.vdr-custom-style {
+	border: none;
+	outline: 1px dashed rgba(255, 255, 0, 0.5);
+
+	&.active {
+		cursor: move;
+		outline: 1px dashed yellow;
+	}
+
+	&:after,
+	&:before {
+		position: absolute;
+		left: 0;
+		top: -15px;
+		content: attr(widget-info);
+		font-size: 12px;
+		line-height: 1.2;
+		color: #a9a979;
+		transition: 0.2s;
+	}
+
+	&:before {
+		opacity: 0;
+	}
+
+	&:not(.locked):before {
+		cursor: move;
+	}
+
+	&:after {
+		left: unset;
+		right: -3px;
+		content: '\1F512';
+		opacity: 0;
+	}
+
+	&.locked:after {
+		opacity: 0.5;
+	}
+
+	&:hover,
+	&.widget-hover {
+		// z-index: 99 !important;
+		outline: 1px dashed rgba(255, 255, 0, 1);
+
+		&:before {
+			opacity: 1;
+			color: #cece47;
+			background-color: #191919;
+		}
+	}
+
+	&.locked:hover {
+		outline: 1px dashed rgba(255, 255, 0, 0.3);
+
+		&:after {
+			opacity: 1;
+		}
+	}
+
+	&.locked {
+		outline: none;
+	}
+
+	&.widget-hide {
+		pointer-events: none !important;
+		opacity: 0;
+
+		* {
+			pointer-events: none !important;
+		}
+	}
+
+	.widget-dragging {
+		pointer-events: none !important;
+	}
+
+	/deep/ {
+		.widget,
+		.widget-part {
+			// 看板编辑中，小工具的定位样式由 vue-draggable-resizable-gorkys 接管
+			position: relative !important;
+			top: 0 !important;
+			left: 0 !important;
+			//width: 100% !important;
+			//height: 100% !important;
+		}
+
+		.handle {
+			z-index: 999;
+		}
+	}
+}
+
+.canvas-config-wrapper,
+.grid-config-panel-wrapper,
+.config-panel-wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 340px;
+	height: 430px;
+	padding: 25px 0 0 0;
+	background-color: #2d8cf0;
+	transform: translate3d(0, 0, 0);
+	border-radius: 5px;
+	border: #2d8cf0 3px solid;
+	border-top-width: 0;
+	filter: drop-shadow(#2d8cf094 0 4px 4px);
+	opacity: 1;
+	transition: transform 0.34s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.2s cubic-bezier(0.5, 0, 0.5, 1);
+	z-index: 2;
+
+	/deep/ {
+		& > .config-panel {
+			width: 100% !important;
+			height: 100% !important;
+			padding: 5px;
+			border-radius: 0 0 3px 3px;
+		}
+	}
+
+	.top-toolbar {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 25px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		color: white;
+
+		.fix-panel,
+		.close-panel {
+			background-color: white;
+			border-radius: 50%;
+			width: 18px;
+			height: 18px;
+			line-height: 20px;
+			flex-grow: 0;
+			flex-shrink: 0;
+			text-align: center;
+			letter-spacing: 0;
+			opacity: 0.5;
+			transition: 0.2s;
+			cursor: pointer;
+			color: #2d8cf0;
+			font-size: 12px;
+			font-weight: bold;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
+
+		.drag-panel {
+			flex-grow: 1;
+			cursor: move;
+			padding: 8px 20px;
+			height: 25px;
+
+			&:before {
+				content: ' ';
+				display: block;
+				width: 100%;
+				height: 100%;
+				background-color: #e2e2e2;
+				border-radius: 5px;
+				transition: 0.2s;
+			}
+
+			&:hover {
+				&:before {
+					background-color: #e6e6e6;
+				}
+			}
+		}
+	}
+}
+
+.config-panel-wrapper {
+	padding-bottom: 5px;
+	padding-right: 5px;
+
+	.resize-handle {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&:before {
+			content: '';
+			display: block;
+			background-color: #ffffff;
+			border-radius: 1px;
+			opacity: 0.4;
+			transition: opacity 0.2s;
+		}
+
+		&.vertical {
+			bottom: -3px;
+			left: 0;
+			width: 100%;
+			height: 8px;
+			cursor: ns-resize;
+
+			&:before {
+				width: 64px;
+				height: 2px;
+			}
+		}
+
+		&.horizontal {
+			bottom: 0;
+			right: -3px;
+			width: 8px;
+			height: calc(100% - 25px);
+			cursor: ew-resize;
+
+			&:before {
+				width: 2px;
+				height: 64px;
+			}
+		}
+
+		&:hover:before {
+			opacity: 0.7;
+			transition: opacity 0.2s 0.2s;
+		}
+	}
+
+	.config-value-updating {
+		width: 100%;
+		height: 100%;
+		background-color: #f2f2f2;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.dot {
+			width: 8px;
+			height: 8px;
+			background-color: rgba(0, 0, 0, .1);
+			box-shadow: -16px 0 0 0 rgba(0, 0, 0, .15), 16px 0 0 0 rgba(0, 0, 0, .15), -32px 0 0 0 rgba(0, 0, 0, .1), 32px 0 0 0 rgba(0, 0, 0, .1);
+		}
+	}
+}
+
+.canvas-config-wrapper {
+	transform: translate3d(-50%, 0, 0);
+	opacity: 0;
+	pointer-events: none;
+	transition: transform 0.5s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.5s cubic-bezier(0.5, 0, 0.5, 1);
+
+	&.active {
+		transform: translate3d(-50%, 10px, 0);
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.panel-body {
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		border-radius: 0 0 3px 3px;
+		padding: 5px;
+		background: #f2f2f2;
+	}
+
+	.canvas-config-panel {
+		width: 100% !important;
+		height: 100% !important;
+		padding: 5px;
+		overflow: hidden;
+		overflow-y: auto;
+	}
+
+	&:after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		margin: auto;
+		color: #2d8cf0;
+		font-size: 48px;
+		line-height: 48px;
+		width: 36px;
+		text-align: center;
+		height: 16px;
+		filter: drop-shadow(#2d8cf094 0 4px 4px);
+		pointer-events: none;
+	}
+
+	/deep/ {
+		.background-picker {
+			height: 138px !important;
+		}
+	}
+}
+
+.grid-config-panel-wrapper {
+	.top-toolbar {
+		justify-content: center;
+	}
+
+	& > .config-panel {
+		overflow-x: hidden;
+	}
+}
+
+.widget-processing {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 15px;
+	color: white;
+	background-color: gray;
+	display: flex;
+	white-space: nowrap;
+	justify-content: center;
+	align-items: center;
+	z-index: 100;
+}
+
+.no-pointer {
+	pointer-events: none;
+}
+
+.refill-mask {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 4;
+	background-color: rgba(0, 0, 0, 0.4);
+	opacity: 0;
+	transition: 0.2s;
+	pointer-events: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&.active {
+		opacity: 1;
+		pointer-events: auto;
+
+		& ~ div {
+			filter: blur(7px);
+		}
+	}
+
+	.mask-content {
+		width: 400px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		.mask-title {
+			line-height: 3;
+			color: white;
+			font-size: 1.3em;
+		}
+	}
+
+	/deep/ {
+		.ivu-progress-inner {
+			background-color: #717171;
+		}
+	}
+}
