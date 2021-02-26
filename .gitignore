@@ -1,0 +1,60 @@
+# 易联云通用 .gitignore
+
+# Built application files
+*.apk
+*.ap_
+ 
+# Files for the Dalvik VM
+*.dex
+ 
+# Generated files
+*/bin/
+*/gen/
+*/out/
+ 
+# Log Files
+*.log
+ 
+# Android Studio 
+.navigation/
+captures/
+ 
+# idea
+*/.idea/
+.idea/
+*.iml
+*/*.iml
+ 
+# eclipse
+.project
+.factorypath
+.classpath
+.settings/
+target/
+logs/
+
+# web
+dist/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# others
+*/.DS_Store
+.DS_Store
+
+# Editor directories and files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+
+/public/static/videos/19厅视频.mp4
+/public/static/videos/19.mp4
+/public/static/videos/三社联动视频.MOV
+/public/static/videos/sanshe.MOV
+/public/static/videos/首页视频.mp4
+/public/static/videos/shouye.mp4
