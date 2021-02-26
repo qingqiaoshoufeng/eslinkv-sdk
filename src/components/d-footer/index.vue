@@ -23,7 +23,6 @@
 	import {Component, Prop} from 'vue-property-decorator'
 	import {Icon, Button, Modal, Form, FormItem} from 'view-design'
 	import copy from 'fast-copy'
-	import format from 'date-fns'
 	import {mixins} from 'vue-class-component'
 	import platform from '../../store/platform.store'
 	import scene from '../../store/scene.store'
@@ -137,7 +136,8 @@
 			return {
 				name,
 				remark,
-				createTime: format(Date.now(), 'yyyy-MM-dd hh:mm:ss'),
+				// todo 去除一个参数需要看下是否可行
+				// createTime: format(Date.now(), 'yyyy-MM-dd hh:mm:ss'),
 				attribute: JSON.stringify({
 					kanboard: panelConfig, // 看板画布配置
 					widgets, // 小工具配置
