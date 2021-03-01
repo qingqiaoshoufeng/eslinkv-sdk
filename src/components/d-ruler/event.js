@@ -230,7 +230,9 @@ export default {
 		document.removeEventListener('keydown', this.startContentMove)
 		window.removeEventListener('resize', this.windowResize)
 		window.removeEventListener('scroll', this.setSpacing)
-		dragContent.removeEventListener('wheel', this.handleWheel)
-		dragContent.removeEventListener('dblclick', this.resetZoom)
+		if (dragContent) {
+			dragContent.removeEventListener('wheel', this.handleWheel)
+			dragContent.removeEventListener('dblclick', this.resetZoom)
+		}
 	}
 }

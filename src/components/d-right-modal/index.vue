@@ -10,8 +10,6 @@
 	import {Component, Vue, Prop} from 'vue-property-decorator'
 	import {findComponentsDownward} from '../../utils/index'
 	
-	console.log(Icon)
-
 	@Component({
 		components: {
 			'i-icon': Icon
