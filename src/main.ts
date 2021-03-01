@@ -14,7 +14,6 @@ Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal
 Vue.config.productionTip = false
 
-
 new Vue({
 	router,
 	render: (h) => h(App),
