@@ -3,33 +3,20 @@
  */
 
 import Vue from 'vue'
+import {store} from './index'
 
-if (!window.eslinkV) {
-	window.eslinkV = {}
-}
-
-if (!window.eslinkV.$store) {
-	window.eslinkV.$store = {}
-}
-
-let state, actions
-if (window.eslinkV.$store.custom) {
-	state = window.eslinkV.$store.custom.state
-	actions = window.eslinkV.$store.custom.actions
-} else {
-	state = new Vue.observable({
-		widgets: {},
-		components: {}
-	})
-	actions = {
-		setCustomComponents(value) {
-			state.components = {...state.components, ...value}
-		},
-		setCustomWidgets(value) {
-			state.widgets[`d-${+new Date()}`] = value
-		}
+const state = new Vue.observable({
+	widgets: {},
+	components: {}
+})
+const actions = {
+	setCustomComponents(value) {
+		state.components = {...state.components, ...value}
+	},
+	setCustomWidgets(value) {
+		state.widgets[`d-${+new Date()}`] = value
 	}
-	window.eslinkV.$store.custom = {state, actions}
 }
+const custom = store('custom', state, actions)
 
-export default {state, actions}
+export default custom
