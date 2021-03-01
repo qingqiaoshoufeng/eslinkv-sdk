@@ -4,6 +4,7 @@ import fetch from './fetch.js'
 import dataProcess from './data-process.js'
 import globalConfigValue from './common-config-value'
 import platform from './src/store/platform.store'
+import instance from './src/store/instance.store'
 import copy from 'fast-copy'
 
 /**
@@ -73,8 +74,8 @@ const mx: any = {
 					let dom
 					if (this.kanboardEditor.$refs[ref]) {
 						dom = this.kanboardEditor.$refs[ref][0].$refs.widgets
-					} else if (window.GoldChart.store.instance.createKanboard?.$refs[ref]) {
-						dom = window.GoldChart.store.instance.createKanboard.$refs[ref][0].$refs.widgets
+					} else if (instance.actions.createKanboard?.$refs[ref]) {
+						dom = instance.actions.createKanboard.$refs[ref][0].$refs.widgets
 					}
 					if (!dom) return
 					if (typeof dom.updateComponent === 'function') dom.updateComponent(data)

@@ -69,9 +69,14 @@
 			/**
 			 * @description h5 原生拖拽事件
 			 */
-			dragstart(e, title, index, tabKey, {type, market, componentVersion}) {
-				const widgetConfig = this.custom.widgets[tabKey].widgets[title].widgets[type]
-				if (!widgetConfig || !type) return
+			dragstart(e, title, index, tabKey, {type, market, componentVersion, componentConfig}) {
+				if (!type) return
+				let widgetConfig
+				if (market) {
+					widgetConfig = {config: {layout: JSON.parse(componentConfig).layout}}
+				} else {
+					widgetConfig = this.custom.widgets[tabKey].widgets[title].widgets[type]
+				}
 				const {config} = widgetConfig
 				e.dataTransfer.setData('widget-config', JSON.stringify({
 					type,

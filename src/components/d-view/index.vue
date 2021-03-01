@@ -9,6 +9,7 @@
 	import loadMask from '../load-mask/index.vue'
 	import platform from '../../store/platform.store'
 	import scene from '../../store/scene.store'
+	import instance from '../../store/instance.store'
 	import {Component, Vue, Provide} from 'vue-property-decorator'
 	
 	@Component({
@@ -41,7 +42,7 @@
 		}
 
 		mounted() {
-			window.GoldChart.mutations.setInstance('kanboard', this)
+			instance.actions.setInstance('kanboard', this)
 			scene.actions.setStatus('inPreview')
 		}
 	}

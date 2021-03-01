@@ -16,8 +16,7 @@
 	</component>
 </template>
 <script>
-	import {cssStyle2DomStyle} from '../../utils'
-	import Vue from "vue"
+	import Vue from 'vue'
 	import custom from '../../store/custom.store'
 
 	export default {
@@ -44,19 +43,15 @@
 				replayAnimation: false,
 				ready: false,
 				animationClass: null,
-				componentList: {},
 				custom: custom.state
 			}
 		},
 		computed: {
 			currentComponent() {
-				if (this.componentList[cssStyle2DomStyle(this.type)])
-					return this.componentList[cssStyle2DomStyle(this.type)]
-
 				if (this.ready) {
 					if (this.market)
 						return `market-${this.type}-${this.componentVersion}`
-					return `dvdp-${this.type}`
+					return `eslinkv-${this.type}`
 				}
 
 				return null
@@ -113,49 +108,30 @@
 			}
 		},
 		mounted() {
-			if (this.componentList[cssStyle2DomStyle(this.type)]) {
-				this.ready = true
-			} else {
-				if (this.market) {
-					this.componentVersion = this.config.widget.componentVersion
-					// todo
-					// this.$root.$options.components
-					if (this.$root.$options.components[`market-${this.type}-${this.componentVersion}`]) {
-						this.ready = true
-						return
-					}
-					if (window.GoldChart.components[`${this.type}-${this.componentVersion}`]) {
-						this.ready = true
-					} else {
-						this.$api.bussiness.detailMarket({
-							componentEnTitle: this.type,
-							componentVersion: this.config.widget.componentVersion
-						}).then(res => {
-							let script = document.createElement('script')
-							script.onload = () => {
-								// todo
-								// this.$root.$options.components
-								Vue.component(
-									`market-${res.componentEnTitle}-${this.config.widget.componentVersion}`,
-									window.GoldChart.components[`${res.componentEnTitle}-${this.config.widget.componentVersion}`].component)
-								this.ready = true
-							}
-							script.src = res.componentJsUrl
-							document.head.appendChild(script)
-						})
-					}
+			if (this.market) {
+				this.componentVersion = this.config.widget.componentVersion
+				if (Vue.options.components[`market-${this.type}-${this.componentVersion}`]) {
+					this.ready = true
+					return
 				} else {
-					// todo
-					// this.$root.$options.components
-					if (window.GoldChart.components[`dvdp-${this.type}`]) {
-						this.ready = true
-					} else {
-						Vue.component(`dvdp-${this.type}`, this.custom.components[this.type])
-						// todo
-						// this.$root.$options.components
-						window.GoldChart.components[`dvdp-${this.type}`] = this.custom.components[this.type]
-						this.ready = true
-					}
+					this.$api.bussiness.detailMarket({
+						componentEnTitle: this.type,
+						componentVersion: this.config.widget.componentVersion
+					}).then(res => {
+						let script = document.createElement('script')
+						script.onload = () => {
+							this.ready = true
+						}
+						script.src = res.componentJsUrl
+						document.head.appendChild(script)
+					})
+				}
+			} else {
+				if (Vue.options.components[`eslinkv-${this.type}`]) {
+					this.ready = true
+				} else {
+					Vue.component(`eslinkv-${this.type}`, this.custom.components[this.type])
+					this.ready = true
 				}
 			}
 			this.$el.addEventListener('animationend', this.handleAnimationEnd)
@@ -166,10 +142,10 @@
 	}
 </script>
 <style lang="scss">
-.widget-part {
-	text-align: center;
-	font-size: 15px;
-	color: rgb(0, 0, 0);
-	line-height: 1.5em;
-}
+	.widget-part {
+		text-align: center;
+		font-size: 15px;
+		color: rgb(0, 0, 0);
+		line-height: 1.5em;
+	}
 </style>

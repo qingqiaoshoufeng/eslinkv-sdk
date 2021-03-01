@@ -16,7 +16,7 @@ class Mixins extends Vue {
 	currentWidgetValue = null
 	platform = platform.state
 	scene = scene.state
-	configPanelValueUpdateTimer= null
+	configPanelValueUpdateTimer = null
 
 	updateConfigPanelValue(id, oldId) {
 		const update = () => {
@@ -34,7 +34,7 @@ class Mixins extends Vue {
 		this.configPanelValueUpdateTimer && clearTimeout(this.configPanelValueUpdateTimer)
 		this.configPanelValueUpdateTimer = setTimeout(update, 380)
 	}
-	
+
 	handleWidgetConfig({value = {}}, item) {
 		// if (this.widgetsImporting) {
 		// 	this.isWidgetProcessing = false

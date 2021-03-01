@@ -173,7 +173,6 @@
 				const widgetConfig = e.dataTransfer.getData('widget-config')
 				if (widgetConfig) {
 					this.handleWidgetDrop(e, widgetConfig)
-					return
 				}
 			},
 			updateApiSystem (value) {

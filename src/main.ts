@@ -2,13 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import {Message, Modal, Switch, Select, Option, Icon} from 'view-design'
 import router from './router'
-import 'view-design/dist/styles/iview.css'
-import './scss/reset.scss'
-import './scss/index.scss'
-import './api/index'
-import './icons'
 import '@babel/polyfill'
-import './plugins'
+import '../index.js'
 
 Vue.component('iSwitch', Switch)
 Vue.component('iSelect', Select)
