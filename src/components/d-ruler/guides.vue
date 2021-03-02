@@ -1,3 +1,4 @@
+<script src="../../../commitlint.config.js"></script>
 <template lang="pug">
 	section(v-show="platform.ruler.rulerVisible")
 		.vue-ruler-ref-dot-h.pos-a(:style="{ transform: `translateY(${vGuideTop}px)` }")
@@ -46,7 +47,6 @@
 		},
 		methods: {
 			// 水平线/垂直线 处按下鼠标
-			// todo bug 左侧小工具栏悬浮时，参考线位置不准确
 			handleGuideDrag(e, item) {
 				if (e.which !== 1) return
 				const {type, id} = item

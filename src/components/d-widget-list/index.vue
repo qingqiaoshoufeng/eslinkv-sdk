@@ -1,5 +1,5 @@
 <template lang="pug">
-	.widgets-panel(:class="{ fixed: panelFixed }")
+	.widgets-panel(:class="{ fixed: platform.panelFixed }")
 		i-tabs(:animated="false" type="card" @on-click="(name) => handlePanelToggle(name)")
 			template(v-for="(tab,tabKey) in custom.widgets")
 				i-tab-pane(:key="tab.name" :label="tab.label" :name="tab.name")
@@ -15,13 +15,14 @@
 											img(:src="widget.componentImage" )
 										div.d-widget-list-img(draggable="true" v-if="!widget.market" @dragstart="dragstart($event, type, index,tabKey,widget)")
 											img(:src="widget.snapshot")
-		d-svg.fixed-toggle.pointer(icon-class="pin" :title="panelFixed ? '取消固定' : '固定小工具栏'" :class="{ active: panelFixed }" @click="handleFix")
+		d-svg.fixed-toggle.pointer(icon-class="pin" :title="platform.panelFixed ? '取消固定' : '固定小工具栏'" :class="{ active: platform.panelFixed }" @click="handleFix")
 </template>
 <script>
 	import parts from '../d-widget-part/index'
 	import {Collapse, TabPane, Tabs, Panel} from 'view-design'
 	import {component as VueLazyComponent} from '@xunlei/vue-lazy-component'
 	import custom from '../../store/custom.store'
+	import platform from '../../store/platform.store'
 
 	export default {
 		components: {
@@ -35,14 +36,14 @@
 		data() {
 			return {
 				custom: custom.state,
-				panelFixed: false,
+				platform: platform.state,
 				widgetListActiveMap: {},
 				widgetListToggleTimer: {},
 			}
 		},
 		methods: {
 			handleFix() {
-				this.panelFixed = !this.panelFixed
+				this.platform.panelFixed = !this.platform.panelFixed
 			},
 			setActiveMap(tab, panel = '') {
 				const key = tab + '-' + this.format(panel)

@@ -1,7 +1,7 @@
 <template>
 	<div class="es-item-content">
 		<!-- 2：下拉框 -->
-		<template v-else-if="data.type === 2">
+		<template v-if="data.type === 2">
 			<i-select
 				v-model="model[data.enName]"
 				@on-change="onChange"

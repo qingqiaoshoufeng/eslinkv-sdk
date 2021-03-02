@@ -122,21 +122,24 @@ export default {
 		},
 		// todo 拖动防抖
 		setMove(e) {
-			const {clientX, clientY} = e
+			let {clientX, clientY} = e
+			if (this.platform.panelFixed) {
+				clientX -= 428
+			}
 			this.clientX = clientX
 			this.clientY = clientY
 			if (this.contentDrag) {
 				if (!this.contentMoveStartX) {
-					this.contentMoveStartX = clientX
-					this.contentMoveStartY = clientY
+					this.contentMoveStartX = this.clientX
+					this.contentMoveStartY = this.clientY
 				}
-				this.platform.ruler.contentScrollLeft += Math.ceil(clientX - this.contentMoveStartX)
-				this.platform.ruler.contentScrollTop += Math.ceil(clientY - this.contentMoveStartY)
-				this.contentMoveStartX = clientX
-				this.contentMoveStartY = clientY
+				this.platform.ruler.contentScrollLeft += Math.ceil(this.clientX - this.contentMoveStartX)
+				this.platform.ruler.contentScrollTop += Math.ceil(this.clientY - this.contentMoveStartY)
+				this.contentMoveStartX = this.clientX
+				this.contentMoveStartY = this.clientY
 				return
 			}
-			this.dottedLineMove(clientX, clientY)
+			this.dottedLineMove(this.clientX, this.clientY)
 		},
 		stopMove($event) {
 			if (this.contentDrag) {
@@ -145,7 +148,10 @@ export default {
 			}
 			// 虚线松开
 			if (!this.platform.ruler.isDrag) return
-			const {clientX, clientY} = $event
+			let {clientX, clientY} = $event
+			if (this.platform.panelFixed) {
+				clientX -= 428
+			}
 			if (!this.isMoved) {
 				return this.clickDraw(clientX, clientY)
 			}

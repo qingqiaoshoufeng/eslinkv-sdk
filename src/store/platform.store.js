@@ -74,6 +74,7 @@ const state = new Vue.observable({
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏
+	panelFixed: false, // 左侧列表是否固定
 	hotKeys: [ // 热键
 		{name: '插入水平参考线', key: [{value: alt, type: 'text'}, {type: '+'}, {value: 'H', type: 'text'}]},
 		{name: '插入垂直参考线', key: [{value: alt, type: 'text'}, {type: '+'}, {value: 'V', type: 'text'}]},

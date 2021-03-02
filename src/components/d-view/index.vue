@@ -25,7 +25,6 @@
 		scene = scene.state
 
 		canvasStyle() {
-			// todo 简化
 			const val = styleParser(this.platform.panelConfig)
 			if (val) {
 				this.$emit('mounted', val)

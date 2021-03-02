@@ -198,7 +198,6 @@
 		},
 		computed: {
 			canvasStyle() {
-				// todo 简化
 				return styleParser(this.platform.panelConfig)
 			},
 			canvasSize() {

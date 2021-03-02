@@ -6,7 +6,7 @@ export default {
 	methods: {
 		handleExport() {
 			const data = this.platFormData()
-			let fileName = `${data.name}-${new Date() * 1}`
+			let fileName = `${data.name}-${+new Date()}`
 			this.$Modal.confirm({
 				title: '看板导出',
 				components: {
@@ -14,34 +14,13 @@ export default {
 				},
 				render: (h) => {
 					return h(
-						'div',
-						{
-							class: 'form-wrapper'
-						},
+						'div', {class: 'form-wrapper'},
 						[
-							h(
-								'p',
-								'导出功能用于看板数据备份、迁移。'
-							),
-							h(
-								'div',
-								{
-									class: 'form-item'
-								},
-								[
-									h(
-										'label',
-										{
-											class: 'form-label text-right'
-										},
-										'文件名称'
-									),
-									h(
-										'span',
-										`${fileName}.json`
-									)
-								]
-							)
+							h('p', '导出功能用于看板数据备份、迁移。'),
+							h('div', {class: 'form-item'}, [
+								h('label', {class: 'form-label text-right'}, '文件名称'),
+								h('span', `${fileName}.json`)
+							])
 						]
 					)
 				},
