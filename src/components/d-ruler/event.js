@@ -218,6 +218,8 @@ export default {
 		dragContent.addEventListener('wheel', this.handleWheel)
 		dragContent.addEventListener('dblclick', this.resetZoom)
 		requestAnimationFrame(this.init)
+		
+		// todo 画板居中优化
 		setTimeout(() => {
 			this.resetZoom()
 		})
