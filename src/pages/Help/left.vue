@@ -1,6 +1,5 @@
 <template lang="pug">
-	Menu.fn-fl.help-left(:open-names="['1']" @on-select="handleSelect" :active-name="leftName")
-		// todo 文档
+    Menu.fn-fl.help-left(:open-names="['1']" @on-select="handleSelect" :active-name="leftName")
 		Submenu(name="1")
 			template(slot="title") 看板管理
 			MenuItem(name="HowToUseMarket") 看板配置
@@ -20,7 +19,7 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator'
     import {Menu, Submenu, MenuItem} from 'view-design'
-
+	// todo 文档完善
     @Component({
         components: {
             Menu,

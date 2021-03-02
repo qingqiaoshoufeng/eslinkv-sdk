@@ -1,6 +1,5 @@
 <template>
 	<div class="es-item-content">
-		<!-- 2：下拉框 -->
 		<template v-if="data.type === 2">
 			<i-select
 				v-model="model[data.enName]"
