@@ -9,6 +9,7 @@
 
 	@Component
 	export default class FuncBase extends func {
+		// todo 强制刷新当前组件
 		handleSync() {
 
 		}

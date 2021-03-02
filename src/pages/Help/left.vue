@@ -1,5 +1,5 @@
 <template lang="pug">
-    Menu.fn-fl.help-left(:open-names="['1']" @on-select="handleSelect" :active-name="leftName")
+	Menu.fn-fl.help-left(:open-names="['1']" @on-select="handleSelect" :active-name="leftName")
 		Submenu(name="1")
 			template(slot="title") 看板管理
 			MenuItem(name="HowToUseMarket") 看板配置
@@ -7,10 +7,10 @@
 			MenuItem(name="HowToLoadMarket") 场景设置
 			MenuItem(name="HowToLoadMarket") 快捷键
 			MenuItem(name="HowToLoadMarket") 导入导出
-		Submenu(name="1")
+		Submenu(name="2")
 			template(slot="title") 模版管理
 			MenuItem(name="HowToUseMarket") 模版使用
-		Submenu(name="1")
+		Submenu(name="3")
 			template(slot="title") 组件市场
 			MenuItem(name="HowToUseMarket") 如何开发
 			MenuItem(name="HowToPutMarket") 如何上架
