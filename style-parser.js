@@ -3,7 +3,7 @@ const getUnit = (unit = '') => {
     return unit.split('/')
 }
 
-// todo 改造
+// todo 移除/改造
 const styleParser = function (layout, updateTime = Date.now()) {
     const style = []
     const {

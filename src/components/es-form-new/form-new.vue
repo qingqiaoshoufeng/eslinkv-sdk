@@ -51,7 +51,7 @@
 </template>
 <script>
 	import {setDefaultBool, toLength} from '../../utils'
-	import findIndex from 'lodash/findIndex';
+	import findIndex from 'lodash/findIndex'
 	import {Form} from 'view-design'
 	import esFormItem from './formItem'
 

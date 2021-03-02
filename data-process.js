@@ -1,3 +1,4 @@
+// todo 移除/改造
 const isObjectString = input => {
 	if (typeof input !== 'string') return false
 	input.trim()

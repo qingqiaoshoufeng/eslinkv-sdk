@@ -2,6 +2,7 @@ import commonConfigValue from '../../common-config-value'
 import Clipboard from 'clipboard'
 import {Message} from 'view-design'
 
+// todo: 整理无用，在用util
 export function typeOf(e) {
 	let t = Object.prototype.toString;
 	return {
@@ -108,7 +109,6 @@ export function handlerRules(template) {
 					message: template.name + '不能为空',
 					trigger: 'change',
 					fields: {
-						// todo
 						0: {
 							type: 'string',
 							required: true,
@@ -129,7 +129,6 @@ export function handlerRules(template) {
 					trigger: 'change'
 				});
 			} else {
-				// todo
 				validate.push({
 					type: 'string',
 					required: true,

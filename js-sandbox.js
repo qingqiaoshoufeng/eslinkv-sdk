@@ -3,7 +3,7 @@ const ASTQ = require("astq")
 var MD5 = require('md5.js')
 const astq = new ASTQ()
 astq.adapter('mozast')
-
+// todo 移除/改造
 const sandboxCache = Object.create(null)
 
 const defaultDisabledKeywords = [
@@ -71,7 +71,7 @@ const queryKeywords = (sourceAst, keywords) => {
   })
 }
 
-// todo 处理通过运算符构造对象属性引用的漏洞，例如 []['__' + 'proto__']
+// 原先的todo 处理通过运算符构造对象属性引用的漏洞，例如 []['__' + 'proto__']
 function validateSource (source, disabledObjects) {
   const sourceForParse = new Function(source).toString()
   const sourceAst = acorn.parse(sourceForParse, { ecmaVersion: 10 })

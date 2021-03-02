@@ -1,5 +1,6 @@
 <template>
 	<!-- 自定义分析 -->
+	<!--todo: 移除es-form-new的依赖-->
 	<div class="custom-query">
 		<div class="ivu-form-item-required source">
 			<label class="ivu-form-item-label">数据来源</label>
@@ -34,8 +35,8 @@
 	</div>
 </template>
 <script>
-	import esSql from '../esSql.vue';
-	import customSource from './customSource';
+	import esSql from '../esSql.vue'
+	import customSource from './customSource'
 	import {RadioGroup, Radio, Select, Option, FormItem, Form} from 'view-design'
 
 	export default {

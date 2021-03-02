@@ -1,7 +1,8 @@
 <template>
 	<div class="es-form-item" ref="esFormItem">
 		<!-- label过长展示省略号，通过tooltip展示全部信息 -->
-		<!-- todo: offset未支持动态绑定，官方修复中 -->
+		<!-- todo: 移除es-form-new的依赖 -->
+		<!-- 原先的todo: offset未支持动态绑定，官方修复中 -->
 		<Tooltip
 			:content="data.name"
 			:disabled="disabledTooltip || disabledTip"
@@ -49,9 +50,9 @@
 	</div>
 </template>
 <script>
-import { handlerRules } from '../../../utils';
-import esItemContent from '../itemContent';
-import { FormItem, Tooltip } from 'view-design';
+import { handlerRules } from '../../../utils'
+import esItemContent from '../itemContent'
+import { FormItem, Tooltip } from 'view-design'
 
 export default {
 	name: 'es-form-item',
@@ -179,7 +180,7 @@ export default {
 			},
 			set() {},
 		},
-		// todo 计算label宽度，目前只是粗略计算，按12px的字体大小，以13x作为单个字的平均宽度
+		// 原先的todo 计算label宽度，目前只是粗略计算，按12px的字体大小，以13x作为单个字的平均宽度
 		// item项的labelwidth，会覆盖form的labelwidth
 		itemLabelWidth: {
 			get() {

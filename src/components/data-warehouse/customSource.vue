@@ -1,4 +1,5 @@
 <template>
+	<!--todo: 移除es-form-new的依赖-->
 	<Form :model="queryCustomSource" :label-width="70" style="width: 100%; display: block" ref="queryCustomSource"
 		  :rules="querySourceRule">
 		<FormItem label="数据源" prop="dataSourceId" style="width: 100%">

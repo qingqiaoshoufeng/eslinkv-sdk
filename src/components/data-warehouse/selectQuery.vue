@@ -1,5 +1,6 @@
 <template>
 	<!-- 选择查询 -->
+	<!--todo: 移除es-form-new的依赖-->
 	<div class="select-query">
 		<div class="ivu-form-item-required source">
 			<label class="ivu-form-item-label">数据来源</label>

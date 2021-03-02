@@ -46,6 +46,7 @@
 		},
 		methods: {
 			// 水平线/垂直线 处按下鼠标
+			// todo bug 左侧小工具栏悬浮时，参考线位置不准确
 			handleGuideDrag(e, item) {
 				if (e.which !== 1) return
 				const {type, id} = item

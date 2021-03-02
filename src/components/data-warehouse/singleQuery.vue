@@ -1,4 +1,5 @@
 <template>
+	<!--todo: 移除es-form-new的依赖-->
 	<!-- 单表查询 -->
 	<div class="single-query">
 		<div class="ivu-form-item-required source">

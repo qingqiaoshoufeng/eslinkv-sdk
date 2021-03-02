@@ -2,6 +2,7 @@ import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 import {getQueryString} from '../../utils/index'
 
+// todo 加载动画 下面注释部分
 export default {
 	methods: {
 		renderByDetail(res) {
@@ -69,6 +70,7 @@ export default {
 		/**
 		 * @description 适配
 		 */
+		// todo 取消注释
 		// if (getQueryString('scale'))
 		// 	if (!isNaN(getQueryString('scale')))
 		// 		this.scale = Number(getQueryString('scale'))

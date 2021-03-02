@@ -1,4 +1,5 @@
 <template>
+	<!--todo: 移除es-form-new的依赖-->
 	<div>
 		<es-form-new :data="selectObj" :model="selectObjModel" ref="select"></es-form-new>
 	</div>

@@ -1,4 +1,5 @@
 <template>
+	<!--todo: 移除es-form-new的依赖-->
 	<Modal title="数仓参数配置" v-model="showModal" :height="height" :isDirectCloseModal="false" @on-cancel="exit"
 		   @on-visible-change="setVisibility">
 		<div class="modal-body">

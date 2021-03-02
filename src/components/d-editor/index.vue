@@ -1,5 +1,6 @@
 <template>
 	<!-- 操作区 -->
+	<!--todo css 改造 适配组件嵌入式，非全屏-->
 	<div
 		ref="canvas-wrapper"
 		:class="{ fullscreen: platform.fullscreen }"
@@ -197,6 +198,7 @@
 		},
 		computed: {
 			canvasStyle() {
+				// todo 简化
 				return styleParser(this.platform.panelConfig)
 			},
 			canvasSize() {

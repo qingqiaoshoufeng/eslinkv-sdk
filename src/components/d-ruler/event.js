@@ -120,6 +120,7 @@ export default {
 					break
 			}
 		},
+		// todo 拖动防抖
 		setMove(e) {
 			const {clientX, clientY} = e
 			this.clientX = clientX
