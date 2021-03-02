@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
-    <link rel="stylesheet" href="/static/css/font.css" />
-    <link rel="stylesheet" href="/static/css/font-awesome-v5.14.0.css" />
-    <link rel="stylesheet" href="/static/css/animate.min.css" />
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+	<link rel="icon" href="favicon.ico"/>
+	<link rel="stylesheet" href="/static/css/font.css"/>
+	<link rel="stylesheet" href="/static/css/font-awesome-v5.14.0.css"/>
+	<link rel="stylesheet" href="/static/css/animate.min.css"/>
 </head>
 <body>
-    <noscript>
-        <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't
-                work properly without JavaScript enabled. Please enable it to
-                continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-    <script src="<%= process.env.staticPath %>/static/js/<%= process.env.staticVuePath %>"></script>
-    <script src="<%= process.env.staticPath %>/static/js/vue-class-component.min.js"></script>
-    <script src="<%= process.env.staticPath %>/static/js/vue-router.min.js"></script>
-    <script src="<%= process.env.staticPath %>/static/js/echarts.min.js"></script>
-    <script src="//at.alicdn.com/t/font_2145957_98pzfcnlzpe.js"></script>
+<noscript>
+	<strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't
+		work properly without JavaScript enabled. Please enable it to
+		continue.</strong>
+</noscript>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+<script src="/static/js/<%= process.env.staticVuePath %>"></script>
+<script src="/static/js/vue-class-component.min.js"></script>
+<script src="/static/js/vue-router.min.js"></script>
+<script src="/static/js/echarts.min.js"></script>
+<script src="//at.alicdn.com/t/font_2145957_98pzfcnlzpe.js"></script>
 </body>
 </html>

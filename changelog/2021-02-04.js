@@ -140,5 +140,9 @@ export default {
 			type: [''],
 			content: 'store 优化修改'
 		},
+		{
+			type: [''],
+			content: '修改router模式为history'
+		},
 	]
 }

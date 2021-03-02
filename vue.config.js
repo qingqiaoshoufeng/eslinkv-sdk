@@ -16,7 +16,7 @@ module.exports = {
 		'dom7',
 	],
 	assetsDir: 'static',
-	publicPath: isProduction ? `./${pkg.version}` : './',
+	publicPath: isProduction ? `/${pkg.version}` : '/',
 	outputDir: `dist/${pkg.version}`,
 	indexPath: '../index.html',
 	productionSourceMap: false,
@@ -25,6 +25,7 @@ module.exports = {
 		port: 3000,
 		hot: true,
 		open: true,
+		historyApiFallback: true,
 		disableHostCheck: true,
 		proxy: {
 			'^/hangran': {
@@ -117,7 +118,6 @@ module.exports = {
 		]
 		config.plugins.push(
 			new webpack.DefinePlugin({
-				'process.env.staticPath': JSON.stringify(isProduction ? `/${pkg.version}` : ''),
 				'process.env.version': JSON.stringify(pkg.version),
 				'process.env.staticVuePath': JSON.stringify(isProduction ? 'vue.min.js' : 'vue.js'),
 				'process.env.BUILD_MODE': JSON.stringify(process.env.BUILD_MODE)
