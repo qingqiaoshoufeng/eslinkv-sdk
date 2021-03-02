@@ -1,4 +1,5 @@
 import platform from '../../store/platform.store'
+import { throttle } from 'throttle-debounce'
 
 export default {
 	data() {
@@ -120,8 +121,7 @@ export default {
 					break
 			}
 		},
-		// todo 拖动防抖
-		setMove(e) {
+		setMove: throttle(50, false, function (e) {
 			let {clientX, clientY} = e
 			if (this.platform.panelFixed) {
 				clientX -= 428
@@ -137,10 +137,10 @@ export default {
 				this.platform.ruler.contentScrollTop += Math.ceil(this.clientY - this.contentMoveStartY)
 				this.contentMoveStartX = this.clientX
 				this.contentMoveStartY = this.clientY
-				return
+			} else {
+				this.dottedLineMove(this.clientX, this.clientY)
 			}
-			this.dottedLineMove(this.clientX, this.clientY)
-		},
+		}),
 		stopMove($event) {
 			if (this.contentDrag) {
 				this.handleContentMoveEnd($event)
