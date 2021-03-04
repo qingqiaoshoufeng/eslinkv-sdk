@@ -78,9 +78,13 @@
 		getAttr(o, str) {
 			const arr = str.split('.')
 			let res = o
-			arr.forEach(v => {
+			for (const v of arr) {
+				if (res[v] === undefined) {
+					res = {}
+					break
+				}
 				res = res[v]
-			})
+			}
 			return res
 		}
 
