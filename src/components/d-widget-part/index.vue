@@ -50,10 +50,10 @@
 			currentComponent() {
 				if (this.ready) {
 					if (this.market)
-						return `market-${this.type}-${this.componentVersion}`
+						if (Vue.options.components[`market-${this.type}-${this.componentVersion}`])
+							return `market-${this.type}-${this.componentVersion}`
 					return `eslinkv-${this.type}`
 				}
-
 				return null
 			},
 			animation() {
