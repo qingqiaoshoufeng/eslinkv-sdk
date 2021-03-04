@@ -44,7 +44,6 @@ const mx: any = {
 	},
 	data() {
 		return {
-			configSource: null,
 			configValue: null,
 			ready: false,
 			data: null,

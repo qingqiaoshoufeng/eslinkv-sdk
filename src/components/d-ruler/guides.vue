@@ -49,9 +49,13 @@
 			// 水平线/垂直线 处按下鼠标
 			handleGuideDrag(e, item) {
 				if (e.which !== 1) return
+				let {clientX, clientY} = e
 				const {type, id} = item
-				this.platform.ruler.guideDragStartX = e.clientX
-				this.platform.ruler.guideDragStartY = e.clientY
+				if (this.platform.panelFixed) {
+					clientX -= 428
+				}
+				this.platform.ruler.guideDragStartX = clientX
+				this.platform.ruler.guideDragStartY = clientY
 				this.platform.ruler.isDrag = true
 				this.platform.ruler.dragFlag = type
 				this.platform.ruler.dragGuideId = id
