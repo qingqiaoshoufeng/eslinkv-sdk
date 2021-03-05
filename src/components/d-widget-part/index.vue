@@ -9,7 +9,7 @@
 			   @query-failed="querying = true"
 			   @config-reset="$emit('config-reset')"
 			   v-on="$listeners"
-			   :key="config.widget.id + key"
+			   :key="`${config.widget.id}${updateKey}`"
 	>
 		<slot/>
 	</component>
@@ -38,7 +38,7 @@
 		},
 		data() {
 			return {
-				key: 0,
+				updateKey: 0,
 				componentVersion: '',
 				querying: false,
 				queryFailed: false,

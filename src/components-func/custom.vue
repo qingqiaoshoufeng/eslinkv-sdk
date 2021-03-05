@@ -15,7 +15,7 @@
 		platform = platform.state
 
 		handleSync() {
-			this.instance.kanboard.$refs[`widget_${this.platform.chooseWidgetId}`][0].$children[0].key++
+			this.instance.kanboard.$refs[`widget_${this.platform.chooseWidgetId}`][0].$children[0].updateKey++
 		}
 	}
 </script>
