@@ -9,6 +9,7 @@
 			   @query-failed="querying = true"
 			   @config-reset="$emit('config-reset')"
 			   v-on="$listeners"
+			   :key="config.widget.id + key"
 	>
 		<slot/>
 	</component>
@@ -35,6 +36,7 @@
 		},
 		data() {
 			return {
+				key: 0,
 				componentVersion: '',
 				querying: false,
 				queryFailed: false,
@@ -133,9 +135,15 @@
 				}
 			}
 			this.$el.addEventListener('animationend', this.handleAnimationEnd)
+			if (!this.readonly) { // 编辑模式
+				window.GoldChart.$event.addEventListener(this.config.widget.id, () => {
+					this.key++
+				})
+			}
 		},
 		beforeDestroy() {
 			this.$el.removeEventListener('animationend', this.handleAnimationEnd)
+			window.GoldChart.$event.removeEventListener(this.config.widget.id)
 		}
 	}
 </script>

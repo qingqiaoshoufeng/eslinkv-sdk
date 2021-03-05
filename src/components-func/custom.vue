@@ -6,12 +6,11 @@
 <script lang="ts">
 	import func from './func.mx'
 	import {Component} from 'vue-property-decorator'
-
+	
 	@Component
 	export default class FuncBase extends func {
-		// todo 强制刷新当前组件
 		handleSync() {
-
+			window.GoldChart.$event.emit(this.item.id)
 		}
 	}
 </script>
