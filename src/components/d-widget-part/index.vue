@@ -18,6 +18,8 @@
 	import Vue from 'vue'
 	import custom from '../../store/custom.store'
 
+	const prefix1 = 'market-'
+	const prefix2 = 'eslinkv-'
 	export default {
 		props: {
 			market: {},
@@ -50,9 +52,9 @@
 			currentComponent() {
 				if (this.ready) {
 					if (this.market)
-						if (Vue.options.components[`market-${this.type}-${this.componentVersion}`])
-							return `market-${this.type}-${this.componentVersion}`
-					return `eslinkv-${this.type}`
+						if (Vue.options.components[`${prefix1}${this.type}-${this.componentVersion}`])
+							return `${prefix1}${this.type}-${this.componentVersion}`
+					return `${prefix2}${this.type}`
 				}
 				return null
 			},
@@ -110,7 +112,7 @@
 		mounted() {
 			if (this.market) {
 				this.componentVersion = this.config.widget.componentVersion
-				if (Vue.options.components[`market-${this.type}-${this.componentVersion}`]) {
+				if (Vue.options.components[`${prefix1}${this.type}-${this.componentVersion}`]) {
 					this.ready = true
 					return
 				} else {
@@ -127,23 +129,17 @@
 					})
 				}
 			} else {
-				if (Vue.options.components[`eslinkv-${this.type}`]) {
+				if (Vue.options.components[`${prefix2}${this.type}`]) {
 					this.ready = true
 				} else {
-					Vue.component(`eslinkv-${this.type}`, this.custom.components[this.type])
+					Vue.component(`${prefix2}${this.type}`, this.custom.components[this.type])
 					this.ready = true
 				}
 			}
 			this.$el.addEventListener('animationend', this.handleAnimationEnd)
-			if (!this.readonly) { // 编辑模式
-				window.GoldChart.$event.addEventListener(this.config.widget.id, () => {
-					this.key++
-				})
-			}
 		},
 		beforeDestroy() {
 			this.$el.removeEventListener('animationend', this.handleAnimationEnd)
-			window.GoldChart.$event.removeEventListener(this.config.widget.id)
 		}
 	}
 </script>
@@ -153,5 +149,6 @@
 		font-size: 15px;
 		color: rgb(0, 0, 0);
 		line-height: 1.5em;
+		backface-visibility: hidden;
 	}
 </style>
