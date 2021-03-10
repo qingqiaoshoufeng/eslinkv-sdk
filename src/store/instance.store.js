@@ -16,7 +16,7 @@ const actions = {
 		state[key] = value
 	},
 	updateComponent: (id, config) => {
-		const widgetConfig = platform.actions.widgetAdded[id].config.api
+		const widgetConfig = platform.state.widgetAdded[id].config.api
 		if (config.params) {
 			widgetConfig.params = JSON.stringify(config.params)
 		}

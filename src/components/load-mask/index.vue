@@ -1,7 +1,7 @@
 <template lang="pug">
 	transition(name="fade")
 		.load-mask.pos-a.fn-flex(v-if="show" :style="`background-color: ${backgroundColor}; color: ${color}; font-size: ${fontSize}`")
-			img(src="static/images/loading.svg" :width="iconSize")
+			img(src="./loading.svg" :width="iconSize")
 			slot {{ text }}
 </template>
 <script lang="ts">
