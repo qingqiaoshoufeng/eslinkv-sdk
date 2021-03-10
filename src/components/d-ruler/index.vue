@@ -77,11 +77,6 @@
 			top: 0;
 			left: 18px;
 
-			canvas {
-				width: 100%;
-				height: 100%;
-			}
-
 			&:before {
 				content: 'D';
 				position: absolute;
