@@ -2,19 +2,10 @@
 	.vue-ruler-wrapper.pos-r
 		section(v-show="platform.ruler.rulerVisible"
 			:style="(contentMove || platform.ruler.zoom !== 1 || platform.ruler.lockGuides) && 'pointer-events: none'")
-			.ruler-wrapper.h
-				.vue-ruler-h(
-					ref="horizontalRuler"
-					:style="hRulerStyle" @mousedown.stop="horizontalDragRuler")
-					span.n(v-for="(item, index) in xScale" :key="index" :style="{ left: index * 50 + 2 + 'px' }"
-						:class="{ zeroScale: item.id === 0 }") {{ item.id }}
-			.ruler-wrapper.v
-				.vue-ruler-v(
-					ref="verticalRuler"
-					:style="vRulerStyle" @mousedown.stop="verticalDragRuler")
-					span.n(v-for="(item, index) in yScale"
-						:key="index"
-						:style="{ top: index * 50 + 2 + 'px' }") {{ item.id }}
+			.ruler-wrapper.h(ref="horizontalRuler" @mousedown.stop="horizontalDragRuler")
+				x-line
+			.ruler-wrapper.v(ref="verticalRuler" @mousedown.stop="verticalDragRuler")
+				y-line
 			.mouse-position.x(:style="`transform: translateX(${clientX- leftSpacing}px)`")
 			.mouse-position.y(:style="`transform: translateY(${clientY - topSpacing}px)`")
 		guides(
@@ -29,15 +20,17 @@
 </template>
 <script lang="ts">
 	import guides from './guides.vue'
+	import xLine from './xLine.vue'
+	import yLine from './yLine.vue'
 	import eventHandlers from './event'
 	import guideDrag from './guide-drag'
 	import platform from '../../store/platform.store'
 	import {mixins} from 'vue-class-component'
-	import {Component, Prop} from 'vue-property-decorator'
+	import {Component, Prop, Watch} from 'vue-property-decorator'
 
 	@Component({
 		components: {
-			guides
+			guides, xLine, yLine
 		},
 	})
 	export default class DRuler extends mixins(eventHandlers, guideDrag) {
@@ -50,35 +43,19 @@
 		yScale = [] // 垂直刻度
 		topSpacing = 0 // 标尺与窗口上间距
 		leftSpacing = 0 //  标尺与窗口左间距
+		
+		@Watch('platform.ruler.contentScrollLeft')
+		contentXChange () {
+			this.platform.ruler.contentX += this.platform.ruler.contentScrollLeft
+		}
+		
+		@Watch('platform.ruler.contentScrollTop')
+		contentYChange () {
+			this.platform.ruler.contentY += this.platform.ruler.contentScrollTop
+		}
 
 		get contentStyle() {
-			return `transform:translate3d(${this.platform.ruler.contentScrollLeft}px, ${this.platform.ruler.contentScrollTop}px, 0) scale(${this.platform.ruler.zoom});width:${this.contentWidth + 18 * 2} px;height:${this.contentHeight + 18 * 2} px;`
-		}
-
-		/**
-		 * @description
-		 *
-		 * 距离左侧的刻度
-		 * 移动面板的宽度 缩放后的像素差
-		 * 去控制刻度显示和位移（有正负）
-		 */
-		get hRulerStyle() {
-			const fixedWidth = this.contentWidth * (this.platform.ruler.zoom - 1) / 2
-			const translateX = Math.ceil(this.platform.ruler.contentScrollLeft - fixedWidth - this.platform.ruler.rulerRange / 2)
-			return `width: ${this.platform.ruler.rulerRange * 1.5}px; transform: translateX(${translateX}px);`
-		}
-
-		/**
-		 * @description
-		 *
-		 * 距离顶侧的刻度
-		 * 移动面板的高度 缩放后的像素差
-		 * 去控制刻度显示和位移（有正负）
-		 */
-		get vRulerStyle() {
-			const fixedHeight = this.contentHeight * (this.platform.ruler.zoom - 1) / 2
-			const translateY = Math.ceil(this.platform.ruler.contentScrollTop - fixedHeight - this.platform.ruler.rulerRange / 2)
-			return `height: ${this.platform.ruler.rulerRange * 1.5}px; transform: translateY(${translateY}px);`
+			return `transform:translate3d(${this.platform.ruler.contentX}px, ${this.platform.ruler.contentY}px, 0) scale(${this.platform.ruler.zoom});width:${this.contentWidth + 18 * 2} px;height:${this.contentHeight + 18 * 2} px;`
 		}
 
 		setSpacing() {
@@ -92,6 +69,7 @@
 	.ruler-wrapper {
 		position: absolute;
 		box-shadow: #111 0 0 1px;
+		z-index: 9;
 
 		&.h {
 			width: calc(100% - 18px);
@@ -180,7 +158,7 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		z-index: 3;
+		z-index: 30;
 		pointer-events: none;
 
 		&.x {

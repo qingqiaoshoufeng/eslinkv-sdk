@@ -37,20 +37,6 @@ export default {
 			this.contentMoveStartX = this.contentMoveStartY = 0
 		},
 		/**
-		 * @description 内容区拖动围栏
-		 */
-		contentMoveFence() {
-			const rulerRange = this.platform.ruler.rulerRange
-			const endX = -rulerRange
-			const endY = -rulerRange
-			if (this.platform.ruler.contentScrollLeft < endX) this.platform.ruler.contentScrollLeft = endX
-			if (this.platform.ruler.contentScrollTop < endY) this.platform.ruler.contentScrollTop = endY
-			const startX = rulerRange / 2
-			const startY = rulerRange / 2
-			if (this.platform.ruler.contentScrollLeft > startX) this.platform.ruler.contentScrollLeft = startX
-			if (this.platform.ruler.contentScrollTop > startY) this.platform.ruler.contentScrollTop = startY
-		},
-		/**
 		 * @description 根据缩放比例生成 x,y刻度
 		 */
 		scaleCalc() {
@@ -133,8 +119,8 @@ export default {
 					this.contentMoveStartX = this.clientX
 					this.contentMoveStartY = this.clientY
 				}
-				this.platform.ruler.contentScrollLeft += Math.ceil(this.clientX - this.contentMoveStartX)
-				this.platform.ruler.contentScrollTop += Math.ceil(this.clientY - this.contentMoveStartY)
+				this.platform.ruler.contentScrollLeft = Math.ceil(this.clientX - this.contentMoveStartX)
+				this.platform.ruler.contentScrollTop = Math.ceil(this.clientY - this.contentMoveStartY)
 				this.contentMoveStartX = this.clientX
 				this.contentMoveStartY = this.clientY
 			} else {
@@ -183,15 +169,13 @@ export default {
 			}
 			if (e.shiftKey) {
 				if (+new Date() - this.scrollXTime >= 500) {
-					this.platform.ruler.contentScrollLeft += e.wheelDelta > 0 ? 10 : -10
-					this.contentMoveFence()
+					this.platform.ruler.contentX += e.wheelDelta > 0 ? 10 : -10
 					this.scrollXTime = +new Date()
 				}
 				return false
 			}
 			if (+new Date() - this.scrollYTime >= 500) {
-				this.platform.ruler.contentScrollTop += e.wheelDelta > 0 ? 10 : -10
-				this.contentMoveFence()
+				this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
 				this.scrollYTime = +new Date()
 			}
 		},
@@ -208,8 +192,8 @@ export default {
 			const {width, height} = dragContent.getBoundingClientRect()
 			const deltaX = (offsetWidth - width) * 0.5
 			const deltaY = (offsetHeight - height) * 0.5
-			this.platform.ruler.contentScrollLeft = Math.ceil(deltaX)
-			this.platform.ruler.contentScrollTop = Math.ceil(deltaY)
+			this.platform.ruler.contentX = Math.ceil(deltaX)
+			this.platform.ruler.contentY = Math.ceil(deltaY)
 		},
 	},
 	mounted() {

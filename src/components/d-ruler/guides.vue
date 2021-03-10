@@ -41,7 +41,7 @@
 				const style = []
 				style.push(`width: ${this.contentWidth}px`)
 				style.push(`height: ${this.contentHeight}px`)
-				style.push(`transform: translate3d(${this.platform.ruler.contentScrollLeft}px, ${this.platform.ruler.contentScrollTop}px, 0) scale(${this.platform.ruler.zoom})`)
+				style.push(`transform: translate3d(${this.platform.ruler.contentX}px, ${this.platform.ruler.contentY}px, 0) scale(${this.platform.ruler.zoom})`)
 				return style.join(';')
 			},
 		},

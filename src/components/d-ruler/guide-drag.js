@@ -72,10 +72,10 @@ export default {
 			const {topSpacing, leftSpacing, size} = this
 			switch (this.platform.ruler.dragFlag) {
 				case 'x':
-					site = this.guideStepFence((clientY - topSpacing - size) * (stepLength / 50) - this.platform.ruler.contentScrollTop)
+					site = this.guideStepFence((clientY - topSpacing - size) * (stepLength / 50) - this.platform.ruler.contentY)
 					break
 				case 'y':
-					site = this.guideStepFence((clientX - leftSpacing - size) * (stepLength / 50) - this.platform.ruler.contentScrollLeft)
+					site = this.guideStepFence((clientX - leftSpacing - size) * (stepLength / 50) - this.platform.ruler.contentX)
 					break
 				case 'h':
 					site = this.dragCalc(clientY - this.platform.ruler.guideDragStartY)

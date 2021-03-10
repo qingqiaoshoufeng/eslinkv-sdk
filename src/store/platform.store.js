@@ -21,6 +21,8 @@ function getInitRuler() {
 		guideLines: [], // 参考线
 		guideDragStartX: 0, // 参考线开始移动的位置
 		guideDragStartY: 0, // 参考线开始移动的位置
+		contentX: 0, // 当前位置x
+		contentY: 0, // 当前位置y
 		contentScrollLeft: 0, // 滚动距离
 		contentScrollTop: 0, // 滚动距离
 		isDrag: false, // 点击拖拽参考线
