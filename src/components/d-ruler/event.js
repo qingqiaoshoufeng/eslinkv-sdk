@@ -170,13 +170,14 @@ export default {
 			if (e.shiftKey) {
 				if (+new Date() - this.scrollXTime >= 500) {
 					this.platform.ruler.contentX += e.wheelDelta > 0 ? 10 : -10
+					this.$refs.xLine.translateAnimation(e.wheelDelta > 0 ? 10 : -10)
 					this.scrollXTime = +new Date()
 				}
 				return false
 			}
 			if (+new Date() - this.scrollYTime >= 500) {
 				this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
-				this.$refs.yLine.handleTranslate(e.wheelDelta > 0 ? 10 : -10)
+				this.$refs.yLine.translateAnimation(e.wheelDelta > 0 ? 10 : -10)
 				this.scrollYTime = +new Date()
 			}
 		},

@@ -5,6 +5,7 @@
 import {Component, Vue, Watch, Prop} from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 
+let i = 0
 let loadImg = false
 const bgImg = new Image()
 bgImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAMAAAAuTX21AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACNJREFUeNpiYCAdMDKRCka1jGoBA2JZZGshiaCXFpIBQIABAAplBkCmQpujAAAAAElFTkSuQmCC'
@@ -21,6 +22,17 @@ export default class XLine extends Vue {
 	@Watch('platform.ruler.contentScrollLeft')
 	contentPositionChange (val) {
 		this.handleTranslate(val)
+	}
+
+	translateAnimation(num) {
+		const animation = requestAnimationFrame(() => this.translateAnimation(num))
+		if (i === num) {
+			cancelAnimationFrame(animation)
+			i = 0
+		}
+		this.handleTranslate(1)
+		if (num > 0) i++
+		if (num < 0) i--
 	}
 
 	handleTranslate(num) {
@@ -70,6 +82,7 @@ export default class XLine extends Vue {
 				this.initDraw()
 			}
 		}
+		
 	}
 
 	mounted() {
