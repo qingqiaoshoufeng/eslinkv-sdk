@@ -36,7 +36,7 @@ export default class YLine extends Vue {
 	}
 
 	handleTranslate(num) {
-		const rulerH = document.getElementById('ruler-v')
+		const rulerH = <HTMLCanvasElement> document.getElementById('ruler-v')
 		const context = rulerH.getContext('2d')
 		this.clearRulerCanvas()
 		context.translate(0, num)
@@ -44,7 +44,7 @@ export default class YLine extends Vue {
 	}
 
 	clearRulerCanvas() {
-		const rulerH = document.getElementById('ruler-v')
+		const rulerH = <HTMLCanvasElement> document.getElementById('ruler-v')
 		const context = rulerH.getContext('2d')
 		const t = context.getTransform()
 		context.clearRect(-t.e, 0, rulerH.width, rulerH.height - t.e)
@@ -52,7 +52,7 @@ export default class YLine extends Vue {
 
 	initDraw() {
 		this.clearRulerCanvas()
-		const rulerH = document.getElementById('ruler-v')
+		const rulerH = <HTMLCanvasElement> document.getElementById('ruler-v')
 		const context = rulerH.getContext('2d')
 		const t = context.getTransform()
 		context.font = '10px sans-serif'

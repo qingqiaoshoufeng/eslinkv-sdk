@@ -36,7 +36,7 @@ export default class XLine extends Vue {
 	}
 
 	handleTranslate(num) {
-		const rulerH = document.getElementById('ruler-h')
+		const rulerH = <HTMLCanvasElement> document.getElementById('ruler-h')
 		const context = rulerH.getContext('2d')
 		this.clearRulerCanvas()
 		context.translate(num, 0)
@@ -44,7 +44,7 @@ export default class XLine extends Vue {
 	}
 
 	clearRulerCanvas() {
-		const rulerH = document.getElementById('ruler-h')
+		const rulerH = <HTMLCanvasElement> document.getElementById('ruler-h')
 		const context = rulerH.getContext('2d')
 		const t = context.getTransform()
 		context.clearRect(-t.e, 0, rulerH.width - t.e, rulerH.height)
@@ -52,7 +52,7 @@ export default class XLine extends Vue {
 
 	initDraw() {
 		this.clearRulerCanvas()
-		const rulerH = document.getElementById('ruler-h')
+		const rulerH = <HTMLCanvasElement> document.getElementById('ruler-h')
 		const context = rulerH.getContext('2d')
 		const t = context.getTransform()
 		context.font = '10px sans-serif'

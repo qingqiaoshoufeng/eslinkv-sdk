@@ -1,43 +1,44 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": false,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "typeRoots": ["./node_modules/@types/", "./types/"],
-    "noImplicitAny": false,
-    "types": [
-      "webpack-env"
-    ],
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx",
-    "src/components-map/AMap/a-map/MapContainer/MapPages/AirSupply/index.js",
-    "types/index.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"jsx": "preserve", // 指定 jsx 代码的生成: 'preserve', 'react-native', or 'react'
+		"importHelpers": true, // 从 tslib 导入辅助工具函数
+		"moduleResolution": "node",
+		"experimentalDecorators": true, // 启用装饰器
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true, // 允许从没有设置默认导出的模块中默认导入
+		"sourceMap": true,
+		"baseUrl": ".",
+		"typeRoots": [
+			"./node_modules/@types/",
+			"./types/"
+		], // 包含类型声明的文件列表
+		"strict": false,
+		"noImplicitAny": false, // 在表达式和声明上有隐含的 any类型时报错
+		"noImplicitThis": false, // 在"this"表达式上有隐含的 any类型时报错
+		"types": [
+			"webpack-env"
+		],
+		"paths": {
+			"@/*": [
+				"./src/*"
+			]
+		},
+		"lib": [
+			"esnext",
+			"dom",
+			"dom.iterable",
+			"scripthost"
+		]
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+		"types/index.d.ts"
+	],
+	"exclude": [
+		"node_modules"
+	]
 }

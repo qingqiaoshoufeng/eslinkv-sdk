@@ -8,7 +8,7 @@
 <script lang="ts">
 	import func from './func.mx'
 	import {Component} from 'vue-property-decorator'
-	import DManageItem from '../components/d-right-manage/item'
+	import DManageItem from '../components/d-right-manage/item.vue'
 
 	@Component({components: {DManageItem}})
 	export default class FuncCollapse extends func {
