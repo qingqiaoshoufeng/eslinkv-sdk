@@ -12,7 +12,6 @@ context.keys().forEach(name => {
 
 Vue.prototype.$api = apis
 
-
 // getKanboardConfig: data => http(data, 'post', prefix + '/board/detail'), // 分页查询项目列表
 // databaseQuery: (params, method, url) => http(params, method, `${prefix}/${url}`),
 // addBoard: (p, m) => http(p, m, prefix + '/board/save'), // 保存看板信息

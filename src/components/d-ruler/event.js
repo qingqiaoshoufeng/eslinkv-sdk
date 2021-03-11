@@ -175,7 +175,7 @@ this.platform.ruler.zoom = (this.platform.ruler.zoom * 10 - 1) / 10
 		dragContent.addEventListener('wheel', this.handleWheel)
 		dragContent.addEventListener('dblclick', this.resetZoom)
 		requestAnimationFrame(this.init)
-		
+
 		// todo 画板居中优化
 		setTimeout(() => {
 			this.resetZoom()

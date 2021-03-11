@@ -38,7 +38,6 @@ export function getCompListAll (data) {
     })
 }
 
-
 // 获取审核历史
 export function getCheckHistoryList (data) {
     return request({

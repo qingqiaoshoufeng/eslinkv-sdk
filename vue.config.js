@@ -49,7 +49,7 @@ module.exports = {
 	css: {
 		extract: false,
 		sourceMap: false,
-		modules: false
+		requireModuleExtension: false
 	},
 	configureWebpack: (config) => {
 		if (isProduction) {

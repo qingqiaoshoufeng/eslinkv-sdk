@@ -37,7 +37,7 @@
 <script>
 	import { handlerRules, isEmpty, desensitize, setDefaultBool, isEmptyObject } from '../../../utils'
 	import findIndex from 'lodash/findIndex'
-	
+
 	import { Select, Option } from 'view-design'
 	export default {
 		name: 'es-item-content',
