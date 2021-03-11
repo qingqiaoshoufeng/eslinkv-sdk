@@ -7,6 +7,7 @@
 		"update": "auto-vers -t",
 		"lint": "vue-cli-service lint",
 		"fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
+		"slint": "stylelint src/**/*.vue src/**/*.scss --config '.stylelintrc.js' --fix",
 		"commit": "git add .&&git cz"
 	},
 	"dependencies": {
@@ -52,6 +53,9 @@
 		"eslint-plugin-promise": "^4.2.1",
 		"@vue/eslint-config-standard": "^5.1.2",
 		"auto-vers": "^1.0.3",
+		"stylelint": "^13.3.2",
+		"stylelint-config-recess-order": "^2.0.4",
+		"stylelint-config-standard": "^20.0.0",
 		"babel-eslint": "^10.1.0",
 		"babel-plugin-import": "^1.13.0",
 		"commitizen": "^4.2.3",
