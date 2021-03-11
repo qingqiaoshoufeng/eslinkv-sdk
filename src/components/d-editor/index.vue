@@ -1,33 +1,26 @@
-<template>
-	<!-- 操作区 -->
-	<!--todo css 改造 适配组件嵌入式，非全屏-->
-	<div
-		ref="canvas-wrapper"
+<template lang="pug">
+	// 操作区
+	// todo css 改造 适配组件嵌入式，非全屏
+	.center(ref="canvas-wrapper"
 		:class="{ fullscreen: platform.fullscreen }"
-		class="center"
+		class=""
 		@click="hideSubPanels"
 		@select.prevent.stop
-		@contextmenu.stop.prevent
-	>
-		<!-- 标尺容器 -->
-		<ruler-canvas
-			ref="rulerCanvas"
-		>
-			<!-- 大屏 -->
-			<section
-				id="kanban"
+		@contextmenu.stop.prevent)
+		// 标尺容器
+		ruler-canvas(ref="rulerCanvas")
+			// 大屏
+			section#kanban(
 				:style="canvasStyle"
 				:class="['canvas-wrapper', { preview: !platform.ruler.rulerVisible }]"
 				@dragenter="isDragIn = true"
 				@dragleave.self="isDragIn = false"
 				@drop="drop"
 				@dragover.prevent
-				@mousedown.self="deactivateWidget(activatedWidgetId)"
-			>
-				<!-- 小工具清单 -->
-				<template v-for="item in platform.widgetAdded">
-					<vdr
-						v-if="showParts(item)"
+				@mousedown.self="deactivateWidget(activatedWidgetId)")
+				// 小工具清单
+				template(v-for="item in platform.widgetAdded")
+					vdr(v-if="showParts(item)"
 						:key="item.id"
 						:ref="`widget_${item.id}`"
 						:parent="true"
@@ -44,12 +37,7 @@
 						:z="item.config.layout.zIndex"
 						:snap="platform.autoAlignGuide"
 						:snap-tolerance="10"
-						:class="[{
-						  'no-pointer': isDragIn,
-						  locked: item.config.widget.locked,
-						  preview: !platform.ruler.rulerVisible,
-						  'widget-hide': item.config.widget.hide
-						}, `widget-${item.id}`]"
+						:class="[{'no-pointer': isDragIn,locked: item.config.widget.locked,preview: !platform.ruler.rulerVisible,'widget-hide': item.config.widget.hide}, `widget-${item.id}`]"
 						:widget-info="`${item.id} ${item.config.widget.name || ''}`"
 						snap-to-target="guide-line"
 						class-name="vdr-custom-style"
@@ -58,60 +46,38 @@
 						@refLineParams="getRefLineParams"
 						@activated="handleActivated(item, widgetEditable(item) && !item.config.widget.innerEditing)"
 						@deactivated="handleDeactivated(item)"
-						@contextmenu.native="showRightMenu($event, item)"
-					>
-						<parts
+						@contextmenu.native="showRightMenu($event, item)")
+						parts(
 							:ref="item.id"
 							:type="item.type"
 							:config="item.config"
 							:market="item.market"
-							@widget-config-update="(data) => handleWidgetConfig(data, item)"
-						>
-						</parts>
-					</vdr>
-				</template>
-				<!--辅助线-->
-				<span
-					v-for="(item, index) in vLine"
+							@widget-config-update="(data) => handleWidgetConfig(data, item)")
+				// 辅助线
+				span.ref-line.v-line(v-for="(item, index) in vLine"
 					v-show="item.display"
 					:style="{ left: item.position, top: item.origin, height: item.lineLength }"
-					:key="`v-${index}`"
-					class="ref-line v-line"
-				/>
-				<span
-					v-for="(item, index) in hLine"
+					:key="`v-${index}`")
+				span.ref-line.h-line(v-for="(item, index) in hLine"
 					v-show="item.display"
 					:style="{ top: item.position, left: item.origin, width: item.lineLength }"
-					:key="`h-${index}`"
-					class="ref-line h-line"
-				/>
-				<!--辅助线END-->
-			</section>
-		</ruler-canvas>
-		<!-- 底部信息栏 -->
-		<d-bottom-bar/>
-		<!-- 右键菜单 -->
-		<right-menu
-			ref="rightMenu"
-			@deactivateWidget="deactivateWidget"
-		/>
-		<!-- 数仓配置面板 -->
-		<database-config
-			ref="dataBaseConfig"
-			:showModal="showDatabaseConfigModal"
-			@close="showDatabaseConfigModal = false"
-			@update="updateApiSystem"
-			@keyup.native.stop
-		/>
-		<!-- 画布全屏 -->
-		<d-right-full-screen/>
-		<!-- 看板配置 -->
-		<d-right-manage/>
-		<!-- 小工具清单 -->
-		<d-right-widget/>
-		<!-- 编辑器设置 -->
-		<d-right-setting/>
-	</div>
+					:key="`h-${index}`")
+		// 底部信息栏
+		d-bottom-bar
+		// 右键菜单
+		right-menu(ref="rightMenu" @deactivateWidget="deactivateWidget")
+		// 数仓配置面板
+		database-config(ref="dataBaseConfig" :showModal="showDatabaseConfigModal" @close="showDatabaseConfigModal = false" @update="updateApiSystem" @keyup.native.stop)
+		// 画布全屏
+		d-right-full-screen
+		// 看板配置
+		d-right-manage
+		// 小工具清单
+		d-right-widget
+		// 编辑器设置
+		d-right-setting
+		// 编辑器版本
+		d-right-git
 </template>
 <script>
 	import rightMenu from '../right-menu/index'
@@ -126,6 +92,7 @@
 	import dRightManage from '../d-right-manage'
 	import dRightWidget from '../d-right-widget'
 	import dRightSetting from '../d-right-setting'
+	import dRightGit from '../d-right-git'
 	import platform from '../../store/platform.store'
 	import instance from '../../store/instance.store'
 	import scene from '../../store/scene.store'
@@ -141,7 +108,7 @@
 			rulerCanvas,
 			vdr,
 			databaseConfig,
-			dRightFullScreen, dRightManage, dRightWidget, dBottomBar, dRightSetting,
+			dRightFullScreen, dRightManage, dRightWidget, dBottomBar, dRightSetting,dRightGit,
 			rightMenu
 		},
 		provide() {
