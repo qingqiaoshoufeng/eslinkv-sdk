@@ -21,16 +21,16 @@ export default {
 		setGuidePosition(clientX, clientY) {
 			switch (this.platform.ruler.dragFlag) {
 				case 'x':
-					this.verticalDottedTop = this.guideStepFence(clientY - this.topSpacing) - 2
+					this.verticalDottedTop = this.guideStepFence(clientY) - 2
 					break
 				case 'y':
-					this.horizontalDottedLeft = this.guideStepFence(clientX - this.leftSpacing) - 2
+					this.horizontalDottedLeft = this.guideStepFence(clientX) - 2
 					break
 				case 'h':
-					this.verticalDottedTop = this.guideStepFence(clientY - this.topSpacing)
+					this.verticalDottedTop = this.guideStepFence(clientY)
 					break
 				case 'v':
-					this.horizontalDottedLeft = this.guideStepFence(clientX - this.leftSpacing)
+					this.horizontalDottedLeft = this.guideStepFence(clientX)
 					break
 				default:
 					break
@@ -69,13 +69,13 @@ export default {
 		getSite(clientX, clientY) {
 			let site
 			const stepLength = this.platform.ruler.stepLength
-			const {topSpacing, leftSpacing, size} = this
+			const {size} = this
 			switch (this.platform.ruler.dragFlag) {
 				case 'x':
-					site = this.guideStepFence((clientY - topSpacing - size) * (stepLength / 50) - this.platform.ruler.contentY)
+					site = this.guideStepFence((clientY  - size) * (stepLength / 50) - this.platform.ruler.contentY)
 					break
 				case 'y':
-					site = this.guideStepFence((clientX - leftSpacing - size) * (stepLength / 50) - this.platform.ruler.contentX)
+					site = this.guideStepFence((clientX - size) * (stepLength / 50) - this.platform.ruler.contentX)
 					break
 				case 'h':
 					site = this.dragCalc(clientY - this.platform.ruler.guideDragStartY)

@@ -36,41 +36,10 @@ export default {
 			this.contentDrag = false
 			this.contentMoveStartX = this.contentMoveStartY = 0
 		},
-		/**
-		 * @description 根据缩放比例生成 x,y刻度
-		 */
-		scaleCalc() {
-			const rulerRange = this.platform.ruler.rulerRange
-			const getCalc = (array, length) => {
-				const step = this.platform.ruler.stepLength / this.platform.ruler.zoom
-				for (let id = 0; id < length * step / 50; id += step) {
-					if (id % step === 0) {
-						array.push({id})
-					}
-				}
-			}
-			const getCalcRevise = (array, length) => {
-				array.splice(0)
-				const step = this.platform.ruler.stepLength / this.platform.ruler.zoom
-				for (let id = -length * step / 50; id < 0; id += step) {
-					if (id % step === 0 && id + step <= length) {
-						array.push({id})
-					}
-				}
-			}
-			getCalcRevise(this.xScale, rulerRange / 2)
-			getCalcRevise(this.yScale, rulerRange / 2)
-			getCalc(this.xScale, rulerRange)
-			getCalc(this.yScale, rulerRange)
-		},
 		init() {
 			this.box()
-			this.setSpacing()
-			this.scaleCalc()
 		},
 		windowResize() {
-			this.xScale = []
-			this.yScale = []
 			this.init()
 		},
 		startContentMove(e) {
@@ -160,9 +129,6 @@ export default {
 						if (this.platform.ruler.zoom > 0.1)
 							this.platform.ruler.zoom = (this.platform.ruler.zoom * 10 - 1) / 10
 					}
-					requestAnimationFrame(() => {
-						this.scaleCalc()
-					})
 					this.zoomUpdateTime = +new Date()
 				}
 				return false
@@ -170,14 +136,12 @@ export default {
 			if (e.shiftKey) {
 				if (+new Date() - this.scrollXTime >= 500) {
 					this.platform.ruler.contentX += e.wheelDelta > 0 ? 10 : -10
-					this.$refs.xLine.translateAnimation(e.wheelDelta > 0 ? 10 : -10)
 					this.scrollXTime = +new Date()
 				}
 				return false
 			}
 			if (+new Date() - this.scrollYTime >= 500) {
 				this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
-				this.$refs.yLine.translateAnimation(e.wheelDelta > 0 ? 10 : -10)
 				this.scrollYTime = +new Date()
 			}
 		},
@@ -206,7 +170,6 @@ export default {
 		document.addEventListener('keyup', this.dispatchHotKey, true)
 		document.addEventListener('keydown', this.startContentMove)
 		window.addEventListener('resize', this.windowResize)
-		window.addEventListener('scroll', this.setSpacing)
 		dragContent.addEventListener('wheel', this.handleWheel)
 		dragContent.addEventListener('dblclick', this.resetZoom)
 		requestAnimationFrame(this.init)
@@ -224,7 +187,6 @@ export default {
 		document.removeEventListener('keyup', this.dispatchHotKey, true)
 		document.removeEventListener('keydown', this.startContentMove)
 		window.removeEventListener('resize', this.windowResize)
-		window.removeEventListener('scroll', this.setSpacing)
 		if (dragContent) {
 			dragContent.removeEventListener('wheel', this.handleWheel)
 			dragContent.removeEventListener('dblclick', this.resetZoom)

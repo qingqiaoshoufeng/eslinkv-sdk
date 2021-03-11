@@ -17,7 +17,6 @@ const mouseRightImg = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmN
 function getInitRuler() {
 	return {
 		dragId: `drag-content-${+new Date()}`,
-		rulerRange: 10000, // 标尺范围大小
 		guideLines: [], // 参考线
 		guideDragStartX: 0, // 参考线开始移动的位置
 		guideDragStartY: 0, // 参考线开始移动的位置

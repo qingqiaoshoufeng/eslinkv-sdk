@@ -3,11 +3,11 @@
 		section(v-show="platform.ruler.rulerVisible"
 			:style="(contentMove || platform.ruler.zoom !== 1 || platform.ruler.lockGuides) && 'pointer-events: none'")
 			.ruler-wrapper.h(ref="horizontalRuler" @mousedown.stop="horizontalDragRuler")
-				x-line(ref="xLine")
+				x-line
 			.ruler-wrapper.v(ref="verticalRuler" @mousedown.stop="verticalDragRuler")
-				y-line(ref="yLine")
-			.mouse-position.x(:style="`transform: translateX(${clientX- leftSpacing}px)`")
-			.mouse-position.y(:style="`transform: translateY(${clientY - topSpacing}px)`")
+				y-line
+			.mouse-position.x.pos-a(:style="`transform: translateX(${clientX}px)`")
+			.mouse-position.y.pos-a(:style="`transform: translateY(${clientY}px)`")
 		guides(
 			:vGuideTop="verticalDottedTop"
 			:hGuideLeft="horizontalDottedLeft"
@@ -39,28 +39,19 @@
 
 		platform = platform.state
 		size = 18
-		xScale = [] // 水平刻度
-		yScale = [] // 垂直刻度
-		topSpacing = 0 // 标尺与窗口上间距
-		leftSpacing = 0 //  标尺与窗口左间距
-		
+
 		@Watch('platform.ruler.contentScrollLeft')
-		contentXChange () {
+		contentXChange() {
 			this.platform.ruler.contentX += this.platform.ruler.contentScrollLeft
 		}
-		
+
 		@Watch('platform.ruler.contentScrollTop')
-		contentYChange () {
+		contentYChange() {
 			this.platform.ruler.contentY += this.platform.ruler.contentScrollTop
 		}
 
 		get contentStyle() {
 			return `transform:translate3d(${this.platform.ruler.contentX}px, ${this.platform.ruler.contentY}px, 0) scale(${this.platform.ruler.zoom});width:${this.contentWidth + 18 * 2} px;height:${this.contentHeight + 18 * 2} px;`
-		}
-
-		setSpacing() {
-			this.topSpacing = Math.ceil(this.$refs.horizontalRuler.getBoundingClientRect().y)
-			this.leftSpacing = Math.ceil(this.$refs.verticalRuler.getBoundingClientRect().x)
 		}
 	}
 </script>
@@ -150,7 +141,6 @@
 	}
 
 	.mouse-position {
-		position: absolute;
 		top: 0;
 		left: 0;
 		z-index: 30;
@@ -198,6 +188,7 @@
 				position: absolute;
 				left: 0;
 				top: 0;
+				margin-top: 1px;
 				border: 18px transparent solid;
 				transition: all .3s;
 				overflow: visible;
