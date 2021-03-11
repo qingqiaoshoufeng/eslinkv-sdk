@@ -28,34 +28,6 @@ module.exports = {
 		historyApiFallback: true,
 		disableHostCheck: true,
 		proxy: {
-			'^/hangran': {
-				// target: 'http://ebp-pc.hw-qa.eslink.net.cn',
-				// target: 'http://ebp-pc.hzrq.local:15003',
-				target: 'http://10.20.10.154:3000',
-				// target: 'http://192.168.31.219:3000',
-				changeOrigin: true,
-				headers: {
-					// Cookie: 'SESSION=d6c83c5e-dc12-4a22-95be-95045bfa4ffb'
-					Cookie: 'SESSION=951dde65-40c7-4afc-ad9e-f28a68a0dcac',
-				},
-				// pathRewrite: {
-				// 	'^/hangran': '/',
-				// },
-			},
-			'^/api': {
-				// target: 'http://ebp-pc.hw-qa.eslink.net.cn',
-				// target: 'http://ebp-pc.hzrq.local:15003',
-				target: 'http://10.20.10.154:3000',
-				// target: 'http://192.168.31.219:3000',
-				changeOrigin: true,
-				headers: {
-					// Cookie: 'SESSION=d6c83c5e-dc12-4a22-95be-95045bfa4ffb'
-					Cookie: 'SESSION=951dde65-40c7-4afc-ad9e-f28a68a0dcac',
-				},
-				// pathRewrite: {
-				// 	'^/api': '/',
-				// },
-			},
 			'^/data': {
 				target: 'http://127.0.0.1:7001',
 				// target: 'http://10.30.3.156:7001',
@@ -71,22 +43,6 @@ module.exports = {
 				pathRewrite: {
 					'^/cdn': '/',
 				},
-			},
-			'^/server': {
-				// target: 'http://192.168.1.33:9082',
-				target: 'http://10.20.10.154:3000',
-				changeOrigin: true,
-				// pathRewrite: {
-				// 	'^/server': '/',
-				// },
-			},
-			'^/pipenetwork': {
-				// target: 'http://192.168.1.104:6080',
-				target: 'http://10.20.10.154:3000',
-				changeOrigin: true,
-				// pathRewrite: {
-				// 	'^/pipenetwork': '/',
-				// },
 			},
 		},
 	},
@@ -118,9 +74,7 @@ module.exports = {
 		]
 		config.plugins.push(
 			new webpack.DefinePlugin({
-				'process.env.version': JSON.stringify(pkg.version),
 				'process.env.staticVuePath': JSON.stringify(isProduction ? 'vue.min.js' : 'vue.js'),
-				'process.env.BUILD_MODE': JSON.stringify(process.env.BUILD_MODE)
 			})
 		)
 	},
@@ -131,33 +85,11 @@ module.exports = {
 			.loader('iview-loader')
 			.options({prefix: false})
 		config.resolve.alias.set('@lib', path.resolve(__dirname, './lib'))
-		if (isProduction) {
-			if (needReport) {
-				config
-					.plugin('webpack-bundle-analyzer')
-					.use(
-						require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-					)
-					.end()
-			}
-			config.plugins.delete('prefetch')
-		} else {
-			config.resolve.symlinks(true)
-		}
 		config.module
 			.rule('view-design')
 			.test(/view-design.src.*?js$/)
 			.use('babel')
 			.loader('babel-loader')
-			.end()
-		config.module
-			.rule('md')
-			.test(/\.md$/)
-			.use('html-loader')
-			.loader('html-loader')
-			.end()
-			.use('markdown-loader')
-			.loader('markdown-loader')
 			.end()
 		config.module
 			.rule('svg')
@@ -174,5 +106,18 @@ module.exports = {
 				symbolId: 'icon-[name]'
 			})
 			.end()
+		if (isProduction) {
+			if (needReport) {
+				config
+					.plugin('webpack-bundle-analyzer')
+					.use(
+						require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+					)
+					.end()
+			}
+			config.plugins.delete('prefetch')
+		} else {
+			config.resolve.symlinks(true)
+		}
 	},
 }
