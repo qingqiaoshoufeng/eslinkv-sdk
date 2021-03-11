@@ -21,7 +21,7 @@ module.exports = {
 		"sourceType": "module"
 	},
 	"plugins": [
-		"vue", 'pug'
+		"vue"
 	],
 	// 脚本在执行期间访问的额外的全局变量
 	"globals": {
