@@ -1,17 +1,16 @@
 <template lang="pug">
-	canvas#ruler-h.pos-a(width="1319" height="18")
+	canvas#ruler-h.pos-a(width="9999" height="18")
 </template>
 <script lang="ts">
 import {Component, Vue, Watch, Prop} from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 
+let loadImg = false
 const bgImg = new Image()
 bgImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAMAAAAuTX21AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACNJREFUeNpiYCAdMDKRCka1jGoBA2JZZGshiaCXFpIBQIABAAplBkCmQpujAAAAAElFTkSuQmCC'
 
 @Component
 export default class XLine extends Vue {
-	loadImg = false
-	pos = 0
 	platform = platform.state
 	
 	@Watch('platform.ruler.zoom')
@@ -44,6 +43,7 @@ export default class XLine extends Vue {
 		const rulerH = document.getElementById('ruler-h')
 		const context = rulerH.getContext('2d')
 		const t = context.getTransform()
+		console.log(t)
 		context.font = '10px sans-serif'
 		let x = 0
 		while (x < rulerH.width - t.e) {
@@ -63,11 +63,11 @@ export default class XLine extends Vue {
 	}
 
 	init() {
-		if (this.loadImg) {
+		if (loadImg) {
 			this.initDraw()
 		} else {
 			bgImg.onload = () => {
-				this.loadImg = true
+				loadImg = true
 				this.initDraw()
 			}
 		}

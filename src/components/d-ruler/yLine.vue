@@ -1,17 +1,16 @@
 <template lang="pug">
-	canvas#ruler-v.pos-a(width="18" height="1000")
+	canvas#ruler-v.pos-a(width="18" height="9999")
 </template>
 <script lang="ts">
 import {Component, Vue, Watch, Prop} from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 
+let loadImg = false
 const bgImg = new Image()
 bgImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAyCAMAAABmvHtTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACBJREFUeNpiYGBEBwwMTGiAakI0NX7U9aOuHyGuBwgwAH6bBkAR6jkzAAAAAElFTkSuQmCC'
 
 @Component
 export default class YLine extends Vue {
-	loadImg = false
-	pos = 0
 	platform = platform.state
 
 	@Watch('platform.ruler.zoom')
@@ -71,11 +70,11 @@ export default class YLine extends Vue {
 	}
 
 	init() {
-		if (this.loadImg) {
+		if (loadImg) {
 			this.initDraw()
 		} else {
 			bgImg.onload = () => {
-				this.loadImg = true
+				loadImg = true
 				this.initDraw()
 			}
 		}
