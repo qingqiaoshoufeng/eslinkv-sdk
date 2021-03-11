@@ -19,19 +19,19 @@ export default class XLine extends Vue {
 	}
 	
 	@Watch('platform.ruler.contentScrollLeft')
-	scrollLeftChange (val) {
-		this.handleTranslateH(val)
+	contentPositionChange (val) {
+		this.handleTranslate(val)
 	}
 
-	handleTranslateH(num) {
+	handleTranslate(num) {
 		const rulerH = document.getElementById('ruler-h')
 		const context = rulerH.getContext('2d')
-		this.clearCanvasH()
+		this.clearRulerCanvas()
 		context.translate(num, 0)
 		this.init()
 	}
 
-	clearCanvasH() {
+	clearRulerCanvas() {
 		const rulerH = document.getElementById('ruler-h')
 		const context = rulerH.getContext('2d')
 		const t = context.getTransform()
@@ -39,11 +39,10 @@ export default class XLine extends Vue {
 	}
 
 	initDraw() {
-		this.clearCanvasH()
+		this.clearRulerCanvas()
 		const rulerH = document.getElementById('ruler-h')
 		const context = rulerH.getContext('2d')
 		const t = context.getTransform()
-		console.log(t)
 		context.font = '10px sans-serif'
 		let x = 0
 		while (x < rulerH.width - t.e) {

@@ -19,19 +19,19 @@ export default class YLine extends Vue {
 	}
 
 	@Watch('platform.ruler.contentScrollTop')
-	scrollLeftChange (val) {
-		this.handleTranslateH(val)
+	contentPositionChange (val) {
+		this.handleTranslate(val)
 	}
 
-	handleTranslateH(num) {
+	handleTranslate(num) {
 		const rulerH = document.getElementById('ruler-v')
 		const context = rulerH.getContext('2d')
-		this.clearCanvasH()
-		context.translate(0, this.pos + num)
+		this.clearRulerCanvas()
+		context.translate(0, num)
 		this.init()
 	}
 
-	clearCanvasH() {
+	clearRulerCanvas() {
 		const rulerH = document.getElementById('ruler-v')
 		const context = rulerH.getContext('2d')
 		const t = context.getTransform()
@@ -39,7 +39,7 @@ export default class YLine extends Vue {
 	}
 
 	initDraw() {
-		this.clearCanvasH()
+		this.clearRulerCanvas()
 		const rulerH = document.getElementById('ruler-v')
 		const context = rulerH.getContext('2d')
 		const t = context.getTransform()

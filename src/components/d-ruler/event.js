@@ -176,6 +176,7 @@ export default {
 			}
 			if (+new Date() - this.scrollYTime >= 500) {
 				this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
+				this.$refs.yLine.handleTranslate(e.wheelDelta > 0 ? 10 : -10)
 				this.scrollYTime = +new Date()
 			}
 		},

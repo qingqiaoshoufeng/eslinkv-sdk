@@ -3,9 +3,9 @@
 		section(v-show="platform.ruler.rulerVisible"
 			:style="(contentMove || platform.ruler.zoom !== 1 || platform.ruler.lockGuides) && 'pointer-events: none'")
 			.ruler-wrapper.h(ref="horizontalRuler" @mousedown.stop="horizontalDragRuler")
-				x-line
+				x-line(ref="xLine")
 			.ruler-wrapper.v(ref="verticalRuler" @mousedown.stop="verticalDragRuler")
-				y-line
+				y-line(ref="yLine")
 			.mouse-position.x(:style="`transform: translateX(${clientX- leftSpacing}px)`")
 			.mouse-position.y(:style="`transform: translateY(${clientY - topSpacing}px)`")
 		guides(
