@@ -5,16 +5,16 @@
 			slot {{ text }}
 </template>
 <script lang="ts">
-	import {Vue, Component, Prop} from 'vue-property-decorator'
+	import { Vue, Component, Prop } from 'vue-property-decorator'
 
 	@Component
 	class loadMask extends Vue {
-		@Prop({default: 'rgba(0, 0, 0, 0.6)'}) backgroundColor: string
-		@Prop({default: true}) show: boolean
-		@Prop({default: '#e2e2e2'}) color: string
-		@Prop({default: '1.5em'}) fontSize: string
-		@Prop({default: 48}) iconSize: number
-		@Prop({default: '请稍后…'}) text: string
+		@Prop({ default: 'rgba(0, 0, 0, 0.6)' }) backgroundColor: string
+		@Prop({ default: true }) show: boolean
+		@Prop({ default: '#e2e2e2' }) color: string
+		@Prop({ default: '1.5em' }) fontSize: string
+		@Prop({ default: 48 }) iconSize: number
+		@Prop({ default: '请稍后…' }) text: string
 	}
 
 	export default loadMask

@@ -2,7 +2,7 @@ import Vue from 'vue'
 const context = require.context('/', false, /\.(api.js)$/)
 const apis = {}
 context.keys().forEach(name => {
-	let key = name.replace(/^\.\//, '').replace(/\.(api.js)$/, '')
+	const key = name.replace(/^\.\//, '').replace(/\.(api.js)$/, '')
 	if (context(name).default) {
 		apis[key] = context(name).default
 	} else {

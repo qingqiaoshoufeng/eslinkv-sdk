@@ -1,6 +1,6 @@
-const acorn = require("acorn")
-const ASTQ = require("astq")
-var MD5 = require('md5.js')
+const acorn = require('acorn')
+const ASTQ = require('astq')
+const MD5 = require('md5.js')
 const astq = new ASTQ()
 astq.adapter('mozast')
 // todo 移除/改造

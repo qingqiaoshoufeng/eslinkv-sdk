@@ -28,7 +28,7 @@ const filterFalsyKey = input => {
 }
 
 export default {
-	data() {
+	data () {
 		return {
 			querying: false,
 			queryFailed: false,
@@ -38,14 +38,14 @@ export default {
 		}
 	},
 	methods: {
-		handleResponse(response, {path, check, process, url}) {
+		handleResponse (response, { path, check, process, url }) {
 			// if (response?.data?.returnCode !== '0000') return
 			if (check && check.enable) {
-				const {key = 'code', value = 0, type = 'Number'} = check
+				const { key = 'code', value = 0, type = 'Number' } = check
 				let checkValue = value
 				if (type === 'Number') checkValue = value - 0
 				// if (type === 'Boolean' && response[key] || response[key] === checkValue) {
-				this.parseQueryResult(response, {path, process})
+				this.parseQueryResult(response, { path, process })
 				// } else {
 				// 	console.warn(`${this.config.widget.name || this.$options.label}数据检查失败\n接口: ${url}\n规则：${JSON.stringify({
 				// 		key,
@@ -55,11 +55,11 @@ export default {
 				// 	this.queryFailed = true
 				// }
 			} else {
-				this.parseQueryResult(response, {path, process})
+				this.parseQueryResult(response, { path, process })
 			}
 		},
-		outerQuery(api) {
-			const {url, method} = api
+		outerQuery (api) {
+			const { url, method } = api
 			if (!url) return
 			this.querying = true
 			this.queryFailed = false
@@ -79,12 +79,12 @@ export default {
 				this.lastFetchDoneTime = Date.now()
 			})
 		},
-		innerQuery(api) {
-			let {interface: innerUrl, params: conditions, path, check, method} = api.system
+		innerQuery (api) {
+			let { interface: innerUrl, params: conditions, path, check, method } = api.system
 			if (!innerUrl) return
 
 			// 解析 params
-			let params = {...parseParams(api.params)}
+			let params = { ...parseParams(api.params) }
 
 			if (typeof params === 'object') {
 				Object.keys(params).forEach(key => {
@@ -101,21 +101,23 @@ export default {
 			this.queryFailed = false
 
 			if (!path) path = 'data'
-			if (!check) check = {
+			if (!check) {
+check = {
 				enable: true,
 				key: 'responseCode',
 				value: '100000',
 				type: 'String'
 			}
+}
 			if (!method) method = 'POST'
 			this.$api.dataWarehouse.databaseQuery(params, method, innerUrl).then(response => {
 				const process = api.process
-				this.handleResponse(response, {path, check, process, url: innerUrl})
+				this.handleResponse(response, { path, check, process, url: innerUrl })
 				this.querying = false
 				this.lastFetchDoneTime = Date.now()
 			})
 		},
-		dispatchQuery(api) {
+		dispatchQuery (api) {
 			const system = api.system
 			if (!system || !system.enable) {
 				// 调用外部接口
@@ -125,7 +127,7 @@ export default {
 			// 调用数仓接口
 			this.innerQuery(api)
 		},
-		handleApiChange() {
+		handleApiChange () {
 			const api = this.config.api
 			if (!api) return
 			if (this.queryTimer) clearTimeout(this.queryTimer)
@@ -134,7 +136,7 @@ export default {
 				this.queryTimer = null
 			}, 400)
 		},
-		startAutoFetch() {
+		startAutoFetch () {
 			this.stopAutoFetch()
 			if (this.queryTimer) {
 				this.fetchTimer = setTimeout(() => {
@@ -150,36 +152,49 @@ export default {
 				if (Date.now() - this.lastFetchDoneTime >= api.autoFetch.duration) this.dispatchQuery(api)
 			}, 100)
 		},
-		stopAutoFetch() {
+		stopAutoFetch () {
 			this.fetchTimer && clearInterval(this.fetchTimer)
 		}
 	},
 	computed: {
-		apiChangeWatcher() {
-			const {url, params, method, path, check = {}, process = {}, system = {}} = this.config.api || {}
-			const {enable: checkEnable, key, value, type} = check
-			const {enable: processEnable, methodBody} = process
-			const {enable: systemEnable, interface: innerUrl, path: innerPath, check: innerCheck = {}, params: systemParams, method: innerMethod} = system
-			const {enable: innerCheckEnable, key: innerCheckKey, value: innerCheckValue, type: innerCheckType} = innerCheck
+		apiChangeWatcher () {
+			const { url, params, method, path, check = {}, process = {}, system = {} } = this.config.api || {}
+			const { enable: checkEnable, key, value, type } = check
+			const { enable: processEnable, methodBody } = process
+			const { enable: systemEnable, interface: innerUrl, path: innerPath, check: innerCheck = {}, params: systemParams, method: innerMethod } = system
+			const { enable: innerCheckEnable, key: innerCheckKey, value: innerCheckValue, type: innerCheckType } = innerCheck
 			return {
-				url, params, method, path,
-				checkEnable, key, value, type,
-				processEnable, methodBody,
-				systemEnable, innerUrl, systemParams,
-				innerPath, innerMethod, innerCheckEnable,
-				innerCheckKey, innerCheckValue, innerCheckType
+				url,
+params,
+method,
+path,
+				checkEnable,
+key,
+value,
+type,
+				processEnable,
+methodBody,
+				systemEnable,
+innerUrl,
+systemParams,
+				innerPath,
+innerMethod,
+innerCheckEnable,
+				innerCheckKey,
+innerCheckValue,
+innerCheckType
 			}
 		},
-		autoFetchApi() {
+		autoFetchApi () {
 			const api = this.config.api
 			return api && api.autoFetch && api.autoFetch.enable
 		}
 	},
 	watch: {
-		querying(value) {
+		querying (value) {
 			this.$emit(value ? 'query-start' : 'query-end')
 		},
-		queryFailed(value) {
+		queryFailed (value) {
 			value && this.$emit('query-failed')
 		},
 		apiChangeWatcher: {
@@ -198,7 +213,7 @@ export default {
 			immediate: true
 		}
 	},
-	beforeDestroy() {
+	beforeDestroy () {
 		this.fetchTimer && clearTimeout(this.fetchTimer)
 		this.queryTimer && clearTimeout(this.queryTimer)
 	}

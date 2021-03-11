@@ -2,9 +2,9 @@ import html2canvas from 'html2canvas'
 import platform from '../../store/platform.store'
 
 export default {
-	data() {
+	data () {
 		return {
-			screenshotCreating: false,
+			screenshotCreating: false
 		}
 	},
 	methods: {
@@ -30,7 +30,7 @@ export default {
 				}
 			})
 		},
-		async addBoard() {
+		async addBoard () {
 			const data = this.platFormData()
 			data.type = this.type
 			this.$Modal.confirm({
@@ -38,10 +38,10 @@ export default {
 				content: '是否创建看板快照？',
 				onOk: async () => {
 					const snapshot = await this.capture({
-						selector: '#kanban',
+						selector: '#kanban'
 					}).catch(e => {
 						console.warn('快照创建失败', e)
-					});
+					})
 					if (snapshot) data.snapshot = snapshot
 					this.submitAdd(data)
 				},
@@ -49,17 +49,16 @@ export default {
 					this.submitAdd(data)
 				},
 				okText: '创建',
-				cancelText: '跳过',
+				cancelText: '跳过'
 			})
-
 		},
-		editBoard() {
+		editBoard () {
 			const data = this.platFormData()
 			this.$Modal.confirm({
 				title: '快照',
 				content: '是否更新看板快照？',
 				onOk: async () => {
-					const snapshot = await this.capture({selector: '#kanban'}).catch(e => {
+					const snapshot = await this.capture({ selector: '#kanban' }).catch(e => {
 						console.warn('快照创建失败', e)
 					})
 					if (snapshot) data.snapshot = snapshot
@@ -72,7 +71,7 @@ export default {
 				cancelText: '跳过'
 			})
 		},
-		submitAdd(data) {
+		submitAdd (data) {
 			this.loading = true
 			this.$api.board.add(data).then(res => {
 				this.kanboardEdited = false
@@ -83,11 +82,11 @@ export default {
 				this.loading = false
 			})
 		},
-		submitEdit(data) {
+		submitEdit (data) {
 			this.saving = true
-			const {params: {id}} = this.$route
+			const { params: { id } } = this.$route
 			data.type = this.type
-			this.$api.board.update({...data, id}).then((res) => {
+			this.$api.board.update({ ...data, id }).then((res) => {
 				this.kanboardEdited = false
 				this.$Message.success('修改成功')
 				this.loading = false
@@ -104,7 +103,7 @@ export default {
 		 * @param {*} resolve
 		 * @param {*} reject
 		 */
-		upload(blob, resolve, reject) {
+		upload (blob, resolve, reject) {
 			const name = `screenShot-${Date.now()}.jpg`
 			const data = new FormData()
 			data.append('file', blob, name)
@@ -123,7 +122,7 @@ export default {
 		 * returnSource: Boolean 是否返回快照资源，默认为 false，返回快照链接
 		 * options: Object html2canvas 参数表
 		 */
-		capture({selector, returnSource = false, options = {}}) {
+		capture ({ selector, returnSource = false, options = {} }) {
 			this.screenshotCreating = true
 
 			// 禁用图片缓存
@@ -133,7 +132,7 @@ export default {
 					allowTaint: true,
 					scale: 1,
 					useCORS: true,
-					...options,
+					...options
 				}).then(canvas => {
 					try {
 						if (!returnSource) {

@@ -3,17 +3,17 @@
  */
 
 import Vue from 'vue'
-import {store} from './index'
+import { store } from './index'
 
 const state = new Vue.observable({
 	widgets: {},
 	components: {}
 })
 const actions = {
-	setCustomComponents(value) {
-		state.components = {...state.components, ...value}
+	setCustomComponents (value) {
+		state.components = { ...state.components, ...value }
 	},
-	setCustomWidgets(value) {
+	setCustomWidgets (value) {
 		state.widgets[`d-${+new Date()}`] = value
 	}
 }

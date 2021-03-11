@@ -10,7 +10,7 @@
 	import platform from '../../store/platform.store'
 	import scene from '../../store/scene.store'
 	import instance from '../../store/instance.store'
-	import {Component, Vue, Provide} from 'vue-property-decorator'
+	import { Component, Vue, Provide } from 'vue-property-decorator'
 	
 	@Component({
 		components: {
@@ -24,7 +24,7 @@
 		platform = platform.state
 		scene = scene.state
 
-		canvasStyle() {
+		canvasStyle () {
 			const val = styleParser(this.platform.panelConfig)
 			if (val) {
 				this.$emit('mounted', val)
@@ -32,7 +32,7 @@
 			return val
 		}
 
-		showParts(item) {
+		showParts (item) {
 			if (item.scene === 0 && this.scene.showMainScene) {
 				return true
 			} else if (item.scene === this.scene.index) {
@@ -41,7 +41,7 @@
 			return false
 		}
 
-		mounted() {
+		mounted () {
 			instance.actions.setInstance('kanboard', this)
 			scene.actions.setStatus('inPreview')
 		}

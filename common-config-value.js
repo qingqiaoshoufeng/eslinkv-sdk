@@ -11,7 +11,7 @@ const commonConfigValue = () => Object.freeze({
 		size: {
 			width: 300,
 			height: 200,
-			unit: 'px',
+			unit: 'px'
 		},
 		position: {
 			value: 'absolute',

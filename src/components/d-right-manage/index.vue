@@ -6,7 +6,7 @@
 			itemList(:list="item.key" v-if="tabIndex===index" :needChoose="item.needChoose")
 </template>
 <script lang="ts">
-	import {Component, Vue, Watch} from 'vue-property-decorator'
+	import { Component, Vue, Watch } from 'vue-property-decorator'
 	import itemList from './item-list.vue'
 	import dRightModal from '../d-right-modal/index.vue'
 	import platform from '../../store/platform.store'
@@ -14,38 +14,38 @@
 	@Component({
 		components: {
 			itemList, dRightModal
-		},
+		}
 	})
 	export default class DRightManage extends Vue {
-		tabIndex: number = 0
+		tabIndex = 0
 		platform = platform.state
 		list: any = [
 			{
-				title: '基础配置', key: [{type: 'base'}], needChoose: true
+				title: '基础配置', key: [{ type: 'base' }], needChoose: true
 			},
 			{
-				title: '样式配置', key: [{type: 'style'}], needChoose: true
+				title: '样式配置', key: [{ type: 'style' }], needChoose: true
 			},
 			{
-				title: '数据配置', key: [{type: 'data'}], needChoose: true
+				title: '数据配置', key: [{ type: 'data' }], needChoose: true
 			},
 			{
-				title: '动画配置', key: [{type: 'animation'}], needChoose: true
+				title: '动画配置', key: [{ type: 'animation' }], needChoose: true
 			},
 			{
 				title: '自定义配置', key: [], needChoose: true
 			},
 			{
-				title: '看板配置', key: [{type: 'config', needChoose: false}], needChoose: false
+				title: '看板配置', key: [{ type: 'config', needChoose: false }], needChoose: false
 			}
 		]
 
-		@Watch('platform.chooseWidgetCustomConfig', {deep: true})
-		changeChooseWidgetCustomConfig(val) {
+		@Watch('platform.chooseWidgetCustomConfig', { deep: true })
+		changeChooseWidgetCustomConfig (val) {
 			this.list[4].key = val
 		}
 
-		handleChangeTab(index) {
+		handleChangeTab (index) {
 			this.tabIndex = index
 		}
 	}

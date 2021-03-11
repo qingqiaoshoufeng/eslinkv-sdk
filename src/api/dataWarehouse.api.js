@@ -1,9 +1,9 @@
-import request, {baseURL, serverURL, baseHRURL} from './request'
+import request, { baseURL, serverURL, baseHRURL } from './request'
 import request0000 from './request0000'
-import qs from "qs";
+import qs from 'qs'
 
 // 项目列表，不分页
-export function getProList() {
+export function getProList () {
 	return request({
 		url: `${baseHRURL}/project/list`,
 		method: 'post',
@@ -14,7 +14,7 @@ export function getProList() {
 }
 
 // 查询当前项目下的数据库列表
-export function getProDatabaseList(data) {
+export function getProDatabaseList (data) {
 	return request({
 		url: `${baseHRURL}/project/databaseList`,
 		method: 'post',
@@ -26,7 +26,7 @@ export function getProDatabaseList(data) {
 }
 
 // 查询当前数据库下的数据表列表
-export function getDatabaseTableList(data) {
+export function getDatabaseTableList (data) {
 	return request({
 		url: `${baseHRURL}/database/tableList`,
 		method: 'post',
@@ -38,7 +38,7 @@ export function getDatabaseTableList(data) {
 }
 
 // 数据表详情
-export function getTableDetail(data) {
+export function getTableDetail (data) {
 	return request({
 		url: `${baseHRURL}/table/detail`,
 		method: 'post',
@@ -50,7 +50,7 @@ export function getTableDetail(data) {
 }
 
 // 获取数据源列表
-export function getSourceList(data) {
+export function getSourceList (data) {
 	return request({
 		url: `${baseHRURL}/source/list`,
 		method: 'post',
@@ -62,7 +62,7 @@ export function getSourceList(data) {
 }
 
 // 查询以保存的分析列表
-export function getAnalyseList(data) {
+export function getAnalyseList (data) {
 	return request({
 		url: `${baseHRURL}/analyse/list`,
 		method: 'post',
@@ -74,7 +74,7 @@ export function getAnalyseList(data) {
 }
 
 // 获取schema列表
-export function getSchemaList(data) {
+export function getSchemaList (data) {
 	return request({
 		url: `${baseHRURL}/source/schema/list`,
 		method: 'post',
@@ -86,7 +86,7 @@ export function getSchemaList(data) {
 }
 
 // 获取数据源数据表
-export function getSourceTableList(data) {
+export function getSourceTableList (data) {
 	return request({
 		url: `${baseHRURL}/source/table/list`,
 		method: 'post',
@@ -98,7 +98,7 @@ export function getSourceTableList(data) {
 }
 
 // 获取数据源表字段详情
-export function getSourceTableDetail(data) {
+export function getSourceTableDetail (data) {
 	return request({
 		url: `${baseHRURL}/source/table/detail`,
 		method: 'post',
@@ -110,7 +110,7 @@ export function getSourceTableDetail(data) {
 }
 
 // 获取数据源数据库列表
-export function getSourceDatabaseList(data) {
+export function getSourceDatabaseList (data) {
 	return request({
 		url: `${baseHRURL}/source/database/list`,
 		method: 'post',
@@ -121,12 +121,12 @@ export function getSourceDatabaseList(data) {
 	})
 }
 
-export function databaseQuery(params, method, url) {
+export function databaseQuery (params, method, url) {
 	params.queryId = params.dataAnalyseId
 	params.params = JSON.stringify(params)
 	return request0000({
 		url: `${serverURL}/${url}`,
 		method: 'get',
-		params: params,
+		params: params
 	})
 }

@@ -86,11 +86,11 @@
 </template>
 <script lang="ts">
 	import func from './func.mx'
-	import {Component} from 'vue-property-decorator'
+	import { Component } from 'vue-property-decorator'
 
 	@Component
 	export default class FuncConfig extends func {
-		sizeChange(value) {
+		sizeChange (value) {
 			if (value === undefined) return
 			if (value) {
 				const [width, height] = value.split('×')

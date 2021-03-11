@@ -80,13 +80,13 @@
 </template>
 <script lang="ts">
 	import func from './func.mx'
-	import {Component} from 'vue-property-decorator'
+	import { Component } from 'vue-property-decorator'
 	import databaseConfig from '../components/data-warehouse/index.vue'
 	import scene from '../store/scene.store'
 
-	@Component({components: {databaseConfig}})
+	@Component({ components: { databaseConfig } })
 	export default class FuncData extends func {
-		showDatabaseConfigModal: boolean = false
+		showDatabaseConfigModal = false
 		
 		get apiData () {
 			return this.getJson('config.api.data')
@@ -96,14 +96,14 @@
 			return this.setJson(v, 'config.api.data')
 		}
 
-		get relateList(){
+		get relateList () {
 			const list = Object.values(this.platform.widgetAdded)
 				.filter(v => v.config.api.bind.enable && v.scene === scene.state.index)
 				.map(v => {
 					const { id, name } = v.config.widget
 					return {
 						id,
-						name,
+						name
 					}
 				})
 			return list

@@ -5,7 +5,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const isProduction = process.env.NODE_ENV === 'production'
 const needReport = false
 
-function resolve(dir) {
+function resolve (dir) {
 	return path.join(__dirname, dir)
 }
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
 		'@simonwep',
 		'vue-draggable-resizable-gorkys2',
 		'swiper',
-		'dom7',
+		'dom7'
 	],
 	assetsDir: 'static',
 	publicPath: isProduction ? `/${pkg.version}` : '/',
@@ -33,23 +33,23 @@ module.exports = {
 				// target: 'http://10.30.3.156:7001',
 				changeOrigin: true,
 				pathRewrite: {
-					'^/data': '/',
-				},
+					'^/data': '/'
+				}
 			},
 			'^/cdn': {
 				target: 'http://127.0.0.1:7001',
 				// target: 'http://10.30.3.156:7001',
 				changeOrigin: true,
 				pathRewrite: {
-					'^/cdn': '/',
-				},
-			},
-		},
+					'^/cdn': '/'
+				}
+			}
+		}
 	},
 	css: {
 		extract: false,
 		sourceMap: false,
-		modules: false,
+		modules: false
 	},
 	configureWebpack: (config) => {
 		if (isProduction) {
@@ -59,7 +59,7 @@ module.exports = {
 					algorithm: 'gzip',
 					test: /.js|\.html|.json$|.css/,
 					threshold: 10240,
-					minRatio: 0.8,
+					minRatio: 0.8
 				})
 			)
 		}
@@ -69,12 +69,12 @@ module.exports = {
 				vue: 'Vue',
 				'vue-router': 'VueRouter',
 				'vue-class-component': 'VueClassComponent',
-				echarts: 'echarts',
-			},
+				echarts: 'echarts'
+			}
 		]
 		config.plugins.push(
 			new webpack.DefinePlugin({
-				'process.env.staticVuePath': JSON.stringify(isProduction ? 'vue.min.js' : 'vue.js'),
+				'process.env.staticVuePath': JSON.stringify(isProduction ? 'vue.min.js' : 'vue.js')
 			})
 		)
 	},
@@ -83,7 +83,7 @@ module.exports = {
 			.rule('vue')
 			.use('iview')
 			.loader('iview-loader')
-			.options({prefix: false})
+			.options({ prefix: false })
 		config.resolve.alias.set('@lib', path.resolve(__dirname, './lib'))
 		config.module
 			.rule('view-design')
@@ -119,5 +119,5 @@ module.exports = {
 		} else {
 			config.resolve.symlinks(true)
 		}
-	},
+	}
 }

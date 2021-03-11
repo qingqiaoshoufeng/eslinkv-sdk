@@ -1,11 +1,11 @@
 // todo 移除/改造
+import createSandbox from './js-sandbox'
 const isObjectString = input => {
 	if (typeof input !== 'string') return false
 	input.trim()
 	const length = input.length
 	return input.indexOf('[') === 0 && input.lastIndexOf(']') === length - 1 || input.indexOf('{') === 0 && input.lastIndexOf('}') === length - 1
 }
-import createSandbox from './js-sandbox'
 const isEqual = (left, right) => {
   if (left === right) return true
   const type = typeof left

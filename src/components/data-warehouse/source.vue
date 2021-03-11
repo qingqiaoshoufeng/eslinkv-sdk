@@ -8,21 +8,41 @@
 		style="width: 100%"
 		ref="querySourceForm"
 	>
-		<FormItem :style="{ width: type == 1 ? '100%' : '' }" prop="dataSourceId" label="数据源" :label-width="80">
-			<i-select v-model="queryCond.dataSourceId" :style="{ width: type == 0 ? '140px' : '100%' }"
-					  @on-open-change="getProList" filterable>
+		<FormItem
+			:style="{ width: type == 1 ? '100%' : '' }"
+			prop="dataSourceId"
+			label="数据源"
+			:label-width="80"
+		>
+			<i-select
+				v-model="queryCond.dataSourceId"
+				:style="{ width: type == 0 ? '140px' : '100%' }"
+				@on-open-change="getProList"
+				filterable
+			>
 				<i-option v-for="item in sourceList" :value="item.id" :key="item.id">{{ item.name }}</i-option>
 			</i-select>
 		</FormItem>
-		<FormItem :style="{ width: type == 1 ? '100%' : '' }" prop="databaseName" label="数据库名称" :label-width="90">
+		<FormItem
+			:style="{ width: type == 1 ? '100%' : '' }"
+			prop="databaseName"
+			label="数据库名称"
+			:label-width="90"
+		>
 			<i-select v-model="queryCond.databaseName" :style="{ width: type == 0 ? '140px' : '100%' }" filterable>
 				<i-option v-for="item in databaseList" :value="item.value" :key="item.value">{{ item.value }}</i-option>
 			</i-select>
 		</FormItem>
-		<FormItem :style="{ width: type == 1 ? '100%' : '' }" v-if="databaseType == '1'" prop="databaseSchema"
-				  label="模式" :label-width="90">
+		<FormItem
+			:style="{ width: type == 1 ? '100%' : '' }"
+			v-if="databaseType == '1'"
+			prop="databaseSchema"
+			label="模式"
+			:label-width="90"
+		>
 			<i-select v-model="queryCond.databaseSchema" :style="{ width: type == 0 ? '140px' : '100%' }" filterable>
-				<i-option v-for="item in dataSchemaeList" :value="item.value" :key="item.value">{{ item.value }}
+				<i-option v-for="item in dataSchemaeList" :value="item.value" :key="item.value">
+					{{ item.value }}
 				</i-option>
 			</i-select>
 		</FormItem>
@@ -42,23 +62,36 @@
 		>
 			<Row :gutter="10" :style="index == 0 ? 'transform:translateX(-5px)' : ''">
 				<i-col :span="type == 0 ? 2 : 5">
-					<i-select v-model="item.operator" v-if="index > 0" transfer filterable>
-						<i-option v-for="item in querylogicList" :value="item.value" :key="item.value">{{ item.label
+					<i-select
+						v-model="item.operator"
+						v-if="index > 0"
+						transfer
+						filterable
+					>
+						<i-option v-for="item in querylogicList" :value="item.value" :key="item.value">
+							{{ item.label
 							}}
 						</i-option>
 					</i-select>
 				</i-col>
 				<i-col :span="type == 0 ? 2 : 5">
-					<i-select v-model="item.fieldName" clearable transfer
-							  @on-change="changeFieldName(null, item.fieldName, index)" filterable>
-						<i-option v-for="item in queryFieldList" :value="item.value" :key="item.value">{{ item.label
+					<i-select
+						v-model="item.fieldName"
+						clearable
+						transfer
+						@on-change="changeFieldName(null, item.fieldName, index)"
+						filterable
+					>
+						<i-option v-for="item in queryFieldList" :value="item.value" :key="item.value">
+							{{ item.label
 							}}
 						</i-option>
 					</i-select>
 				</i-col>
 				<i-col :span="type == 0 ? 2 : 4">
 					<i-select v-model="item.fieldCond" transfer filterable>
-						<i-option v-for="item in queryCondList" :value="item.value" :key="item.value">{{ item.label }}
+						<i-option v-for="item in queryCondList" :value="item.value" :key="item.value">
+							{{ item.label }}
 						</i-option>
 					</i-select>
 				</i-col>
@@ -73,16 +106,27 @@
 				</i-col>
 				<i-col span="4">
 					<Icon type="md-add-circle" @click="searchCondAdd" class="btn add"/>
-					<Icon type="md-remove-circle" @click="searchCondRemove(index)" class="btn"
-						  v-show="queryCond.analyseCondition.length > 1"/>
+					<Icon
+						type="md-remove-circle"
+						@click="searchCondRemove(index)"
+						class="btn"
+						v-show="queryCond.analyseCondition.length > 1"
+					/>
 				</i-col>
 			</Row>
 		</FormItem>
-		<FormItem prop="limitNum" :class="{ chart: type == 1 }" label="条数限制" :label-width="64" v-if="type == 0">
+		<FormItem
+			prop="limitNum"
+			:class="{ chart: type == 1 }"
+			label="条数限制"
+			:label-width="64"
+			v-if="type == 0"
+		>
 			<div style="display: flex">
 				<Checkbox v-model="queryCond.isLimit"></Checkbox>
 				<i-select v-model="queryCond.limitNum" v-if="queryCond.isLimit">
-					<i-option v-for="item in queryCond.limitNumList" :value="item.value" :key="item.value">{{ item.label
+					<i-option v-for="item in queryCond.limitNumList" :value="item.value" :key="item.value">
+						{{ item.label
 						}}
 					</i-option>
 				</i-select>
@@ -92,20 +136,20 @@
 </template>
 
 <script>
-	import {Form, FormItem, Select, Option, Checkbox, Input, Col, Row, Icon} from 'view-design'
+	import { Form, FormItem, Select, Option, Checkbox, Input, Col, Row, Icon } from 'view-design'
 
 	export default {
 		components: {
 			Form, FormItem, 'i-select': Select, Option, Checkbox, 'i-col': Col, Row, Input, Icon
 		},
-		data() {
+		data () {
 			return {
 				sourceList: [],
 				addIndex: 0,
 				databaseType: '0',
-				analyseCondition: null, //回显保存条件
+				analyseCondition: null, // 回显保存条件
 				queryCond: {
-					databaseType: '0', //1是ORACLE,0是Mysql
+					databaseType: '0', // 1是ORACLE,0是Mysql
 					dataSourceId: '',
 					databaseName: '',
 					databaseSchema: '',
@@ -145,9 +189,9 @@
 				},
 				betweenField: '',
 				queryStatus: false,
-				databaseList: [], //数据库列表
-				tableList: [], //表列表
-				dataSchemaeList: [], //oracle下模式列表
+				databaseList: [], // 数据库列表
+				tableList: [], // 表列表
+				dataSchemaeList: [], // oracle下模式列表
 				queryFieldList: [],
 				querylogicList: [
 					{
@@ -198,9 +242,9 @@
 					}
 				],
 				queryRules: {
-					dataSourceId: [{required: true, message: '项目名不能为空'}],
-					databaseName: [{required: true, message: '数据库名不能为空'}],
-					tableName: [{required: true, message: '表名不能为空'}]
+					dataSourceId: [{ required: true, message: '项目名不能为空' }],
+					databaseName: [{ required: true, message: '数据库名不能为空' }],
+					tableName: [{ required: true, message: '表名不能为空' }]
 				},
 				queryCondShow: false,
 				isEcho: false, // 是否回显
@@ -208,13 +252,13 @@
 			}
 		},
 		props: ['type'],
-		mounted() {
+		mounted () {
 			this.getProList(true)
 		},
 		methods: {
 			// 重置
-			resetForm() {
-				this.$refs['querySourceForm'].resetFields()
+			resetForm () {
+				this.$refs.querySourceForm.resetFields()
 				this.queryCond.analyseCondition = [
 					{
 						operator: 'and',
@@ -228,23 +272,23 @@
 				this.queryCond.isLimit = false
 			},
 			// 回显
-			reShow(row, bool, singleCond, type) {
-				//数据源类型id
+			reShow (row, bool, singleCond, type) {
+				// 数据源类型id
 				this.queryCond.dataSourceId = row.dataSourceId
 				this.queryCond.databaseName = row.databaseName
 				this.queryCond.databaseSchema = row.databaseSchema
 				this.queryCond.tableName = row.tableName
 				this.queryCond.analyseCondition = row.analyseCondition
 				this.analyseCondition = row.analyseCondition
-				this.queryCond.isLimit = row.isLimit == 1 ? true : false
+				this.queryCond.isLimit = row.isLimit == 1
 				this.queryCond.limitNum = row.limitNum
-				//数据库类型
+				// 数据库类型
 				// this.queryCond.databaseType = row.databaseType
 				this.isEcho = bool
 				this.singleCond = singleCond
 			},
 			// 图表管理中的回显操作
-			reShowChart(row) {
+			reShowChart (row) {
 				this.queryCond.dataSourceId = row.dataSourceId
 				if (row.analyseCondition) {
 					this.queryCond.analyseCondition = row.analyseCondition
@@ -268,12 +312,12 @@
 					databaseSchema: row.databaseSchema
 				}
 			},
-			//数据是否回显
-			cEcho(e) {
+			// 数据是否回显
+			cEcho (e) {
 				this.isEcho = e
 			},
-			//添加条件filedType
-			changeFieldName(data, val, index) {
+			// 添加条件filedType
+			changeFieldName (data, val, index) {
 				if (val) {
 					this.queryFieldList.forEach((ele) => {
 						if (ele.value == val) {
@@ -282,7 +326,7 @@
 					})
 				}
 			},
-			getProList(bool) {
+			getProList (bool) {
 				this.isEcho = false
 				if (bool) {
 					this.$api.dataWarehouse.getSourceList().then((res) => {
@@ -290,8 +334,8 @@
 					})
 				}
 			},
-			//添加筛选条件
-			searchCondAdd() {
+			// 添加筛选条件
+			searchCondAdd () {
 				this.addIndex++
 				this.queryCond.analyseCondition.push({
 					operator: 'and',
@@ -301,8 +345,8 @@
 					index: this.addIndex
 				})
 			},
-			//移除筛选条件
-			searchCondRemove(index) {
+			// 移除筛选条件
+			searchCondRemove (index) {
 				if (this.queryCond.analyseCondition.length === 1) return
 				this.queryCond.analyseCondition.splice(index, 1)
 			}
@@ -310,7 +354,7 @@
 		watch: {
 			// 获取数据库列表
 			'queryCond.dataSourceId': {
-				handler(value, oldValue) {
+				handler (value, oldValue) {
 					if (value) {
 						this.queryCond.databaseName = ''
 						this.queryCond.tableName = ''
@@ -323,8 +367,8 @@
 								this.queryCond.databaseType = val.dataSourceType
 							}
 						})
-						this.$api.dataWarehouse.getSourceDatabaseList({id: value}).then((data) => {
-							let list = []
+						this.$api.dataWarehouse.getSourceDatabaseList({ id: value }).then((data) => {
+							const list = []
 							if (data.length == 0) {
 								this.$Message.info('当前项目下无库')
 							} else {
@@ -335,7 +379,7 @@
 								})
 							}
 							this.databaseList = list
-							//回显设置
+							// 回显设置
 							if (this.isEcho) this.queryCond.databaseName = this.singleCond.databaseName
 						})
 					}
@@ -343,7 +387,7 @@
 			},
 			// 获取表列表
 			'queryCond.databaseName': {
-				handler(value, oldValue) {
+				handler (value, oldValue) {
 					if (value) {
 						this.queryCond.tableName = ''
 						this.tableList = []
@@ -353,7 +397,7 @@
 								id: this.queryCond.dataSourceId,
 								databaseName: value
 							}).then((data) => {
-								let list = []
+								const list = []
 								if (data.length == 0) {
 									this.$Message.info('当前数据库为空')
 								} else {
@@ -374,7 +418,7 @@
 								databaseName: value
 							}).then((data) => {
 								this.dataSchemaeList = []
-								let list = []
+								const list = []
 								if (data.length == 0) {
 									this.$Message.info('当前数据库为空')
 								} else {
@@ -392,9 +436,9 @@
 					}
 				}
 			},
-			//oracle下获取表
+			// oracle下获取表
 			'queryCond.databaseSchema': {
-				handler(value) {
+				handler (value) {
 					if (value && this.queryCond.databaseName) {
 						this.queryCond.tableName = ''
 						this.tableList = []
@@ -404,7 +448,7 @@
 							databaseName: this.queryCond.databaseName,
 							databaseSchema: value
 						}).then((data) => {
-							let list = []
+							const list = []
 							if (data.length == 0) {
 								this.$Message.info('当前数据库为空')
 							} else {
@@ -423,7 +467,7 @@
 			},
 			// 获取筛选条件列表
 			'queryCond.tableName': {
-				handler(value) {
+				handler (value) {
 					if (value) {
 						this.queryCond.analyseCondition = [
 							{
@@ -450,7 +494,7 @@
 							}
 						}
 						this.$api.dataWarehouse.getSourceTableDetail(data).then((data) => {
-							let list = []
+							const list = []
 							data.map((item) => {
 								list.push({
 									value: item.fieldName,
@@ -470,7 +514,7 @@
 				}
 			},
 			'queryCond.analyseCondition': {
-				handler(value) {
+				handler (value) {
 					if (value.length > 1) {
 						this.queryCondShow = true
 						this.$emit('listenAddCondShow', true)
@@ -482,9 +526,9 @@
 			// 单表查询的值emit出去
 			queryCond: {
 				deep: true,
-				handler(obj) {
+				handler (obj) {
 					if (this.type == 1) {
-						let params = JSON.parse(JSON.stringify(obj))
+						const params = JSON.parse(JSON.stringify(obj))
 						this.$set(params, 'dataType', 1)
 						delete params.limitNum
 						delete params.isLimit

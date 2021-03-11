@@ -1,3 +1,3 @@
-import itemContent from './itemContent';
+import itemContent from './itemContent'
 
-export default itemContent;
+export default itemContent

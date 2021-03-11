@@ -2,11 +2,11 @@
  * @description 场景
  */
 
-import {uuid} from '../utils'
+import { uuid } from '../utils'
 import parts from '../components/d-widget-part/index'
 import Vue from 'vue'
 import instance from './instance.store'
-import {store} from './index'
+import { store } from './index'
 
 const state = new Vue.observable({
 	index: 0,
@@ -18,15 +18,16 @@ const state = new Vue.observable({
 	showAnimationStyle: 'zoom' // 实例化场景，动画
 })
 const actions = {
-	changeShowMainScene(value) {
-		if (value !== state.showMainScene)
-			state.showMainScene = value
+	changeShowMainScene (value) {
+		if (value !== state.showMainScene) {
+state.showMainScene = value
+}
 	},
-	setStatus(status) {
+	setStatus (status) {
 		state.status = status
 	},
-	initScene(value) {
-		const {scene} = value
+	initScene (value) {
+		const { scene } = value
 		if (scene instanceof Array) {
 			state.list = scene
 			scene.forEach(item => {
@@ -36,12 +37,12 @@ const actions = {
 			})
 		} else {
 			state.obj = scene
-			let arr = []
-			for (let key in scene) {
-				arr.push({name: scene[key].name, key})
+			const arr = []
+			for (const key in scene) {
+				arr.push({ name: scene[key].name, key })
 			}
 			arr.sort(function (a, b) {
-				return a['name'].localeCompare(b['name']);
+				return a.name.localeCompare(b.name)
 			})
 			state.list = arr.map(item => item.key)
 		}
@@ -50,64 +51,66 @@ const actions = {
 		widgets.forEach(item => {
 			const index = list.indexOf(item.scene)
 			if (index !== -1) {
-				if (!state.sceneObj[list[index]])
-					state.sceneObj[list[index]] = {}
-				if (!state.sceneObj[list[index]].list)
-					state.sceneObj[list[index]].list = []
+				if (!state.sceneObj[list[index]]) {
+state.sceneObj[list[index]] = {}
+}
+				if (!state.sceneObj[list[index]].list) {
+state.sceneObj[list[index]].list = []
+}
 				state.sceneObj[list[index]].list.push(item)
 			}
 		})
 	},
-	setSceneName(key, name) {
+	setSceneName (key, name) {
 		state.obj[key].name = name.replace(/ /g, '')
 	},
-	setSceneIndex(index) {
+	setSceneIndex (index) {
 		if (index !== state.index) {
 			state.index = index
 		}
-		let event = new CustomEvent('SceneIndex', {detail: {index}})
+		let event = new CustomEvent('SceneIndex', { detail: { index } })
 		document.dispatchEvent(event)
 		event = null
 	},
-	createScene() {
+	createScene () {
 		const name = uuid()
 		state.list.push(name)
-		state.obj[name] = {name: `场景${name}`}
+		state.obj[name] = { name: `场景${name}` }
 		state.index = name
 	},
-	destroyScene(index) {
+	destroyScene (index) {
 		if (state.status === 'inPreview') {
 			const showAnimationStyle = state.showAnimationStyle
 			switch (showAnimationStyle) {
-				case "fadeIn":
+				case 'fadeIn':
 					document.getElementById(index).style.opacity = '0'
-					break;
-				case "zoomIn":
+					break
+				case 'zoomIn':
 					document.getElementById(index).style.transform = 'scale(0)'
-					break;
-				case "slideUp":
+					break
+				case 'slideUp':
 					document.getElementById(index).style.bottom = '-80%'
-					break;
-				case "slideRight":
+					break
+				case 'slideRight':
 					document.getElementById(index).style.right = '-80%'
-					break;
+					break
 			}
-			let event = new CustomEvent('DestroyScene', {detail: {index}})
+			const event = new CustomEvent('DestroyScene', { detail: { index } })
 			document.dispatchEvent(event)
 			setTimeout(() => {
 				document.getElementById(index).parentNode.remove()
-				instance.actions.setInstance('createKanboard', null)  // 初始化实例场景
+				instance.actions.setInstance('createKanboard', null) // 初始化实例场景
 				instance.actions.setInstance('createComp', null) // 初始化实例场景
 				state.showAnimationStyle = 'fadeIn' // 初始化实例场景
 			}, 300)
 		}
 	},
-	deleteScene(index) {
+	deleteScene (index) {
 		delete state.obj[index]
 		delete state.sceneObj[index]
 		state.list.splice(index, 1)
 	},
-	createSceneInstance(id, showAnimationStyle = 'fadeIn', pointerEvents = 'auto') {
+	createSceneInstance (id, showAnimationStyle = 'fadeIn', pointerEvents = 'auto') {
 		if (state.status === 'inPreview') {
 			const kanban = document.getElementById('kanban')
 			const transform = kanban.style.transform
@@ -127,16 +130,16 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 						v-for="item in array"
 						:key="item.id"></parts>
 					</div></div>`,
-				provide() {
-					return {kanboard: _self, kanboardEditor: _self}
+				provide () {
+					return { kanboard: _self, kanboardEditor: _self }
 				},
-				data() {
+				data () {
 					return {
 						array
 					}
 				},
-				components: {parts},
-				mounted() {
+				components: { parts },
+				mounted () {
 					instance.actions.setInstance('createKanboard', this)
 				}
 			})
@@ -144,33 +147,33 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 			instance.actions.setInstance('createComp', comp)
 			document.getElementsByClassName('detail-container')[0].appendChild(comp.$el)
 			switch (showAnimationStyle) {
-				case "zoomIn":
+				case 'zoomIn':
 					setTimeout(() => {
 						document.getElementById(id).style.transform = transform
 					}, 300)
-					break;
-				case "slideRight":
+					break
+				case 'slideRight':
 					document.getElementById(id).style.transform = transform
 					document.getElementById(id).style.right = '-80%'
 					setTimeout(() => {
 						document.getElementById(id).style.right = '0'
 					}, 300)
-					break;
-				case "slideUp":
+					break
+				case 'slideUp':
 					document.getElementById(id).style.transform = transform
 					document.getElementById(id).style.bottom = '-80%'
 					setTimeout(() => {
 						document.getElementById(id).style.bottom = '0'
 					}, 300)
-					break;
-				case "fadeIn":
+					break
+				case 'fadeIn':
 				default:
 					document.getElementById(id).style.transform = `${transform}`
 					document.getElementById(id).style.opacity = '0'
 					setTimeout(() => {
 						document.getElementById(id).style.opacity = '1'
 					}, 300)
-					break;
+					break
 			}
 		}
 	}

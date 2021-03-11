@@ -45,11 +45,11 @@
 </template>
 <script lang="ts">
 	import dRightModal from '../d-right-modal/index.vue'
-	import {Component, Vue} from 'vue-property-decorator'
-	import {Icon, Input, Select, Option, DropdownMenu, DropdownItem, Dropdown, Modal, Button} from 'view-design'
+	import { Component, Vue } from 'vue-property-decorator'
+	import { Icon, Input, Select, Option, DropdownMenu, DropdownItem, Dropdown, Modal, Button } from 'view-design'
 	import scene from '../../store/scene.store'
 	import platform from '../../store/platform.store'
-	import {copyText} from '../../utils/index'
+	import { copyText } from '../../utils/index'
 
 	@Component({
 		components: {
@@ -62,20 +62,20 @@
 			'i-button': Button,
 			'i-dropdown-menu': DropdownMenu,
 			'i-dropdown-item': DropdownItem,
-			'i-dropdown': Dropdown,
-		},
+			'i-dropdown': Dropdown
+		}
 	})
 	export default class DRightWidget extends Vue {
 		scene: any = scene.state
 		platform: any = platform.state
 		total: nunber = 0
 		have: nunber = 0
-		editScene: boolean = false
-		copyModel: boolean = false
+		editScene = false
+		copyModel = false
 
-		get list() {
-			let list = [], total = 0, have = 0
-			for (let key in this.platform.widgetAdded) {
+		get list () {
+			const list = []; let total = 0; let have = 0
+			for (const key in this.platform.widgetAdded) {
 				total++
 				const item = this.platform.widgetAdded[key]
 				if (item.scene === this.scene.index) {
@@ -88,41 +88,41 @@
 			return list
 		}
 
-		handleUpZIndex(id) {
+		handleUpZIndex (id) {
 			this.platform.widgetAdded[id].config.layout.zIndex++
 		}
 
-		handleDownZIndex(id) {
+		handleDownZIndex (id) {
 			this.platform.widgetAdded[id].config.layout.zIndex--
 		}
 
-		handleSetScene(name) {
+		handleSetScene (name) {
 			switch (name) {
 				case 'create':
 					this.createScene()
-					break;
+					break
 				case 'edit':
 					this.editScene = true
-					break;
+					break
 				case 'destroy':
 					this.destroyScene()
-					break;
+					break
 				case 'copy':
 					this.copyModel = true
-					break;
+					break
 			}
 		}
 
-		handleChoose(id) {
+		handleChoose (id) {
 			this.platform.chooseWidgetId = id
 			this.$emit('handleActivated', id)
 		}
 
-		handleCopy() {
+		handleCopy () {
 			copyText(this.scene.index)
 		}
 
-		handleDelete(id) {
+		handleDelete (id) {
 			this.$Modal.confirm({
 				title: '提示',
 				content: '是否删除当前组件？',
@@ -133,23 +133,23 @@
 			})
 		}
 
-		handleTaggerHide(id) {
+		handleTaggerHide (id) {
 			this.platform.widgetAdded[id].config.widget.hide = !this.platform.widgetAdded[id].config.widget.hide
 		}
 
-		handleTaggerLock(id) {
+		handleTaggerLock (id) {
 			this.platform.widgetAdded[id].config.widget.locked = !this.platform.widgetAdded[id].config.widget.locked
 		}
 
-		createScene() {
+		createScene () {
 			scene.actions.createScene()
 		}
 
-		handleSceneName(e) {
+		handleSceneName (e) {
 			scene.actions.setSceneName(this.scene.index, e.target.value)
 		}
 
-		destroyScene() {
+		destroyScene () {
 			this.$Modal.confirm({
 				title: '提示',
 				content: '是否删除当前场景？该场景未删除的组件将自动进入场景回收站！',
@@ -157,7 +157,7 @@
 					const index = this.scene.index
 					scene.actions.setSceneIndex(0)
 					scene.actions.deleteScene(index)
-					for (let key in this.platform.widgetAdded) {
+					for (const key in this.platform.widgetAdded) {
 						const item = this.platform.widgetAdded[key]
 						if (item.scene === index) {
 							item.scene = -1

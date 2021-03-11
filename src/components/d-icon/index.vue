@@ -4,24 +4,24 @@
 		use(:xlink:href="iconName")
 </template>
 <script lang="ts">
-	import {Vue, Component, Prop} from 'vue-property-decorator'
-	import {isExternal} from '../../utils/index'
+	import { Vue, Component, Prop } from 'vue-property-decorator'
+	import { isExternal } from '../../utils/index'
 
 	@Component
 	export default class dIcon extends Vue {
 		@Prop(String) iconClass
 		@Prop(String) className
-		@Prop({default: 20}) size
+		@Prop({ default: 20 }) size
 
-		get isExternal() {
+		get isExternal () {
 			return isExternal(this.iconClass)
 		}
 
-		get iconName() {
+		get iconName () {
 			return `#icon-${this.iconClass}`
 		}
 
-		get svgClass() {
+		get svgClass () {
 			if (this.className) {
 				return 'svg-icon ' + this.className
 			} else {
@@ -29,12 +29,12 @@
 			}
 		}
 
-		get styleExternalIcon() {
+		get styleExternalIcon () {
 			return {
 				mask: `url(${this.iconClass}) no-repeat 50% 50%`,
 				'-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`,
 				width: `${this.size}px`,
-				height: `${this.size}px`,
+				height: `${this.size}px`
 			}
 		}
 	}

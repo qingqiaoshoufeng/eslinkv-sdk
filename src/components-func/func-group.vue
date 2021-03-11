@@ -10,13 +10,13 @@
 </template>
 <script lang="ts">
 	import func from './func.mx'
-	import {Component} from 'vue-property-decorator'
+	import { Component } from 'vue-property-decorator'
 	import DManageItem from '../components/d-right-manage/item.vue'
-	import Style from "./style.vue"
+	import Style from './style.vue'
 
-	@Component({components: {Style, DManageItem}})
+	@Component({ components: { Style, DManageItem } })
 	export default class FuncGroup extends func {
-		add() {
+		add () {
 			const child = {}
 			this.config.children.forEach(v => {
 				child[v.prop] = ''
@@ -24,7 +24,7 @@
 			this.obj[this.inputKey].push(child)
 		}
 
-		remove(n) {
+		remove (n) {
 			this.obj[this.inputKey].splice(n, 1)
 		}
 	}

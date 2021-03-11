@@ -18,23 +18,23 @@
 								img.d-bottom-hot-key-img(v-if="child.type==='img'" :src="child.value")
 </template>
 <script lang="ts">
-	import {Vue, Component} from 'vue-property-decorator'
+	import { Vue, Component } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
 	import scene from '../../store/scene.store'
-	import {Icon} from 'view-design'
+	import { Icon } from 'view-design'
 	import BigNumber from 'bignumber.js'
 
-	BigNumber.set({DECIMAL_PLACES: 20})
+	BigNumber.set({ DECIMAL_PLACES: 20 })
 	@Component({
 		components: {
-			'i-icon': Icon,
+			'i-icon': Icon
 		}
 	})
 	export default class bottomBar extends Vue {
 		platform = platform.state
 		scene = scene.state
 
-		get zoom() {
+		get zoom () {
 			const zoom = new BigNumber(this.platform.ruler.zoom)
 			return `${zoom.multipliedBy(100)}%`
 		}

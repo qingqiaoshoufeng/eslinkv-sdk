@@ -1,15 +1,16 @@
 <template>
-	<component :is="currentComponent"
-			   :class="animationClass"
-			   :id="config.widget && config.widget.id"
-			   v-bind="{config,readonly,...$attrs}"
-			   @widget-config-update="data => $emit('widget-config-update', data)"
-			   @query-start="querying = true"
-			   @query-end="querying = false"
-			   @query-failed="querying = true"
-			   @config-reset="$emit('config-reset')"
-			   v-on="$listeners"
-			   :key="`${config.widget.id}${updateKey}`"
+	<component
+		:is="currentComponent"
+		:class="animationClass"
+		:id="config.widget && config.widget.id"
+		v-bind="{config,readonly,...$attrs}"
+		@widget-config-update="data => $emit('widget-config-update', data)"
+		@query-start="querying = true"
+		@query-end="querying = false"
+		@query-failed="querying = true"
+		@config-reset="$emit('config-reset')"
+		v-on="$listeners"
+		:key="`${config.widget.id}${updateKey}`"
 	>
 		<slot/>
 	</component>
@@ -36,7 +37,7 @@
 				default: false
 			}
 		},
-		data() {
+		data () {
 			return {
 				updateKey: 0,
 				componentVersion: '',
@@ -49,37 +50,39 @@
 			}
 		},
 		computed: {
-			currentComponent() {
+			currentComponent () {
 				if (this.ready) {
-					if (this.market)
-						if (Vue.options.components[`${prefix1}${this.type}-${this.componentVersion}`])
+					if (this.market) {
+						if (Vue.options.components[`${prefix1}${this.type}-${this.componentVersion}`]) {
 							return `${prefix1}${this.type}-${this.componentVersion}`
+						}
+					}
 					return `${prefix2}${this.type}`
 				}
 				return null
 			},
-			animation() {
+			animation () {
 				return this.config.animation || {}
 			},
-			animationEnabled() {
+			animationEnabled () {
 				return this.animation.transitionEnable
 			}
 		},
 		methods: {
-			beforeEnter(el, animation) {
+			beforeEnter (el, animation) {
 				el.style.animationDuration = ` ${animation.duration}ms`
 				el.style.animationDelay = `${animation.delay}ms`
 			},
-			handleAnimationEnd() {
+			handleAnimationEnd () {
 				this.replayAnimation = false
 			},
 			// type: 入场动画 or 出场动画
-			setAnimation(type) {
+			setAnimation (type) {
 				if (!this.animationEnabled || !this.animation) {
 					this.removeAnimation()
 					return
 				}
-				const {enter, leave, duration, delay} = this.animation
+				const { enter, leave, duration, delay } = this.animation
 				let animationClass
 				const animationSource = type === 'enter' ? enter : leave
 				if (!Array.isArray(animationSource)) {
@@ -88,28 +91,28 @@
 					animationClass = animationSource.map(item => `animate__${item}`).join(' ')
 				}
 				this.animationClass = `animate__animated ${animationClass}`
-				let timer = setTimeout(() => {
+				const timer = setTimeout(() => {
 					this.removeAnimation()
 					this.handleAnimationEnd()
 					clearTimeout(timer)
 				}, delay + duration + 300)
 			},
-			removeAnimation() {
+			removeAnimation () {
 				this.animationClass = null
 			}
 		},
 		watch: {
-			animationEnabled(value) {
+			animationEnabled (value) {
 				value && this.setAnimation('enter')
 			},
-			ready() {
+			ready () {
 				this.setAnimation('enter')
 			},
-			replayAnimation(value) {
+			replayAnimation (value) {
 				value ? this.setAnimation('enter') : this.removeAnimation()
 			}
 		},
-		mounted() {
+		mounted () {
 			if (this.market) {
 				this.componentVersion = this.config.widget.componentVersion
 				if (Vue.options.components[`${prefix1}${this.type}-${this.componentVersion}`]) {
@@ -120,7 +123,7 @@
 						componentEnTitle: this.type,
 						componentVersion: this.config.widget.componentVersion
 					}).then(res => {
-						let script = document.createElement('script')
+						const script = document.createElement('script')
 						script.onload = () => {
 							this.ready = true
 						}
@@ -138,7 +141,7 @@
 			}
 			this.$el.addEventListener('animationend', this.handleAnimationEnd)
 		},
-		beforeDestroy() {
+		beforeDestroy () {
 			this.$el.removeEventListener('animationend', this.handleAnimationEnd)
 		}
 	}

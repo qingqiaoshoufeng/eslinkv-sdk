@@ -101,34 +101,39 @@
 	export default {
 		name: 'kanboard-editor',
 		mixins: [
-			widgetOperation,
+			widgetOperation
 		],
 		components: {
 			parts,
 			rulerCanvas,
 			vdr,
 			databaseConfig,
-			dRightFullScreen, dRightManage, dRightWidget, dBottomBar, dRightSetting,dRightGit,
+			dRightFullScreen,
+			dRightManage,
+			dRightWidget,
+			dBottomBar,
+			dRightSetting,
+			dRightGit,
 			rightMenu
 		},
-		provide() {
-			return {kanboardEditor: this}
+		provide () {
+			return { kanboardEditor: this }
 		},
-		data() {
+		data () {
 			return {
 				platform: platform.state,
 				scene: scene.state,
 				vLine: [],
 				hLine: [],
 				isDragIn: false,
-				showDatabaseConfigModal: false,
+				showDatabaseConfigModal: false
 			}
 		},
 		methods: {
-			handleFullscreenChange() {
+			handleFullscreenChange () {
 				this.platform.fullscreen = !this.platform.fullscreen
 			},
-			showRightMenu(e, item) {
+			showRightMenu (e, item) {
 				e.preventDefault()
 				this.handleActivated(this.platform.widgetAdded[item.id])
 				const rightMenu = this.$refs.rightMenu.$el
@@ -136,7 +141,7 @@
 				rightMenu.style.left = e.clientX + 'px'
 				rightMenu.style.top = e.clientY + 'px'
 			},
-			drop(e) {
+			drop (e) {
 				this.isDragIn = false
 				const widgetConfig = e.dataTransfer.getData('widget-config')
 				if (widgetConfig) {
@@ -147,34 +152,34 @@
 				Object.assign(this.currentWidgetValue.api.system.params, value)
 				this.showDatabaseConfigModal = false
 			},
-			onDragging(left, top) {
+			onDragging (left, top) {
 				this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.position.left = left
 				this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.position.top = top
 			},
-			onResizing(left, top, width, height) {
+			onResizing (left, top, width, height) {
 				this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.size.width = width
 				this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.size.height = height
 			},
-			getRefLineParams({vLine, hLine}) {
+			getRefLineParams ({ vLine, hLine }) {
 				this.vLine = vLine
 				this.hLine = hLine
 			},
-			hideSubPanels() {
+			hideSubPanels () {
 				this.$refs.rightMenu && this.$refs.rightMenu.$el.classList.remove('active')
 			}
 		},
 		computed: {
-			canvasStyle() {
+			canvasStyle () {
 				return styleParser(this.platform.panelConfig)
 			},
-			canvasSize() {
-				const {width, height} = this.platform.panelConfig.size
-				return {width, height}
+			canvasSize () {
+				const { width, height } = this.platform.panelConfig.size
+				return { width, height }
 			},
-			widgetAdded() {
+			widgetAdded () {
 				return this.platform.widgetAdded
 			},
-			showParts() {
+			showParts () {
 				return (item) => {
 					if (item.scene === 0 && this.scene.showMainScene) {
 						return true
@@ -183,18 +188,18 @@
 					}
 					return false
 				}
-			},
+			}
 		},
-		beforeDestroy() {
+		beforeDestroy () {
 			this.platform.fullscreen = false
 			document.removeEventListener('fullscreenchange', this.handleFullscreenChange)
 		},
 		watch: {
-			isDragIn(value) {
+			isDragIn (value) {
 				if (value) this.hideSubPanels()
 			}
 		},
-		mounted() {
+		mounted () {
 			document.addEventListener('fullscreenchange', this.handleFullscreenChange)
 			platform.actions.initKanboard()
 			instance.actions.setInstance('kanboard', this)

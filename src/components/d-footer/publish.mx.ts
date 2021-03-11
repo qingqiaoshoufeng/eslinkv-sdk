@@ -1,6 +1,6 @@
 export default {
 	methods: {
-		publishBoard() {
+		publishBoard () {
 			if (this.kanboardEdited) {
 				this.$Message.warning('请先保存看板！')
 				return
@@ -11,7 +11,7 @@ export default {
 				loading: true,
 				onOk: () => {
 					console.log(this.$parent)
-					this.$api.board.publish({id: this.$parent.kanboardId}).then(res => {
+					this.$api.board.publish({ id: this.$parent.kanboardId }).then(res => {
 						if (res.responseCode == 100000) {
 							this.$Message.success('发布成功！')
 							this.$router.push('/')

@@ -1,7 +1,7 @@
 <template lang="pug">
 	ul.right-menu.pos-f(ref="rightMenu" @contextmenu.stop.prevent)
 		li
-			span 层叠 
+			span 层叠
 			span.suffix 当前 {{ zIndex }}
 			ul.sub-menu.pos-a
 				li(@click="handleZIndex(1)") 上移一层
@@ -15,10 +15,10 @@
 		li(@click="deleteWidget") 删除
 </template>
 <script lang="ts">
-	import {Vue, Component, Prop, Watch} from 'vue-property-decorator'
+	import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
-	import copy from "fast-copy";
-	import {uuid} from '../../utils/index'
+	import copy from 'fast-copy'
+	import { uuid } from '../../utils/index'
 	
 	@Component
 	export default class rightMenu extends Vue {
@@ -28,29 +28,29 @@
 		minZIndex = 0
 		maxZIndex = 0
 
-		handleZIndex(num) {
+		handleZIndex (num) {
 			if (this.zIndex === 1 && num === -1) return
-			this.zIndex += num 
+			this.zIndex += num
 			this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.zIndex = this.zIndex
 		}
 
-		handleZIndexTop() {
+		handleZIndexTop () {
 			this.zIndex = this.maxZIndex
 			this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.zIndex = this.maxZIndex
 		}
 
-		handleZIndexBottom() {
+		handleZIndexBottom () {
 			this.zIndex = this.minZIndex
 			this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.zIndex = this.minZIndex
 		}
 
-		hideWidget() {
+		hideWidget () {
 			const widget = this.platform.widgetAdded[this.platform.chooseWidgetId].config.widget
 			widget.hide = !widget.hide
 			this.$emit('deactivateWidget', this.platform.chooseWidgetId)
 		}
 
-		deleteWidget() {
+		deleteWidget () {
 			this.$Modal.confirm({
 				title: '提示',
 				content: '是否删除当前组件？',
@@ -62,7 +62,7 @@
 			})
 		}
 
-		copyWidget() {
+		copyWidget () {
 			const copyId = this.platform.chooseWidgetId
 			const widget = this.platform.widgetAdded[copyId]
 			if (!widget) return
@@ -72,7 +72,7 @@
 			this.initCopyWidget(id, copiedWidget)
 		}
 
-		initCopyWidget(id, widget, makeOffset = true) {
+		initCopyWidget (id, widget, makeOffset = true) {
 			const config = widget.config
 			config.widget.id = id
 			const layout = config.layout
@@ -83,11 +83,11 @@
 			platform.actions.setWidgetsAddedItem(id, widget.type, widget.config, widget.scene)
 		}
 
-		handleUnActive() {
+		handleUnActive () {
 			this.platform.chooseWidgetId = null
 		}
 
-		handleLock() {
+		handleLock () {
 			this.isLock = !this.isLock
 			this.platform.widgetAdded[this.platform.chooseWidgetId].config.widget.locked = this.isLock
 		}

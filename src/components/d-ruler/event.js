@@ -2,7 +2,7 @@ import platform from '../../store/platform.store'
 import { throttle } from 'throttle-debounce'
 
 export default {
-	data() {
+	data () {
 		return {
 			clientX: 0, // 当前鼠标位置，用于标尺上的红线
 			clientY: 0,
@@ -15,14 +15,14 @@ export default {
 			contentMoveStartX: 0, // 内容容器移动起始点水平时点值
 			contentMoveStartY: 0, // 内容容器移动起始点垂直时点值
 			contentMove: false, // 是否按下了 空格 键，启动内容区拖动
-			contentDrag: false, // 是否正在执行内容区拖动
+			contentDrag: false // 是否正在执行内容区拖动
 		}
 	},
 	methods: {
 		/**
 		 * @description 拖动开始时
 		 */
-		handleContentMoveStart(e) {
+		handleContentMoveStart (e) {
 			if (!this.contentMove) return
 			this.contentMoveStartX = e.clientX
 			this.contentMoveStartY = e.clientY
@@ -31,30 +31,30 @@ export default {
 		/**
 		 * @description 拖动停止时
 		 */
-		handleContentMoveEnd() {
+		handleContentMoveEnd () {
 			if (!this.contentDrag) return
 			this.contentDrag = false
 			this.contentMoveStartX = this.contentMoveStartY = 0
 		},
-		init() {
+		init () {
 			this.box()
 		},
-		windowResize() {
+		windowResize () {
 			this.init()
 		},
-		startContentMove(e) {
+		startContentMove (e) {
 			if (e.keyCode === 32) this.contentMove = true
 		},
-		stopContentMove() {
+		stopContentMove () {
 			this.contentMove = false
 		},
-		box() {
+		box () {
 			const id = this.platform.ruler.dragId
 			const dragContent = document.getElementById(id)
 			this.contentWidth = dragContent.firstChild.scrollWidth
 			this.contentHeight = dragContent.firstChild.scrollHeight
 		},
-		dispatchHotKey(e) {
+		dispatchHotKey (e) {
 			this.stopContentMove()
 			switch (e.keyCode) {
 				case 82: // r
@@ -77,7 +77,7 @@ export default {
 			}
 		},
 		setMove: throttle(50, false, function (e) {
-			let {clientX, clientY} = e
+			let { clientX, clientY } = e
 			if (this.platform.panelFixed) {
 				clientX -= 428
 			}
@@ -96,14 +96,14 @@ export default {
 				this.dottedLineMove(this.clientX, this.clientY)
 			}
 		}),
-		stopMove($event) {
+		stopMove ($event) {
 			if (this.contentDrag) {
 				this.handleContentMoveEnd($event)
 				return
 			}
 			// 虚线松开
 			if (!this.platform.ruler.isDrag) return
-			let {clientX, clientY} = $event
+			let { clientX, clientY } = $event
 			if (this.platform.panelFixed) {
 				clientX -= 428
 			}
@@ -112,7 +112,7 @@ export default {
 			}
 			this.dragDrawEnd(clientX, clientY)
 		},
-		handleWheel(e) {
+		handleWheel (e) {
 			e.preventDefault()
 			e.stopPropagation()
 			if (e.ctrlKey) {
@@ -123,11 +123,13 @@ export default {
 				 */
 				if (+new Date() - this.zoomUpdateTime >= 500) {
 					if (e.wheelDelta > 0) {
-						if (this.platform.ruler.zoom < 4)
-							this.platform.ruler.zoom = (this.platform.ruler.zoom * 10 + 1) / 10
+						if (this.platform.ruler.zoom < 4) {
+this.platform.ruler.zoom = (this.platform.ruler.zoom * 10 + 1) / 10
+}
 					} else {
-						if (this.platform.ruler.zoom > 0.1)
-							this.platform.ruler.zoom = (this.platform.ruler.zoom * 10 - 1) / 10
+						if (this.platform.ruler.zoom > 0.1) {
+this.platform.ruler.zoom = (this.platform.ruler.zoom * 10 - 1) / 10
+}
 					}
 					this.zoomUpdateTime = +new Date()
 				}
@@ -148,21 +150,21 @@ export default {
 		/**
 		 * @description 恢复默认缩放比例+居中
 		 */
-		resetZoom(e) {
+		resetZoom (e) {
 			const id = this.platform.ruler.dragId
 			const dragContent = document.getElementById(id)
 			e && e.stopPropagation()
 			this.platform.ruler.zoom = 1
-			const {offsetWidth, offsetHeight} = document.body
+			const { offsetWidth, offsetHeight } = document.body
 			if (!dragContent) return
-			const {width, height} = dragContent.getBoundingClientRect()
+			const { width, height } = dragContent.getBoundingClientRect()
 			const deltaX = (offsetWidth - width) * 0.5
 			const deltaY = (offsetHeight - height) * 0.5
 			this.platform.ruler.contentX = Math.ceil(deltaX)
 			this.platform.ruler.contentY = Math.ceil(deltaY)
-		},
+		}
 	},
-	mounted() {
+	mounted () {
 		const id = this.platform.ruler.dragId
 		const dragContent = document.getElementById(id)
 		document.addEventListener('mousemove', this.setMove)
@@ -179,7 +181,7 @@ export default {
 			this.resetZoom()
 		})
 	},
-	beforeDestroy() {
+	beforeDestroy () {
 		const id = this.platform.ruler.dragId
 		const dragContent = document.getElementById(id)
 		document.removeEventListener('mousemove', this.setMove)

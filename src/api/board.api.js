@@ -1,9 +1,9 @@
-import request, {baseURL} from './request'
+import request, { baseURL } from './request'
 import qs from 'qs'
-import {setDefault} from '../utils'
+import { setDefault } from '../utils'
 import platform from '../store/platform.store'
 
-export function add(data) {
+export function add (data) {
 	return request({
 		url: `${baseURL}/board/save`,
 		method: 'post',
@@ -14,7 +14,7 @@ export function add(data) {
 	})
 }
 
-export function publish(data) {
+export function publish (data) {
 	return request({
 		url: `${baseURL}/board/publish`,
 		method: 'post',
@@ -25,8 +25,8 @@ export function publish(data) {
 	})
 }
 
-export async function detail(data) {
-	let originData = await request({
+export async function detail (data) {
+	const originData = await request({
 		url: `${baseURL}/board/detail`,
 		method: 'post',
 		data: qs.stringify(data),
@@ -47,7 +47,7 @@ export async function detail(data) {
 	}
 }
 
-export function update(data) {
+export function update (data) {
 	return request({
 		url: `${baseURL}/board/update`,
 		method: 'post',
@@ -58,7 +58,7 @@ export function update(data) {
 	})
 }
 
-export function remove(data) {
+export function remove (data) {
 	return request({
 		url: `${baseURL}/board/delete`,
 		method: 'post',
@@ -69,7 +69,7 @@ export function remove(data) {
 	})
 }
 
-export function detailMarket(data) {
+export function detailMarket (data) {
 	return request({
 		url: `${dataURL}/market/detail`,
 		method: 'post',

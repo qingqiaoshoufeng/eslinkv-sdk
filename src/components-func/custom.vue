@@ -5,7 +5,7 @@
 </template>
 <script lang="ts">
 	import func from './func.mx'
-	import {Component} from 'vue-property-decorator'
+	import { Component } from 'vue-property-decorator'
 	import instance from '../store/instance.store'
 	import platform from '../store/platform.store'
 
@@ -14,7 +14,7 @@
 		instance = instance.state
 		platform = platform.state
 
-		handleSync() {
+		handleSync () {
 			this.instance.kanboard.$refs[`widget_${this.platform.chooseWidgetId}`][0].$children[0].updateKey++
 		}
 	}

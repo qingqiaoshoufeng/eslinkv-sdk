@@ -19,8 +19,8 @@
 </template>
 <script>
 	import parts from '../d-widget-part/index'
-	import {Collapse, TabPane, Tabs, Panel} from 'view-design'
-	import {component as VueLazyComponent} from '@xunlei/vue-lazy-component'
+	import { Collapse, TabPane, Tabs, Panel } from 'view-design'
+	import { component as VueLazyComponent } from '@xunlei/vue-lazy-component'
 	import custom from '../../store/custom.store'
 	import platform from '../../store/platform.store'
 
@@ -33,23 +33,23 @@
 			'i-panel': Panel,
 			VueLazyComponent
 		},
-		data() {
+		data () {
 			return {
 				custom: custom.state,
 				platform: platform.state,
 				widgetListActiveMap: {},
-				widgetListToggleTimer: {},
+				widgetListToggleTimer: {}
 			}
 		},
 		methods: {
-			handleFix() {
+			handleFix () {
 				this.platform.panelFixed = !this.platform.panelFixed
 			},
-			setActiveMap(tab, panel = '') {
+			setActiveMap (tab, panel = '') {
 				const key = tab + '-' + this.format(panel)
 				if (!this.widgetListActiveMap[key]) this.$set(this.widgetListActiveMap, key, false)
 			},
-			handlePanelToggle(tab, panel = '') {
+			handlePanelToggle (tab, panel = '') {
 				const key = tab + '-' + this.format(panel)
 				const map = this.widgetListActiveMap
 				const prevKey = Object.keys(map).find(key => map[key])
@@ -64,31 +64,31 @@
 					}, 400)
 				}
 			},
-			format(type) {
+			format (type) {
 				return type.split('-').join('_')
 			},
 			/**
 			 * @description h5 原生拖拽事件
 			 */
-			dragstart(e, title, index, tabKey, {type, market, componentVersion, componentConfig}) {
+			dragstart (e, title, index, tabKey, { type, market, componentVersion, componentConfig }) {
 				if (!type) return
 				let widgetConfig
 				if (market) {
-					widgetConfig = {config: {layout: JSON.parse(componentConfig).layout}}
+					widgetConfig = { config: { layout: JSON.parse(componentConfig).layout } }
 				} else {
 					widgetConfig = this.custom.widgets[tabKey].widgets[title].widgets[type]
 				}
-				const {config} = widgetConfig
+				const { config } = widgetConfig
 				e.dataTransfer.setData('widget-config', JSON.stringify({
 					type,
 					config,
 					market,
 					componentVersion,
 					startX: e.offsetX,
-					startY: e.offsetY,
+					startY: e.offsetY
 				}))
-			},
-		},
+			}
+		}
 	}
 </script>
 <style lang="scss" scoped>

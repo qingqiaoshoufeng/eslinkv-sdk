@@ -25,9 +25,9 @@
 						:key="item.value"
 						:value="item.value"
 						:disabled="setDefaultBool(item.disabled, false)"
-					>{{ item.label }}
-					</i-option
 					>
+						{{ item.label }}
+					</i-option>
 				</template>
 			</i-select>
 		</template>
@@ -35,29 +35,29 @@
 	</div>
 </template>
 <script>
-	import {handlerRules} from '../../../utils'
+	import { handlerRules, isEmpty, desensitize, setDefaultBool, isEmptyObject } from '../../../utils'
 	import findIndex from 'lodash/findIndex'
-	import {isEmpty, desensitize, setDefaultBool, isEmptyObject} from '../../../utils'
-	import {Select, Option} from 'view-design'
+	
+	import { Select, Option } from 'view-design'
 	export default {
 		name: 'es-item-content',
 		components: {
-			'i-select':Select, 
-			'i-option':Option,
+			'i-select': Select,
+			'i-option': Option
 		},
 		props: {
 			// 数据源
 			data: {
 				type: Object,
-				default() {
-					return {};
+				default () {
+					return {}
 				}
 			},
 			// 双向绑定model
 			model: {
 				type: Object,
-				default() {
-					return {};
+				default () {
+					return {}
 				}
 			},
 			// formItem宽度
@@ -80,10 +80,10 @@
 				default: false
 			}
 		},
-		data() {
-			return {};
+		data () {
+			return {}
 		},
-		mounted() {
+		mounted () {
 			if (this.data.enName) {
 				this.$watch(
 					'model.' + this.data.enName,
@@ -91,46 +91,46 @@
 						switch (this.data.type) {
 							case 0:
 								if (typeof value !== 'number') {
-									value = Number(value);
+									value = Number(value)
 								}
-								break;
+								break
 							case 1:
 								if (typeof value !== 'string') {
-									value = String(value);
+									value = String(value)
 								}
-								break;
+								break
 							case 2:
 								if (this.data.multiple) {
 									if (typeof value === 'string') {
-										value = value.split(',');
+										value = value.split(',')
 									}
 								} else {
 									if (Array.isArray(value)) {
-										value.join(',');
+										value.join(',')
 									}
 								}
-								break;
+								break
 							case 3:
 								if (typeof value === 'string') {
-									value = value.split(',');
+									value = value.split(',')
 								}
-								break;
+								break
 							default:
-								break;
+								break
 						}
 						if (this.data.enName) {
-							this.$set(this.model, this.data.enName, value);
+							this.$set(this.model, this.data.enName, value)
 							// 赋值给脱敏字段
-							this.$set(this.data, 'desensitizeEnName', value);
+							this.$set(this.data, 'desensitizeEnName', value)
 						}
 						if (this.data.desensitizeRegex) {
-							this.desensitizeRegexFn();
+							this.desensitizeRegexFn()
 						}
 					},
 					{
 						immediate: true
 					}
-				);
+				)
 			}
 			if (this.data.type === 2 && this.data.showInputbar === 1) {
 				// setTimeout(() => {
@@ -142,7 +142,7 @@
 					.getElementById('es-item-' + this.data.enName)
 					.querySelector('input[type="text"]')
 					.addEventListener('blur', (e) => {
-						let value = e.target.value;
+						const value = e.target.value
 						if (!isEmpty(value)) {
 							if (
 								findIndex(this.data.dataSourceList, {
@@ -152,134 +152,134 @@
 								this.data.dataSourceList.push({
 									label: value,
 									value: value
-								});
+								})
 								this.$nextTick(() => {
 									// todo 调用内部api
 									this.$refs[
-									'es-item-' + this.data.enName
-										].onOptionClick({
+										'es-item-' + this.data.enName
+									].onOptionClick({
 										label: value,
 										value: value
-									});
-								});
+									})
+								})
 							} else {
 								this.$refs[
-								'es-item-' + this.data.enName
-									].onOptionClick({
+									'es-item-' + this.data.enName
+								].onOptionClick({
 									label: value,
 									value: value
-								});
+								})
 							}
 						}
-					});
+					})
 			}
 		},
 		methods: {
-			clickIcon(e) {
+			clickIcon (e) {
 				this.data.onClick &&
-				this.data.onClick.apply(this, [e, this.data, this.model]);
+					this.data.onClick.apply(this, [e, this.data, this.model])
 			},
-			onOpenChange(flag) {
+			onOpenChange (flag) {
 				this.data.onOpenChange &&
-				this.data.onOpenChange.apply(this, [flag]);
+					this.data.onOpenChange.apply(this, [flag])
 			},
-			onQueryChange(query) {
+			onQueryChange (query) {
 				this.data.onQueryChange &&
-				this.data.onQueryChange.apply(this, [query]);
+					this.data.onQueryChange.apply(this, [query])
 			},
-			onClear() {
-				this.$set(this.model, this.data.enName, '');
-				let params = this.model[this.data.enName];
-				this.data.onClear && this.data.onClear.apply(this, [params]);
+			onClear () {
+				this.$set(this.model, this.data.enName, '')
+				const params = this.model[this.data.enName]
+				this.data.onClear && this.data.onClear.apply(this, [params])
 			},
-			onFocus() {
+			onFocus () {
 				// 获取到焦点，脱敏字段去除；
 				this.$set(
 					this.data,
 					'desensitizeEnName',
 					this.model[this.data.enName]
-				);
-				let params = this.model[this.data.enName];
-				this.data.onFocus && this.data.onFocus.apply(this, [params]);
+				)
+				const params = this.model[this.data.enName]
+				this.data.onFocus && this.data.onFocus.apply(this, [params])
 			},
-			onBlur() {
+			onBlur () {
 				// 脱敏字段赋值
 				this.$set(
 					this.model,
 					this.data.enName,
 					this.data.desensitizeEnName
-				);
-				this.desensitizeRegexFn();
-				let params = this.model[this.data.enName];
-				this.data.onBlur && this.data.onBlur.apply(this, [params]);
+				)
+				this.desensitizeRegexFn()
+				const params = this.model[this.data.enName]
+				this.data.onBlur && this.data.onBlur.apply(this, [params])
 			},
-			desensitizeRegexFn() {
+			desensitizeRegexFn () {
 				// 脱敏正则。如果存在，开始脱敏
 				if (this.data.desensitizeRegex) {
-					let desensitizeEnName = desensitize(
+					const desensitizeEnName = desensitize(
 						this.data.desensitizeEnName,
 						this.data.desensitizeRegex
-					);
-					this.$set(this.data, 'desensitizeEnName', desensitizeEnName);
+					)
+					this.$set(this.data, 'desensitizeEnName', desensitizeEnName)
 				}
 			},
-			onChange(params) {
+			onChange (params) {
 				switch (this.data.type) {
 					case 1:
 						this.data.onChange &&
-						this.data.onChange.apply(this, [params.target.value]);
-						break;
+						this.data.onChange.apply(this, [params.target.value])
+						break
 					case 5:
 						this.data.onChange &&
-						this.data.onChange.apply(this, [params.target.value]);
-						break;
+						this.data.onChange.apply(this, [params.target.value])
+						break
 					case 6:
-						this.model[this.data.enName] = params;
+						this.model[this.data.enName] = params
 						this.data.onChange &&
-						this.data.onChange.apply(this, [params]);
-						break;
+						this.data.onChange.apply(this, [params])
+						break
 					default:
 						this.data.onChange &&
-						this.data.onChange.apply(this, [params]);
-						break;
+						this.data.onChange.apply(this, [params])
+						break
 				}
 			},
 			// 级联：展示尾端文本值
-			showSingleText(list) {
+			showSingleText (list) {
 				if (list && list.length > 0) {
-					return list[list.length - 1];
+					return list[list.length - 1]
 				}
 			},
 			// 级联：展示全部文本值
-			showMultipleText(list) {
+			showMultipleText (list) {
 				if (list && list.length > 0) {
-					return list.join('/');
+					return list.join('/')
 				}
 			},
-			handlerRules(template) {
-				return handlerRules(template);
+			handlerRules (template) {
+				return handlerRules(template)
 			},
-			setDefaultBool(targetValue, defaultValue) {
-				return setDefaultBool(targetValue, defaultValue);
+			setDefaultBool (targetValue, defaultValue) {
+				return setDefaultBool(targetValue, defaultValue)
 			},
-			setDefaultBoolOrObject(targetValue, defaultValue) {
+			setDefaultBoolOrObject (targetValue, defaultValue) {
 				if (typeof targetValue === 'boolean') {
-					return targetValue;
+					return targetValue
 				} else if (typeof targetValue === 'object') {
 					if (isEmptyObject(targetValue)) {
-						return defaultValue || false;
+						return defaultValue || false
 					} else {
-						return targetValue;
+						return targetValue
 					}
 				} else {
-					return defaultValue || false;
+					return defaultValue || false
 				}
 			},
-			validateField(params) {
-				this.$emit('validateField', params);
+			validateField (params) {
+				this.$emit('validateField', params)
 			}
 		}
-	};
+	}
 </script>
 <style lang="scss" scoped>
 	.es-item-content {

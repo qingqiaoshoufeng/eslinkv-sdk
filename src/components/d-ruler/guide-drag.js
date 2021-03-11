@@ -1,24 +1,24 @@
 import platform from '../../store/platform.store'
 
 export default {
-	data() {
+	data () {
 		return {
 			guideStep: 5,
 			platform: platform.state,
 			isMoved: false,
 			horizontalDottedLeft: -999, // 水平虚线位置
-			verticalDottedTop: -999, // 垂直虚线位置
+			verticalDottedTop: -999 // 垂直虚线位置
 		}
 	},
 	methods: {
-		guideStepFence(value) {
+		guideStepFence (value) {
 			const step = this.guideStep
 			const halfStep = step / 2
 			const remaining = value % step
 			if (remaining === 0) return Math.ceil(value)
 			return Math.ceil(remaining < halfStep ? value - remaining : value + step - remaining)
 		},
-		setGuidePosition(clientX, clientY) {
+		setGuidePosition (clientX, clientY) {
 			switch (this.platform.ruler.dragFlag) {
 				case 'x':
 					this.verticalDottedTop = this.guideStepFence(clientY) - 2
@@ -36,12 +36,12 @@ export default {
 					break
 			}
 		},
-		dottedLineMove(clientX, clientY) {
+		dottedLineMove (clientX, clientY) {
 			if (!this.platform.ruler.isDrag) return
 			this.isMoved = true
 			this.setGuidePosition(clientX, clientY)
 		},
-		clickDraw(clientX, clientY) {
+		clickDraw (clientX, clientY) {
 			if (this.verticalDottedTop !== -999 || this.horizontalDottedLeft !== -999) {
 				this.verticalDottedTop = this.horizontalDottedLeft = -999
 				this.platform.ruler.isDrag = false
@@ -49,7 +49,7 @@ export default {
 			}
 			this.setGuidePosition(clientX, clientY)
 		},
-		dragDrawEnd(clientX, clientY) {
+		dragDrawEnd (clientX, clientY) {
 			const site = this.getSite(clientX, clientY)
 			this.platform.ruler.isDrag = false
 			this.isMoved = false
@@ -66,13 +66,13 @@ export default {
 				platform.actions.guideAdd(site)
 			}
 		},
-		getSite(clientX, clientY) {
+		getSite (clientX, clientY) {
 			let site
 			const stepLength = this.platform.ruler.stepLength
-			const {size} = this
+			const { size } = this
 			switch (this.platform.ruler.dragFlag) {
 				case 'x':
-					site = this.guideStepFence((clientY  - size) * (stepLength / 50) - this.platform.ruler.contentY)
+					site = this.guideStepFence((clientY - size) * (stepLength / 50) - this.platform.ruler.contentY)
 					break
 				case 'y':
 					site = this.guideStepFence((clientX - size) * (stepLength / 50) - this.platform.ruler.contentX)
@@ -86,11 +86,11 @@ export default {
 			}
 			return site
 		},
-		dragCalc(dragDistance) {
+		dragCalc (dragDistance) {
 			const list = this.platform.ruler.guideLines
 			const guideIndex = list.findIndex(guide => guide.id === this.platform.ruler.dragGuideId)
 			if (guideIndex === -1) return
-			const {site, type} = list[guideIndex]
+			const { site, type } = list[guideIndex]
 			const newSite = site + dragDistance
 			// 不在画布内则移除该参考线
 			if (newSite >= 0 && (type === 'v' && newSite <= this.contentWidth || type === 'h' && newSite <= this.contentHeight)) {
@@ -100,18 +100,18 @@ export default {
 			}
 		},
 		// 水平标尺处按下鼠标
-		horizontalDragRuler(e) {
+		horizontalDragRuler (e) {
 			if (e.which !== 1) return
 			this.platform.ruler.isDrag = true
 			this.platform.ruler.dragFlag = 'x'
 		},
 		// 垂直标尺处按下鼠标
-		verticalDragRuler(e) {
+		verticalDragRuler (e) {
 			if (e.which !== 1) return
 			this.platform.ruler.isDrag = true
 			this.platform.ruler.dragFlag = 'y'
 		},
-		insertGuide(type) {
+		insertGuide (type) {
 			const sites = window.prompt(`请输入${type === 'h' ? '水平' : '垂直'}参考线坐标，插入多个参考线使用半角逗号分隔`, '')
 			if (!sites) return
 			this.platform.ruler.dragFlag = type
@@ -119,7 +119,7 @@ export default {
 				platform.actions.guideAdd(site)
 			})
 		},
-		clearGuides() {
+		clearGuides () {
 			if (window.confirm('您确定要清空参考线？')) {
 				this.platform.ruler.guideLines = []
 			}

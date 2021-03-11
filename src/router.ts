@@ -13,7 +13,7 @@ Vue.use(VueRouter)
 const router: any = new VueRouter({
 	mode: 'history',
 	routes: [
-		...routes,
+		...routes
 	]
 })
 

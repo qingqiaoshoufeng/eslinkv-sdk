@@ -5,16 +5,16 @@
 </template>
 <script lang="ts">
 	import dRightModal from '../d-right-modal/index.vue'
-	import {Component, Vue} from 'vue-property-decorator'
-	import {Icon, Input, Select, Option, DropdownMenu, DropdownItem, Dropdown, Modal, Button} from 'view-design'
+	import { Component, Vue } from 'vue-property-decorator'
+	import { Icon, Input, Select, Option, DropdownMenu, DropdownItem, Dropdown, Modal, Button } from 'view-design'
 	import scene from '../../store/scene.store'
 	import platform from '../../store/platform.store'
-	import {copyText} from '../../utils/index'
+	import { copyText } from '../../utils/index'
 
 	@Component({
 		components: {
-			dRightModal,
-		},
+			dRightModal
+		}
 	})
 	export default class DRightGit extends Vue {
 

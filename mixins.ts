@@ -15,10 +15,10 @@ export const configMerge = function (from, to) {
 	const isArray = Array.isArray(from);
 	(!isArray ? Object.keys(from) : from).forEach((key, index) => {
 		const actualKey = !isArray ? key : index
-		const value = from[actualKey];
+		const value = from[actualKey]
 		if (value && typeof value === 'object') {
 			if (!output[actualKey]) {
-				output[actualKey] = !Array.isArray(value) ? {...value} : [...value]
+				output[actualKey] = !Array.isArray(value) ? { ...value } : [...value]
 				return
 			}
 			output[actualKey] = configMerge(value, output[actualKey])
@@ -42,7 +42,7 @@ const mx: any = {
 			default: false
 		}
 	},
-	data() {
+	data () {
 		return {
 			configValue: null,
 			ready: false,
@@ -53,10 +53,10 @@ const mx: any = {
 			animateTimer: null,
 			animateActiveIndex: -1,
 			output: null,
-			inPreview: scene.state.status === 'inPreview',
+			inPreview: scene.state.status === 'inPreview'
 		}
 	},
-	beforeDestroy() {
+	beforeDestroy () {
 		this.instance = null
 		clearInterval(this.animateTimer)
 		clearTimeout(this.animateTimer)
@@ -67,7 +67,7 @@ const mx: any = {
 		/**
 		 * @description 组件间联动，被关联组件收动添加 updateComponent 方法
 		 */
-		emitComponentUpdate(data) {
+		emitComponentUpdate (data) {
 			if (this.configValue) {
 				this.configValue.api.bind.refIds.forEach(ref => {
 					let dom
@@ -85,7 +85,7 @@ const mx: any = {
 		/**
 		 * @description 组件间联动后的 ajax 数据重新请求
 		 */
-		updateAjax(data) {
+		updateAjax (data) {
 			if (!this.config) {
 				return
 			}
@@ -95,9 +95,9 @@ const mx: any = {
 			let params = this.config.api.params
 			if (params) {
 				if (typeof params === 'string') {
-					params = {...JSON.parse(params), ...data}
+					params = { ...JSON.parse(params), ...data }
 				} else {
-					params = {...params, ...data}
+					params = { ...params, ...data }
 				}
 			} else {
 				params = data
@@ -108,7 +108,7 @@ const mx: any = {
 		 * @description
 		 *
 		 */
-		parseConfigValue(localConfigValue = null, customConfig) {
+		parseConfigValue (localConfigValue = null, customConfig) {
 			const mergedValue = localConfigValue ? configMerge(localConfigValue, globalConfigValue()) : globalConfigValue()
 			const inputConfig = Object.freeze(this.config || {})
 			const res = configMerge(inputConfig, mergedValue)
@@ -126,7 +126,7 @@ const mx: any = {
 				platform.actions.updateConfig(this.config.widget.id, res)
 			}
 			this.$nextTick(() => {
-				const payload = {value: {...this.configValue}}
+				const payload = { value: { ...this.configValue } }
 				this.configReady = true
 				this.$emit('widget-config-update', payload)
 			})
@@ -134,12 +134,12 @@ const mx: any = {
 		}
 	},
 	computed: {
-		styles() {
+		styles () {
 			// todo 简化
-			const {layout} = this.config
+			const { layout } = this.config
 			return styleParser(layout)
 		},
-		id() {
+		id () {
 			const now: number = +new Date()
 			if (this.config) {
 				if (this.config.widget) {
@@ -151,7 +151,7 @@ const mx: any = {
 		}
 	},
 	watch: {
-		configReady(value) {
+		configReady (value) {
 			if (value) {
 				requestAnimationFrame(() => {
 					this.readonly && this.$el.classList.add('readonly')
@@ -159,7 +159,7 @@ const mx: any = {
 				})
 			}
 		},
-		'config.widget.locked'(value) {
+		'config.widget.locked' (value) {
 			if (this.$el.style) this.$el.style.pointerEvents = value ? 'none' : null
 		}
 	}

@@ -9,7 +9,7 @@ const styleParser = function (layout, updateTime = Date.now()) {
         size,
         position,
 		background,
-        zIndex,
+        zIndex
     } = layout || {}
 
     if (size) {

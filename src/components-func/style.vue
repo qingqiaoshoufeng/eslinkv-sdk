@@ -68,7 +68,7 @@
 </template>
 <script lang="ts">
 	import func from './func.mx'
-	import {Component} from 'vue-property-decorator'
+	import { Component } from 'vue-property-decorator'
 
 	@Component
 	export default class FuncStyle extends func {

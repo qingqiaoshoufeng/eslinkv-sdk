@@ -20,14 +20,14 @@
 						input.fn-hide#originFile(type="file" accept="application/json" @change="handleFile")
 </template>
 <script lang="ts">
-	import {Component, Prop} from 'vue-property-decorator'
-	import {Icon, Button, Modal, Form, FormItem} from 'view-design'
+	import { Component, Prop } from 'vue-property-decorator'
+	import { Icon, Button, Modal, Form, FormItem } from 'view-design'
 	import copy from 'fast-copy'
-	import {mixins} from 'vue-class-component'
+	import { mixins } from 'vue-class-component'
 	import platform from '../../store/platform.store'
 	import scene from '../../store/scene.store'
 	import commonConfigValue from '../../../common-config-value'
-	import {isObjectString} from '../../utils/index'
+	import { isObjectString } from '../../utils/index'
 	import loadMask from '../load-mask/index.vue'
 	import importMx from './import.mx'
 	import exportMx from './export.mx'
@@ -42,32 +42,32 @@
 			loadMask,
 			Modal,
 			Form,
-			FormItem,
-		},
+			FormItem
+		}
 	})
 	export default class DFooter extends mixins(exportMx, detailMx, saveMx, importMx, publishMx) {
 		@Prop(Boolean) kanboardEdited: boolean
-		@Prop({default: true}) show: boolean  // detail,full,local 隐藏该模块
+		@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
 
 		platform = platform.state
 		scene = scene.state
-		saving: boolean = false
+		saving = false
 		loading = false
 		isNew = true
 		type = 0 // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
 
-		preview() {
+		preview () {
 			document.body.requestFullscreen()
 			this.$router.push('/preview')
 		}
 
-		exit() {
+		exit () {
 			if (this.kanboardEdited) {
 				this.$Modal.confirm({
 					title: '提示',
 					content: '看板已编辑，关闭窗口将丢失未保存的数据，确认关闭吗？',
 					onOk: () => {
-						this.$router.replace({name: 'big-data-list'})
+						this.$router.replace({ name: 'big-data-list' })
 					}
 				})
 				return
@@ -75,7 +75,7 @@
 			this.$router.go(-1)
 		}
 
-		getAttr(o, str) {
+		getAttr (o, str) {
 			const arr = str.split('.')
 			let res = o
 			for (const v of arr) {
@@ -88,7 +88,7 @@
 			return res
 		}
 
-		checkAttr(o, str = '', defaultConfig) {
+		checkAttr (o, str = '', defaultConfig) {
 			for (const key in o) {
 				const prop = str ? str + '.' + key : key
 				if (Array.isArray(o[key]) && o[key].length > 0) {
@@ -105,16 +105,16 @@
 			}
 		}
 
-		platFormData() {
+		platFormData () {
 			const defaultConfig = commonConfigValue() // 读取默认配置
 			const panelConfig = this.platform.panelConfig
-			const {size, info: {name, remark}} = panelConfig
+			const { size, info: { name, remark } } = panelConfig
 			delete size.preset
 			if (size.range && !Object.values(size.range).find(item => item !== 0 && item !== '%')) {
 				delete size.range
 			}
 			const widgetAdded = copy(this.platform.widgetAdded)
-			const widgets = Object.values(widgetAdded).map(({id, market = false, type, config, scene = 0}) => {
+			const widgets = Object.values(widgetAdded).map(({ id, market = false, type, config, scene = 0 }) => {
 				const api = config.api
 				if (api && api.data) {
 					if (isObjectString(api.data)) {
@@ -131,7 +131,7 @@
 					scene,
 					type,
 					market,
-					value: {...config}
+					value: { ...config }
 				}
 			})
 
@@ -155,7 +155,7 @@
 			platform.state.currentType = 0
 		}
 
-		mounted() {
+		mounted () {
 			this.isNew = !this.$route.params.id
 		}
 	}

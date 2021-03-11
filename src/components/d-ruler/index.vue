@@ -25,32 +25,32 @@
 	import eventHandlers from './event'
 	import guideDrag from './guide-drag'
 	import platform from '../../store/platform.store'
-	import {mixins} from 'vue-class-component'
-	import {Component, Prop, Watch} from 'vue-property-decorator'
+	import { mixins } from 'vue-class-component'
+	import { Component, Prop, Watch } from 'vue-property-decorator'
 
 	@Component({
 		components: {
 			guides, xLine, yLine
-		},
+		}
 	})
 	export default class DRuler extends mixins(eventHandlers, guideDrag) {
-		@Prop({default: false}) isScaleRevise
-		@Prop({default: false}) parent
+		@Prop({ default: false }) isScaleRevise
+		@Prop({ default: false }) parent
 
 		platform = platform.state
 		size = 18
 
 		@Watch('platform.ruler.contentScrollLeft')
-		contentXChange() {
+		contentXChange () {
 			this.platform.ruler.contentX += this.platform.ruler.contentScrollLeft
 		}
 
 		@Watch('platform.ruler.contentScrollTop')
-		contentYChange() {
+		contentYChange () {
 			this.platform.ruler.contentY += this.platform.ruler.contentScrollTop
 		}
 
-		get contentStyle() {
+		get contentStyle () {
 			return `transform:translate3d(${this.platform.ruler.contentX}px, ${this.platform.ruler.contentY}px, 0) scale(${this.platform.ruler.zoom});width:${this.contentWidth + 18 * 2} px;height:${this.contentHeight + 18 * 2} px;`
 		}
 	}

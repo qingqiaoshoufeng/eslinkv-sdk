@@ -2,7 +2,7 @@
  * @description 平台信息
  */
 import Vue from 'vue'
-import {store} from './index'
+import { store } from './index'
 
 const isMac = /macintosh|mac os x/i.test(navigator.userAgent)
 const alt = isMac ? '⌥' : 'Alt'
@@ -14,7 +14,7 @@ const mouseWheelImg = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmN
 const mouseLeftImg = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTVweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTUgMTYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ3ICg0NTM5NikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+aWNfbW91c2VfbGVmdDwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSLnlLvmnb8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZC0zIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNTYuMDAwMDAwLCAtNDIuMDAwMDAwKSI+CiAgICAgICAgICAgIDxnIGlkPSJpY19tb3VzZV9sZWZ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ni4wMDAwMDAsIDQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjAgMCAxNSAwIDE1IDE2IDAgMTYiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik04LjEyNSwwLjcxMzMzMzMzMyBMOC4xMjUsNiBMMTIuNSw2IEMxMi41LDMuMjggMTAuNTkzNzUsMS4wNCA4LjEyNSwwLjcxMzMzMzMzMyBaIE0yLjUsMTAgQzIuNSwxMi45NDY2NjY3IDQuNzM3NSwxNS4zMzMzMzMzIDcuNSwxNS4zMzMzMzMzIEMxMC4yNjI1LDE1LjMzMzMzMzMgMTIuNSwxMi45NDY2NjY3IDEyLjUsMTAgTDEyLjUsNy4zMzMzMzMzMyBMMi41LDcuMzMzMzMzMzMgTDIuNSwxMCBaIiBpZD0iU2hhcGUiIGZpbGw9IiM5RkEyQTgiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTYuODc1LDAuNzEzMzMzMzMzIEM0LjQwNjI1LDEuMDQgMi41LDMuMjggMi41LDYgTDYuODc1LDYgTDYuODc1LDAuNzEzMzMzMzMzIFoiIGlkPSJQYXRoIiBmaWxsPSIjRkZBOTAwIj48L3BhdGg+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=='
 const mouseRightImg = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTVweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTUgMTYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ3ICg0NTM5NikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+aWNfbW91c2VfbGVmdDwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSLnlLvmnb8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZC0zIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNTYuMDAwMDAwLCAtNDIuMDAwMDAwKSI+CiAgICAgICAgICAgIDxnIGlkPSJpY19tb3VzZV9sZWZ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ni4wMDAwMDAsIDQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjAgMCAxNSAwIDE1IDE2IDAgMTYiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik04LjEyNSwwLjcxMzMzMzMzMyBMOC4xMjUsNiBMMTIuNSw2IEMxMi41LDMuMjggMTAuNTkzNzUsMS4wNCA4LjEyNSwwLjcxMzMzMzMzMyBaIE0yLjUsMTAgQzIuNSwxMi45NDY2NjY3IDQuNzM3NSwxNS4zMzMzMzMzIDcuNSwxNS4zMzMzMzMzIEMxMC4yNjI1LDE1LjMzMzMzMzMgMTIuNSwxMi45NDY2NjY3IDEyLjUsMTAgTDEyLjUsNy4zMzMzMzMzMyBMMi41LDcuMzMzMzMzMzMgTDIuNSwxMCBaIiBpZD0iU2hhcGUiIGZpbGw9IiM5RkEyQTgiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTYuODc1LDAuNzEzMzMzMzMzIEM0LjQwNjI1LDEuMDQgMi41LDMuMjggMi41LDYgTDYuODc1LDYgTDYuODc1LDAuNzEzMzMzMzMzIFoiIGlkPSJQYXRoIiBmaWxsPSIjRkZBOTAwIj48L3BhdGg+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=='
 
-function getInitRuler() {
+function getInitRuler () {
 	return {
 		dragId: `drag-content-${+new Date()}`,
 		guideLines: [], // 参考线
@@ -34,12 +34,12 @@ function getInitRuler() {
 		contentLayout: {
 			top: 0, left: 0 // 刻度修正，根据 contentLayout 参数确定 0 刻度位置
 		},
-		dragFlag: '', // 拖动开始标记，可能值x(从水平标尺开始拖动),y(从垂直标尺开始拖动)
+		dragFlag: '' // 拖动开始标记，可能值x(从水平标尺开始拖动),y(从垂直标尺开始拖动)
 	}
 }
 
-function getInitPanelConfig() {
-	return {  // 看板配置
+function getInitPanelConfig () {
+	return { // 看板配置
 		id: null,
 		info: {
 			id: '',
@@ -69,44 +69,44 @@ const state = new Vue.observable({
 	version: '1.0.2',
 	currentType: 0, // 当前看板类型：0:看板, 1:小工具模板, 2:参考线模板
 	widgetAdded: {},
-	chooseWidgetCustomConfig: [],  // 选中项的自定义配置
-	chooseWidgetId: null,  // 选中项id
+	chooseWidgetCustomConfig: [], // 选中项的自定义配置
+	chooseWidgetId: null, // 选中项id
 	chooseWidgetState: true, // 是否可编辑
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏
 	panelFixed: false, // 左侧列表是否固定
 	hotKeys: [ // 热键
-		{name: '插入水平参考线', key: [{value: alt, type: 'text'}, {type: '+'}, {value: 'H', type: 'text'}]},
-		{name: '插入垂直参考线', key: [{value: alt, type: 'text'}, {type: '+'}, {value: 'V', type: 'text'}]},
-		{name: '锁定标尺参考线', key: [{value: alt, type: 'text'}, {type: '+'}, {value: 'L', type: 'text'}]},
-		{name: '清除全部参考线', key: [{value: alt, type: 'text'}, {type: '+'}, {value: 'C', type: 'text'}]},
-		{name: '隐藏标尺参考线', key: [{value: alt, type: 'text'}, {type: '+'}, {value: 'R', type: 'text'}]},
-		{name: '缩放画布', key: [{value: ctrl, type: 'text'}, {type: '+'}, {value: mouseWheelImg, type: 'img'}]},
-		{name: '移动画布', key: [{value: space, type: 'text'}]},
-		{name: '水平移动画布', key: [{value: shift, type: 'text'}, {type: '+'}, {value: mouseWheelImg, type: 'img'}]},
-		{name: '垂直移动画布', key: [{value: mouseWheelImg, type: 'img'}]},
-		{name: '居中画布', key: [{value: mouseLeftImg, type: 'img'}, {type: '+'}, {value: mouseLeftImg, type: 'img'}]},
+		{ name: '插入水平参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'H', type: 'text' }] },
+		{ name: '插入垂直参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'V', type: 'text' }] },
+		{ name: '锁定标尺参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'L', type: 'text' }] },
+		{ name: '清除全部参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'C', type: 'text' }] },
+		{ name: '隐藏标尺参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'R', type: 'text' }] },
+		{ name: '缩放画布', key: [{ value: ctrl, type: 'text' }, { type: '+' }, { value: mouseWheelImg, type: 'img' }] },
+		{ name: '移动画布', key: [{ value: space, type: 'text' }] },
+		{ name: '水平移动画布', key: [{ value: shift, type: 'text' }, { type: '+' }, { value: mouseWheelImg, type: 'img' }] },
+		{ name: '垂直移动画布', key: [{ value: mouseWheelImg, type: 'img' }] },
+		{ name: '居中画布', key: [{ value: mouseLeftImg, type: 'img' }, { type: '+' }, { value: mouseLeftImg, type: 'img' }] }
 	],
 	autoAlignGuide: true, // 自动贴靠参考线
 	ruler: getInitRuler()
 })
 const actions = {
-	initKanboard() {
+	initKanboard () {
 		state.ruler = getInitRuler()
 		state.panelConfig = getInitPanelConfig()
 		state.widgetAdded = {}
 	},
-	deleteCurrentGuideLine() {
+	deleteCurrentGuideLine () {
 		const guideIndex = state.ruler.guideLines.findIndex(guide => guide.id === state.ruler.dragGuideId)
 		state.ruler.guideLines.splice(guideIndex, 1)
 		state.ruler.dragGuideId = ''
 	},
-	changeGuideLine(site) {
+	changeGuideLine (site) {
 		const guideIndex = state.ruler.guideLines.findIndex(guide => guide.id === state.ruler.dragGuideId)
 		state.ruler.guideLines[guideIndex].site = site
 	},
-	guideAdd(site) {
+	guideAdd (site) {
 		const line = state.ruler.guideLines
 		const type = state.ruler.dragFlag = state.ruler.dragFlag === 'x' ? 'h' : state.ruler.dragFlag === 'y' ? 'v' : state.ruler.dragFlag
 		line.push({
@@ -117,29 +117,29 @@ const actions = {
 		})
 		state.ruler.guideLines = line
 	},
-	unChooseWidget() {
+	unChooseWidget () {
 		state.chooseWidgetState = true
 	},
-	chooseWidget(id) {
+	chooseWidget (id) {
 		state.chooseWidgetId = id
 		state.chooseWidgetState = false
 	},
-	setChooseWidgetCustomConfig(value = []) {
-		state.chooseWidgetCustomConfig = [...value, {type: 'custom'}]
+	setChooseWidgetCustomConfig (value = []) {
+		state.chooseWidgetCustomConfig = [...value, { type: 'custom' }]
 	},
-	updateApiData(id, data) {
+	updateApiData (id, data) {
 		if (!state.widgetAdded[id].config.api) {
 			Vue.set(state.widgetAdded[id].config, 'api', {})
 		}
 		Vue.set(state.widgetAdded[id].config.api, 'data', JSON.stringify(data))
 	},
-	updateConfig(id, config) {
+	updateConfig (id, config) {
 		Vue.set(state.widgetAdded[id], 'config', config)
 	},
-	setWidgetsAdded(value) {
+	setWidgetsAdded (value) {
 		state.widgetAdded = value
 	},
-	setWidgetsAddedItem(id, type, config, scene, market = false) {
+	setWidgetsAddedItem (id, type, config, scene, market = false) {
 		Vue.set(state.widgetAdded, id, {
 			id,
 			type,

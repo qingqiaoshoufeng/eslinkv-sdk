@@ -1,12 +1,12 @@
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
-import {getQueryString} from '../../utils/index'
+import { getQueryString } from '../../utils/index'
 
 // todo 加载动画 下面注释部分
 export default {
 	methods: {
-		renderByDetail(res) {
-			const {attribute, name} = res
+		renderByDetail (res) {
+			const { attribute, name } = res
 			document.title = `编辑 - ${name} - 数据看板`
 			let value
 			if (typeof attribute === 'string') {
@@ -19,8 +19,8 @@ export default {
 			}
 			this.refillConfig(value)
 		},
-		refillConfig(res) {
-			const {widgets, kanboard, guides} = res
+		refillConfig (res) {
+			const { widgets, kanboard, guides } = res
 			this.platform.panelConfig = kanboard
 			this.platform.ruler.guideLines = guides
 			// this.querying = false
@@ -30,7 +30,7 @@ export default {
 				const widgetsArray = Object.values(widgets)
 				const length = widgetsArray.length
 				// 小工具初始化需要时间，此处进行延时逐个回填
-				const reDrawWidget = ({id, type, value, scene = 0, market = false}) => {
+				const reDrawWidget = ({ id, type, value, scene = 0, market = false }) => {
 					platform.actions.setWidgetsAddedItem(id, type, value, scene, market)
 					const currentLength = widgetsArray.length
 					if (currentLength) {
@@ -53,11 +53,11 @@ export default {
 		}
 	},
 
-	mounted() {
+	mounted () {
 		const templateId = this.$route.query.templateId
 		const id = this.$route.params.id || templateId
 		if (id) {
-			this.$api.board.detail({dataBoardId: id}).then(res => {
+			this.$api.board.detail({ dataBoardId: id }).then(res => {
 				this.renderByDetail(res)
 			})
 		}

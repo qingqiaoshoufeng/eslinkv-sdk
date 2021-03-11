@@ -14,7 +14,7 @@ export const store = function (name, _state, _actions) {
 	} else {
 		state = _state
 		actions = _actions
-		window.eslinkV.$store[name] = {state, actions}
+		window.eslinkV.$store[name] = { state, actions }
 	}
-	return {state, actions}
+	return { state, actions }
 }

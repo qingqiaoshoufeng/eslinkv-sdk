@@ -1,5 +1,5 @@
-import {uuid} from '../../utils/index'
-import {Vue, Component, Watch} from 'vue-property-decorator'
+import { uuid } from '../../utils/index'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 
@@ -18,7 +18,7 @@ class Mixins extends Vue {
 	scene = scene.state
 	configPanelValueUpdateTimer = null
 
-	updateConfigPanelValue(id, oldId) {
+	updateConfigPanelValue (id, oldId) {
 		const update = () => {
 			const configPanel = this.$refs.configPanel
 			if (oldId) {
@@ -35,7 +35,7 @@ class Mixins extends Vue {
 		this.configPanelValueUpdateTimer = setTimeout(update, 380)
 	}
 
-	handleWidgetConfig({value = {}}, item) {
+	handleWidgetConfig ({ value = {} }, item) {
 		// if (this.widgetsImporting) {
 		// 	this.isWidgetProcessing = false
 		// 	return
@@ -47,7 +47,7 @@ class Mixins extends Vue {
 		})
 	}
 
-	updateWidget(value) {
+	updateWidget (value) {
 		if (this.widgetMoving || !value || !value.widget) return
 		const id = value.widget.id
 		const currentWidget = this.widgetAdded[id]
@@ -55,7 +55,7 @@ class Mixins extends Vue {
 		this.$set(currentWidget, 'config', value)
 	}
 
-	showProcessing(top, left, width, height, widget) {
+	showProcessing (top, left, width, height, widget) {
 		// if (this.widgetsImporting) return
 		this.widgetProcessingStyle = `
                 transform: translate3d(${left}px, ${top}px, 0);
@@ -65,22 +65,22 @@ class Mixins extends Vue {
 		this.isWidgetProcessing = true
 	}
 
-	initWidgetConfig(id, type, scene, market) {
+	initWidgetConfig (id, type, scene, market) {
 		platform.actions.setWidgetsAddedItem(id, type, null, scene, market)
 	}
 
 	// 小工具放置到画布
-	handleWidgetDrop(e, data) {
-		const {clientX, clientY, offsetX, offsetY} = e
-		const {type, config: inputConfig, startX, startY, market = false, componentVersion} = JSON.parse(data)
-		const {layout = {}, config = {}, widget = {}, api} = inputConfig || {}
+	handleWidgetDrop (e, data) {
+		const { clientX, clientY, offsetX, offsetY } = e
+		const { type, config: inputConfig, startX, startY, market = false, componentVersion } = JSON.parse(data)
+		const { layout = {}, config = {}, widget = {}, api } = inputConfig || {}
 		if (!layout.size) layout.size = {}
 		if (!layout.position) layout.position = {}
 		const top = offsetY - startY
 		const left = offsetX - startX
 		layout.position.top = top
 		layout.position.left = left
-		const {width, height} = layout.size
+		const { width, height } = layout.size
 		// 小工具初始化提示
 		this.showProcessing(top, left, width, height, widget)
 		const id = uuid()
@@ -88,15 +88,15 @@ class Mixins extends Vue {
 		if (layout.zIndex) layout.zIndex = 10
 		widget.id = id
 		widget.componentVersion = componentVersion
-		const value = {layout, widget, config, api}
+		const value = { layout, widget, config, api }
 		this.initWidgetConfig(id, type, this.scene.index, market)
 		this.updateWidget(value)
 		this.currentWidgetType = type
 		return id
 	}
 
-	handleActivated(obj, activeAllowed: boolean = true) {
-		const {config, id, type} = obj
+	handleActivated (obj, activeAllowed = true) {
+		const { config, id, type } = obj
 		if (!activeAllowed) {
 			return this.deactivateWidget(id)
 		}
@@ -113,7 +113,7 @@ class Mixins extends Vue {
 		}, 300)
 	}
 
-	handleDeactivated(item) {
+	handleDeactivated (item) {
 		if (!this.widgetEditable(item)) {
 			this.activatedWidgetId = null
 			platform.actions.unChooseWidget()
@@ -123,7 +123,7 @@ class Mixins extends Vue {
 	/**
 	 * @description 刷新以取消选定状态
 	 */
-	deactivateWidget(id) {
+	deactivateWidget (id) {
 		this.$nextTick(() => {
 			const widget = this.$refs[`widget_${id}`]
 			if (!widget || !widget[0]) return
@@ -133,7 +133,7 @@ class Mixins extends Vue {
 		})
 	}
 
-	markWidgetMoving() {
+	markWidgetMoving () {
 		if (this.widgetMovingTimer) clearTimeout(this.widgetMovingTimer)
 		this.widgetMoving = true
 		this.widgetMovingTimer = setTimeout(() => {
@@ -143,25 +143,25 @@ class Mixins extends Vue {
 		}, 50)
 	}
 
-	widgetEditable({config}) {
+	widgetEditable ({ config }) {
 		return !config.widget.locked && !config.widget.hide
 	}
 
 	@Watch('activatedWidgetId')
-	onActivatedWidgetIdChange(id, oldId) {
+	onActivatedWidgetIdChange (id, oldId) {
 		if (!id || this.widgetsImporting) return
 
 		if (this.currentWidgetValue && id === this.currentWidgetValue.widget.id || !id) return
 		this.updateConfigPanelValue(id, oldId)
 	}
 
-	@Watch('currentWidgetValue.layout', {deep: true})
-	onCurrentWidgetValueLayoutChange() {
+	@Watch('currentWidgetValue.layout', { deep: true })
+	onCurrentWidgetValueLayoutChange () {
 		this.markWidgetMoving()
 	}
 
-	@Watch('currentWidgetValue', {deep: true})
-	onCurrentWidgetValueChange(value) {
+	@Watch('currentWidgetValue', { deep: true })
+	onCurrentWidgetValueChange (value) {
 		value && this.updateWidget(value)
 	}
 }

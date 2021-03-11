@@ -28,12 +28,12 @@
 </template>
 <script lang="ts">
 	import dRightModal from '../d-right-modal/index.vue'
-	import {Component, Vue} from 'vue-property-decorator'
-	import {Icon, Switch, InputNumber, Select, Option,} from 'view-design'
+	import { Component, Vue } from 'vue-property-decorator'
+	import { Icon, Switch, InputNumber, Select, Option } from 'view-design'
 	import platform from '../../store/platform.store'
 	import BigNumber from 'bignumber.js'
 
-	BigNumber.set({DECIMAL_PLACES: 20})
+	BigNumber.set({ DECIMAL_PLACES: 20 })
 	@Component({
 		components: {
 			dRightModal,
@@ -41,8 +41,8 @@
 			'i-switch': Switch,
 			'i-input-number': InputNumber,
 			'i-select': Select,
-			'i-option': Option,
-		},
+			'i-option': Option
+		}
 	})
 	export default class DRightSetting extends Vue {
 		platform: any = platform.state
@@ -53,12 +53,12 @@
 			'310%', '320%', '330%', '340%', '350%', '360%', '370%', '380%', '390%', '400%'
 		]
 
-		get zoom() {
+		get zoom () {
 			const zoom = new BigNumber(this.platform.ruler.zoom)
 			return `${zoom.multipliedBy(100)}%`
 		}
 
-		set zoom(val) {
+		set zoom (val) {
 			if (val) {
 				const zoom = new BigNumber(val.replace('%', ''))
 				this.platform.ruler.zoom = zoom.dividedBy(100)

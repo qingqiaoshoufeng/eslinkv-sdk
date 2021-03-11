@@ -1,4 +1,4 @@
-import {Message} from 'view-design'
+import { Message } from 'view-design'
 import axios from 'axios'
 
 const request = axios.create()
@@ -7,10 +7,10 @@ const serverURL = '/server'
 const baseHRURL = '/hangran'
 request.defaults.timeout = 30000
 request.interceptors.request.use(function (config) {
-	return config;
+	return config
 }, function (error) {
 	return Promise.reject(error)
-});
+})
 
 /**
  * @description
@@ -20,9 +20,9 @@ request.interceptors.request.use(function (config) {
  *   message：'错误信息'
  * }
  */
-let errMessage = '网络异常，请重试'
+const errMessage = '网络异常，请重试'
 request.interceptors.response.use(response => {
-	const {data} = response;
+	const { data } = response
 	if (data) {
 		if (data.responseCode === '100000') {
 			return data.result
@@ -43,6 +43,6 @@ request.interceptors.response.use(response => {
 	return Promise.reject(false)
 })
 
-export {baseURL, baseHRURL, serverURL}
+export { baseURL, baseHRURL, serverURL }
 
 export default request

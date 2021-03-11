@@ -1,4 +1,4 @@
-import request, {baseURL} from './request'
+import request, { baseURL } from './request'
 import qs from 'qs'
 
 // 查询资源列表

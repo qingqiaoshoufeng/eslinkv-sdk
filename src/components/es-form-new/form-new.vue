@@ -11,11 +11,11 @@
 			inline
 			style="vertical-align: super;"
 			:class="{
-                w100: true,
-                enabledTip: !setDefaultBool(data.disabledTip, true),
-                disabledTip: setDefaultBool(data.disabledTip, true),
-                'disabled-form': isDisabled
-            }"
+				w100: true,
+				enabledTip: !setDefaultBool(data.disabledTip, true),
+				disabledTip: setDefaultBool(data.disabledTip, true),
+				'disabled-form': isDisabled
+			}"
 		>
 			<slot name="templetDetailList">
 				<template v-for="(templet, index) in data.templetDetailList">
@@ -30,8 +30,8 @@
 						:model="model"
 						:editFlag="editFlag"
 						:disabledTip="
-                            setDefaultBool(data.disabledTip, true)
-                        "
+							setDefaultBool(data.disabledTip, true)
+						"
 					>
 						<template slot="itemContent">
 							<slot name="itemContent" :data="templet"></slot>
@@ -50,9 +50,9 @@
 	</div>
 </template>
 <script>
-	import {setDefaultBool, toLength} from '../../utils'
+	import { setDefaultBool, toLength } from '../../utils'
 	import findIndex from 'lodash/findIndex'
-	import {Form} from 'view-design'
+	import { Form } from 'view-design'
 	import esFormItem from './formItem'
 
 	export default {
@@ -60,8 +60,8 @@
 			Form, esFormItem
 		},
 		name: 'es-form-new',
-		data() {
-			return {};
+		data () {
+			return {}
 		},
 		props: {
 			// 数据源
@@ -92,86 +92,86 @@
 		},
 		methods: {
 			// formItem宽度
-			getWidth(template) {
-				let self = this;
-				let columns = self.data.columns ? Number(self.data.columns) : 1;
-				let colspan = template.colspan ? Number(template.colspan) : 1;
-				colspan = colspan > columns ? columns : colspan;
-				return Math.floor(100 / columns) * colspan + '%';
+			getWidth (template) {
+				const self = this
+				const columns = self.data.columns ? Number(self.data.columns) : 1
+				let colspan = template.colspan ? Number(template.colspan) : 1
+				colspan = colspan > columns ? columns : colspan
+				return Math.floor(100 / columns) * colspan + '%'
 			},
 			// formItem是否展示
-			isShow(template) {
+			isShow (template) {
 				if (
 					(template.addHidden && this.editFlag === 0) ||
 					(template.modifyHidden && this.editFlag === 1)
 				) {
-					return false;
+					return false
 				} else {
-					return true;
+					return true
 				}
 			},
 			// api - 重置表单
-			resetFields() {
-				this.$refs.esNewForm.resetFields();
+			resetFields () {
+				this.$refs.esNewForm.resetFields()
 			},
 			// api - 校验表单
-			validate() {
+			validate () {
 				return new Promise((resolve, reject) => {
 					this.$refs.esNewForm
 						.validate()
 						.then((valid) => {
 							if (valid) {
-								resolve(this.model);
+								resolve(this.model)
 							} else {
-								reject(new Error('校验不通过'));
+								reject(new Error('校验不通过'))
 							}
 						})
 						.catch((data) => {
-							reject(data);
-						});
-				});
+							reject(data)
+						})
+				})
 			},
 			// api - 校验表单某个字段
-			validateField(params) {
-				let self = this;
+			validateField (params) {
+				const self = this
 				return new Promise((resolve, reject) => {
 					self.$refs.esNewForm.validateField(params, (errorMsg) => {
 						if (errorMsg) {
-							reject(new Error(errorMsg));
+							reject(new Error(errorMsg))
 						} else {
-							resolve(self.model);
+							resolve(self.model)
 						}
-					});
-				});
+					})
+				})
 			}
 		},
 		watch: {
 			height: {
-				handler(value) {
+				handler (value) {
 					if (value) {
 						this.$nextTick(() => {
 							this.$refs.esFormNew.style.height = toLength(
 								value
-							);
-						});
+							)
+						})
 					}
 				},
 				immediate: true
 			},
 			width: {
-				handler(value) {
+				handler (value) {
 					if (value) {
 						this.$nextTick(() => {
 							this.$refs.esFormNew.style.width = toLength(
 								value
-							);
-						});
+							)
+						})
 					}
 				},
 				immediate: true
 			},
 			data: {
-				handler(value) {
+				handler (value) {
 					if (
 						value &&
 						value.templetDetailList &&
@@ -188,10 +188,10 @@
 									(newValue, oldValue) => {
 										console.log(
 											'watch change enName = ' +
-											item.enName +
-											', value = ' +
-											newValue
-										);
+												item.enName +
+												', value = ' +
+												newValue
+										)
 										item.relationList.forEach((relation) => {
 											if (
 												relation.enNameList &&
@@ -200,7 +200,7 @@
 												relation.enNameList.forEach(
 													(rule) => {
 														// 0:隐藏, 1:显示
-														let hiddenFlag;
+														let hiddenFlag
 														if (
 															newValue ===
 															relation.relationValue
@@ -209,28 +209,28 @@
 																rule.operateType ===
 																0
 															) {
-																hiddenFlag = 1;
+																hiddenFlag = 1
 															} else {
-																hiddenFlag = 0;
+																hiddenFlag = 0
 															}
 														} else {
 															if (
 																rule.operateType ===
 																0
 															) {
-																hiddenFlag = 0;
+																hiddenFlag = 0
 															} else {
-																hiddenFlag = 1;
+																hiddenFlag = 1
 															}
 														}
-														let idx = findIndex(
+														const idx = findIndex(
 															this.data
 																.templetDetailList,
 															{
 																enName:
-																rule.relationEnName
+																	rule.relationEnName
 															}
-														);
+														)
 														/* eslint-disable */
 														this.$set(
 															this.data
@@ -250,16 +250,16 @@
 														);
 														/* eslint-enable */
 													}
-												);
+												)
 											}
-										});
+										})
 									},
 									{
 										immediate: true
 									}
-								);
+								)
 							}
-						});
+						})
 					}
 				},
 				immediate: true,
@@ -267,77 +267,77 @@
 			}
 		},
 		computed: {
-			showForm() {
+			showForm () {
 				if (
 					(this.data.addHidden && this.editFlag === 0) ||
 					(this.data.modifyHidden && this.editFlag === 1)
 				) {
-					return false;
+					return false
 				} else {
-					return true;
+					return true
 				}
 			},
 			// formItem是否禁用
-			isDisabled() {
+			isDisabled () {
 				if (
 					(this.data.addDisabled && this.editFlag === 0) ||
 					(this.data.modifyDisabled && this.editFlag === 1)
 				) {
-					return true;
+					return true
 				} else {
-					return false;
+					return false
 				}
 			},
 			// 是否为单行
 			singleRow: {
-				get() {
-					let length = 0;
-					let columns = 0;
+				get () {
+					let length = 0
+					let columns = 0
 					if (this.data) {
 						length = this.data.templetDetailList
 							? this.data.templetDetailList.length
-							: 0;
-						columns = Number(this.data.columns) || 1;
+							: 0
+						columns = Number(this.data.columns) || 1
 					}
-					return length <= columns;
+					return length <= columns
 				},
-				set() {
+				set () {
 				}
 			},
 			// todo 计算label宽度，目前只是粗略计算，按12px的字体大小，以13x作为单个字的平均宽度
 			labelWidth: {
-				set() {
+				set () {
 				},
-				get() {
-					let self = this;
-					let maxLength = 0;
+				get () {
+					const self = this
+					let maxLength = 0
 					if (
 						self.data.templetDetailList &&
 						self.data.templetDetailList.length > 0
 					) {
 						self.data.templetDetailList.forEach((item) => {
-							let length = item.name.length;
+							let length = item.name.length
 							if (item.required) {
-								length += 1;
+								length += 1
 							}
 							if (length > maxLength) {
-								maxLength = length;
+								maxLength = length
 							}
-						});
+						})
 					}
 					// 单行时的labelwidth，交给formitem计算
 					if (self.singleRow) {
-						return undefined;
+						return undefined
 					} else {
-						return Math.min(maxLength, 7) * 13 + 12;
+						return Math.min(maxLength, 7) * 13 + 12
 					}
 				}
 			},
-			setDefaultBool() {
-				return setDefaultBool;
+			setDefaultBool () {
+				return setDefaultBool
 			}
 		}
-	};
+	}
 </script>
 <style lang="scss" scope>
 	.es-form-new {

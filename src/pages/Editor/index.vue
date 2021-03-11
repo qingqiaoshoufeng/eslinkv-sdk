@@ -8,14 +8,14 @@
 			d-footer
 </template>
 <script lang="ts">
-	import {Vue, Component, Provide} from 'vue-property-decorator'
+	import { Vue, Component, Provide } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
 	import dWidgetList from '../../components/d-widget-list/index.vue'
 	import dEditor from '../../components/d-editor/index.vue'
 	import dFooter from '../../components/d-footer/index.vue'
 
 	@Component({
-		components: {dWidgetList, dEditor, dFooter}
+		components: { dWidgetList, dEditor, dFooter }
 	})
 	export default class editor extends Vue {
 		platform = platform.state

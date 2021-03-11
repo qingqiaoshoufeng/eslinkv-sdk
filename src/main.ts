@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import {Message, Modal} from 'view-design'
+import { Message, Modal } from 'view-design'
 import router from './router'
 import '@babel/polyfill'
 import '../index.js'
@@ -11,5 +11,5 @@ Vue.config.productionTip = false
 
 new Vue({
 	router,
-	render: (h) => h(App),
+	render: (h) => h(App)
 }).$mount('#app')

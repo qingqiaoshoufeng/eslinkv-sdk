@@ -3,11 +3,11 @@
 		DManageItem(:config="child" v-for="(child, i) in list" :key="i")
 </template>
 <script lang="ts">
-	import {Component, Vue, Prop} from 'vue-property-decorator'
+	import { Component, Vue, Prop } from 'vue-property-decorator'
 	import DManageItem from './item.vue'
 	import platform from '../../store/platform.store'
 
-	@Component({components: {DManageItem}})
+	@Component({ components: { DManageItem } })
 	export default class DManageItemList extends Vue {
 		platform = platform.state
 		@Prop(Array) list: any[]

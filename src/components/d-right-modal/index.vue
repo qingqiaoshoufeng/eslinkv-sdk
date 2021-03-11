@@ -6,25 +6,25 @@
 			slot
 </template>
 <script lang="ts">
-	import {Icon} from 'view-design'
-	import {Component, Vue, Prop} from 'vue-property-decorator'
-	import {findComponentsDownward} from '../../utils/index'
+	import { Icon } from 'view-design'
+	import { Component, Vue, Prop } from 'vue-property-decorator'
+	import { findComponentsDownward } from '../../utils/index'
 	
 	@Component({
 		components: {
 			'i-icon': Icon
-		},
+		}
 	})
 	export default class DRightModal extends Vue {
-		rightModal: boolean = false
-		@Prop({default: 470}) width: number
-		@Prop({default: 'ios-construct'}) icon: string
-		@Prop({default: '标题'}) title: string
-		@Prop({default: 33}) top: number
-		@Prop({default: true}) needModel: boolean
+		rightModal = false
+		@Prop({ default: 470 }) width: number
+		@Prop({ default: 'ios-construct' }) icon: string
+		@Prop({ default: '标题' }) title: string
+		@Prop({ default: 33 }) top: number
+		@Prop({ default: true }) needModel: boolean
 
 
-		handleClick() {
+		handleClick () {
 			if (this.needModel) {
 				if (this.rightModal) {
 					this.rightModal = false

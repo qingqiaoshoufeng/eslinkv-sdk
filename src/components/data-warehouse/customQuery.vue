@@ -9,22 +9,46 @@
 				<Radio label="1"><span>数据源</span></Radio>
 			</RadioGroup>
 		</div>
-		<Form v-if="dataType == 0" :model="queryCustom" :label-width="70" style="width: 100%; display: block"
-			  ref="queryCustom" :rules="queryCustomRule">
+		<Form
+			v-if="dataType == 0"
+			:model="queryCustom"
+			:label-width="70"
+			style="width: 100%; display: block"
+			ref="queryCustom"
+			:rules="queryCustomRule"
+		>
 			<FormItem label="项目" prop="projectId" style="width: 100%">
-				<Select v-model="queryCustom.projectId" transfer filterable @on-open-change="openCustomPro"
-						@on-change="changeCustomPro">
-					<Option v-for="v in queryCustomList.projectList" :value="v.value" :key="v.value">{{ v.label }}
+				<Select
+					v-model="queryCustom.projectId"
+					transfer
+					filterable
+					@on-open-change="openCustomPro"
+					@on-change="changeCustomPro"
+				>
+					<Option v-for="v in queryCustomList.projectList" :value="v.value" :key="v.value">
+						{{ v.label }}
 					</Option>
 				</Select>
 			</FormItem>
 			<FormItem label="数据库" prop="databaseId" style="width: 100%">
-				<Select v-model="queryCustom.databaseId" transfer filterable @on-open-change="openCustomDatabase">
-					<Option v-for="v in queryCustomList.databaseList" :value="v.value" :key="v.value">{{ v.label }}
+				<Select
+					v-model="queryCustom.databaseId"
+					transfer
+					filterable
+					@on-open-change="openCustomDatabase"
+				>
+					<Option v-for="v in queryCustomList.databaseList" :value="v.value" :key="v.value">
+						{{ v.label }}
 					</Option>
 				</Select>
 			</FormItem>
-			<FormItem class="editor" label :label-width="0" style="height: 160px" prop="executeSql">
+			<FormItem
+				class="editor"
+				label
+				:label-width="0"
+				style="height: 160px"
+				prop="executeSql"
+			>
 				<!-- sql编辑器 -->
 				<div class="es-sql-editor">
 					<es-sql sqlName="custom-query" v-model="queryCustom.executeSql" class="es-sql-box"></es-sql>
@@ -37,7 +61,7 @@
 <script>
 	import esSql from '../esSql.vue'
 	import customSource from './customSource'
-	import {RadioGroup, Radio, Select, Option, FormItem, Form} from 'view-design'
+	import { RadioGroup, Radio, Select, Option, FormItem, Form } from 'view-design'
 
 	export default {
 		props: {
@@ -50,12 +74,17 @@
 		components: {
 			esSql,
 			customSource,
-			RadioGroup, Radio, Select, Option, FormItem, Form
+			RadioGroup,
+			Radio,
+			Select,
+			Option,
+			FormItem,
+			Form
 		},
-		data() {
+		data () {
 			return {
 				databaseType: '',
-				dataType: '0', //数据源
+				dataType: '0', // 数据源
 				sqlName: 'sqlChart', // sql编辑器默认name
 				sqlInitWidth: '', // sql编辑器宽度
 				chartType: 2, // 自定义查询
@@ -91,84 +120,84 @@
 						}
 					]
 				}
-			};
+			}
 		},
-		mounted() {
+		mounted () {
 		},
 		methods: {
 			// 获取项目列表
-			getProList() {
+			getProList () {
 				this.$api.dataWarehouse.getProList().then((data) => {
-					let list = [];
+					const list = []
 					data.map((item) => {
 						list.push({
 							value: item.id,
 							label: item.name
-						});
-					});
-					this.queryCustomList.projectList = list;
+						})
+					})
+					this.queryCustomList.projectList = list
 				})
 			},
 
 			// 获取项目下的数据库列表
-			getDatabaseList(id) {
+			getDatabaseList (id) {
 				if (!id) {
-					this.$Message.warning('请先选择项目');
-					return;
+					this.$Message.warning('请先选择项目')
+					return
 				}
-				this.$api.dataWarehouse.getProDatabaseList({id: id}).then((res) => {
-					let list = [];
-					let data = res.databaseList;
+				this.$api.dataWarehouse.getProDatabaseList({ id: id }).then((res) => {
+					const list = []
+					const data = res.databaseList
 					if (data.length == 0) {
-						this.$Message.info('当前项目下无库');
+						this.$Message.info('当前项目下无库')
 					} else {
 						data.map((item, index) => {
 							list.push({
 								value: item.id,
 								label: item.name
-							});
-						});
+							})
+						})
 					}
-					this.queryCustomList.databaseList = list;
+					this.queryCustomList.databaseList = list
 				})
 			},
 			// 修改选中项目清空值
-			changeCustomPro() {
-				this.queryCustomList.databaseList = [];
-				this.queryCustom.databaseId = '';
+			changeCustomPro () {
+				this.queryCustomList.databaseList = []
+				this.queryCustom.databaseId = ''
 			},
-			openCustomPro(value) {
+			openCustomPro (value) {
 				if (value) {
-					this.queryCustomList.projectList = [];
-					this.getProList();
+					this.queryCustomList.projectList = []
+					this.getProList()
 				}
 			},
-			openCustomDatabase(value) {
+			openCustomDatabase (value) {
 				if (value) {
-					this.queryCustomList.databaseList = [];
-					this.getDatabaseList(this.queryCustom.projectId);
+					this.queryCustomList.databaseList = []
+					this.getDatabaseList(this.queryCustom.projectId)
 				}
 			},
-			setCustom(obj) {
-				this.$emit('getQueryCond', obj);
+			setCustom (obj) {
+				this.$emit('getQueryCond', obj)
 			}
 		},
 		watch: {
 			// 查询条件提交出去
 			queryCustom: {
 				deep: true,
-				handler(val) {
-					let obj = JSON.parse(JSON.stringify(val));
-					this.$set(obj, 'dataType', 0);
-					this.$emit('getQueryCond', obj);
+				handler (val) {
+					const obj = JSON.parse(JSON.stringify(val))
+					this.$set(obj, 'dataType', 0)
+					this.$emit('getQueryCond', obj)
 				}
 			},
 			dataType: {
 				deep: true,
 				immediate: true,
-				handler(type) {
+				handler (type) {
 					if (type === '0') {
-						const {projectId, databaseId, executeSql} = this.lastQuery
+						const { projectId, databaseId, executeSql } = this.lastQuery
 						this.getProList()
 						this.queryCustom.projectId = projectId
 						this.openCustomDatabase(projectId)
@@ -182,7 +211,7 @@
 				}
 			}
 		}
-	};
+	}
 </script>
 <style lang="scss" scoped>
 	.source {

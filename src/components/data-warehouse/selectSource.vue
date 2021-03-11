@@ -12,7 +12,7 @@
 		components: {
 			esFormNew
 		},
-		data() {
+		data () {
 			return {
 				// 表单配置
 				selectObj: {
@@ -32,8 +32,8 @@
 							required: true,
 							onOpenChange: (value) => {
 								if (value) {
-									this.selectObj.templetDetailList[0].dataSourceList = [];
-									this.getProList();
+									this.selectObj.templetDetailList[0].dataSourceList = []
+									this.getProList()
 								}
 							}
 						},
@@ -49,8 +49,8 @@
 							required: true,
 							onOpenChange: (value) => {
 								if (value) {
-									this.selectObj.templetDetailList[1].dataSourceList = [];
-									this.getQueryName(this.selectObjModel.dataSourceId);
+									this.selectObj.templetDetailList[1].dataSourceList = []
+									this.getQueryName(this.selectObjModel.dataSourceId)
 								}
 							}
 						}
@@ -61,67 +61,67 @@
 					dataSourceId: '',
 					dataAnalyseId: ''
 				}
-			};
+			}
 		},
 		methods: {
 			// 获取项目列表
-			getProList() {
+			getProList () {
 				this.$api.dataWarehouse.getSourceList().then((data) => {
-					let list = [];
+					const list = []
 					data.map((item) => {
 						list.push({
 							value: item.id.toString(),
 							label: item.name
-						});
-					});
-					this.selectObj.templetDetailList[0].dataSourceList = list;
+						})
+					})
+					this.selectObj.templetDetailList[0].dataSourceList = list
 				})
 			},
 			// 获取查询名称列表
-			getQueryName(dataSourceId) {
+			getQueryName (dataSourceId) {
 				if (!dataSourceId) {
-					this.$Message.warning('请先选择项目');
-					return;
+					this.$Message.warning('请先选择项目')
+					return
 				}
-				this.selectObj.templetDetailList[1].dataSourceList = [];
-				this.$api.dataWarehouse.getAnalyseList({dataSourceId: dataSourceId}).then((data) => {
-					let arr = [];
+				this.selectObj.templetDetailList[1].dataSourceList = []
+				this.$api.dataWarehouse.getAnalyseList({ dataSourceId: dataSourceId }).then((data) => {
+					const arr = []
 					if (data.length > 0) {
 						data.map((item) => {
 							arr.push({
 								value: item.id.toString(),
 								label: item.name
-							});
-						});
-						this.selectObj.templetDetailList[1].dataSourceList = arr;
+							})
+						})
+						this.selectObj.templetDetailList[1].dataSourceList = arr
 					} else {
-						this.$Message.info('该项目下无结果');
+						this.$Message.info('该项目下无结果')
 					}
 				})
 			},
-			reShow(data) {
-				this.getProList();
-				this.selectObjModel.dataSourceId = data.dataSourceId.toString();
-				this.selectObjModel.dataAnalyseId = data.dataAnalyseId.toString();
+			reShow (data) {
+				this.getProList()
+				this.selectObjModel.dataSourceId = data.dataSourceId.toString()
+				this.selectObjModel.dataAnalyseId = data.dataAnalyseId.toString()
 			}
 		},
 		watch: {
 			'selectObjModel.dataSourceId': {
-				handler(value) {
+				handler (value) {
 					if (value) {
-						this.getQueryName(value);
+						this.getQueryName(value)
 					}
 				}
 			},
 			selectObjModel: {
 				deep: true,
-				handler(obj) {
-					this.$set(obj, 'dataType', 1);
-					this.$emit('getSource', obj);
+				handler (obj) {
+					this.$set(obj, 'dataType', 1)
+					this.$emit('getSource', obj)
 				}
 			}
 		}
-	};
+	}
 </script>
 
 <style>

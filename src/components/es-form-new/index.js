@@ -1,3 +1,3 @@
-import formNew from './form-new.vue';
+import formNew from './form-new.vue'
 
-export default formNew;
+export default formNew
