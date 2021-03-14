@@ -1,4 +1,4 @@
-import request from './request'
+import request, { headers } from './request'
 import qs from 'qs'
 
 const DATAURL = '/data'
@@ -9,9 +9,7 @@ export function detailMarket (data) {
         url: `${DATAURL}/component/getComponentDetail`,
         method: 'get',
         params: data,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -20,9 +18,7 @@ export function getLevel0 () {
     return request({
         url: `${DATAURL}/componentType/getLevel0`,
         method: 'get',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -32,9 +28,7 @@ export function getCompListAll (data) {
         url: `${DATAURL}/component/list`,
         method: 'get',
         params: data,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -44,9 +38,7 @@ export function getCheckHistoryList (data) {
         url: `${DATAURL}/component/checkHistoryList`,
         method: 'get',
         params: data,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -56,9 +48,7 @@ export function getWaitCheckList (data) {
         url: `${DATAURL}/component/waitCheckList`,
         method: 'get',
         params: data,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -80,9 +70,7 @@ export function checkSuccess (data) {
         url: `${DATAURL}/component/checkSuccess`,
         method: 'post',
         data: qs.stringify(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -92,9 +80,7 @@ export function checkError (data) {
         url: `${DATAURL}/component/checkError`,
         method: 'post',
         data: qs.stringify(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -103,9 +89,7 @@ export function getAllComponentType () {
     return request({
         url: `${DATAURL}/componentType/getAllComponentType`,
         method: 'get',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -115,9 +99,7 @@ export async function getCompList (data) {
         url: `${DATAURL}/componentType/list`,
         method: 'get',
         params: data,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
     res.forEach(v => {
         v.label = v.componentTypeName
@@ -137,9 +119,7 @@ export function destroyComponent (data) {
         url: `${DATAURL}/component/destroy`,
         method: 'post',
         data: qs.stringify(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -149,9 +129,7 @@ export function createComponent (data) {
         url: `${DATAURL}/component/create`,
         method: 'post',
         data: qs.stringify(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -161,9 +139,7 @@ export function updateComponent (data) {
         url: `${DATAURL}/component/update`,
         method: 'post',
         data: qs.stringify(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -173,9 +149,7 @@ export function addComponentVersion (data) {
         url: `${DATAURL}/component/addVersion`,
         method: 'post',
         data: qs.stringify(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -185,9 +159,7 @@ export function changeComponentVersion (data) {
         url: `${DATAURL}/component/changeVersion`,
         method: 'post',
         data: qs.stringify(data),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }
 
@@ -197,8 +169,6 @@ export function getVersionList (data) {
         url: `${DATAURL}/component/getVersionList`,
         method: 'get',
         params: data,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers
     })
 }

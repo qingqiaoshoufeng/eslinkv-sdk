@@ -132,6 +132,7 @@
 .setting {
 	display: flex;
 	align-items: center;
+
 	.setting-btn {
 		margin-bottom: 10px;
 		margin-left: 20px;

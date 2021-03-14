@@ -67,7 +67,8 @@
 		props: {
 			lastQuery: {
 				type: Object,
-				default: () => {
+				default: function () {
+					return {}
 				}
 			}
 		},
@@ -121,8 +122,6 @@
 					]
 				}
 			}
-		},
-		mounted () {
 		},
 		methods: {
 			// 获取项目列表

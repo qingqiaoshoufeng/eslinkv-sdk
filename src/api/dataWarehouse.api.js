@@ -1,4 +1,4 @@
-import request, { baseURL, serverURL, baseHRURL } from './request'
+import request, { serverURL, baseHRURL, headers } from './request'
 import request0000 from './request0000'
 import qs from 'qs'
 
@@ -7,9 +7,7 @@ export function getProList () {
 	return request({
 		url: `${baseHRURL}/project/list`,
 		method: 'post',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -19,9 +17,7 @@ export function getProDatabaseList (data) {
 		url: `${baseHRURL}/project/databaseList`,
 		method: 'post',
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -31,9 +27,7 @@ export function getDatabaseTableList (data) {
 		url: `${baseHRURL}/database/tableList`,
 		method: 'post',
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -43,9 +37,7 @@ export function getTableDetail (data) {
 		url: `${baseHRURL}/table/detail`,
 		method: 'post',
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -55,9 +47,7 @@ export function getSourceList (data) {
 		url: `${baseHRURL}/source/list`,
 		method: 'post',
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -67,9 +57,7 @@ export function getAnalyseList (data) {
 		url: `${baseHRURL}/analyse/list`,
 		method: 'post',
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -79,9 +67,7 @@ export function getSchemaList (data) {
 		url: `${baseHRURL}/source/schema/list`,
 		method: 'post',
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -91,9 +77,7 @@ export function getSourceTableList (data) {
 		url: `${baseHRURL}/source/table/list`,
 		method: 'post',
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -103,9 +87,7 @@ export function getSourceTableDetail (data) {
 		url: `${baseHRURL}/source/table/detail`,
 		method: 'post',
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -115,9 +97,7 @@ export function getSourceDatabaseList (data) {
 		url: `${baseHRURL}/source/database/list`,
 		method: 'post',
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 

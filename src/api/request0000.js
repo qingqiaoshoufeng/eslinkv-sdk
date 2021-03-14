@@ -26,14 +26,17 @@ request.interceptors.response.use(response => {
 			return data
 		} else {
 			Message.error(data.returnMessage || errMessage)
+			// eslint-disable-next-line prefer-promise-reject-errors
 			return Promise.reject(false)
 		}
 	} else {
 		Message.error(errMessage)
+		// eslint-disable-next-line prefer-promise-reject-errors
 		return Promise.reject(false)
 	}
 }, function (e) {
 	Message.error(errMessage)
+	// eslint-disable-next-line prefer-promise-reject-errors
 	return Promise.reject(false)
 })
 

@@ -1,4 +1,4 @@
-import request, { baseURL } from './request'
+import request, { baseURL, headers } from './request'
 import qs from 'qs'
 
 // 查询看板列表
@@ -7,9 +7,7 @@ export function list (data) {
 		method: 'post',
 		url: `${baseURL}/board/page`,
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }
 
@@ -19,8 +17,6 @@ export function publish (data) {
 		method: 'post',
 		url: `${baseURL}/board/publish`,
 		data: qs.stringify(data),
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
+		headers
 	})
 }

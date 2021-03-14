@@ -1,6 +1,6 @@
 <template>
 	<div class="sql-editor">
-		<textarea ref="textarea" :placeholder="placeholder" />
+		<textarea ref="textarea" :placeholder="placeholder"/>
 	</div>
 </template>
 
@@ -92,10 +92,11 @@
 	}
 </script>
 <style>
-  .CodeMirror-hints {
-    z-index: 9999;
-  }
-  .CodeMirror-code {
-    font-family: Fira code, monospace;
-  }
+	.CodeMirror-hints {
+		z-index: 9999;
+	}
+
+	.CodeMirror-code {
+		font-family: Fira code, monospace;
+	}
 </style>

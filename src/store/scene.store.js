@@ -8,7 +8,7 @@ import Vue from 'vue'
 import instance from './instance.store'
 import { store } from './index'
 
-const state = new Vue.observable({
+const state = Vue.observable({
 	index: 0,
 	list: [],
 	obj: {},

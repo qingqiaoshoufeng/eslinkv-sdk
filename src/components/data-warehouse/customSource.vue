@@ -163,7 +163,6 @@
 				this.$api.dataWarehouse.getSourceDatabaseList({ id: this.queryCustomSource.dataSourceId }).then((data) => {
 					if (data.length == 0) {
 						this.$Message.info('当前项目下无库')
-					} else {
 					}
 					this.querySourceList.databaseList = data
 				})

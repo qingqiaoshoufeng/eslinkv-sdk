@@ -31,8 +31,8 @@
 </script>
 <style scoped lang="scss">
 	.wrap {
-		border: 1px solid #ddd;
 		padding: 10px;
 		margin-bottom: 10px;
+		border: 1px solid #ddd;
 	}
 </style>

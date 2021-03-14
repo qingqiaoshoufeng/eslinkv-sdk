@@ -5,6 +5,10 @@ const request = axios.create()
 const baseURL = '/api'
 const serverURL = '/server'
 const baseHRURL = '/hangran'
+
+export const headers = {
+	'Content-Type': 'application/x-www-form-urlencoded'
+}
 request.defaults.timeout = 30000
 request.interceptors.request.use(function (config) {
 	return config
@@ -26,20 +30,24 @@ request.interceptors.response.use(response => {
 	if (data) {
 		if (data.responseCode === '100000') {
 			return data.result
-		} else if (data.responseCode === '101002') {
+		}
+		if (data.responseCode === '101002') {
 			// 未登录
 			Message.error(data.message || errMessage)
-			return Promise.reject(false)
-		} else {
-			Message.error(data.message || errMessage)
+			// eslint-disable-next-line prefer-promise-reject-errors
 			return Promise.reject(false)
 		}
+		Message.error(data.message || errMessage)
+		// eslint-disable-next-line prefer-promise-reject-errors
+		return Promise.reject(false)
 	} else {
 		Message.error(errMessage)
+		// eslint-disable-next-line prefer-promise-reject-errors
 		return Promise.reject(false)
 	}
 }, function (e) {
 	Message.error(errMessage)
+	// eslint-disable-next-line prefer-promise-reject-errors
 	return Promise.reject(false)
 })
 

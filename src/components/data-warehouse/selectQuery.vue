@@ -27,7 +27,8 @@
 		props: {
 			lastQuery: {
 				type: Object,
-				default: () => {
+				default: function () {
+					return {}
 				}
 			}
 		},

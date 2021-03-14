@@ -15,11 +15,11 @@
 		li(@click="deleteWidget") 删除
 </template>
 <script lang="ts">
-	import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+	import { Vue, Component, Watch } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
 	import copy from 'fast-copy'
 	import { uuid } from '../../utils/index'
-	
+
 	@Component
 	export default class rightMenu extends Vue {
 		platform = platform.state
@@ -91,7 +91,7 @@
 			this.isLock = !this.isLock
 			this.platform.widgetAdded[this.platform.chooseWidgetId].config.widget.locked = this.isLock
 		}
-		
+
 		@Watch('platform.chooseWidgetId')
 		chooseIdChange (val) {
 			if (!val) return
