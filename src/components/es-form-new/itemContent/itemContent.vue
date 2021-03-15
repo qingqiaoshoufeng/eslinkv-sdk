@@ -284,7 +284,7 @@
 <style lang="scss" scoped>
 	.es-item-content {
 		display: flex;
-		justify-content: space-between;
 		align-items: flex-start;
+		justify-content: space-between;
 	}
 </style>

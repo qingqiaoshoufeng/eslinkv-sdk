@@ -208,19 +208,19 @@
 	min-height: 50px;
 
 	.required-item {
-		margin-bottom: 0;
+		min-height: 50px;
+		padding-right: 10px;
 		padding-bottom: 16px;
 		margin-right: 0;
-		padding-right: 10px;
-		min-height: 50px;
+		margin-bottom: 0;
 	}
 
 	.normal-item {
-		margin-bottom: 0;
+		min-height: 30px;
+		padding-right: 10px;
 		padding-bottom: 0;
 		margin-right: 0;
-		padding-right: 10px;
-		min-height: 30px;
+		margin-bottom: 0;
 	}
 }
 </style>

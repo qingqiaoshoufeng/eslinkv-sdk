@@ -41,13 +41,13 @@
 </script>
 <style lang="scss" scoped>
 	.svg-icon {
-		fill: currentColor;
 		overflow: hidden;
+		fill: currentColor;
 	}
 
 	.svg-external-icon {
+		display: inline-block;
 		background-color: currentColor;
 		mask-size: cover !important;
-		display: inline-block;
 	}
 </style>

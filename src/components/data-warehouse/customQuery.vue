@@ -13,11 +13,11 @@
 			v-if="dataType == 0"
 			:model="queryCustom"
 			:label-width="70"
-			style="width: 100%; display: block"
+			style=" display: block; width: 100%;"
 			ref="queryCustom"
 			:rules="queryCustomRule"
 		>
-			<FormItem label="项目" prop="projectId" style="width: 100%">
+			<FormItem label="项目" prop="projectId" style="width: 100%;">
 				<Select
 					v-model="queryCustom.projectId"
 					transfer
@@ -30,7 +30,7 @@
 					</Option>
 				</Select>
 			</FormItem>
-			<FormItem label="数据库" prop="databaseId" style="width: 100%">
+			<FormItem label="数据库" prop="databaseId" style="width: 100%;">
 				<Select
 					v-model="queryCustom.databaseId"
 					transfer
@@ -46,7 +46,7 @@
 				class="editor"
 				label
 				:label-width="0"
-				style="height: 160px"
+				style="height: 160px;"
 				prop="executeSql"
 			>
 				<!-- sql编辑器 -->
@@ -225,10 +225,10 @@
 		width: 100%;
 
 		.es-sql-editor {
-			width: 100%;
-			height: 160px;
 			position: relative;
 			z-index: 99;
+			width: 100%;
+			height: 160px;
 		}
 	}
 </style>
@@ -238,10 +238,10 @@
 		height: 100%;
 
 		.CodeMirror {
-			border: 1px solid #f2f2f2;
-			font-size: 12px;
 			width: 100%;
 			height: 100%;
+			font-size: 12px;
+			border: 1px solid #f2f2f2;
 		}
 	}
 </style>

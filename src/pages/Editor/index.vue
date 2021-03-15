@@ -32,7 +32,6 @@
 		}
 
 		/deep/ {
-
 			.widgets-panel.fixed + .center {
 				width: calc(100% - 428px) !important;
 				margin-left: 428px !important;
@@ -41,11 +40,11 @@
 	}
 
 	.layout-wrapper {
+		display: flex;
+		flex-direction: column;
 		width: 100%;
 		height: 100%;
 		padding: 0 !important;
-		display: flex;
-		flex-direction: column;
 	}
 
 	.main-container {
@@ -55,8 +54,8 @@
 
 	.line {
 		width: 100%;
-		border-bottom: 1px dashed #414141;
 		margin: 13px 0;
+		border-bottom: 1px dashed #414141;
 		opacity: 0.4;
 	}
 
@@ -79,8 +78,8 @@
 				}
 
 				.ivu-collapse-content {
-					background-color: #f8f8f8;
 					overflow: auto;
+					background-color: #f8f8f8;
 				}
 			}
 		}
@@ -91,14 +90,14 @@
 			}
 
 			.ivu-collapse {
-				border: 0;
 				margin-bottom: 16px;
+				border: 0;
 			}
 
 			.ivu-collapse-header {
 				display: flex;
-				justify-content: space-between;
 				align-items: center;
+				justify-content: space-between;
 
 				.ivu-icon {
 					margin: 0;
@@ -106,8 +105,8 @@
 			}
 
 			.ivu-collapse-content {
-				background-color: #f8f8f8;
 				padding: 0;
+				background-color: #f8f8f8;
 			}
 
 			.ivu-form-item-content {
@@ -126,9 +125,9 @@
 		}
 
 		.form-label {
-			white-space: nowrap;
-			padding-right: 1em;
 			min-width: 5em;
+			padding-right: 1em;
+			white-space: nowrap;
 		}
 	}
 </style>

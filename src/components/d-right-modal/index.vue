@@ -9,7 +9,7 @@
 	import { Icon } from 'view-design'
 	import { Component, Vue, Prop } from 'vue-property-decorator'
 	import { findComponentsDownward } from '../../utils/index'
-	
+
 	@Component({
 		components: {
 			'i-icon': Icon
@@ -44,23 +44,24 @@
 	@import "../../../src/scss/conf";
 
 	.d-right-modal-box {
+		right: 15px;
 		width: 24px;
 		height: 24px;
-		right: 15px;
 	}
 
 	.d-right {
-		right: 0;
 		top: 0;
+		right: 0;
 		z-index: 2;
 		width: 24px;
 		height: 24px;
 
 		.ivu-icon {
-			opacity: .6;
 			color: $themeColor;
+			opacity: 0.6;
 
-			&:hover, &.active {
+			&:hover,
+			&.active {
 				opacity: 1;
 			}
 		}
@@ -68,19 +69,19 @@
 
 	.d-right-modal {
 		right: -380px;
+		z-index: 3;
+		height: calc(100vh - 140px);
+		padding: 10px;
+		letter-spacing: 0;
+		visibility: hidden;
 		background-color: white;
 		border-radius: 5px;
-		z-index: 3;
-		letter-spacing: 0;
-		height: calc(100vh - 140px);
-		transition: all .3s;
-		visibility: hidden;
 		opacity: 0;
-		padding: 10px;
+		transition: all 0.3s;
 
 		&.active {
-			visibility: inherit;
 			right: 40px;
+			visibility: inherit;
 			opacity: 1;
 		}
 	}

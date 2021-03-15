@@ -97,25 +97,25 @@
 	}
 
 	.widget-item-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100px;
 		padding: 5px 0;
 		margin-bottom: 5px;
-		opacity: 0.9;
-		transition: 0.2s;
-		height: 100px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		overflow: hidden;
 		background: rgba(0, 0, 0, 0.5);
+		opacity: 0.9;
+		transition: 0.2s;
 
 		> div {
 			width: 100%;
 			height: 100%;
 
 			img {
-				object-fit: contain;
 				width: 100%;
 				height: 100%;
+				object-fit: contain;
 			}
 		}
 
@@ -149,83 +149,83 @@
 
 	.widgets-panel {
 		position: absolute;
-		left: 0;
 		top: 0;
+		left: 0;
+		z-index: 2;
 		width: 428px;
 		height: 100%;
 		padding: 0;
 		overflow: visible;
 		background-color: white;
-		transform: translateX(-100%);
-		z-index: 2;
 		transition: 0.3s 0.5s;
+		transform: translateX(-100%);
 
-		&:after {
-			content: '小工具';
+		&::after {
 			position: absolute;
-			left: 100%;
 			bottom: 2px;
+			left: 100%;
+			z-index: -1;
 			width: 24px;
 			height: 82px;
+			padding: 10px 4px 30px;
 			line-height: 1.2;
 			text-align: center;
-			padding: 10px 4px 30px;
-			border-radius: 0 5px 5px 0;
+			content: '小工具';
 			background-color: white;
+			border-radius: 0 5px 5px 0;
 			opacity: 0.9;
-			z-index: -1;
 			transition: 0.3s 0.5s;
 		}
 
 		/deep/ .ivu-tabs-card {
+			height: 100%;
 			padding: 10px;
 			background-color: white;
-			height: 100%;
 		}
 
 		&:hover,
 		&.fixed {
+			filter: drop-shadow(0 2px 5px #2d8bf083);
 			transition: 0.3s;
 			transform: translateX(0);
-			filter: drop-shadow(0 2px 5px #2d8bf083);
 
-			&:not(.fixed):after {
-				transition: 0.3s;
-				opacity: 1;
+			&:not(.fixed)::after {
 				filter: drop-shadow(0 2px 5px #2d8bf083);
+				opacity: 1;
+				transition: 0.3s;
 			}
 		}
 
 		&.fixed {
 			filter: drop-shadow(0 2px 5px #2d8bf000);
 
-			&:after {
-				transition: 0.3s;
-				opacity: 0;
+			&::after {
 				pointer-events: none;
+				opacity: 0;
+				transition: 0.3s;
 			}
 		}
 	}
 
 	.fixed-toggle {
 		position: absolute;
-		bottom: 5px;
 		right: -24px;
+		bottom: 5px;
 		width: 24px;
 		height: 24px;
-		transform: rotate(0deg);
+		cursor: pointer;
 		opacity: 0.3;
 		transition: 0.2s;
-		cursor: pointer;
+		transform: rotate(0deg);
 
 		&:hover {
 			opacity: 0.5;
 		}
 
 		&.active {
-			transform: rotate(-45deg);
 			right: 0;
 			opacity: 1;
+			transform: rotate(-45deg);
 		}
 	}
 
@@ -253,10 +253,10 @@
 		}
 
 		.ivu-collapse > .ivu-collapse-item.ivu-collapse-item-active > .ivu-collapse-header {
-			padding-left: 7px !important;
 			position: sticky;
 			top: 0;
 			z-index: 999;
+			padding-left: 7px !important;
 			background-color: white;
 		}
 

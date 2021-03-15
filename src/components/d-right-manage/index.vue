@@ -71,8 +71,8 @@
 
 		> label {
 			display: block;
-			font-size: 14px;
 			margin-bottom: 10px;
+			font-size: 14px;
 		}
 
 		.d-manage-modal-control-editor {
@@ -81,16 +81,17 @@
 
 		.ivu-input-number {
 			display: block;
-			margin-bottom: 10px;
 			width: 100%;
+			margin-bottom: 10px;
 		}
 
 		.ivu-switch {
-			margin-bottom: 10px;
 			margin-top: 5px;
+			margin-bottom: 10px;
 		}
 
-		.ivu-input-wrapper, .ivu-select {
+		.ivu-input-wrapper,
+		.ivu-select {
 			margin-bottom: 10px;
 		}
 
@@ -101,15 +102,15 @@
 	}
 
 	.d-manage-modal-tab {
-
 		h2 {
-			font-size: 16px;
 			height: 40px;
 			margin-right: 10px;
-			color: rgba(0, 0, 0, .3);
+			font-size: 16px;
+			color: rgba(0, 0, 0, 0.3);
 			user-select: none;
 
-			&:hover, &.active {
+			&:hover,
+			&.active {
 				color: $themeColor;
 			}
 

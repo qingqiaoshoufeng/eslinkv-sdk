@@ -59,61 +59,61 @@
 <style lang="scss">
 	.ruler-wrapper {
 		position: absolute;
-		box-shadow: #111 0 0 1px;
 		z-index: 9;
+		box-shadow: #111 0 0 1px;
 
 		&.h {
-			width: calc(100% - 18px);
-			height: 18px;
 			top: 0;
 			left: 18px;
+			width: calc(100% - 18px);
+			height: 18px;
 
-			&:before {
-				content: 'D';
+			&::before {
 				position: absolute;
 				left: -18px;
+				z-index: 1000;
 				width: 18px;
 				height: 18px;
-				z-index: 1000;
-				color: #77ecff;
 				font-weight: 900;
-				text-align: center;
-				background-color: #111;
 				line-height: 18px;
+				color: #77ecff;
+				text-align: center;
+				content: 'D';
+				background-color: #111;
 			}
 		}
 
 		&.v {
+			top: 18px;
+			left: 0;
 			width: 18px;
 			height: calc(100% - 18px);
-			left: 0;
-			top: 18px;
 		}
 
 		.vue-ruler-h,
 		.vue-ruler-v {
 			position: absolute;
-			left: 0;
 			top: 0;
-			overflow: hidden;
+			left: 0;
 			z-index: 3;
+			overflow: hidden;
 			transition: transform 0.4s;
 		}
 
 		.vue-ruler-h {
-			height: 18px;
 			left: 0;
-			opacity: 0.6;
-			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAMAAAAuTX21AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACNJREFUeNpiYCAdMDKRCka1jGoBA2JZZGshiaCXFpIBQIABAAplBkCmQpujAAAAAElFTkSuQmCC) repeat-x;
+			height: 18px;
 			cursor: n-resize;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAMAAAAuTX21AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACNJREFUeNpiYCAdMDKRCka1jGoBA2JZZGshiaCXFpIBQIABAAplBkCmQpujAAAAAElFTkSuQmCC) repeat-x;
+			opacity: 0.6;
 		}
 
 		.vue-ruler-v {
-			width: 18px;
 			top: 0;
-			opacity: 0.6;
-			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAyCAMAAABmvHtTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACBJREFUeNpiYGBEBwwMTGiAakI0NX7U9aOuHyGuBwgwAH6bBkAR6jkzAAAAAElFTkSuQmCC) repeat-y;
+			width: 18px;
 			cursor: w-resize;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAyCAMAAABmvHtTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACBJREFUeNpiYGBEBwwMTGiAakI0NX7U9aOuHyGuBwgwAH6bBkAR6jkzAAAAAElFTkSuQmCC) repeat-y;
+			opacity: 0.6;
 		}
 
 		.vue-ruler-v .n,
@@ -121,16 +121,16 @@
 			position: absolute;
 			font: 10px/1 serif;
 			color: #333;
-			cursor: default;
 			pointer-events: none;
+			cursor: default;
 		}
 
 		.vue-ruler-v .n {
-			width: 50px;
 			left: -18px;
+			width: 50px;
 			margin-top: 17px;
-			word-wrap: normal;
 			text-align: right;
+			word-wrap: normal;
 			transform: rotate(-90deg);
 		}
 
@@ -147,25 +147,25 @@
 		pointer-events: none;
 
 		&.x {
-			height: 18px;
 			width: 1px;
+			height: 18px;
 			background-color: red;
 		}
 
 		&.y {
-			height: 1px;
 			width: 18px;
+			height: 1px;
 			background-color: red;
 		}
 	}
 
 	.vue-ruler {
 		&-wrapper {
+			top: 0;
+			left: 0;
+			z-index: 1;
 			width: 100%;
 			height: 100%;
-			left: 0;
-			top: 0;
-			z-index: 1;
 			overflow: hidden;
 			user-select: none;
 			background-color: rgba(0, 0, 0, 0.1);
@@ -173,8 +173,8 @@
 
 		&-content {
 			position: absolute;
-			left: 0;
 			top: 0;
+			left: 0;
 			z-index: 1;
 			width: 100%;
 			height: 100%;
@@ -186,24 +186,24 @@
 
 			.content-body {
 				position: absolute;
-				left: 0;
 				top: 0;
+				left: 0;
 				margin-top: 1px;
-				border: 18px transparent solid;
-				transition: all .3s;
 				overflow: visible;
 				background-image: url(../../../src/assets/editor/transparent-bg.png);
 				background-clip: content-box;
 				background-size: 32px;
+				border: 18px transparent solid;
+				transition: all 0.3s;
 			}
 		}
 
 		&-content-mask {
 			position: absolute;
+			z-index: 4;
 			width: 100%;
 			height: 100%;
 			background: transparent;
-			z-index: 4;
 		}
 	}
 </style>

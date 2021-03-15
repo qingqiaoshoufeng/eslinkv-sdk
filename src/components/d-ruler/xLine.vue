@@ -97,7 +97,7 @@
 </script>
 <style lang="scss" scoped>
 	canvas {
+		left: 0;
 		height: 100%;
-        left: 0;
 	}
 </style>

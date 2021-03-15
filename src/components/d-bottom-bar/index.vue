@@ -45,27 +45,29 @@
 
 	.d-bottom-bar-box {
 		right: 0;
-		user-select: none;
 		bottom: 15px;
+		user-select: none;
 	}
 
 	.d-bottom-bar {
-		padding: 4px 10px;
-		background-color: rgba(0, 0, 0, 0.5);
-		transition: all .3s;
-		color: $white_08;
-		border-radius: 2px;
-		opacity: .5;
 		align-items: center;
 		justify-content: center;
+		padding: 4px 10px;
 		margin-right: 15px;
+		color: $white_08;
+		background-color: rgba(0, 0, 0, 0.5);
+		border-radius: 2px;
+		opacity: 0.5;
+		transition: all 0.3s;
 
 		&:hover {
 			opacity: 1;
 		}
 	}
 
-	.d-bottom-auto-align-guide, .d-bottom-hot-keys, .d-bottom-info {
+	.d-bottom-auto-align-guide,
+	.d-bottom-hot-keys,
+	.d-bottom-info {
 		align-items: center;
 		justify-content: center;
 	}
@@ -79,28 +81,28 @@
 
 		.d-bottom-hot-key-list {
 			bottom: 100%;
-			transform: translate3d(-50%, -20px, 0);
-			opacity: 0;
 			padding: 10px;
-			pointer-events: none;
-			transition: all .3s;
 			color: #717171;
+			pointer-events: none;
 			background: #fff;
-			border-radius: 2px;
 			border: 1px solid $borderColor;
+			border-radius: 2px;
+			opacity: 0;
+			transition: all 0.3s;
+			transform: translate3d(-50%, -20px, 0);
 
 			li {
-				white-space: nowrap;
 				align-items: center;
 				padding: 4px 0;
+				white-space: nowrap;
 
 				label {
 					margin-right: auto;
 				}
 
 				.d-bottom-name {
-					text-align: right;
 					padding: 3px 10px;
+					text-align: right;
 					letter-spacing: 0;
 				}
 
@@ -115,11 +117,11 @@
 				}
 
 				.d-bottom-hot-key-text {
-					border: 1px solid #ddd;
 					min-width: 22px;
 					padding: 0 4px;
-					text-align: center;
 					font-style: normal;
+					text-align: center;
+					border: 1px solid #ddd;
 					border-radius: 2px;
 				}
 			}

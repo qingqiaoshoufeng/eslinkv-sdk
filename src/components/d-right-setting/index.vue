@@ -71,21 +71,21 @@
 
 	.d-setting-modal {
 		header {
+			flex: 0 0 auto;
+			align-items: center;
+			justify-content: space-between;
 			width: 100%;
 			height: 42px;
-			line-height: 42px;
-			font-weight: bold;
 			font-size: 14px;
-			flex: 0 0 auto;
-			justify-content: space-between;
-			align-items: center;
+			font-weight: bold;
+			line-height: 42px;
 			border-bottom: 1px solid $borderColor;
 		}
 
 		li {
-			margin-top: 10px;
 			align-items: center;
 			height: 32px;
+			margin-top: 10px;
 
 			label {
 				margin-right: auto;

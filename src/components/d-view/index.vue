@@ -56,9 +56,9 @@
 </style>
 <style lang="scss" scoped>
 	.canvas-wrapper {
-		&:before {
-			content: '';
+		&::before {
 			display: flex;
+			content: '';
 		}
 
 		/deep/ {

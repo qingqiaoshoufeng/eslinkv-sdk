@@ -5,7 +5,7 @@
 		:rules="queryRules"
 		inline
 		:label-width="70"
-		style="width: 100%"
+		style="width: 100%;"
 		ref="querySourceForm"
 	>
 		<FormItem
@@ -54,7 +54,7 @@
 		<FormItem
 			prop="analyseCondition"
 			:label="index == 0 ? '条件' : ''"
-			style="width: 100%"
+			style="width: 100%;"
 			:label-width="type == 1 ? 40 : 70"
 			v-for="(item, index) in queryCond.analyseCondition"
 			v-show="item.index == 0 || queryCondShow"
@@ -122,7 +122,7 @@
 			:label-width="64"
 			v-if="type == 0"
 		>
-			<div style="display: flex">
+			<div style="display: flex;">
 				<Checkbox v-model="queryCond.isLimit"></Checkbox>
 				<i-select v-model="queryCond.limitNum" v-if="queryCond.isLimit">
 					<i-option v-for="item in queryCond.limitNumList" :value="item.value" :key="item.value">
@@ -547,13 +547,13 @@
 	}
 
 	.btn {
-		color: #f54e40;
 		font-size: 24px;
+		color: #f54e40;
 		cursor: pointer;
 	}
 
 	.btn.add {
-		color: #07bf54;
 		margin-left: 8px;
+		color: #07bf54;
 	}
 </style>

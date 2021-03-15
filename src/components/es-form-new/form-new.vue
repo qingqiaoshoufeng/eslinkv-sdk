@@ -350,17 +350,17 @@
 		}
 
 		.disabledTip.ivu-form .ivu-form-item-label {
-			line-height: 12px !important;
 			display: flex;
 			align-items: center;
-			height: 30px;
 			justify-content: flex-end;
+			height: 30px;
+			line-height: 12px !important;
 		}
 	}
 
 	.disabled-form .es-item-content {
-		cursor: none;
 		pointer-events: none;
+		cursor: none;
 		opacity: 0.4;
 	}
 </style>

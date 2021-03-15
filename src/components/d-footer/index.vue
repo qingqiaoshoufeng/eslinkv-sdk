@@ -162,17 +162,18 @@
 </script>
 <style lang="scss" scoped>
 	.d-footer {
+		align-items: center;
+		justify-content: space-between;
 		width: 100%;
 		height: 50px;
-		justify-content: space-between;
-		align-items: center;
 		padding: 0 15px;
 
 		/deep/ button {
 			margin-left: 10px;
 		}
 
-		.d-footer-left, .d-footer-right {
+		.d-footer-left,
+		.d-footer-right {
 			align-items: center;
 
 			.return {
@@ -186,8 +187,8 @@
 
 		.d-footer-left {
 			.d-footer-title {
-				font-size: 15px;
 				padding: 0 15px 0 0;
+				font-size: 15px;
 			}
 		}
 	}

@@ -3,11 +3,11 @@
 	<Form
 		:model="queryCustomSource"
 		:label-width="70"
-		style="width: 100%; display: block"
+		style=" display: block; width: 100%;"
 		ref="queryCustomSource"
 		:rules="querySourceRule"
 	>
-		<FormItem label="数据源" prop="dataSourceId" style="width: 100%">
+		<FormItem label="数据源" prop="dataSourceId" style="width: 100%;">
 			<Select
 				v-model="queryCustomSource.dataSourceId"
 				@on-open-change="openCustomPro"
@@ -19,7 +19,7 @@
 				</Option>
 			</Select>
 		</FormItem>
-		<FormItem label="数据库" prop="databaseName" style="width: 100%">
+		<FormItem label="数据库" prop="databaseName" style="width: 100%;">
 			<Select
 				v-model="queryCustomSource.databaseName"
 				transfer
@@ -32,7 +32,7 @@
 		<FormItem
 			label="模式"
 			prop="databaseSchema"
-			style="width: 100%"
+			style="width: 100%;"
 			v-if="databaseType == 1"
 		>
 			<Select
@@ -48,7 +48,7 @@
 			class="editor"
 			label
 			:label-width="0"
-			style="height: 160px"
+			style="height: 160px;"
 			prop="executeSql"
 		>
 			<!-- sql编辑器 -->
@@ -213,10 +213,10 @@
 		width: 100%;
 
 		.es-sql-editor {
-			width: 100%;
-			height: 160px;
 			position: relative;
 			z-index: 99;
+			width: 100%;
+			height: 160px;
 		}
 	}
 </style>

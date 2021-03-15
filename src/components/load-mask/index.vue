@@ -25,10 +25,10 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
-		flex-direction: column;
-		line-height: 3;
-		justify-content: center;
-		align-items: center;
 		z-index: 999999;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		line-height: 3;
 	}
 </style>

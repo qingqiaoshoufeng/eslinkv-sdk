@@ -116,7 +116,7 @@
 						<i-col span="3" v-if="item.fieldCond == 'between'">
 							<Input type="text" v-model="querySingleList.betweenField" placeholder="请输入"/>
 						</i-col>
-						<i-col span="2" style="display: flex">
+						<i-col span="2" style="display: flex;">
 							<Icon type="md-add-circle" @click="addSingleCond" class="btn add"/>
 							<Icon
 								type="md-remove-circle"
@@ -473,10 +473,10 @@
 		width: 100%;
 
 		.btn {
-			color: #f54e40;
 			font-size: 20px;
-			cursor: pointer;
 			line-height: 30px;
+			color: #f54e40;
+			cursor: pointer;
 		}
 
 		.btn.add {
@@ -484,12 +484,12 @@
 		}
 
 		.single-query-form {
+			display: block;
 			width: 100%;
 			max-height: 256px;
 			padding-right: 10px;
 			overflow-x: hidden;
 			overflow-y: auto;
-			display: block;
 		}
 	}
 </style>

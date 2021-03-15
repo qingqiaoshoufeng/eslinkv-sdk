@@ -2,29 +2,30 @@ import axios from 'axios'
 import jsonic from 'jsonic'
 
 const parseParams = (params = {}) => {
-	if (typeof params === 'string') {
-		try {
-			return jsonic(params.trim())
-		} catch (e) { }
-	}
-	return params
+    if (typeof params === 'string') {
+        try {
+            return jsonic(params.trim())
+        } catch (e) {
+        }
+    }
+    return params
 }
 
 const fetcher = axios.create({
-	withCredentials: false
+    withCredentials: false
 })
 
 const filterFalsyKey = input => {
-	if (!input) return
-	const isArray = Array.isArray(input)
-	const output = !isArray ? {} : []
-	Object.keys(input).filter(key => {
-		const value = input[key]
-		return value !== undefined && value !== null && value !== ''
-	}).forEach(key => {
-		!isArray ? (output[key] = input[key]) : output.push(input[key])
-	})
-	return output
+    if (!input) return
+    const isArray = Array.isArray(input)
+    const output = !isArray ? {} : []
+    Object.keys(input).filter(key => {
+        const value = input[key]
+        return value !== undefined && value !== null && value !== ''
+    }).forEach(key => {
+        !isArray ? (output[key] = input[key]) : output.push(input[key])
+    })
+    return output
 }
 
 export default {
@@ -86,19 +87,19 @@ export default {
 			// 解析 params
 			let params = { ...parseParams(api.params) }
 
-			if (typeof params === 'object') {
-				Object.keys(params).forEach(key => {
-					const value = params[key]
-					params[key] = typeof value !== 'object' ? value : JSON.stringify(value)
-				})
-				Object.assign(params, filterFalsyKey(conditions))
-			} else {
-				params = filterFalsyKey(conditions)
-			}
-			if (!Object.keys(params).length) return
+            if (typeof params === 'object') {
+                Object.keys(params).forEach(key => {
+                    const value = params[key]
+                    params[key] = typeof value !== 'object' ? value : JSON.stringify(value)
+                })
+                Object.assign(params, filterFalsyKey(conditions))
+            } else {
+                params = filterFalsyKey(conditions)
+            }
+            if (!Object.keys(params).length) return
 
-			this.querying = true
-			this.queryFailed = false
+            this.querying = true
+            this.queryFailed = false
 
 			if (!path) path = 'data'
 			if (!check) {

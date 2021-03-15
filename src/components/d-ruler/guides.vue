@@ -97,35 +97,35 @@
 		top: 18px;
 		left: 18px;
 		z-index: 3;
-		pointer-events: none;
 		overflow: visible;
-		transition: transform .3s;
+		pointer-events: none;
+		transition: transform 0.3s;
 	}
 
 	.vue-ruler-ref-line-v,
 	.vue-ruler-ref-line-h,
 	.vue-ruler-ref-dot-h,
 	.vue-ruler-ref-dot-v {
-		left: 0;
 		top: 0;
+		left: 0;
 		pointer-events: auto;
 	}
 
 	.vue-ruler-ref-line-v,
 	.vue-ruler-ref-line-h {
-		transform-origin: left top;
 		opacity: 0.5;
+		transform-origin: left top;
 
 		&:hover {
 			z-index: 2;
 			opacity: 1;
 		}
 
-		&:before,
-		&:after {
+		&::before,
+		&::after {
 			position: absolute;
-			background-color: rgba(0, 255, 255, 0.295);
 			content: '';
+			background-color: rgba(0, 255, 255, 0.295);
 		}
 	}
 
@@ -135,81 +135,81 @@
 	}
 
 	.vue-ruler-ref-line-h {
+		left: -9999px;
 		width: 10000%;
 		height: 1px;
-		left: -9999px;
-		background-color: cyan;
 		cursor: row-resize;
+		background-color: cyan;
 
 		&:hover {
 			transform: translateY(0) scale(1, 1) !important;
 
-			&:before {
+			&::before {
+				bottom: 1px;
 				width: 100%;
 				height: 3px;
-				bottom: 1px;
 			}
 
-			&:after {
+			&::after {
+				top: 1px;
 				width: 100%;
 				height: 3px;
-				top: 1px;
 			}
 		}
 	}
 
 	.vue-ruler-ref-line-v {
+		top: -9999px;
 		width: 1px;
 		height: 10000%;
-		top: -9999px;
-		background-color: cyan;
 		cursor: col-resize;
+		background-color: cyan;
 
 		&:hover {
 			transform: translateX(0) scale(1, 1) !important;
 
-			&:before {
+			&::before {
+				right: 1px;
 				width: 3px;
 				height: 100%;
-				right: 1px;
 			}
 
-			&:after {
+			&::after {
+				left: 1px;
 				width: 3px;
 				height: 100%;
-				left: 1px;
 			}
 		}
 	}
 
 	.vue-ruler-ref-dot-h {
+		top: 0;
 		width: 100%;
 		height: 0;
 		cursor: n-resize;
 		border-top: grey 1px dotted;
-		top: 0;
 	}
 
 	.vue-ruler-ref-dot-v {
+		left: 0;
 		width: 0;
 		height: 100%;
 		border-left: grey 1px dotted;
-		left: 0;
 	}
 
 	.guide-right-menu {
 		position: fixed;
+		z-index: 900;
 		width: auto;
-		background-color: #fff;
 		font-size: 12px;
 		text-align: left;
-		z-index: 900;
+		background-color: #fff;
 		transform: translateX(-100%);
 
 		li {
-			list-style: none;
-			line-height: 20px;
 			padding: 0 15px;
+			line-height: 20px;
+			list-style: none;
 			cursor: pointer;
 		}
 

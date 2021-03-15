@@ -173,14 +173,14 @@
 
 	.d-widget-list {
 		li {
-			padding: 10px;
-			margin: 10px 0;
-			border: 1px solid #ddd;
-			transition: all .3s;
-			height: 60px;
 			align-items: center;
 			justify-content: center;
+			height: 60px;
+			padding: 10px;
+			margin: 10px 0;
 			font-size: 12px;
+			border: 1px solid #ddd;
+			transition: all 0.3s;
 
 			/deep/ {
 				.ivu-input {
@@ -188,20 +188,21 @@
 				}
 			}
 
-			h3, p {
-				font-weight: normal;
+			h3,
+			p {
 				font-size: 12px;
+				font-weight: normal;
 			}
 
 			h2 {
-				font-weight: normal;
 				font-size: 14px;
+				font-weight: normal;
 			}
 
 			&.active {
-				border-color: $themeColor;
-				background-color: $themeColor;
 				color: #fff;
+				background-color: $themeColor;
+				border-color: $themeColor;
 			}
 
 			&:hover {
@@ -217,14 +218,14 @@
 		}
 
 		header {
+			flex: 0 0 auto;
+			align-items: center;
+			justify-content: space-between;
 			width: 100%;
 			height: 42px;
-			line-height: 42px;
-			font-weight: bold;
 			font-size: 14px;
-			flex: 0 0 auto;
-			justify-content: space-between;
-			align-items: center;
+			font-weight: bold;
+			line-height: 42px;
 			border-bottom: 1px solid $borderColor;
 
 			.ivu-select {
@@ -236,7 +237,9 @@
 			}
 		}
 
-		.d-widget-left, .d-widget-middle, .d-widget-right {
+		.d-widget-left,
+		.d-widget-middle,
+		.d-widget-right {
 			align-items: center;
 		}
 
@@ -244,8 +247,8 @@
 			width: 150px;
 
 			.ivu-icon {
-				font-size: 14px;
 				margin-right: 4px;
+				font-size: 14px;
 
 				&:hover {
 					color: $themeColor;
@@ -255,8 +258,8 @@
 
 		.d-widget-right {
 			justify-content: center;
-			font-weight: bold;
 			margin-left: auto;
+			font-weight: bold;
 		}
 	}
 </style>

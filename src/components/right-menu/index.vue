@@ -112,49 +112,49 @@
 </script>
 <style lang="scss">
 	.right-menu {
+		z-index: 2;
 		width: 120px;
+		padding: 5px 0;
 		font-size: 12px;
 		text-align: left;
-		padding: 5px 0;
-		border-radius: 5px;
+		pointer-events: none;
 		background-color: #fff;
 		filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.15));
+		border-radius: 5px;
 		opacity: 0;
-		transform: translateY(10px);
-		pointer-events: none;
 		transition: transform 0.2s, opacity 0.2s;
-		z-index: 2;
+		transform: translateY(10px);
 
 		.sub-menu {
 			top: -5px;
 			left: calc(100% + 5px);
 			padding: 5px 0;
-			border-radius: 5px;
+			pointer-events: none;
 			background-color: #fff;
 			filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.15));
+			border-radius: 5px;
 			opacity: 0;
-			transform: translateY(-10px);
-			pointer-events: none;
 			transition: transform 0.2s, opacity 0.2s;
+			transform: translateY(-10px);
 
-			&:before {
-				content: '\23F4';
+			&::before {
 				position: absolute;
 				top: 5px;
 				left: -7px;
-				color: #fff;
 				font-size: 14px;
+				color: #fff;
+				content: '\23F4';
 			}
 		}
 
 		li {
 			position: relative;
-			list-style: none;
-			line-height: 30px;
-			padding: 0 15px;
-			white-space: nowrap;
 			display: flex;
 			justify-content: space-between;
+			padding: 0 15px;
+			line-height: 30px;
+			white-space: nowrap;
+			list-style: none;
 
 			.suffix {
 				font-size: 0.9em;
@@ -168,22 +168,22 @@
 
 			& > .sub-menu:hover,
 			&:hover > .sub-menu {
-				opacity: 1;
-				transform: translateY(0);
 				pointer-events: auto;
+				opacity: 1;
 				transition: transform 0.2s 0.2s, opacity 0.2s 0.2s;
+				transform: translateY(0);
 			}
 		}
 
 		li:hover {
-			background-color: #dcdcdc;
 			cursor: pointer;
+			background-color: #dcdcdc;
 		}
 
 		&.active {
+			pointer-events: auto;
 			opacity: 1;
 			transform: translateY(0);
-			pointer-events: auto;
 		}
 	}
 </style>

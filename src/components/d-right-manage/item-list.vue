@@ -16,7 +16,7 @@
 </script>
 <style lang="scss" scoped>
 	.d-mange-list {
-		overflow: auto;
 		height: calc(100% - 40px);
+		overflow: auto;
 	}
 </style>
