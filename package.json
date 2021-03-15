@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "update": "auto-vers -t",
     "lint": "vue-cli-service lint src",
-    "stylelint": "stylelint src/**/*.vue src/**/*.scss --config '.stylelintrc.js' --fix",
+    "stylelint": "stylelint 'src/**/*.{scss,vue}' --config .stylelintrc.js --fix",
     "fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
     "commit": "git add .&&git cz"
   },
@@ -70,6 +70,7 @@
     "stylelint": "^13.3.2",
     "stylelint-config-recess-order": "^2.0.4",
     "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.19.0",
     "svg-sprite-loader": "^5.2.1",
     "typescript": "^4.0.3",
     "vue-template-compiler": "^2.6.11",

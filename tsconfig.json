@@ -8,6 +8,10 @@
 		"experimentalDecorators": true, // 启用装饰器
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true, // 允许从没有设置默认导出的模块中默认导入
+		"downlevelIteration": true, // 降级遍历器实现，如果目标源是es3/5，那么遍历器会有降级的实现
+		"noUnusedLocals": true, // 检查只声明、未使用的局部变量(只提示不报错)
+		"noUnusedParameters": true, // 检查未使用的函数参数(只提示不报错)
+		"removeComments":true, // 删除注释
 		"sourceMap": true,
 		"baseUrl": ".",
 		"typeRoots": [
@@ -35,8 +39,7 @@
 	"include": [
 		"src/**/*.ts",
 		"src/**/*.tsx",
-		"src/**/*.vue",
-		"types/index.d.ts"
+		"src/**/*.vue"
 	],
 	"exclude": [
 		"node_modules"

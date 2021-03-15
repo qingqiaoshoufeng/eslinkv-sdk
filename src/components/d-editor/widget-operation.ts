@@ -22,7 +22,7 @@ class Mixins extends Vue {
 		const update = () => {
 			const configPanel = this.$refs.configPanel
 			if (oldId) {
-				configPanel && configPanel.reset()
+				configPanel && (configPanel as any).reset()
 				this.$nextTick(() => {
 					this.currentWidgetValue = this.widgetAdded[id].config
 				})
@@ -36,10 +36,6 @@ class Mixins extends Vue {
 	}
 
 	handleWidgetConfig ({ value = {} }, item) {
-		// if (this.widgetsImporting) {
-		// 	this.isWidgetProcessing = false
-		// 	return
-		// }
 		this.updateWidget(value)
 		requestAnimationFrame(() => {
 			this.isWidgetProcessing = false
@@ -56,7 +52,6 @@ class Mixins extends Vue {
 	}
 
 	showProcessing (top, left, width, height, widget) {
-		// if (this.widgetsImporting) return
 		this.widgetProcessingStyle = `
                 transform: translate3d(${left}px, ${top}px, 0);
                 width: ${width}px;
@@ -104,10 +99,8 @@ class Mixins extends Vue {
 		platform.actions.setChooseWidgetCustomConfig(config.customConfig)
 		if (this.widgetActivating) return
 		this.widgetActivating = true
-		this.rightMenuGrid = null
 		this.currentWidgetType = type
 		this.activatedWidgetId = id
-		this.widgetActiveTimer = null
 		setTimeout(() => {
 			this.widgetActivating = false
 		}, 300)
@@ -149,7 +142,7 @@ class Mixins extends Vue {
 
 	@Watch('activatedWidgetId')
 	onActivatedWidgetIdChange (id, oldId) {
-		if (!id || this.widgetsImporting) return
+		if (!id) return
 
 		if (this.currentWidgetValue && id === this.currentWidgetValue.widget.id || !id) return
 		this.updateConfigPanelValue(id, oldId)

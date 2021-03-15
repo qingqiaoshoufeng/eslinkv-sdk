@@ -1,4 +1,3 @@
-<script src="../../../commitlint.config.js"></script>
 <template lang="pug">
 	section(v-show="platform.ruler.rulerVisible")
 		.vue-ruler-ref-dot-h.pos-a(:style="{ transform: `translateY(${vGuideTop}px)` }")
@@ -25,32 +24,32 @@
 			hGuideLeft: Number,
 			contentMove: Boolean,
 			contentWidth: Number,
-			contentHeight: Number,
+			contentHeight: Number
 		},
-		data() {
+		data () {
 			return {
 				showGuideMenu: false,
 				menuLeft: 0,
 				menuTop: 0,
 				removeId: null,
-				platform: platform.state,
+				platform: platform.state
 			}
 		},
 		computed: {
-			guidesWrapperStyle() {
+			guidesWrapperStyle () {
 				const style = []
 				style.push(`width: ${this.contentWidth}px`)
 				style.push(`height: ${this.contentHeight}px`)
 				style.push(`transform: translate3d(${this.platform.ruler.contentX}px, ${this.platform.ruler.contentY}px, 0) scale(${this.platform.ruler.zoom})`)
 				return style.join(';')
-			},
+			}
 		},
 		methods: {
 			// 水平线/垂直线 处按下鼠标
-			handleGuideDrag(e, item) {
+			handleGuideDrag (e, item) {
 				if (e.which !== 1) return
-				let {clientX, clientY} = e
-				const {type, id} = item
+				let { clientX, clientY } = e
+				const { type, id } = item
 				if (this.platform.panelFixed) {
 					clientX -= 428
 				}
@@ -60,11 +59,11 @@
 				this.platform.ruler.dragFlag = type
 				this.platform.ruler.dragGuideId = id
 			},
-			handleDestroy(id) {
+			handleDestroy (id) {
 				const index = this.platform.ruler.guideLines.findIndex(v => v.id === id)
 				this.platform.ruler.guideLines.splice(index, 1)
 			},
-			getLineStyle({type, site}) {
+			getLineStyle ({ type, site }) {
 				const style = {}
 				type === 'h' && (style.top = `${site}px`)
 				type === 'v' && (style.left = `${site}px`)
@@ -72,7 +71,7 @@
 				style.transform = `scale(${type === 'v' ? 1 / this.platform.ruler.zoom + ', 1' : '1, ' + 1 / this.platform.ruler.zoom})`
 				return style
 			},
-			openGuideMenu(id, e) {
+			openGuideMenu (id, e) {
 				e.preventDefault()
 				e.stopPropagation()
 				this.removeId = id
@@ -80,14 +79,14 @@
 				this.menuLeft = e.clientX
 				this.menuTop = e.clientY
 			},
-			closeGuideMenu() {
+			closeGuideMenu () {
 				this.showGuideMenu = false
 			}
 		},
-		mounted() {
+		mounted () {
 			document.addEventListener('click', this.closeGuideMenu)
 		},
-		beforeDestroy() {
+		beforeDestroy () {
 			document.removeEventListener('click', this.closeGuideMenu)
 		}
 	}
@@ -113,12 +112,14 @@
 
 	.vue-ruler-ref-line-v,
 	.vue-ruler-ref-line-h {
+		background-color: cyan;
 		opacity: 0.5;
 		transform-origin: left top;
 
 		&:hover {
 			z-index: 2;
 			opacity: 1;
+			transform: translateX(0) scale(1, 1) !important;
 		}
 
 		&::before,
@@ -126,6 +127,11 @@
 			position: absolute;
 			content: '';
 			background-color: rgba(0, 255, 255, 0.295);
+		}
+
+		&::after {
+			width: 100%;
+			height: 3px;
 		}
 	}
 
@@ -139,11 +145,8 @@
 		width: 10000%;
 		height: 1px;
 		cursor: row-resize;
-		background-color: cyan;
 
 		&:hover {
-			transform: translateY(0) scale(1, 1) !important;
-
 			&::before {
 				bottom: 1px;
 				width: 100%;
@@ -152,8 +155,6 @@
 
 			&::after {
 				top: 1px;
-				width: 100%;
-				height: 3px;
 			}
 		}
 	}
@@ -163,11 +164,8 @@
 		width: 1px;
 		height: 10000%;
 		cursor: col-resize;
-		background-color: cyan;
 
 		&:hover {
-			transform: translateX(0) scale(1, 1) !important;
-
 			&::before {
 				right: 1px;
 				width: 3px;

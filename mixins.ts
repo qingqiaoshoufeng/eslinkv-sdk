@@ -29,7 +29,7 @@ export const configMerge = function (from, to) {
 	return output
 }
 
-const mx: any = {
+const mx = {
 	mixins: [fetch, dataProcess],
 	inject: ['kanboardEditor'],
 	props: {
@@ -140,7 +140,7 @@ const mx: any = {
 			return styleParser(layout)
 		},
 		id () {
-			const now: number = +new Date()
+			const now = +new Date()
 			if (this.config) {
 				if (this.config.widget) {
 					return `d-${this.config.widget.id ? this.config.widget.id : ''}${now}`
@@ -164,5 +164,4 @@ const mx: any = {
 		}
 	}
 }
-
 export default mx

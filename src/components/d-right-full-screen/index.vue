@@ -18,7 +18,7 @@
 	})
 	export default class DRightFullScene extends Vue {
 		platform: any = platform.state
-		
+
 		handleFullscreen () {
 			if (this.platform.fullscreen) {
 				document.exitFullscreen()
@@ -28,5 +28,3 @@
 		}
 	}
 </script>
-<style lang="scss" scoped>
-</style>

@@ -68,8 +68,8 @@
 	export default class DRightWidget extends Vue {
 		scene: any = scene.state
 		platform: any = platform.state
-		total: nunber = 0
-		have: nunber = 0
+		total: number = 0
+		have: number = 0
 		editScene = false
 		copyModel = false
 

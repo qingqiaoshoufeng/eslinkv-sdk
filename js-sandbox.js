@@ -73,9 +73,10 @@ const queryKeywords = (sourceAst, keywords) => {
 
 // 原先的todo 处理通过运算符构造对象属性引用的漏洞，例如 []['__' + 'proto__']
 function validateSource (source, disabledObjects) {
+  // eslint-disable-next-line no-new-func
   const sourceForParse = new Function(source).toString()
   const sourceAst = acorn.parse(sourceForParse, { ecmaVersion: 10 })
-  const disabledWords = queryKeywords(sourceAst, disabledObjects, 'object')
+  const disabledWords = queryKeywords(sourceAst, disabledObjects)
   const wordsState = disabledWords.reduce((acc, curr) => {
     const { name, count } = curr
     acc[name] = count
@@ -90,6 +91,7 @@ function validateSource (source, disabledObjects) {
 
 function buildWall (source) {
   source = `with (wall) { ${source} }`
+  // eslint-disable-next-line no-new-func
   return new Function('wall', source)
 }
 

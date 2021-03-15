@@ -150,7 +150,7 @@
 				})
 			}
 		}
-		
+
 		created () {
 			platform.state.currentType = 0
 		}

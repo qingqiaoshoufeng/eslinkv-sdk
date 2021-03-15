@@ -1,5 +1,4 @@
 import { downloadFile } from '../../utils/index'
-import { Input } from 'view-design'
 
 // todo 取消render
 export default {
@@ -9,9 +8,6 @@ export default {
 			const fileName = `${data.name}-${+new Date()}`
 			this.$Modal.confirm({
 				title: '看板导出',
-				components: {
-					'i-input': Input
-				},
 				render: (h) => {
 					return h(
 						'div', { class: 'form-wrapper' },
@@ -29,8 +25,6 @@ export default {
 					config.data = JSON.parse(config.attribute)
 					delete config.attribute
 					downloadFile(config, fileName, 'json')
-				},
-				onCancel: () => {
 				},
 				okText: '确定',
 				cancelText: '取消'
