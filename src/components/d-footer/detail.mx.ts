@@ -6,11 +6,7 @@ import { getQueryString } from '../../utils/index'
 export default {
     methods: {
         renderByDetail (res) {
-            const {
-                attribute,
-                name
-            } = res
-            document.title = `编辑 - ${name} - 数据看板`
+            const { attribute } = res
             let value
             if (typeof attribute === 'string') {
                 value = JSON.parse(attribute)
@@ -87,12 +83,5 @@ export default {
         if (getQueryString('scene')) {
             scene.actions.setSceneIndex(getQueryString('scene'))
         }
-        /**
-         * @description 适配
-         */
-        // todo 取消注释
-        // if (getQueryString('scale'))
-        // 	if (!isNaN(getQueryString('scale')))
-        // 		this.scale = Number(getQueryString('scale'))
     }
 }
