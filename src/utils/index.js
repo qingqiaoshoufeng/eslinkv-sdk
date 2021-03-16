@@ -50,7 +50,15 @@ export function deepCopy (e) {
         if (r !== 'object') return e
         t = {}
     }
-    if (r === 'array') for (let n = 0; n < e.length; n++) t.push(d.deepCopy(e[n])) else if (r === 'object') for (const o in e) t[o] = d.deepCopy(e[o])
+    if (r === 'array') {
+        for (let n = 0; n < e.length; n++) {
+            t.push(d.deepCopy(e[n]))
+        }
+    } else if (r === 'object') {
+        for (const o in e) {
+            t[o] = d.deepCopy(e[o])
+        }
+    }
     return t
 }
 

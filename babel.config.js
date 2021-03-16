@@ -8,5 +8,6 @@ module.exports = {
         ['import', {
             libraryName: 'view-design',
             libraryDirectory: 'src/components'
-        }]]
+        }]
+    ]
 }
