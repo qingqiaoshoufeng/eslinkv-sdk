@@ -70,8 +70,14 @@ export default {
     mounted () {
         const templateId = this.$route.query.templateId
         const id = this.$route.params.id || templateId
+        const file = this.$route.params.file
         if (id) {
             this.$api.board.detail({ dataBoardId: id }).then(res => {
+                this.renderByDetail(res)
+            })
+        }
+        if (file) {
+            this.$api.board.detailFile(decodeURIComponent(file)).then(res => {
                 this.renderByDetail(res)
             })
         }

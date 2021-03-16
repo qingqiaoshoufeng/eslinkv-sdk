@@ -67,3 +67,11 @@ export function detailMarket (data) {
         headers
     })
 }
+
+export function detailFile (url) {
+    return request({
+        url,
+        method: 'get',
+        headers
+    })
+}

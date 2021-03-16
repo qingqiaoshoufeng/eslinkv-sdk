@@ -6,7 +6,7 @@
 					.wrap(v-for="(v, n) in obj[inputKey]" :key="n")
 						DManageItem(:config="k" v-for="(k, i) in config.children" :key="i" :parent="v")
 						i-button(type="warning" @click="remove(n)") 删除
-					i-button(type="primary").add(@click="add") 新增
+					i-button.add(type="primary" @click="add") 新增
 </template>
 <script lang="ts">
 	import func from './func.mx'
