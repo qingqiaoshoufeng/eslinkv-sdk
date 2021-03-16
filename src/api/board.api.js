@@ -72,6 +72,7 @@ export function detailFile (url) {
     return request({
         url,
         method: 'get',
-        headers
+        headers,
+        dataType: 'json'
     })
 }
