@@ -28,12 +28,12 @@ module.exports = {
 		historyApiFallback: true,
 		disableHostCheck: true,
 		proxy: {
-			'^/data': {
-				target: 'http://127.0.0.1:7001',
-				// target: 'http://10.30.3.156:7001',
+			'^/node': {
+				// target: 'http://127.0.0.1:7001',
+				target: 'http://10.30.3.156:7001',
 				changeOrigin: true,
 				pathRewrite: {
-					'^/data': '/'
+					'^/node': '/'
 				}
 			},
 			'^/cdn': {
