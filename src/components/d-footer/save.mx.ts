@@ -86,7 +86,7 @@ export default {
 			this.saving = true
 			const { params: { id } } = this.$route
 			data.screenType = this.type
-			this.$api.screen.update({ ...data, id }).then((res) => {
+			this.$api.screen.update({ ...data, screenId: id }).then((res) => {
 				this.kanboardEdited = false
 				this.$Message.success('修改成功')
 				this.loading = false
