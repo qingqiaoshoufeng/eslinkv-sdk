@@ -6,12 +6,12 @@ import { getQueryString } from '../../utils/index'
 export default {
     methods: {
         renderByDetail (res) {
-            const { attribute } = res
+            const { screenConfig } = res
             let value
-            if (typeof attribute === 'string') {
-                value = JSON.parse(attribute)
+            if (typeof screenConfig === 'string') {
+                value = JSON.parse(screenConfig)
             } else {
-                value = attribute
+                value = screenConfig
             }
             if (value.scene) {
                 scene.actions.initScene(value)

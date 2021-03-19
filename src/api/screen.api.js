@@ -29,7 +29,7 @@ export async function detail (data) {
         headers
     })
     platform.state.currentType = originData.type
-    const res = JSON.parse(originData.attribute)
+    const res = JSON.parse(originData.screenConfig)
     if (res.widgets) {
         res.widgets.forEach(v => {
             setDefault(v.value)
@@ -37,7 +37,7 @@ export async function detail (data) {
     }
     return {
         ...originData,
-        attribute: JSON.stringify(res)
+        screenConfig: JSON.stringify(res)
     }
 }
 

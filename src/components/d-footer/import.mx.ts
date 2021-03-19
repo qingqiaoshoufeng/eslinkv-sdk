@@ -13,7 +13,7 @@ export default {
 					this.loading = true
 					const result = JSON.parse(e.target.result)
 					const { data, createTime, name } = result
-					this.renderByDetail({ name, attribute: data, createTime })
+					this.renderByDetail({ name, screenConfig: data, createTime })
 					this.importModal = false
 					this.loading = false
 				} catch (e) {

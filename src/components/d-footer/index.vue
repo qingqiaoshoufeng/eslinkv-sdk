@@ -109,7 +109,7 @@
 		platFormData () {
 			const defaultConfig = commonConfigValue() // 读取默认配置
 			const panelConfig = this.platform.panelConfig
-			const { size, info: { name, remark } } = panelConfig
+			const { size, info: { name } } = panelConfig
 			delete size.preset
 			if (size.range && !Object.values(size.range).find(item => item !== 0 && item !== '%')) {
 				delete size.range
@@ -139,11 +139,10 @@
 			// todo 需要接口配合 参考线数据 存入另一个接口
 			const guides = this.platform.ruler.guideLines
 			return {
-				name,
-				remark,
+        screenName: name,
 				// todo 需要接口配合 去除一个参数需要看下是否可行
 				// createTime: format(Date.now(), 'yyyy-MM-dd hh:mm:ss'),
-				attribute: JSON.stringify({
+        screenConfig: JSON.stringify({
 					kanboard: panelConfig, // 看板画布配置
 					widgets, // 小工具配置
 					scene: this.scene.obj, // 场景

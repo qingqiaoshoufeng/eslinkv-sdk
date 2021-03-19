@@ -22,8 +22,8 @@ export default {
 				},
 				onOk: () => {
 					const config = { ...data }
-					config.data = JSON.parse(config.attribute)
-					delete config.attribute
+					config.data = JSON.parse(config.screenConfig)
+					delete config.screenConfig
 					downloadFile(config, fileName, 'json')
 				},
 				okText: '确定',
