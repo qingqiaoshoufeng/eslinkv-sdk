@@ -119,17 +119,17 @@
 					this.ready = true
 					return
 				} else {
-					this.$api.bussiness.detailMarket({
-						componentEnTitle: this.type,
-						componentVersion: this.config.widget.componentVersion
-					}).then(res => {
-						const script = document.createElement('script')
-						script.onload = () => {
-							this.ready = true
-						}
-						script.src = res.componentJsUrl
-						document.head.appendChild(script)
-					})
+					// this.$api.bussiness.detailMarket({
+					// 	componentEnTitle: this.type,
+					// 	componentVersion: this.config.widget.componentVersion
+					// }).then(res => {
+					// 	const script = document.createElement('script')
+					// 	script.onload = () => {
+					// 		this.ready = true
+					// 	}
+					// 	script.src = res.componentJsUrl
+					// 	document.head.appendChild(script)
+					// })
 				}
 			} else {
 				if (Vue.options.components[`${prefix2}${this.type}`]) {
