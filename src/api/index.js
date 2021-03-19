@@ -10,7 +10,12 @@ context.keys().forEach(name => {
 	}
 })
 
-Vue.prototype.$api = { ...apis, ...Vue.prototype.$api }
+if (Vue.prototype.$api) {
+	Vue.prototype.$api = { ...apis, ...Vue.prototype.$api }
+} else {
+	Vue.prototype.$api = apis
+}
+
 
 // getKanboardConfig: data => http(data, 'post', prefix + '/board/detail'), // 分页查询项目列表
 // databaseQuery: (params, method, url) => http(params, method, `${prefix}/${url}`),
