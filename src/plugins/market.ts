@@ -1,4 +1,4 @@
-import { getCompList, getLevel0 } from '../api/bussiness.api'
+import { getCompList, getLevel0 } from '../api/upload.api'
 import custom from '../store/custom.store'
 
 let widgetsArray = []

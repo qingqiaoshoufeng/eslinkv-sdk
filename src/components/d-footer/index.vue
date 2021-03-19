@@ -5,13 +5,13 @@
 				span.d-footer-title {{ platform.panelConfig.info ? platform.panelConfig.info.name : '' }}
 			.d-footer-right.fn-flex
 				//i-button(@click="saveSnapshot") 保存截图
-				i-button(@click="exit") 返回
-				i-button(@click="preview") 预览
-				i-button(type="primary" @click="handleSave(0)" :loading="loading") 保存
-				i-button(type="primary" @click="handleSave(1)" :loading="loading" v-if="isNew") 保存为模板
-				i-button(@click="publishBoard" :loading="loading" v-if="!isNew") 发布
-				i-button(@click="handleExport" :loading="loading") 导出
-				i-button(@click="importModal=true" :loading="loading") 导入
+				i-button(:disabled="disabled" @click="exit") 返回
+				i-button(:disabled="disabled" @click="preview") 预览
+				i-button(:disabled="disabled" type="primary" @click="handleSave(0)" :loading="loading") 保存
+				i-button(:disabled="disabled" type="primary" @click="handleSave(1)" :loading="loading" v-if="isNew") 保存为模板
+				i-button(:disabled="disabled" @click="publishBoard" :loading="loading" v-if="!isNew") 发布
+				i-button(:disabled="disabled" @click="handleExport" :loading="loading") 导出
+				i-button(:disabled="disabled" @click="importModal=true" :loading="loading") 导入
 			load-mask(:show="saving") 正在保存数据…
 			Modal(v-model="importModal")
 				Form
@@ -47,6 +47,7 @@
 	})
 	export default class DFooter extends mixins(exportMx, detailMx, saveMx, importMx, publishMx) {
 		@Prop(Boolean) kanboardEdited: boolean
+		@Prop({ default: false }) disabled: boolean
 		@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
 
 		platform = platform.state

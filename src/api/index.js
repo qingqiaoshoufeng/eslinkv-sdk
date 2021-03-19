@@ -10,7 +10,7 @@ context.keys().forEach(name => {
 	}
 })
 
-Vue.prototype.$api = apis
+Vue.prototype.$api = { ...apis, ...Vue.prototype.$api }
 
 // getKanboardConfig: data => http(data, 'post', prefix + '/board/detail'), // 分页查询项目列表
 // databaseQuery: (params, method, url) => http(params, method, `${prefix}/${url}`),

@@ -5,7 +5,7 @@
         .d-editor-box.pos-r.fn-flex
           d-widget-list(ref="widgets" :class="{ 'd-editor-fullscreen': platform.fullscreen }")
           d-editor(ref="kanboardEditor")
-      d-footer
+      d-footer(:disabled="true")
 </template>
 <script lang="ts">
 	import { Vue, Component, Provide } from 'vue-property-decorator'
