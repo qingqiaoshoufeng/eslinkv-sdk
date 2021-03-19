@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { configMerge } from '../utils'
 const context = require.context('/', false, /\.(api.js)$/)
 const apis = {}
 context.keys().forEach(name => {
@@ -10,8 +11,9 @@ context.keys().forEach(name => {
 	}
 })
 
+
 if (Vue.prototype.$api) {
-	Vue.prototype.$api = { ...apis, ...Vue.prototype.$api }
+	Vue.prototype.$api = configMerge(apis, Vue.prototype.$api)
 } else {
 	Vue.prototype.$api = apis
 }
@@ -19,13 +21,9 @@ if (Vue.prototype.$api) {
 
 // getKanboardConfig: data => http(data, 'post', prefix + '/board/detail'), // 分页查询项目列表
 // databaseQuery: (params, method, url) => http(params, method, `${prefix}/${url}`),
-// addBoard: (p, m) => http(p, m, prefix + '/board/save'), // 保存看板信息
-// delBoard: (p, m) => http(p, m, prefix + '/board/delete'), // 看板删除
-// editBoard: (p, m) => http(p, m, prefix + '/board/update'), // 修改看板信息
 // getMaterials: data => http(data, 'post', prefix + '/material/page'),
 // saveMaterials: data => http(data, 'post', prefix + '/material/batch/save'),
 // deleteMaterial: data => http(data, 'post', prefix + '/material/delete'),
-// publishBoard: data => http(data, 'post', prefix + '/board/publish'),
 // getKanboardByHexCode: data => http(data, 'post', prefix + '/board/detail/hexCode'),
 //
 // 数仓相关接口
