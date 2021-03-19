@@ -142,12 +142,12 @@
         screenName: name,
 				// todo 需要接口配合 去除一个参数需要看下是否可行
 				// createTime: format(Date.now(), 'yyyy-MM-dd hh:mm:ss'),
-        screenConfig: JSON.stringify({
-					kanboard: panelConfig, // 看板画布配置
-					widgets, // 小工具配置
-					scene: this.scene.obj, // 场景
-					guides // 参考线
-				})
+        screenConfig: {
+          kanboard: panelConfig, // 看板画布配置
+          widgets, // 小工具配置
+          scene: this.scene.obj, // 场景
+          guides // 参考线
+        }
 			}
 		}
 

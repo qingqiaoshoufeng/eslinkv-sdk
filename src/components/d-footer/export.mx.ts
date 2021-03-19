@@ -22,7 +22,7 @@ export default {
 				},
 				onOk: () => {
 					const config = { ...data }
-					config.data = JSON.parse(config.screenConfig)
+					config.data = config.screenConfig
 					delete config.screenConfig
 					downloadFile(config, fileName, 'json')
 				},
