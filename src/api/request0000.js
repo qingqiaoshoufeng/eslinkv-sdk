@@ -2,7 +2,6 @@ import { Message } from 'view-design'
 import axios from 'axios'
 
 const request = axios.create()
-const baseURL = '/api'
 request.defaults.timeout = 30000
 request.interceptors.request.use(function (config) {
 	return config
@@ -39,7 +38,5 @@ request.interceptors.response.use(response => {
 	// eslint-disable-next-line prefer-promise-reject-errors
 	return Promise.reject(false)
 })
-
-export { baseURL }
 
 export default request

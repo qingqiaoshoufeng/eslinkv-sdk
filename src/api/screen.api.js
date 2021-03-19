@@ -5,7 +5,7 @@ import platform from '../store/platform.store'
 
 export function add (data) {
     return request({
-        url: `${baseURL}/board/save`,
+        url: `${baseURL}/screen/create`,
         method: 'post',
         data: qs.stringify(data),
         headers
@@ -14,7 +14,7 @@ export function add (data) {
 
 export function publish (data) {
     return request({
-        url: `${baseURL}/board/publish`,
+        url: `${baseURL}/screen/publish`,
         method: 'post',
         data: qs.stringify(data),
         headers
@@ -23,7 +23,7 @@ export function publish (data) {
 
 export async function detail (data) {
     const originData = await request({
-        url: `${baseURL}/board/detail`,
+        url: `${baseURL}/screen/detail`,
         method: 'post',
         data: qs.stringify(data),
         headers
@@ -43,7 +43,7 @@ export async function detail (data) {
 
 export function update (data) {
     return request({
-        url: `${baseURL}/board/update`,
+        url: `${baseURL}/screen/update`,
         method: 'post',
         data: qs.stringify(data),
         headers
@@ -52,7 +52,7 @@ export function update (data) {
 
 export function remove (data) {
     return request({
-        url: `${baseURL}/board/delete`,
+        url: `${baseURL}/screen/destroy`,
         method: 'post',
         data: qs.stringify(data),
         headers

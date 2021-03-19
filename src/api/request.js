@@ -2,7 +2,7 @@ import { Message } from 'view-design'
 import axios from 'axios'
 
 const request = axios.create()
-const baseURL = '/api'
+const baseURL = '/node'
 const serverURL = '/server'
 const baseHRURL = '/hangran'
 
@@ -28,11 +28,11 @@ const errMessage = '网络异常，请重试'
 request.interceptors.response.use(response => {
 	const { data } = response
 	if (data) {
-		if (data.responseCode === '100000') {
+		if (data.code === 200) {
 			return data.result
 		}
 		if (data.responseCode === '101002') {
-			// 未登录
+			// todo: 未登录
 			Message.error(data.message || errMessage)
 			// eslint-disable-next-line prefer-promise-reject-errors
 			return Promise.reject(false)

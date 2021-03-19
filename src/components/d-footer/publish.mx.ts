@@ -10,12 +10,10 @@ export default {
 				content: '确认发布此看板吗？',
 				loading: true,
 				onOk: () => {
-					this.$api.board.publish({ id: this.$parent.kanboardId }).then(res => {
-						if (res.responseCode == 100000) {
-							this.$Message.success('发布成功！')
-							this.$router.push('/')
-							this.exit()
-						}
+					this.$api.screen.publish({ id: this.$parent.kanboardId }).then(res => {
+                        this.$Message.success('发布成功！')
+                        this.$router.push('/')
+                        this.exit()
 						this.$Modal.remove()
 					}).catch(() => {
 						this.$Modal.remove()

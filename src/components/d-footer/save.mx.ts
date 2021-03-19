@@ -32,17 +32,17 @@ export default {
 		},
 		async addBoard () {
 			const data = this.platFormData()
-			data.type = this.type
+			data.screenType = this.type
 			this.$Modal.confirm({
 				title: '快照',
 				content: '是否创建看板快照？',
 				onOk: async () => {
-					const snapshot = await this.capture({
+					const screenAvatar = await this.capture({
 						selector: '#kanban'
 					}).catch(e => {
 						console.warn('快照创建失败', e)
 					})
-					if (snapshot) data.snapshot = snapshot
+					if (screenAvatar) data.screenAvatar = screenAvatar
 					this.submitAdd(data)
 				},
 				onCancel: () => {
@@ -58,10 +58,10 @@ export default {
 				title: '快照',
 				content: '是否更新看板快照？',
 				onOk: async () => {
-					const snapshot = await this.capture({ selector: '#kanban' }).catch(e => {
+					const screenAvatar = await this.capture({ selector: '#kanban' }).catch(e => {
 						console.warn('快照创建失败', e)
 					})
-					if (snapshot) data.snapshot = snapshot
+					if (screenAvatar) data.screenAvatar = screenAvatar
 					this.submitEdit(data)
 				},
 				onCancel: () => {
@@ -73,7 +73,7 @@ export default {
 		},
 		submitAdd (data) {
 			this.loading = true
-			this.$api.board.add(data).then(res => {
+			this.$api.screen.add(data).then(res => {
 				this.kanboardEdited = false
 				this.$Message.success('保存成功！')
 				this.loading = false
@@ -85,8 +85,8 @@ export default {
 		submitEdit (data) {
 			this.saving = true
 			const { params: { id } } = this.$route
-			data.type = this.type
-			this.$api.board.update({ ...data, id }).then((res) => {
+			data.screenType = this.type
+			this.$api.screen.update({ ...data, id }).then((res) => {
 				this.kanboardEdited = false
 				this.$Message.success('修改成功')
 				this.loading = false
@@ -167,7 +167,7 @@ export default {
 				}).then(canvas => {
 					const link = document.createElement('a')
 					link.href = canvas.toDataURL()
-					link.setAttribute('download', 'snapshot.png')
+					link.setAttribute('download', 'screenAvatar.png')
 					link.style.display = 'none'
 					document.body.appendChild(link)
 					link.click()
