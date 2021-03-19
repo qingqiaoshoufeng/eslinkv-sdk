@@ -11,9 +11,9 @@ export default {
 		handleSave (type) {
 			this.type = type || platform.state.currentType
 			// 用了模板后点保存
-			if (type === 0 && platform.state.currentType === 1 && this.$route.path === '/new') {
+			if (type === 'CUSTOM' && platform.state.currentType === 'TEMPLATE' && this.$route.path === '/new') {
 				// 新增的时候
-				this.type = 0
+				this.type = 'CUSTOM'
 			}
 			this.$Modal.confirm({
 				title: '确定保存吗？',

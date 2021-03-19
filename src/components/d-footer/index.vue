@@ -152,7 +152,7 @@
 		}
 
 		created () {
-			platform.state.currentType = 0
+			platform.state.currentType = 'CUSTOM'
 		}
 
 		mounted () {

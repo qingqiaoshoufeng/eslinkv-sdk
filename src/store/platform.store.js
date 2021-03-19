@@ -67,7 +67,7 @@ function getInitPanelConfig () {
 
 const state = Vue.observable({
 	version: '1.0.2',
-	currentType: 0, // 当前看板类型：0:看板, 1:小工具模板, 2:参考线模板
+	currentType: 'CUSTOM', // 当前看板类型：CUSTOM:看板, TEMPLATE:小工具模板
 	widgetAdded: {},
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
 	chooseWidgetId: null, // 选中项id
