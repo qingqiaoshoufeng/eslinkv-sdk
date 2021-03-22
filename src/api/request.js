@@ -9,6 +9,10 @@ const baseHRURL = '/hangran'
 export const headers = {
 	'Content-Type': 'application/x-www-form-urlencoded'
 }
+
+export const jsonHeaders = {
+    'Content-Type': 'application/json'
+}
 request.defaults.timeout = 30000
 request.interceptors.request.use(function (config) {
 	return config
