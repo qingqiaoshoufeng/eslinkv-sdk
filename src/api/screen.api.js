@@ -1,10 +1,10 @@
-import request, { baseURL, headers } from './request'
+import request, { headers } from './request'
 import { setDefault } from '../utils'
 import platform from '../store/platform.store'
 
-export function add (data) {
+export function create (data) {
     return request({
-        url: `${baseURL}/screen/create`,
+        url: '/screen/create',
         method: 'post',
         data,
         headers
@@ -13,7 +13,7 @@ export function add (data) {
 
 export function publish (data) {
     return request({
-        url: `${baseURL}/screen/publish`,
+        url: '/screen/publish',
         method: 'post',
         data,
         headers
@@ -22,7 +22,7 @@ export function publish (data) {
 
 export async function detail (data) {
     const originData = await request({
-        url: `${baseURL}/screen/detail`,
+        url: '/screen/detail',
         method: 'post',
         data,
         headers
@@ -42,18 +42,9 @@ export async function detail (data) {
 
 export function update (data) {
     return request({
-        url: `${baseURL}/screen/update`,
+        url: '/screen/update',
         method: 'post',
         data: data,
-        headers
-    })
-}
-
-export function remove (data) {
-    return request({
-        url: `${baseURL}/screen/destroy`,
-        method: 'post',
-        data,
         headers
     })
 }

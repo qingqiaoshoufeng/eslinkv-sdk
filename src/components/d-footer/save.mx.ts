@@ -73,7 +73,7 @@ export default {
 		},
 		submitAdd (data) {
 			this.loading = true
-			this.$api.screen.add(data).then(() => {
+			this.$api.screen.create(data).then(() => {
 				this.kanboardEdited = false
 				this.$Message.success('保存成功！')
 				this.loading = false

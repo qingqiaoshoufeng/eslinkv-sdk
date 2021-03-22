@@ -1,10 +1,10 @@
-import request, { baseURL, jsonHeaders } from './request'
+import request, { headers } from './request'
 
 export function getLevel (data) {
     return request({
-        url: `${baseURL}/market/componentType/level`,
+        url: '/market/componentType/level',
         method: 'post',
         data,
-        headers: jsonHeaders
+        headers
     })
 }

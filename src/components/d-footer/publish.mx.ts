@@ -11,7 +11,7 @@ export default {
                 loading: true,
                 onOk: () => {
                     const { params: { id } } = this.$route
-                    this.$api.screen.publish({ screenId: id }).then(res => {
+                    this.$api.screen.publish({ screenId: id }).then(() => {
                         this.$Message.success('发布成功！')
                         this.$router.push('/')
                         this.exit()
