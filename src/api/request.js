@@ -7,6 +7,10 @@ export const headers = {
 	'Content-Type': 'application/json'
 }
 request.defaults.baseURL = baseURL
+
+export const jsonHeaders = {
+    'Content-Type': 'application/json'
+}
 request.defaults.timeout = 30000
 request.interceptors.request.use(
 	function (config) {
