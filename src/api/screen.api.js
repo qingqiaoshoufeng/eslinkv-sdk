@@ -1,5 +1,4 @@
 import request, { baseURL, headers } from './request'
-import qs from 'qs'
 import { setDefault } from '../utils'
 import platform from '../store/platform.store'
 
@@ -8,9 +7,7 @@ export function add (data) {
         url: `${baseURL}/screen/create`,
         method: 'post',
         data,
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers
     })
 }
 
@@ -19,9 +16,7 @@ export function publish (data) {
         url: `${baseURL}/screen/publish`,
         method: 'post',
         data,
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers
     })
 }
 
@@ -30,9 +25,7 @@ export async function detail (data) {
         url: `${baseURL}/screen/detail`,
         method: 'post',
         data,
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers
     })
     platform.state.currentType = originData.screenType
     const res = originData.screenConfig
@@ -52,9 +45,7 @@ export function update (data) {
         url: `${baseURL}/screen/update`,
         method: 'post',
         data: data,
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers
     })
 }
 
@@ -63,20 +54,7 @@ export function remove (data) {
         url: `${baseURL}/screen/destroy`,
         method: 'post',
         data,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-}
-
-export function detailMarket (data) {
-    return request({
-        url: `${baseURL}/market/detail`,
-        method: 'post',
-        data,
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers
     })
 }
 

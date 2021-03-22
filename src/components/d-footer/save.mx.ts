@@ -73,7 +73,7 @@ export default {
 		},
 		submitAdd (data) {
 			this.loading = true
-			this.$api.screen.add(data).then(res => {
+			this.$api.screen.add(data).then(() => {
 				this.kanboardEdited = false
 				this.$Message.success('保存成功！')
 				this.loading = false
@@ -86,7 +86,7 @@ export default {
 			this.saving = true
 			const { params: { id } } = this.$route
 			data.screenType = this.type
-			this.$api.screen.update({ ...data, screenId: id }).then((res) => {
+			this.$api.screen.update({ ...data, screenId: id }).then(() => {
 				this.kanboardEdited = false
 				this.$Message.success('修改成功')
 				this.loading = false
@@ -107,8 +107,8 @@ export default {
 			const name = `screenShot-${Date.now()}.jpg`
 			const data = new FormData()
 			data.append('file', blob, name)
-			data.append('type', this.type)
-			this.$api.uploadFile(data).then((data) => {
+			data.append('library', 'screenSnapshot')
+			this.$api.upload.file(data).then((data) => {
 				resolve(data)
 			}).catch(reject).finally(() => {
 				this.screenshotCreating = false
