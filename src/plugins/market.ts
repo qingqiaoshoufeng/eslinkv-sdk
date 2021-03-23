@@ -4,8 +4,8 @@ import custom from '../store/custom.store'
 
 (async function () {
 	const level0 = await level()
+	const widgetsObject = {}
 	level0.forEach(item => {
-		const widgetsObject = {}
 		level({ componentTypeParentId: item.componentTypeId }).then(array => {
 			array.forEach(item => {
 				list({
