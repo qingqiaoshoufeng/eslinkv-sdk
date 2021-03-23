@@ -17,3 +17,21 @@ export function use (data) {
         headers
     })
 }
+
+export function update (data) {
+    return request({
+        url: '/market/component/update',
+        method: 'post',
+        data,
+        headers
+    })
+}
+
+export function getVersionList (data) {
+    return request({
+        url: '/market/component/version',
+        method: 'post',
+        data,
+        headers
+    })
+}

@@ -71,7 +71,8 @@
 			 * @description h5 原生拖拽事件
 			 */
 			dragstart (e, title, index, tabKey, obj) {
-				const { market, componentVersion, componentConfig } = obj
+			  console.log(obj)
+				const { market, componentVersion, componentConfig, componentId } = obj
 				if (!index) return
 				let widgetConfig
 				if (market) {
@@ -85,6 +86,7 @@
 					config,
 					market,
 					componentVersion,
+          componentId,
 					startX: e.offsetX,
 					startY: e.offsetY
 				}))

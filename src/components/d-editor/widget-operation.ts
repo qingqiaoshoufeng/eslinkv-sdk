@@ -67,7 +67,7 @@ class Mixins extends Vue {
 	// 小工具放置到画布
 	handleWidgetDrop (e, data) {
 		const { clientX, clientY, offsetX, offsetY } = e
-		const { type, config: inputConfig, startX, startY, market = false, componentVersion } = JSON.parse(data)
+		const { type, config: inputConfig, startX, startY, market = false, componentVersion, componentId } = JSON.parse(data)
 		const { layout = {}, config = {}, widget = {}, api } = inputConfig || {}
 		if (!layout.size) layout.size = {}
 		if (!layout.position) layout.position = {}
@@ -83,6 +83,7 @@ class Mixins extends Vue {
 		if (layout.zIndex) layout.zIndex = 10
 		widget.id = id
 		widget.componentVersion = componentVersion
+		widget.componentId = componentId
 		const value = { layout, widget, config, api }
 		this.initWidgetConfig(id, type, this.scene.index, market)
 		this.updateWidget(value)
