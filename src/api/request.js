@@ -2,13 +2,24 @@ import { Message } from 'view-design'
 import axios from 'axios'
 
 const request = axios.create()
+export const requestNoBaseURL = axios.create()
 export const baseURL = '/node'
 export const headers = {
 	'Content-Type': 'application/json'
 }
 request.defaults.baseURL = baseURL
 request.defaults.timeout = 30000
+requestNoBaseURL.defaults.timeout = 30000
 request.interceptors.request.use(
+	function (config) {
+		return config
+	},
+	function (error) {
+		return Promise.reject(error)
+	}
+)
+
+requestNoBaseURL.interceptors.request.use(
 	function (config) {
 		return config
 	},

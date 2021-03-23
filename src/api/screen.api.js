@@ -1,4 +1,4 @@
-import request, { headers } from './request'
+import request, { headers, requestNoBaseURL } from './request'
 import { setDefault } from '../utils'
 import platform from '../store/platform.store'
 
@@ -46,5 +46,14 @@ export function update (data) {
         method: 'post',
         data: data,
         headers
+    })
+}
+
+export function detailFile (url) {
+    return requestNoBaseURL({
+        url,
+        method: 'get',
+        headers,
+        dataType: 'json'
     })
 }
