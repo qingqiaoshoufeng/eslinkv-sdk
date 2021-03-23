@@ -67,4 +67,33 @@ request.interceptors.response.use(
 	}
 )
 
+requestNoBaseURL.interceptors.response.use(
+	(response) => {
+		const { data } = response
+		if (data) {
+			if (data.success) {
+				return data.result
+			}
+			if (data.code === 4001) {
+				window.top.location.href = `${location.origin}/login`
+				Message.error(data.message || errMessage)
+				// eslint-disable-next-line prefer-promise-reject-errors
+				return Promise.reject(false)
+			}
+			Message.error(data.message || errMessage)
+			// eslint-disable-next-line prefer-promise-reject-errors
+			return Promise.reject(false)
+		} else {
+			Message.error(errMessage)
+			// eslint-disable-next-line prefer-promise-reject-errors
+			return Promise.reject(false)
+		}
+	},
+	function (e) {
+		Message.error(errMessage)
+		// eslint-disable-next-line prefer-promise-reject-errors
+		return Promise.reject(false)
+	}
+)
+
 export default request
