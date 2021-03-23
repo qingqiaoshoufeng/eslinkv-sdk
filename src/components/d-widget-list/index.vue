@@ -1,21 +1,21 @@
 <template lang="pug">
-	.widgets-panel(:class="{ fixed: platform.panelFixed }")
-		i-tabs(:animated="false" type="card" @on-click="(name) => handlePanelToggle(name)")
-			template(v-for="(tab,tabKey) in custom.widgets")
-				i-tab-pane(:key="tab.name" :label="tab.label" :name="tab.name")
-					i-collapse(accordion simple @on-change="(keys) => handlePanelToggle(tab.name, keys[0])")
-						i-panel(:key="type" :name="type" :activeSet="setActiveMap(tab.name, type)" v-for="{ label, type, widgets } in tab.widgets")
-							span {{ label }}
-							template(v-if="widgetListActiveMap[`${tab.name}-${format(type)}`]" slot="content")
-								.widget-item-wrapper.pos-r(v-for="(widget, index) in widgets" :key="index")
-									i.pos-a(style="left:0;top:0;font-size: 12px;z-index: 9;") {{widget.type}}
-									vue-lazy-component.d-widget-list-lazy-component
-										div(slot="skeleton") 加载中...
-										div.d-widget-list-img(draggable="true" v-if="widget.market" @dragstart="dragstart($event, type, index,tabKey,widget)")
-											img(:src="widget.componentImage" )
-										div.d-widget-list-img(draggable="true" v-if="!widget.market" @dragstart="dragstart($event, type, index,tabKey,widget)")
-											img(:src="widget.snapshot")
-		d-svg.fixed-toggle.pointer(icon-class="pin" :title="platform.panelFixed ? '取消固定' : '固定小工具栏'" :class="{ active: platform.panelFixed }" @click="handleFix")
+  .widgets-panel(:class="{ fixed: platform.panelFixed }")
+    i-tabs(:animated="false" type="card" @on-click="(name) => handlePanelToggle(name)")
+      template(v-for="(tab,tabKey) in custom.widgets")
+        i-tab-pane(:key="tab.name" :label="tab.label" :name="tab.name")
+          i-collapse(accordion simple @on-change="(keys) => handlePanelToggle(tab.name, keys[0])")
+            i-panel(:key="type" :name="type||componentEnTitle" :activeSet="setActiveMap(tab.name, type)" v-for="{ label, type, widgets,componentEnTitle,componentTitle } in tab.widgets")
+              span {{ label||componentTitle }}
+              template(v-if="widgetListActiveMap[`${tab.name}-${format(type||componentEnTitle)}`]" slot="content")
+                .widget-item-wrapper.pos-r(v-for="(widget, index) in widgets" :key="index")
+                  i.pos-a(style="left:0;top:0;font-size: 12px;z-index: 9;") {{widget.type||componentEnTitle}}
+                  vue-lazy-component.d-widget-list-lazy-component
+                    div(slot="skeleton") 加载中...
+                    div.d-widget-list-img(draggable="true" v-if="widget.market" @dragstart="dragstart($event, type||componentEnTitle, index,tabKey,widget)")
+                      img(:src="widget.componentAvatar" )
+                    div.d-widget-list-img(draggable="true" v-if="!widget.market" @dragstart="dragstart($event, type, index,tabKey,widget)")
+                      img(:src="widget.componentAvatar")
+    d-svg.fixed-toggle.pointer(icon-class="pin" :title="platform.panelFixed ? '取消固定' : '固定小工具栏'" :class="{ active: platform.panelFixed }" @click="handleFix")
 </template>
 <script>
 	import parts from '../d-widget-part/index'
