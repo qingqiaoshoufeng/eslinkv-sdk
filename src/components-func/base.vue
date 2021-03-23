@@ -30,9 +30,10 @@
 <script lang="ts">
 	import func from './func.mx'
 	import { Component } from 'vue-property-decorator'
-	
+
 	// todo 组件市场的组件可以切换版本
 	// ajax 获取版本列表切换
+  // 并强制刷新当前组件
 	@Component
 	export default class FuncBase extends func {
 	}
