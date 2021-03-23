@@ -70,17 +70,18 @@
 			/**
 			 * @description h5 原生拖拽事件
 			 */
-			dragstart (e, title, index, tabKey, { type, market, componentVersion, componentConfig }) {
-				if (!type) return
+			dragstart (e, title, index, tabKey, obj) {
+				const { market, componentVersion, componentConfig } = obj
+				if (!index) return
 				let widgetConfig
 				if (market) {
-					widgetConfig = { config: { layout: JSON.parse(componentConfig).layout } }
+					widgetConfig = { config: { layout: componentConfig.layout } }
 				} else {
-					widgetConfig = this.custom.widgets[tabKey].widgets[title].widgets[type]
+					widgetConfig = this.custom.widgets[tabKey].widgets[title].widgets[index]
 				}
 				const { config } = widgetConfig
 				e.dataTransfer.setData('widget-config', JSON.stringify({
-					type,
+					type: index,
 					config,
 					market,
 					componentVersion,

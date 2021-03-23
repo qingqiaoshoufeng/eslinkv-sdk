@@ -17,12 +17,12 @@ import custom from '../store/custom.store'
 				}).then(res => {
 					res.list.forEach(m => {
 						if (widgetsObject[item.componentTypeEnName]) {
-							widgetsObject[item.componentTypeEnName].widgets[m.componentEnTitle] = { ...m, type: m.componentEnTitle, label: m.componentTitle }
+							widgetsObject[item.componentTypeEnName].widgets[m.componentEnTitle] = { ...m, type: m.componentEnTitle, label: m.componentTitle, market: true }
 						} else {
 							widgetsObject[item.componentTypeEnName] = {
 								type: item.componentTypeEnName,
 								label: item.componentTypeName,
-								widgets: { [m.componentEnTitle]: { ...m, type: m.componentEnTitle, label: m.componentTitle } }
+								widgets: { [m.componentEnTitle]: { ...m, type: m.componentEnTitle, label: m.componentTitle, market: true } }
 							}
 						}
 					})

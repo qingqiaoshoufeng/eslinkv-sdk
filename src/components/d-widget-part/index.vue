@@ -23,7 +23,10 @@
 	const prefix2 = 'eslinkv-'
 	export default {
 		props: {
-			market: {},
+			market: {
+				type: Boolean,
+				default: false
+			},
 			type: {
 				type: String,
 				required: true
@@ -52,10 +55,8 @@
 		computed: {
 			currentComponent () {
 				if (this.ready) {
-					if (this.market) {
-						if (Vue.options.components[`${prefix1}${this.type}-${this.componentVersion}`]) {
-							return `${prefix1}${this.type}-${this.componentVersion}`
-						}
+					if (this.market && Vue.options.components[`${prefix1}${this.type}-${this.componentVersion}`]) {
+						return `${prefix1}${this.type}-${this.componentVersion}`
 					}
 					return `${prefix2}${this.type}`
 				}
@@ -119,17 +120,17 @@
 					this.ready = true
 					return
 				} else {
-					// this.$api.bussiness.detailMarket({
-					// 	componentEnTitle: this.type,
-					// 	componentVersion: this.config.widget.componentVersion
-					// }).then(res => {
-					// 	const script = document.createElement('script')
-					// 	script.onload = () => {
-					// 		this.ready = true
-					// 	}
-					// 	script.src = res.componentJsUrl
-					// 	document.head.appendChild(script)
-					// })
+					this.$api.marketComponent.use({
+						componentEnTitle: this.type,
+						componentVersion: this.config.widget.componentVersion
+					}).then(res => {
+						const script = document.createElement('script')
+						script.onload = () => {
+							this.ready = true
+						}
+						script.src = res.componentJsUrl
+						document.head.appendChild(script)
+					})
 				}
 			} else {
 				if (Vue.options.components[`${prefix2}${this.type}`]) {

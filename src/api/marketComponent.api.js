@@ -8,3 +8,12 @@ export function list (data) {
         headers
     })
 }
+
+export function use (data) {
+    return request({
+        url: '/market/component/use',
+        method: 'post',
+        data,
+        headers
+    })
+}
