@@ -100,25 +100,11 @@
 			},
 			removeAnimation () {
 				this.animationClass = null
-			}
-		},
-		watch: {
-			animationEnabled (value) {
-				value && this.setAnimation('enter')
 			},
-			ready () {
-				this.setAnimation('enter')
-			},
-			replayAnimation (value) {
-				value ? this.setAnimation('enter') : this.removeAnimation()
-			}
-		},
-		mounted () {
-			if (this.market) {
+			loadMarket () {
 				this.componentVersion = this.config.widget.componentVersion
 				if (Vue.options.components[`${prefix1}${this.type}-${this.componentVersion}`]) {
 					this.ready = true
-					return
 				} else {
 					this.$api.marketComponent.use({
 						componentEnTitle: this.type,
@@ -132,6 +118,29 @@
 						document.head.appendChild(script)
 					})
 				}
+			}
+		},
+		watch: {
+			'config.widget.componentVersion': {
+				handler: function () {
+					this.ready = false
+					this.loadMarket()
+				},
+				deep: true
+			},
+			animationEnabled (value) {
+				value && this.setAnimation('enter')
+			},
+			ready () {
+				this.setAnimation('enter')
+			},
+			replayAnimation (value) {
+				value ? this.setAnimation('enter') : this.removeAnimation()
+			}
+		},
+		mounted () {
+			if (this.market) {
+				this.loadMarket()
 			} else {
 				if (Vue.options.components[`${prefix2}${this.type}`]) {
 					this.ready = true
