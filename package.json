@@ -7,7 +7,7 @@
     "update": "auto-vers -t",
     "lint": "eslint --fix --ext .js --ext .jsx --ext .vue --ext .ts src/",
     "stylelint": "stylelint 'src/**/*.{scss,vue}' --config '.stylelintrc.js' --fix",
-    "lib": "vue-cli-service build --target lib --dest lib packages/index.js",
+    "lib": "vue-cli-service build --target lib --dest lib/eslinkv-npm packages/index.js",
     "commit": "git add .&&git cz"
   },
   "dependencies": {

@@ -15,7 +15,7 @@ module.exports = {
 		'swiper',
 		'dom7'
 	],
-	assetsDir: 'static',
+	assetsDir: './',
 	publicPath: isProduction ? `/${pkg.version}` : '/',
 	outputDir: `dist/${pkg.version}`,
 	indexPath: '../index.html',
