@@ -11,6 +11,7 @@ import custom from '../src/store/custom.store'
 import event from '../src/store/event.store.js'
 import dView from '../src/components/d-view/index.vue'
 import loadMask from '../src/components/load-mask/index.vue'
+import '../index.js'
 
 const eslinkvNpm = {
     widgetMixin,
