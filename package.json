@@ -1,7 +1,7 @@
 {
   "name": "eslinkv-npm",
   "version": "1.0.2",
-  "main": "index.js",
+  "main": "packages/index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "update": "auto-vers -t",
