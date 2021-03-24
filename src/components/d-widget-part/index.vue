@@ -123,8 +123,10 @@
 		watch: {
 			'config.widget.componentVersion': {
 				handler: function () {
-					this.ready = false
-					this.loadMarket()
+					if (this.market) {
+						this.ready = false
+						this.loadMarket()
+					}
 				},
 				deep: true
 			},
