@@ -9,19 +9,18 @@ export default {
 	},
 	methods: {
 		handleSave (type) {
-			this.type = type || platform.state.currentType
-			// 用了模板后点保存
-			if (type === 'CUSTOM' && platform.state.currentType === 'TEMPLATE' && this.$route.path === '/new') {
-				// 新增的时候
-				this.type = 'CUSTOM'
+			let isNew = false
+			if (this.screenType === 'CUSTOM' && type === 'TEMPLATE') {
+				isNew = true
 			}
+			this.screenType = type
 			this.$Modal.confirm({
 				title: '确定保存吗？',
 				okText: '确定',
 				cancelText: '取消',
 				onOk: () => {
 					setTimeout(() => {
-						if (this.isNew) {
+						if (this.isNew || isNew) {
 							this.addBoard()
 						} else {
 							this.editBoard()
@@ -32,7 +31,7 @@ export default {
 		},
 		async addBoard () {
 			const data = this.platFormData()
-			data.screenType = this.type
+			data.screenType = this.screenType
 			this.$Modal.confirm({
 				title: '快照',
 				content: '是否创建看板快照？',
@@ -61,7 +60,7 @@ export default {
 					const screenAvatar = await this.capture({ selector: '#kanban' }).catch(e => {
 						console.warn('快照创建失败', e)
 					})
-					if (screenAvatar) data.screenAvatar = screenAvatar
+					if (screenAvatar) data.screenAvatar = screenAvatar.url
 					this.submitEdit(data)
 				},
 				onCancel: () => {
@@ -85,7 +84,7 @@ export default {
 		submitEdit (data) {
 			this.saving = true
 			const { params: { id } } = this.$route
-			data.screenType = this.type
+			data.screenType = this.screenType
 			this.$api.screen.update({ ...data, screenId: id }).then(() => {
 				this.kanboardEdited = false
 				this.$Message.success('修改成功')

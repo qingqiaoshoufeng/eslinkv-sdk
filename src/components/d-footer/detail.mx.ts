@@ -62,6 +62,7 @@ export default {
         const file = this.$route.params.file
         if (id) {
             this.$api.screen.detail({ screenId: id }).then(res => {
+                this.screenType = res.screenType
                 this.renderByDetail(res)
             })
         }

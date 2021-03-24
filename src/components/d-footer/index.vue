@@ -7,8 +7,8 @@
 				//i-button(@click="saveSnapshot") 保存截图
 				i-button(:disabled="disabled" @click="exit") 返回
 				i-button(:disabled="disabled" @click="preview") 预览
-				i-button(:disabled="disabled" type="primary" @click="handleSave(0)" :loading="loading") 保存
-				i-button(:disabled="disabled" type="primary" @click="handleSave(1)" :loading="loading" v-if="isNew") 保存为模板
+				i-button(:disabled="disabled" type="primary" @click="handleSave('CUSTOM')" :loading="loading") 保存
+				i-button(:disabled="disabled" type="primary" @click="handleSave('TEMPLATE')" :loading="loading") 保存为模板
 				i-button(:disabled="disabled" @click="publishBoard" :loading="loading" v-if="!isNew") 发布
 				i-button(:disabled="disabled" @click="handleExport" :loading="loading") 导出
 				i-button(:disabled="disabled" @click="importModal=true" :loading="loading") 导入
@@ -55,7 +55,7 @@
 		saving = false
 		loading = false
 		isNew = true
-		type = 0 // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
+    screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
 
 		preview () {
 			document.body.requestFullscreen()
@@ -146,10 +146,6 @@
           guides // 参考线
         }
 			}
-		}
-
-		created () {
-			platform.state.currentType = 'CUSTOM'
 		}
 
 		mounted () {

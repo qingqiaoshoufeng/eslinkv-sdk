@@ -27,7 +27,6 @@ export async function detail (data) {
         data,
         headers
     })
-    platform.state.currentType = originData.screenType
     const res = originData.screenConfig
     if (res.widgets) {
         res.widgets.forEach(v => {
