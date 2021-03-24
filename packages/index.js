@@ -13,13 +13,12 @@ import dView from '../src/components/d-view/index.vue'
 import loadMask from '../src/components/load-mask/index.vue'
 import '../index.js'
 
-const eslinkvNpm = {
+const eslinkV = {
     widgetMixin,
     dEditor,
     platform,
     configMerge,
     commonConfigValue,
-    // 上面是example用到的
     dWidgetList,
     dFooter,
     scene,
@@ -29,7 +28,9 @@ const eslinkvNpm = {
     dView,
     loadMask
 }
+if (!window.eslinkV) {
+    window.eslinkV = {}
+}
+window.eslinkV = { ...window.eslinkV, ...eslinkV }
 
-window.eslinkvNpm = eslinkvNpm
-
-export default eslinkvNpm
+export default window.eslinkV

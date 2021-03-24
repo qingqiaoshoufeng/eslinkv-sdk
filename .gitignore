@@ -3,28 +3,28 @@
 # Built application files
 *.apk
 *.ap_
- 
+
 # Files for the Dalvik VM
 *.dex
- 
+
 # Generated files
 */bin/
 */gen/
 */out/
- 
+
 # Log Files
 *.log
- 
-# Android Studio 
+
+# Android Studio
 .navigation/
 captures/
- 
+
 # idea
 */.idea/
 .idea/
 *.iml
 */*.iml
- 
+
 # eclipse
 .project
 .factorypath
@@ -51,7 +51,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-
+/lib/
 /public/static/videos/19厅视频.mp4
 /public/static/videos/19.mp4
 /public/static/videos/三社联动视频.MOV
