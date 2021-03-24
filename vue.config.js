@@ -19,6 +19,7 @@ module.exports = {
 	publicPath: isProduction ? `/${pkg.version}` : '/',
 	outputDir: `dist/${pkg.version}`,
 	indexPath: '../index.html',
+    filenameHashing: false,
 	productionSourceMap: false,
 	lintOnSave: false,
 	devServer: {
