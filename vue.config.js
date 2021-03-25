@@ -16,6 +16,7 @@ module.exports = {
 		'dom7'
 	],
 	assetsDir: './',
+	// assetsDir: 'static',
 	publicPath: isProduction ? `/${pkg.version}` : '/',
 	outputDir: `dist/${pkg.version}`,
 	indexPath: '../index.html',

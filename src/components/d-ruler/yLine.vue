@@ -8,7 +8,6 @@
 	let i = 0
 	let loadImg = false
 	const bgImg = new Image()
-	bgImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAyCAMAAABmvHtTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACBJREFUeNpiYGBEBwwMTGiAakI0NX7U9aOuHyGuBwgwAH6bBkAR6jkzAAAAAElFTkSuQmCC'
 
 	@Component
 	export default class YLine extends Vue {
@@ -88,6 +87,7 @@
 			if (loadImg) {
 				this.initDraw()
 			} else {
+        bgImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAyCAMAAABmvHtTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACBJREFUeNpiYGBEBwwMTGiAakI0NX7U9aOuHyGuBwgwAH6bBkAR6jkzAAAAAElFTkSuQmCC'
 				bgImg.onload = () => {
 					loadImg = true
 					this.initDraw()

@@ -8,7 +8,6 @@
 	let i = 0
 	let loadImg = false
 	const bgImg = new Image()
-	bgImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAMAAAAuTX21AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACNJREFUeNpiYCAdMDKRCka1jGoBA2JZZGshiaCXFpIBQIABAAplBkCmQpujAAAAAElFTkSuQmCC'
 
 	@Component
 	export default class XLine extends Vue {
@@ -80,6 +79,7 @@
 			if (loadImg) {
 				this.initDraw()
 			} else {
+        bgImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAMAAAAuTX21AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACNJREFUeNpiYCAdMDKRCka1jGoBA2JZZGshiaCXFpIBQIABAAplBkCmQpujAAAAAElFTkSuQmCC'
 				bgImg.onload = () => {
 					loadImg = true
 					this.initDraw()
