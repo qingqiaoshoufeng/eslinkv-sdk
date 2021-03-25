@@ -12,8 +12,8 @@ export default {
 				try {
 					this.loading = true
 					const result = JSON.parse(e.target.result)
-					const { data, createTime, name } = result
-					this.renderByDetail({ name, screenConfig: data, createTime })
+					const { screenConfig, screenName } = result
+					this.renderByDetail({ name: screenName, screenConfig })
 					this.importModal = false
 					this.loading = false
 				} catch (e) {
