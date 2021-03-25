@@ -67,7 +67,7 @@ function getInitPanelConfig () {
 }
 
 const state = Vue.observable({
-	version: '1.0.2',
+	version: '1.0.3',
 	widgetAdded: {},
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
 	chooseWidgetId: null, // 选中项id
