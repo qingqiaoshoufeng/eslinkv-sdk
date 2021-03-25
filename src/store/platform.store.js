@@ -44,7 +44,7 @@ function getInitPanelConfig () {
 		id: null,
 		info: {
 			id: '',
-			name: '看板1',
+			name: '未命名',
 			remark: ''
 		},
 		size: {
