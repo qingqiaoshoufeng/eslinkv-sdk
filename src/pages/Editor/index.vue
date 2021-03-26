@@ -56,7 +56,7 @@
 
 .main-container {
 	width: 100%;
-	height: calc(100% - 60px);
+	height: calc(100% - 92px);
 }
 
 .line {
