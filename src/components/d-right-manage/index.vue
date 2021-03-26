@@ -1,5 +1,5 @@
 <template lang="pug">
-	d-right-modal.d-manage-modal(title="看板配置" :top="70" icon="ios-easel")
+	d-right-modal.d-manage-modal(title="看板配置" :top="33" icon="ios-easel")
 		.d-manage-modal-tab.fn-flex.flex-row
 			h2.pointer(v-for="(item,index) in list" :class="tabIndex===index?'active':''" @click="handleChangeTab(index)") {{item.title}}
 		template(v-for="(item,index) in list")

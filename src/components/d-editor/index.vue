@@ -62,14 +62,10 @@
                     v-show="item.display"
                     :style="{ top: item.position, left: item.origin, width: item.lineLength }"
                     :key="`h-${index}`")
-        // 底部信息栏
-        d-bottom-bar
         // 右键菜单
         right-menu(ref="rightMenu" @deactivateWidget="deactivateWidget")
         // 数仓配置面板
         database-config(ref="dataBaseConfig" :showModal="showDatabaseConfigModal" @close="showDatabaseConfigModal = false" @update="updateApiSystem" @keyup.native.stop)
-        // 画布全屏
-        d-right-full-screen
         // 看板配置
         d-right-manage
         // 小工具清单
@@ -85,10 +81,8 @@
 	import vdr from 'vue-draggable-resizable-gorkys2/src/components/vue-draggable-resizable'
 	import 'vue-draggable-resizable-gorkys2/src/components/vue-draggable-resizable.css'
 	import parts from '../d-widget-part/index'
-	import dBottomBar from '../d-bottom-bar'
 	import widgetOperation from './widget-operation'
 	import databaseConfig from '../data-warehouse/index.vue'
-	import dRightFullScreen from '../d-right-full-screen'
 	import dRightManage from '../d-right-manage'
 	import dRightWidget from '../d-right-widget'
 	import dRightSetting from '../d-right-setting'
@@ -108,10 +102,8 @@
 			rulerCanvas,
 			vdr,
 			databaseConfig,
-			dRightFullScreen,
 			dRightManage,
 			dRightWidget,
-			dBottomBar,
 			dRightSetting,
 			dRightGit,
 			rightMenu

@@ -92,6 +92,16 @@ const state = Vue.observable({
 	ruler: getInitRuler()
 })
 const actions = {
+	zoomIn () {
+		if (state.ruler.zoom < 4) {
+			state.ruler.zoom = (state.ruler.zoom * 10 + 1) / 10
+		}
+	},
+	zoomOut () {
+		if (state.ruler.zoom > 0.1) {
+			state.ruler.zoom = (state.ruler.zoom * 10 - 1) / 10
+		}
+	},
 	initKanboard () {
 		state.ruler = getInitRuler()
 		state.panelConfig = getInitPanelConfig()

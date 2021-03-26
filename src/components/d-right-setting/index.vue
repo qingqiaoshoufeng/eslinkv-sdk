@@ -1,5 +1,5 @@
 <template lang="pug">
-	d-right-modal.d-setting-modal(title="编辑器设置" :width="360" icon="ios-construct" :top="144")
+	d-right-modal.d-setting-modal(title="编辑器设置" :width="360" icon="ios-construct" :top="107")
 		header.fn-flex.flex-row
 			span 编辑器设置
 		ul.d-scrollbar

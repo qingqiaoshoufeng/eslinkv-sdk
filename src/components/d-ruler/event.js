@@ -126,13 +126,9 @@ export default {
         handleWheelZoom (e) {
             if (+new Date() - this.zoomUpdateTime >= 500) {
                 if (e.wheelDelta > 0) {
-                    if (this.platform.ruler.zoom < 4) {
-                        this.platform.ruler.zoom = (this.platform.ruler.zoom * 10 + 1) / 10
-                    }
+                    platform.actions.zoomIn()
                 } else {
-                    if (this.platform.ruler.zoom > 0.1) {
-                        this.platform.ruler.zoom = (this.platform.ruler.zoom * 10 - 1) / 10
-                    }
+                    platform.actions.zoomOut()
                 }
                 this.zoomUpdateTime = +new Date()
             }

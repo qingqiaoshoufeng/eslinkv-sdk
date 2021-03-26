@@ -1,188 +1,167 @@
 <template lang="pug">
-	.d-detail
-		.d-footer.fn-flex(v-if="show")
-			.d-footer-left.fn-flex
-				span.d-footer-title {{ platform.panelConfig.info ? platform.panelConfig.info.name : '' }}
-			.d-footer-right.fn-flex
-				//i-button(@click="saveSnapshot") 保存截图
-				i-button(:disabled="disabled" @click="exit") 返回
-				i-button(:disabled="disabled" @click="preview") 预览
-				i-button(:disabled="disabled" type="primary" @click="handleSave('CUSTOM')" :loading="loading") 保存
-				i-button(:disabled="disabled" type="primary" @click="handleSave('TEMPLATE')" :loading="loading") 保存为模板
-				i-button(:disabled="disabled" @click="publishBoard" :loading="loading" v-if="!isNew") 发布
-				i-button(:disabled="disabled" @click="handleExport" :loading="loading") 导出
-				i-button(:disabled="disabled" @click="importModal=true" :loading="loading") 导入
-			load-mask(:show="saving") 正在保存数据…
-			Modal(v-model="importModal")
-				Form
-					FormItem
-						label.ivu-btn.ivu-btn-primary.d-footer-import-button(for="originFile") 全覆盖导入
-						input.fn-hide#originFile(type="file" accept="application/json" @change="handleFile")
+  .d-footer.fn-flex.flex-row.pos-r.z-index-999
+    .d-footer-bar.fn-flex.flex-row
+      label {{scene.index===0?'主场景':scene.obj[scene.index].name}}
+      label.d-footer-info.fn-flex.flex-row(v-if="platform.panelConfig.info")
+        span {{ platform.panelConfig.size.width}}×{{platform.panelConfig.size.height}}{{ platform.panelConfig.size.unit}}
+    .d-footer-bar.fn-flex
+      label.d-footer-hot-keys.pos-r.fn-flex.flex-row
+        span.pointer 快捷键
+        .d-footer-hot-key-list.pos-a
+          ul
+            li.fn-flex.flex-row(v-for="item in platform.hotKeys" :key="item.name")
+              label.d-footer-name {{ item.name }}
+              .d-footer-key-code.fn-flex.flex-row(v-for="child in item.key")
+                i.d-footer-hot-key-text(v-if="child.type==='text'") {{ child.value }}
+                span.d-footer-hot-key-item(v-if="child.type==='+'") +
+                img.d-footer-hot-key-img(v-if="child.type==='img'" :src="child.value")
+    .d-footer-bar.fn-flex(:style="{marginLeft:'auto'}")
+      label {{ zoom }}
+    .d-footer-bar.fn-flex
+      d-svg.pointer(icon-class="zoomIn" @click="handleZoomIn")
+    .d-footer-bar.fn-flex
+      d-svg.pointer(icon-class="zoomOut" @click="handleZoomOut")
+    .d-footer-bar.fn-flex(:style="{marginRight:'0'}")
+      i-icon.pointer(:type="platform.fullscreen?'md-contract':'md-expand'" :size="18" @click="handleFullscreen")
 </template>
 <script lang="ts">
-	import { Component, Prop } from 'vue-property-decorator'
-	import { Icon, Button, Modal, Form, FormItem } from 'view-design'
-	import copy from 'fast-copy'
-	import { mixins } from 'vue-class-component'
+	import { Vue, Component } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
 	import scene from '../../store/scene.store'
-	import commonConfigValue from '../../../common-config-value'
-	import { isObjectString } from '../../utils/index'
-	import loadMask from '../load-mask/index.vue'
-	import importMx from './import.mx'
-	import exportMx from './export.mx'
-	import publishMx from './publish.mx'
-	import detailMx from './detail.mx'
-	import saveMx from './save.mx'
+	import { Icon } from 'view-design'
+	import BigNumber from 'bignumber.js'
 
-	@Component({
-		components: {
-			'i-icon': Icon,
-			'i-button': Button,
-			loadMask,
-			Modal,
-			Form,
-			FormItem
-		}
-	})
-	export default class DFooter extends mixins(exportMx, detailMx, saveMx, importMx, publishMx) {
-		@Prop(Boolean) kanboardEdited: boolean
-		@Prop({ default: false }) disabled: boolean
-		@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
+	BigNumber.set({ DECIMAL_PLACES: 20 })
+  @Component({
+    components: {
+      'i-icon': Icon
+    }
+  })
+	export default class footer extends Vue {
+    platform = platform.state
+    scene = scene.state
 
-		platform = platform.state
-		scene = scene.state
-		saving = false
-		loading = false
-		isNew = true
-    screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
+    get zoom () {
+      const zoom = new BigNumber(this.platform.ruler.zoom)
+      return `${zoom.multipliedBy(100)}%`
+    }
 
-		preview () {
-			document.body.requestFullscreen()
-			this.$router.push('/preview')
-		}
+    handleFullscreen () {
+      if (this.platform.fullscreen) {
+        document.exitFullscreen()
+      } else {
+        document.body.requestFullscreen()
+      }
+    }
 
-		exit () {
-			if (this.kanboardEdited) {
-				this.$Modal.confirm({
-					title: '提示',
-					content: '看板已编辑，关闭窗口将丢失未保存的数据，确认关闭吗？',
-					onOk: () => {
-						this.$router.replace({ name: 'big-data-list' })
-					}
-				})
-				return
-			}
-			this.$router.go(-1)
-		}
+    handleZoomIn () {
+      platform.actions.zoomIn()
+    }
 
-		getAttr (o, str) {
-			const arr = str.split('.')
-			let res = o
-			for (const v of arr) {
-				if (res[v] === undefined) {
-					res = {}
-					break
-				}
-				res = res[v]
-			}
-			return res
-		}
-
-		checkAttr (o, str = '', defaultConfig) {
-			for (const key in o) {
-				const prop = str ? str + '.' + key : key
-				if (Array.isArray(o[key]) && o[key].length > 0) {
-					if (JSON.stringify(o[key]) === JSON.stringify(this.getAttr(defaultConfig, prop))) {
-						o[key] = 'default'
-					}
-				} else if (Object.prototype.toString.call(o[key]) === '[object Object]') {
-					if (JSON.stringify(o[key]) === JSON.stringify(this.getAttr(defaultConfig, prop))) {
-						o[key] = 'default'
-					} else {
-						this.checkAttr(o[key], prop, defaultConfig)
-					}
-				}
-			}
-		}
-
-		platFormData () {
-			const defaultConfig = commonConfigValue() // 读取默认配置
-			const panelConfig = this.platform.panelConfig
-			const { size, info: { name } } = panelConfig
-			delete size.preset
-			if (size.range && !Object.values(size.range).find(item => item !== 0 && item !== '%')) {
-				delete size.range
-			}
-			const widgetAdded = copy(this.platform.widgetAdded)
-			const widgets = Object.values(widgetAdded).map(({ id, market = false, type, config, scene = 0 }) => {
-				const api = config.api
-				if (api && api.data) {
-					if (isObjectString(api.data)) {
-						try {
-							api.data = JSON.stringify(JSON.parse(api.data))
-						} catch (e) {
-							throw new Error(e)
-						}
-					}
-				}
-				this.checkAttr(config, '', defaultConfig)
-				return {
-					id,
-					scene,
-					type,
-					market,
-					value: { ...config }
-				}
-			})
-
-			const guides = this.platform.ruler.guideLines
-			return {
-        screenName: name,
-        screenConfig: {
-          kanboard: panelConfig, // 看板画布配置
-          widgets, // 小工具配置
-          scene: this.scene.obj, // 场景
-          guides // 参考线
-        }
-			}
-		}
-
-		mounted () {
-			this.isNew = !this.$route.params.id
-		}
+    handleZoomOut () {
+      platform.actions.zoomOut()
+    }
 	}
 </script>
 <style lang="scss" scoped>
-	.d-footer {
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-		height: 50px;
-		padding: 0 15px;
+@import "../../../src/scss/conf";
 
-		/deep/ button {
-			margin-left: 10px;
-		}
+.d-footer {
+	height: 32px;
+  padding: 0 15px;
+	background-color: #313239;
+	border-top: 1px solid #0d0e10;
+}
 
-		.d-footer-left,
-		.d-footer-right {
+.d-footer-bar-box {
+	right: 0;
+	bottom: 15px;
+	user-select: none;
+}
+
+.d-footer-bar {
+	align-items: center;
+	justify-content: center;
+	margin-right: 15px;
+  height: 100%;
+	color: $white_08;
+	border-radius: 2px;
+	opacity: 0.5;
+	transition: all 0.3s;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+.d-footer-hot-keys,
+.d-footer-info {
+	align-items: center;
+	justify-content: center;
+}
+
+.d-footer-info {
+	margin-left: 10px;
+}
+
+.d-footer-hot-keys {
+  height: 100%;
+  width: 100%;
+	.d-footer-hot-key-list {
+		bottom: 100%;
+		padding: 10px;
+		color: #717171;
+		pointer-events: none;
+		background: #fff;
+		border: 1px solid $borderColor;
+		border-radius: 2px;
+		opacity: 0;
+		transition: all 0.3s;
+		transform: translate3d(0, -20px, 0);
+
+		li {
 			align-items: center;
+			padding: 4px 0;
+			white-space: nowrap;
 
-			.return {
-				margin-left: 0;
+			label {
+				margin-right: auto;
 			}
-		}
 
-		.d-footer-import-button {
-			line-height: 32px;
-		}
+			.d-footer-name {
+				padding: 3px 10px;
+				text-align: right;
+				letter-spacing: 0;
+			}
 
-		.d-footer-left {
-			.d-footer-title {
-				padding: 0 15px 0 0;
-				font-size: 15px;
+			.d-footer-key-code {
+				padding-right: 10px;
+			}
+
+			.d-footer-hot-key-img {
+				width: 22px;
+				padding: 0 2px;
+				text-align: center;
+			}
+
+			.d-footer-hot-key-text {
+				min-width: 22px;
+				padding: 0 4px;
+				font-style: normal;
+				text-align: center;
+				border: 1px solid #ddd;
+				border-radius: 2px;
 			}
 		}
 	}
+
+	&:hover {
+		color: $white;
+
+		.d-footer-hot-key-list {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+		}
+	}
+}
 </style>

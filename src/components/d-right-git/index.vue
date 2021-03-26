@@ -1,5 +1,5 @@
 <template lang="pug">
-	d-right-modal.d-git-modal(title="看板历史" :width="360" icon="md-git-branch" :top="187")
+	d-right-modal.d-git-modal(title="看板历史" :width="360" icon="md-git-branch" :top="144")
 		header.fn-flex.flex-row
 			span 看板历史
 </template>

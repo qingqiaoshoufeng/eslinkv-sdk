@@ -1,5 +1,4 @@
 import html2canvas from 'html2canvas'
-import platform from '../../store/platform.store'
 
 export default {
 	data () {
@@ -15,7 +14,7 @@ export default {
 			}
 			this.screenType = type
 			this.$Modal.confirm({
-				title: '确定保存吗？',
+				title: `确定另保存${type === 'TEMPLATE' ? '模版' : ''}吗？`,
 				okText: '确定',
 				cancelText: '取消',
 				onOk: () => {

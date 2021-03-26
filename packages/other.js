@@ -1,0 +1,6 @@
+import '../src/api'
+import '../src/icons'
+import '../src/plugins'
+import 'view-design/dist/styles/iview.css'
+import '../src/scss/reset.scss'
+import '../src/scss/index.scss'

@@ -1,23 +1,26 @@
 <template lang="pug">
   .home-container
     .layout-wrapper
+      d-detail(:disabled="false")
       .main-container
         .d-editor-box.pos-r.fn-flex
           d-widget-list(ref="widgets" :class="{ 'd-editor-fullscreen': platform.fullscreen }")
           d-editor(ref="kanboardEditor")
-      d-footer(:disabled="false")
+      d-footer
 </template>
 <script lang="ts">
 	import { Vue, Component, Provide } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
 	import dWidgetList from '../../components/d-widget-list/index.vue'
 	import dEditor from '../../components/d-editor/index.vue'
+	import dDetail from '../../components/d-detail/index.vue'
 	import dFooter from '../../components/d-footer/index.vue'
 
   @Component({
     components: {
       dWidgetList,
       dEditor,
+      dDetail,
       dFooter
     }
   })
@@ -53,7 +56,7 @@
 
 .main-container {
 	width: 100%;
-	height: calc(100% - 50px);
+	height: calc(100% - 60px);
 }
 
 .line {

@@ -1,5 +1,5 @@
 <template lang="pug">
-	d-right-modal.d-widget-modal(title="小工具清单" :width="360" icon="ios-apps" :top="107")
+	d-right-modal.d-widget-modal(title="小工具清单" :width="360" icon="ios-apps" :top="70")
 		header.fn-flex.flex-row
 			i-input(:value="scene.obj[scene.index].name" @on-change="handleSceneName" v-if="editScene")
 				i-icon(type="md-checkmark" slot="suffix" @click="editScene=false")
