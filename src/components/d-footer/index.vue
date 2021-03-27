@@ -6,8 +6,8 @@
         span {{ platform.panelConfig.size.width}}×{{platform.panelConfig.size.height}}{{ platform.panelConfig.size.unit}}
     .d-footer-bar.fn-flex
       label.d-footer-hot-keys.pos-r.fn-flex.flex-row
-        span.pointer 快捷键
-        .d-footer-hot-key-list.pos-a
+        span.pointer(@click="showHotKey=!showHotKey") 快捷键
+        .d-footer-hot-key-list.pos-a(:class="{active:showHotKey}")
           ul
             li.fn-flex.flex-row(v-for="item in platform.hotKeys" :key="item.name")
               label.d-footer-name {{ item.name }}
@@ -40,6 +40,7 @@
 	export default class footer extends Vue {
     platform = platform.state
     scene = scene.state
+    showHotKey:boolean=false
 
     get zoom () {
       const zoom = new BigNumber(this.platform.ruler.zoom)
@@ -68,7 +69,7 @@
 
 .d-footer {
 	height: 32px;
-  padding: 0 15px;
+	padding: 0 15px;
 	background-color: #313239;
 	border-top: 1px solid #0d0e10;
 }
@@ -82,8 +83,8 @@
 .d-footer-bar {
 	align-items: center;
 	justify-content: center;
+	height: 100%;
 	margin-right: 15px;
-  height: 100%;
 	color: $white_08;
 	border-radius: 2px;
 	opacity: 0.5;
@@ -105,8 +106,9 @@
 }
 
 .d-footer-hot-keys {
-  height: 100%;
-  width: 100%;
+	width: 100%;
+	height: 100%;
+
 	.d-footer-hot-key-list {
 		bottom: 100%;
 		padding: 10px;
@@ -153,15 +155,15 @@
 				border-radius: 2px;
 			}
 		}
+
+		&.active {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+		}
 	}
 
 	&:hover {
 		color: $white;
-
-		.d-footer-hot-key-list {
-			opacity: 1;
-			transform: translate3d(0, 0, 0);
-		}
 	}
 }
 </style>

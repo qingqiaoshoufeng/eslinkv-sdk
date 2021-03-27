@@ -29,10 +29,9 @@
 								i-icon(:type="`md-eye${item.config.widget.hide ? '-off' : ''}`" :title="!item.config.widget.hide ? '隐藏' : '显示'" @click="handleTaggerHide(item.id)" @click.stop)
 								i-icon(:type="`md-${item.config.widget.locked ? '' : 'un'}lock`" :title="!item.config.widget.locked ? '锁定' : '解锁'" @click="handleTaggerLock(item.id)" @click.stop)
 								i-icon(type="md-trash" title="删除" @click="handleDelete(item.id)" @click.stop)
-							h2 {{item.type}}
+							h2 {{item.config.widget.name}}
 					.d-widget-middle
 						.fn-flex.flex-column
-							h3 TYPE: {{item.config.widget.name}}
 							p ID: {{item.id}}
 					.d-widget-right.fn-flex.flex-column
 						i-icon(type="ios-arrow-dropup" @click="handleUpZIndex(item.id)" @click.stop)

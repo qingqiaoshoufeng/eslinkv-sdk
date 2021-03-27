@@ -79,7 +79,6 @@ class Mixins extends Vue {
 		// 小工具初始化提示
 		this.showProcessing(top, left, width, height, widget)
 		const id = uuid()
-
 		if (layout.zIndex) layout.zIndex = 10
 		widget.id = id
 		widget.componentVersion = componentVersion

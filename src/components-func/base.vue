@@ -13,7 +13,7 @@
     .fn-flex.flex-row.d-manage-modal-control-more
       .d-manage-modal-control
         label 组件市场
-        i-switch(v-model="item.market" :disabled="true")
+        i-switch(v-model="item.market")
       .d-manage-modal-control
         label 锁定
         i-switch(v-model="item.config.widget.locked")

@@ -85,7 +85,7 @@
 					config,
 					market,
 					componentVersion,
-          componentId,
+					componentId,
 					startX: e.offsetX,
 					startY: e.offsetY
 				}))
