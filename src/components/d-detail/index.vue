@@ -69,7 +69,7 @@
     screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
 
 		preview () {
-			this.$router.push(`/detail/${this.$route.params.id}`)
+      window.open(`${location.origin}/detail/${this.$route.params.id}`)
 		}
 
 		exit () {

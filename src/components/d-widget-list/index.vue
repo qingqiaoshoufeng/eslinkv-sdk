@@ -11,7 +11,9 @@
                 :index="index"
                 :widget="widget"
                 :tabKey="tabKey"
-                :type="type||componentEnTitle")
+                :type="widget.type||componentEnTitle"
+                :label="widget.label||componentTitle"
+                )
 </template>
 <script>
 	import parts from '../d-widget-part/index'

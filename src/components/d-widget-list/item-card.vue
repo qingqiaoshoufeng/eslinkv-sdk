@@ -5,7 +5,7 @@
       .d-widget-list-img.fn-flex(draggable="true" @dragstart="dragstart($event, type, index,tabKey,widget)")
         img(:src="widget.componentAvatar" )
       .fn-flex.flex-column
-        i.d-widget-list-type.ellipsis {{widget.componentTitle||''}}
+        i.d-widget-list-type.ellipsis {{label}}
         i.d-widget-list-type.ellipsis {{type}}
 </template>
 <script lang="ts">
@@ -22,6 +22,7 @@
 	  @Prop() type
 	  @Prop() index
 	  @Prop() tabKey
+	  @Prop() label
 
 		/**
 		 * @description h5 原生拖拽事件
