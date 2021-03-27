@@ -5,7 +5,7 @@
         i-icon.pointer(type="ios-arrow-dropleft" @click="exit" :size="24")
       span.d-detail-title {{ platform.panelConfig.info ? platform.panelConfig.info.name : '' }}
     ul.d-detail-right.fn-flex
-      li.fn-flex.flex-column.pointer(@click="preview")
+      li.fn-flex.flex-column.pointer(@click="preview" v-if="!isNew")
         i-icon(type="ios-desktop-outline" :size="24")
         span 预览
       li.fn-flex.flex-column.pointer(@click="handleExport")
@@ -69,8 +69,7 @@
     screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
 
 		preview () {
-			document.body.requestFullscreen()
-			this.$router.push('/preview')
+			this.$router.push(`/detail/${this.$route.params.id}`)
 		}
 
 		exit () {

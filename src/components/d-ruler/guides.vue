@@ -51,7 +51,7 @@
 				let { clientX, clientY } = e
 				const { type, id } = item
 				if (this.platform.panelFixed) {
-					clientX -= 428
+					clientX -= 160
 				}
 				this.platform.ruler.guideDragStartX = clientX
 				this.platform.ruler.guideDragStartY = clientY

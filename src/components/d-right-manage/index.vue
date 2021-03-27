@@ -1,9 +1,13 @@
 <template lang="pug">
-	d-right-modal.d-manage-modal(title="看板配置" :top="33" icon="ios-easel")
-		.d-manage-modal-tab.fn-flex.flex-row
-			h2.pointer(v-for="(item,index) in list" :class="tabIndex===index?'active':''" @click="handleChangeTab(index)") {{item.title}}
-		template(v-for="(item,index) in list")
-			itemList(:list="item.key" v-if="tabIndex===index" :needChoose="item.needChoose")
+  d-right-modal.d-manage-modal(title="看板配置" :width="330" :top="33" icon="ios-easel")
+    .d-manage-modal-tab.fn-flex.flex-row(v-if="platform.chooseWidgetState")
+      h2.pointer(v-for="(item,index) in list" :class="tabIndex===index?'active':''" @click="handleChangeTab(index)") {{item.title}}
+    .d-manage-modal-tab.fn-flex.flex-row(v-else)
+      h2.pointer(v-for="(item,index) in chooseList" :class="tabIndex===index?'active':''" @click="handleChangeTab(index)") {{item.title}}
+    template(v-if="platform.chooseWidgetState")
+      itemList(v-for="(item,index) in list" :list="item.key" v-if="tabIndex===index" :needChoose="item.needChoose")
+    template(v-else)
+      itemList(v-for="(item,index) in chooseList" :list="item.key" v-if="tabIndex===index" :needChoose="item.needChoose")
 </template>
 <script lang="ts">
 	import { Component, Vue, Watch } from 'vue-property-decorator'
@@ -19,30 +23,42 @@
 	export default class DRightManage extends Vue {
 		tabIndex = 0
 		platform = platform.state
-		list: any = [
+		chooseList: any = [
 			{
-				title: '基础配置', key: [{ type: 'base' }], needChoose: true
+				title: '基础', key: [{ type: 'base' }], needChoose: true
 			},
 			{
-				title: '样式配置', key: [{ type: 'style' }], needChoose: true
+				title: '样式', key: [{ type: 'style' }], needChoose: true
 			},
 			{
-				title: '数据配置', key: [{ type: 'data' }], needChoose: true
+				title: '数据', key: [{ type: 'data' }], needChoose: true
 			},
 			{
-				title: '动画配置', key: [{ type: 'animation' }], needChoose: true
+				title: '动画', key: [{ type: 'animation' }], needChoose: true
 			},
 			{
-				title: '自定义配置', key: [], needChoose: true
-			},
-			{
-				title: '看板配置', key: [{ type: 'config', needChoose: false }], needChoose: false
+				title: '自定义', key: [], needChoose: true
 			}
 		]
 
+    list: any = [
+      {
+        title: '大屏设置', key: [{ type: 'config' }], needChoose: false
+      },
+      {
+        title: '编辑器设置', key: [{ type: 'setting' }], needChoose: false
+      }
+    ]
+
+    @Watch('platform.chooseWidgetState')
+    onChooseWidgetId () {
+      this.tabIndex = 0
+    }
+
+
 		@Watch('platform.chooseWidgetCustomConfig', { deep: true })
 		changeChooseWidgetCustomConfig (val) {
-			this.list[4].key = val
+			this.chooseList[4].key = val
 		}
 
 		handleChangeTab (index) {

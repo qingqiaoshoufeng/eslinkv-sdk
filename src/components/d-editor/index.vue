@@ -70,8 +70,6 @@
         d-right-manage
         // 小工具清单
         d-right-widget
-        // 编辑器设置
-        d-right-setting
         // 编辑器版本
         d-right-git
 </template>
@@ -85,7 +83,6 @@
 	import databaseConfig from '../data-warehouse/index.vue'
 	import dRightManage from '../d-right-manage'
 	import dRightWidget from '../d-right-widget'
-	import dRightSetting from '../d-right-setting'
 	import dRightGit from '../d-right-git'
 	import platform from '../../store/platform.store'
 	import instance from '../../store/instance.store'
@@ -104,7 +101,6 @@
 			databaseConfig,
 			dRightManage,
 			dRightWidget,
-			dRightSetting,
 			dRightGit,
 			rightMenu
 		},

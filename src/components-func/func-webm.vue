@@ -19,7 +19,7 @@
 	import func from './func.mx'
 	import { Component } from 'vue-property-decorator'
 	import { Button, Upload } from 'view-design'
-  import { baseURL } from '@/api/request'
+	import { baseURL } from '../api/request.js'
 
 	@Component({
     components: {

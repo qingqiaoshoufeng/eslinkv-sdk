@@ -1,6 +1,12 @@
 <template lang="pug">
   .d-manage-modal-control-data
-    .fn-flex.flex-row.d-manage-modal-control-more
+    .d-manage-modal-control
+      label 请求方式
+      i-select(v-model="apiType" :disabled="platform.chooseWidgetState" @on-change="apiTypeChange")
+        i-option(value="无") 无
+        i-option(value="自定义URL") 自定义URL
+        i-option(value="数仓平台") 数仓平台
+    .fn-flex.flex-row.d-manage-modal-control-more(v-if="apiType==='自定义URL'")
       .d-manage-modal-control
         label 接口地址
         i-input(v-model="item.config.api.url" :disabled="platform.chooseWidgetState")
@@ -15,29 +21,9 @@
       .d-manage-modal-control
         label 数据路径
         i-input(v-model="item.config.api.path" :disabled="platform.chooseWidgetState")
-    .d-manage-modal-control
-      label 请求参数
-      editor.d-manage-modal-control-editor(v-model="item.config.api.params" @init="editorInit" lang="json" theme="chrome" height="100")
-    .d-manage-modal-control
-      label 响应数据
-      editor.d-manage-modal-control-editor(v-model="apiData" @init="editorInit" lang="json" theme="chrome" height="100")
-    .d-manage-modal-control
-      label 数据加工
-      i-switch(v-model="item.config.api.process.enable" :disabled="platform.chooseWidgetState")
-    .d-manage-modal-control(v-if="item.config.api.process.enable")
-      label 加工CODE
-      editor.d-manage-modal-control-editor(v-model="item.config.api.process.methodBody" @init="editorInit" lang="javascript" theme="chrome" height="100")
-    .fn-flex.flex-row.d-manage-modal-control-more
-      .d-manage-modal-control
-        label 定时刷新
-        i-switch(v-model="item.config.api.autoFetch.enable" :disabled="platform.chooseWidgetState")
-      .d-manage-modal-control(v-if="item.config.api.autoFetch.enable")
-        label 刷新间隔
-        i-input-number(:min="1" :step="1" v-model="item.config.api.autoFetch.duration" :disabled="platform.chooseWidgetState")
-    .d-manage-modal-control
+    .d-manage-modal-control(v-if="apiType==='数仓平台'")
       label 数仓接口
       .setting
-        i-switch(v-model="item.config.api.system.enable" :disabled="platform.chooseWidgetState")
         i-button.setting-btn(
           @click="openSystemConfig"
           type="primary"
@@ -60,8 +46,6 @@
         .d-manage-modal-control
           label 数据路径
           i-input(v-model="item.config.api.system.path" :disabled="platform.chooseWidgetState")
-
-      <!-- 数仓配置面板 -->
       database-config(
         ref="dataBaseConfig"
         :showModal="showDatabaseConfigModal"
@@ -70,30 +54,59 @@
         @keyup.native.stop
       )
     .d-manage-modal-control
+      label 请求参数
+      editor.d-manage-modal-control-editor(v-model="item.config.api.params" @init="editorInit" lang="json" theme="chrome" height="100")
+    .d-manage-modal-control
+      label 响应数据
+      editor.d-manage-modal-control-editor(v-model="apiData" @init="editorInit" lang="json" theme="chrome" height="100")
+    .d-manage-modal-control
+      label 数据加工
+      i-switch(v-model="item.config.api.process.enable" :disabled="platform.chooseWidgetState")
+    .d-manage-modal-control(v-if="item.config.api.process.enable")
+      label 加工CODE
+      editor.d-manage-modal-control-editor(v-model="item.config.api.process.methodBody" @init="editorInit" lang="javascript" theme="chrome" height="100")
+    .fn-flex.flex-row.d-manage-modal-control-more
+      .d-manage-modal-control
+        label 定时刷新
+        i-switch(v-model="item.config.api.autoFetch.enable" :disabled="platform.chooseWidgetState")
+      .d-manage-modal-control(v-if="item.config.api.autoFetch.enable")
+        label 刷新间隔
+        i-input-number(:min="1" :step="1" v-model="item.config.api.autoFetch.duration" :disabled="platform.chooseWidgetState")
+    .d-manage-modal-control
       label 组件关联
       i-switch(v-model="item.config.api.bind.enable" :disabled="platform.chooseWidgetState")
     .d-manage-modal-control(v-if="item.config.api.bind.enable")
       checkbox-group(v-model="item.config.api.bind.refIds")
         checkbox(:label="k.id" v-for="(k, i) in relateList" :key="i") {{k.name}}
-
-
 </template>
 <script lang="ts">
   import func from './func.mx'
-  import { Component } from 'vue-property-decorator'
+  import { Component,Watch } from 'vue-property-decorator'
   import databaseConfig from '../components/data-warehouse/index.vue'
   import scene from '../store/scene.store'
 
   @Component({ components: { databaseConfig } })
   export default class FuncData extends func {
     showDatabaseConfigModal = false
+    apiType='无'
+
+    @Watch('platform.chooseWidgetId')
+    onChooseWidgetId(){
+      if(this.item.config.api.system.enable){
+        this.apiType='数仓平台'
+      } else if(this.item.config.api.url){
+        this.apiType= '自定义URL'
+      }else{
+        this.apiType=  '无'
+      }
+    }
 
     get apiData () {
       return this.getJson('config.api.data')
     }
 
     set apiData (v) {
-      return this.setJson(v, 'config.api.data')
+      this.setJson(v, 'config.api.data')
     }
 
     get relateList () {
@@ -104,6 +117,14 @@
             return { id, name }
           })
       return list
+    }
+
+    apiTypeChange(name){
+      if(name==='数仓平台'){
+        this.item.config.api.system.enable=true
+      }else{
+        this.item.config.api.system.enable=false
+      }
     }
 
     updateApiSystem (value) {
@@ -131,7 +152,6 @@
 
 	.setting-btn {
 		margin-bottom: 10px;
-		margin-left: 20px;
 	}
 }
 </style>

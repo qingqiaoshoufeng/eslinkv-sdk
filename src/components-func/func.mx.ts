@@ -10,7 +10,8 @@ import {
 	Button,
 	CheckboxGroup,
 	Checkbox,
-	Icon
+	Icon,
+	Upload
 } from 'view-design'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import platform from '../store/platform.store'
@@ -21,6 +22,7 @@ const editor = require('vue2-ace-editor')
 @Component({
 	components: {
 		'i-input': Input,
+		'i-upload': Upload,
 		'i-icon': Icon,
 		'i-input-number': InputNumber,
 		'i-select': Select,

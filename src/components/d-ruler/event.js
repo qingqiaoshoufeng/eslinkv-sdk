@@ -82,7 +82,8 @@ export default {
                 clientY
             } = e
             if (this.platform.panelFixed) {
-                clientX -= 428
+                /*todo 修改尺寸*/
+                clientX -= 260
             }
             this.clientX = clientX
             this.clientY = clientY
@@ -111,7 +112,8 @@ export default {
                 clientY
             } = $event
             if (this.platform.panelFixed) {
-                clientX -= 428
+                /*todo 修改尺寸*/
+                clientX -= 260
             }
             if (!this.isMoved) {
                 return this.clickDraw(clientX, clientY)

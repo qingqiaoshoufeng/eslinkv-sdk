@@ -168,7 +168,6 @@
 			height: 100%;
 			overflow: hidden;
 			user-select: none;
-			background-color: rgba(0, 0, 0, 0.1);
 		}
 
 		&-content {
@@ -181,7 +180,7 @@
 			overflow: hidden;
 
 			&.drag {
-				cursor: move;
+				cursor: grab;
 			}
 
 			.content-body {

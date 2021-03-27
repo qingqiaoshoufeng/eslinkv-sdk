@@ -61,7 +61,7 @@ function getInitPanelConfig () {
 			size: 'cover',
 			position: 'center',
 			repeat: 'no-repeat',
-			color: 'rgba(58,90,123,1)'
+			color: 'rgba(24, 27, 36,1)'
 		}
 	}
 }
@@ -75,7 +75,7 @@ const state = Vue.observable({
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏
-	panelFixed: false, // 左侧列表是否固定
+	panelFixed: true, // 左侧列表是否固定
 	hotKeys: [ // 热键
 		{ name: '插入水平参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'H', type: 'text' }] },
 		{ name: '插入垂直参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'V', type: 'text' }] },
