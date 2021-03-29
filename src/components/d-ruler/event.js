@@ -83,7 +83,7 @@ export default {
             } = e
             if (this.platform.panelFixed) {
                 /* todo 修改尺寸 */
-                this.clientX = clientX - 260
+                this.clientX = clientX - 226
             }
             this.clientY = clientY - this.platform.ruler.panelTopDistance
             if (this.contentDrag) {
@@ -112,7 +112,7 @@ export default {
             } = $event
             if (this.platform.panelFixed) {
                 /* todo 修改尺寸 */
-                clientX -= 260
+                clientX -= 226
             }
             clientY -= this.platform.ruler.panelTopDistance
             if (!this.platform.ruler.dragGuideId || this.isMoved) {
