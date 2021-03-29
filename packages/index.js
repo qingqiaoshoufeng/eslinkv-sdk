@@ -12,6 +12,8 @@ import custom from '../src/store/custom.store'
 import event from '../src/store/event.store.js'
 import dView from '../src/components/d-view/index.vue'
 import loadMask from '../src/components/load-mask/index.vue'
+import '../src/plugins'
+import market from '../src/plugins/market.ts'
 import './other.js'
 
 const eslinkV = {
@@ -28,7 +30,8 @@ const eslinkV = {
     custom,
     event,
     dView,
-    loadMask
+    loadMask,
+    market
 }
 if (!window.eslinkV) {
     window.eslinkV = {}

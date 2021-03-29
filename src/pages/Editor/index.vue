@@ -15,7 +15,7 @@
 	import dEditor from '../../components/d-editor/index.vue'
 	import dDetail from '../../components/d-detail/index.vue'
 	import dFooter from '../../components/d-footer/index.vue'
-
+	import market from '../../plugins/market'
   @Component({
     components: {
       dWidgetList,
@@ -27,6 +27,10 @@
 	export default class editor extends Vue {
     platform = platform.state
     @Provide('kanboardEditor') kanboardEditor = this.$refs.kanboardEditor
+
+    mounted () {
+      market()
+    }
 	}
 </script>
 <style lang="scss" scoped>

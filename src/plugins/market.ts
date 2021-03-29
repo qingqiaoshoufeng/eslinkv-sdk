@@ -2,7 +2,7 @@ import { level } from '../api/marketComponentType.api'
 import { list } from '../api/marketComponent.api'
 import custom from '../store/custom.store'
 
-(async function () {
+const market = async function () {
 	const level0 = await level()
 	const widgetsObject = {}
 	level0.forEach(item => {
@@ -35,5 +35,6 @@ import custom from '../store/custom.store'
 			widgets: widgetsObject
 		})
 	})
-})()
+}
+export default market
 
