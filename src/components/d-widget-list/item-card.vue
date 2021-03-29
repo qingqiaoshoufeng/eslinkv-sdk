@@ -1,6 +1,5 @@
 <template lang="pug">
-vue-lazy-component.widget-item-wrapper.pos-r
-  div(slot="skeleton") 加载中...
+.widget-item-wrapper.pos-r
   .fn-flex.flex-column.d-widget-list-card(draggable="true" @dragstart="dragstart($event)")
     h2.ellipsis {{ componentTitle }}
     .d-widget-list-img.fn-flex(
@@ -9,13 +8,8 @@ vue-lazy-component.widget-item-wrapper.pos-r
 </template>
 <script lang="ts">
 	import { Component, Vue, Prop } from 'vue-property-decorator'
-	import { component as VueLazyComponent } from '@xunlei/vue-lazy-component'
 
-  @Component({
-    components: {
-      VueLazyComponent
-    }
-  })
+  @Component
 	export default class ItemCard extends Vue {
 	  @Prop() componentEnTitle
 	  @Prop() componentConfig
@@ -76,14 +70,6 @@ vue-lazy-component.widget-item-wrapper.pos-r
 
 	&:nth-child(2n) {
 		margin-right: 0;
-	}
-
-	&::v-deep {
-		& > .d-widget-list-img {
-			cursor: grab;
-			outline: transparent dotted 1px;
-			transition: outline-color 0.2s;
-		}
 	}
 }
 </style>

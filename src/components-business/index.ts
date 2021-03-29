@@ -2,6 +2,7 @@ import custom from '../store/custom.store.js'
 
 const components = {}; const snapshots = {}
 const widgetsObject = []
+const w = {}
 const conf = require.context('./', true, /\.(component.ts)$/)
 const component = require.context('./', true, /index\.(vue)$/)
 const snapshot = require.context('./', true, /snapshot\.(jpg|png)$/)
@@ -13,23 +14,24 @@ component.keys().forEach(name => {
 	const title = name.split('/')[2]
 	components[title] = component(name).default
 })
-conf.keys().forEach((name, index) => {
+conf.keys().forEach(name => {
 	const typeOne = name.split('/')[1]
 	const typeTwo = name.split('/')[2]
 	const componentConfig = { ...conf(name).value, componentEnTitle: typeTwo }
 	const componentAvatar = snapshots[typeTwo]
 	if (componentConfig) {
-		if (widgetsObject[index]) {
-			widgetsObject[index].children.push([{
+		if (w[typeOne]) {
+			widgetsObject[widgetsObject.length - 1].children.push({
 				componentId: Date.now(),
 				componentConfig,
 				componentTitle: typeTwo,
 				componentEnTitle: typeTwo,
 				componentAvatar,
 				market: false
-			}])
+			})
 		} else {
-			widgetsObject[index] = {
+			w[typeOne] = true
+			widgetsObject.push({
 				componentTypeName: typeOne,
 				componentTypeEnName: typeOne,
 				componentTypeId: typeOne,
@@ -43,7 +45,7 @@ conf.keys().forEach((name, index) => {
 					componentTypeId: typeTwo,
 					componentAvatar
 				}]
-			}
+			})
 		}
 	}
 })

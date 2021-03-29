@@ -45,8 +45,8 @@
 	&::v-deep {
 		.widgets-panel.fixed + .center {
 			/* todo 修改尺寸 */
-			width: calc(100% - 226px) !important;
-			margin-left: 226px !important;
+			width: calc(100% - 238px) !important;
+			margin-left: 238px !important;
 		}
 	}
 }

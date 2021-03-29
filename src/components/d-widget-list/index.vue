@@ -6,7 +6,7 @@
         @click="leftIndex=item.componentTypeId"
         :title="item.componentTypeName"
         :class="{active:leftIndex===item.componentTypeId}") {{item.componentTypeName[0]}}
-    ul.widgets-panel-right(v-if="leftIndex")
+    ul.widgets-panel-right.d-scrollbar(v-if="leftIndex")
       li(v-for="item in custom.widgets[leftIndex].children"
         :class="{active:openList[item.componentTypeId]}")
         i-icon(type="ios-arrow-down"  @click="handleCheckType(item.componentTypeId,item.market)")
@@ -86,6 +86,7 @@
 	width: 100%;
 	padding: 5px;
 	background: #0a0b0d;
+  flex-wrap: wrap;
 }
 
 .widgets-panel-empty {
@@ -103,7 +104,7 @@
 	left: 0;
 
 	/* todo 修改尺寸 */
-	width: 226px;
+	width: 238px;
 	height: 100%;
 	padding: 0;
 	background-color: #191c21;
@@ -138,6 +139,7 @@
 
 .widgets-panel-right {
 	width: 100%;
+  overflow-y: auto;
 
 	li {
 		width: 100%;
