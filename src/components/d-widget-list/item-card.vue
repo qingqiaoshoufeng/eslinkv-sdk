@@ -1,54 +1,62 @@
 <template lang="pug">
-  vue-lazy-component.widget-item-wrapper.pos-r
-    div(slot="skeleton") 加载中...
-    .fn-flex.flex-row.d-widget-list-card
-      .d-widget-list-img.fn-flex(draggable="true" @dragstart="dragstart($event, type, index,tabKey,widget)")
-        img(:src="widget.componentAvatar" )
-      .fn-flex.flex-column
-        i.d-widget-list-type.ellipsis {{label}}
-        i.d-widget-list-type.ellipsis {{type}}
+vue-lazy-component.widget-item-wrapper.pos-r
+	div(slot="skeleton") 加载中...
+	.fn-flex.flex-row.d-widget-list-card
+		.d-widget-list-img.fn-flex(
+			draggable="true",
+			@dragstart="dragstart($event, type, index, tabKey, widget)"
+		)
+			img(:src="widget.componentAvatar")
+		.fn-flex.flex-column
+			i.d-widget-list-type.ellipsis {{ label }}
+			i.d-widget-list-type.ellipsis {{ type }}
 </template>
 <script lang="ts">
-	import { Component, Vue, Prop } from 'vue-property-decorator'
-	import { component as VueLazyComponent } from '@xunlei/vue-lazy-component'
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { component as VueLazyComponent } from "@xunlei/vue-lazy-component";
 
-  @Component({
-    components: {
-      VueLazyComponent
-    }
-  })
-	export default class ItemCard extends Vue {
-	  @Prop() widget:any
-	  @Prop() type
-	  @Prop() index
-	  @Prop() tabKey
-	  @Prop() label
+@Component({
+	components: {
+		VueLazyComponent,
+	},
+})
+export default class ItemCard extends Vue {
+	@Prop() widget: any;
+	@Prop() type;
+	@Prop() index;
+	@Prop() tabKey;
+	@Prop() label;
 
-		/**
-		 * @description h5 原生拖拽事件
-		 */
-		dragstart (e, title, index, tabKey, obj) {
-			const { market, componentVersion, componentConfig, componentId } = obj
-			if (!index) return
-			let widgetConfig
-			if (market) {
-				widgetConfig = { config: { layout: componentConfig.layout } }
-			} else {
-				widgetConfig = this.custom.widgets[tabKey].widgets[title].widgets[index]
-			}
-			const { config } = widgetConfig
-			e.dataTransfer.setData('widget-config', JSON.stringify({
+	/**
+	 * @description h5 原生拖拽事件
+	 */
+	dragstart(e, title, index, tabKey, obj) {
+		const { market, componentVersion, componentConfig, componentId } = obj;
+		if (!index) return;
+		let widgetConfig;
+		if (market) {
+			widgetConfig = { config: { layout: componentConfig.layout } };
+		} else {
+			widgetConfig = this.custom.widgets[tabKey].widgets[title].widgets[
+				index
+			];
+		}
+		const { config } = widgetConfig;
+		e.dataTransfer.setData(
+			"widget-config",
+			JSON.stringify({
 				type: index,
 				config,
 				market,
 				componentVersion,
 				componentId,
 				startX: e.offsetX,
-				startY: e.offsetY
-			}))
-		}
+				startY: e.offsetY,
+			})
+		);
 	}
-  </script>
+}
+</script>
 <style lang="scss" scoped>
 .d-widget-list-type {
 	width: 74px;
@@ -86,7 +94,7 @@
 		opacity: 1;
 	}
 
-	/deep/ {
+	::v-deep {
 		& > .d-widget-list-img {
 			cursor: grab;
 			outline: transparent dotted 1px;

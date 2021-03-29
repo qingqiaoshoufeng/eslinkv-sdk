@@ -1,37 +1,40 @@
 <template lang="pug">
-  .home-container
-    .layout-wrapper
-      d-detail(:disabled="false")
-      .main-container
-        .d-editor-box.pos-r.fn-flex
-          d-widget-list(ref="widgets" :class="{ 'd-editor-fullscreen': platform.fullscreen }")
-          d-editor(ref="kanboardEditor")
-      d-footer
+.home-container
+	.layout-wrapper
+		d-detail(:disabled="false")
+		.main-container
+			.d-editor-box.pos-r.fn-flex
+				d-widget-list(
+					ref="widgets",
+					:class="{ 'd-editor-fullscreen': platform.fullscreen }"
+				)
+				d-editor(ref="kanboardEditor")
+		d-footer
 </template>
 <script lang="ts">
-	import { Vue, Component, Provide } from 'vue-property-decorator'
-	import platform from '../../store/platform.store'
-	import dWidgetList from '../../components/d-widget-list/index.vue'
-	import dEditor from '../../components/d-editor/index.vue'
-	import dDetail from '../../components/d-detail/index.vue'
-	import dFooter from '../../components/d-footer/index.vue'
-	import market from '../../plugins/market'
-  @Component({
-    components: {
-      dWidgetList,
-      dEditor,
-      dDetail,
-      dFooter
-    }
-  })
-	export default class editor extends Vue {
-    platform = platform.state
-    @Provide('kanboardEditor') kanboardEditor = this.$refs.kanboardEditor
+import { Vue, Component, Provide } from "vue-property-decorator";
+import platform from "../../store/platform.store";
+import dWidgetList from "../../components/d-widget-list/index.vue";
+import dEditor from "../../components/d-editor/index.vue";
+import dDetail from "../../components/d-detail/index.vue";
+import dFooter from "../../components/d-footer/index.vue";
+import market from "../../plugins/market";
+@Component({
+	components: {
+		dWidgetList,
+		dEditor,
+		dDetail,
+		dFooter,
+	},
+})
+export default class editor extends Vue {
+	platform = platform.state;
+	@Provide("kanboardEditor") kanboardEditor = this.$refs.kanboardEditor;
 
-    mounted () {
-      market()
-    }
+	mounted() {
+		market();
 	}
+}
 </script>
 <style lang="scss" scoped>
 .d-editor-box {
@@ -42,7 +45,7 @@
 		position: fixed;
 	}
 
-	/deep/ {
+	::v-deep {
 		.widgets-panel.fixed + .center {
 			/* todo 修改尺寸 */
 			width: calc(100% - 260px) !important;
