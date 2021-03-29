@@ -86,7 +86,7 @@
 		opacity: 1;
 	}
 
-	&::v-deep {
+	::v-deep {
 		& > .d-widget-list-img {
 			cursor: grab;
 			outline: transparent dotted 1px;

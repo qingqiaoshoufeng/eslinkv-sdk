@@ -61,16 +61,16 @@
 			content: '';
 		}
 
-		&::v-deep {
-			& > .widget-part {
-				position: absolute !important;
-			}
+	::v-deep {
+		& > .widget-part {
+			position: absolute !important;
 		}
 	}
+}
 
-	&::v-deep {
-		.load-mask {
-			position: fixed !important;
-		}
+::v-deep {
+	.load-mask {
+		position: fixed !important;
 	}
+}
 </style>

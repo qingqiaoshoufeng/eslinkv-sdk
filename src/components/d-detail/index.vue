@@ -173,9 +173,9 @@
 		height: 60px;
 		background-color: #313239;
 
-		&::v-deep button {
-			margin-left: 10px;
-		}
+	::v-deep button {
+		margin-left: 10px;
+	}
 
 		.d-detail-left {
 			align-items: center;

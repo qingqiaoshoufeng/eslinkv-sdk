@@ -142,37 +142,37 @@
 				filter: grayscale(100%);
 			}
 
-			&::v-deep {
-				.ivu-icon {
-					opacity: 1;
-				}
+		::v-deep {
+			.ivu-icon {
+				opacity: 1;
 			}
 		}
+	}
 
 		img {
 			transition: all 0.3s;
 		}
 
-		&::v-deep {
-			.ivu-icon {
-				top: 50%;
-				left: 50%;
-				margin-top: -10px;
-				margin-left: -10px;
-				opacity: 0;
-			}
+	::v-deep {
+		.ivu-icon {
+			top: 50%;
+			left: 50%;
+			margin-top: -10px;
+			margin-left: -10px;
+			opacity: 0;
 		}
 	}
+}
 
 	.d-manage-modal-control-config {
 		margin-bottom: 10px;
 
-		&::v-deep {
-			.ivu-color-picker-confirm {
-				.ivu-btn-default {
-					margin-right: 5px;
-				}
+	::v-deep {
+		.ivu-color-picker-confirm {
+			.ivu-btn-default {
+				margin-right: 5px;
 			}
 		}
 	}
+}
 </style>

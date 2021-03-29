@@ -181,11 +181,11 @@
 			border: 1px solid #ddd;
 			transition: all 0.3s;
 
-			&::v-deep {
-				.ivu-input {
-					font-size: 12px;
-				}
+		::v-deep {
+			.ivu-input {
+				font-size: 12px;
 			}
+		}
 
 			h3,
 			p {
