@@ -6,7 +6,6 @@
         .d-editor-box.pos-r.fn-flex
           d-widget-list(ref="widgets" :class="{ 'd-editor-fullscreen': platform.fullscreen }")
           d-editor(ref="kanboardEditor")
-      d-footer
 </template>
 <script lang="ts">
 	import { Vue, Component, Provide } from 'vue-property-decorator'
@@ -14,14 +13,12 @@
 	import dWidgetList from '../../components/d-widget-list/index.vue'
 	import dEditor from '../../components/d-editor/index.vue'
 	import dDetail from '../../components/d-detail/index.vue'
-	import dFooter from '../../components/d-footer/index.vue'
 	import market from '../../plugins/market'
   @Component({
     components: {
       dWidgetList,
       dEditor,
       dDetail,
-      dFooter
     }
   })
 	export default class editor extends Vue {
@@ -42,7 +39,7 @@
 		position: fixed;
 	}
 
-	/deep/ {
+	&::v-deep {
 		.widgets-panel.fixed + .center {
 			/* todo 修改尺寸 */
 			width: calc(100% - 260px) !important;
@@ -61,7 +58,7 @@
 
 .main-container {
 	width: 100%;
-	height: calc(100% - 92px);
+	height: calc(100% - 50px);
 }
 
 .line {

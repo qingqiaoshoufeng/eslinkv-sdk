@@ -173,7 +173,7 @@
 		height: 60px;
 		background-color: #313239;
 
-		/deep/ button {
+		&::v-deep button {
 			margin-left: 10px;
 		}
 

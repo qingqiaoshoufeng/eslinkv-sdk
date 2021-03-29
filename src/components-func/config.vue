@@ -142,7 +142,7 @@
 				filter: grayscale(100%);
 			}
 
-			/deep/ {
+			&::v-deep {
 				.ivu-icon {
 					opacity: 1;
 				}
@@ -153,7 +153,7 @@
 			transition: all 0.3s;
 		}
 
-		/deep/ {
+		&::v-deep {
 			.ivu-icon {
 				top: 50%;
 				left: 50%;
@@ -167,7 +167,7 @@
 	.d-manage-modal-control-config {
 		margin-bottom: 10px;
 
-		/deep/ {
+		&::v-deep {
 			.ivu-color-picker-confirm {
 				.ivu-btn-default {
 					margin-right: 5px;

@@ -181,7 +181,7 @@
 			border: 1px solid #ddd;
 			transition: all 0.3s;
 
-			/deep/ {
+			&::v-deep {
 				.ivu-input {
 					font-size: 12px;
 				}

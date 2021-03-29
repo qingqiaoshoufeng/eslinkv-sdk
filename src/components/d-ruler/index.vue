@@ -242,7 +242,7 @@
 			left: 0;
 			z-index: 1;
 			width: 100%;
-			height: 100%;
+			height: calc(100% - 32px);
 			overflow: hidden;
 			user-select: none;
 		}

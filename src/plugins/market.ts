@@ -20,9 +20,9 @@ const market = async function () {
 							widgetsObject[item.componentTypeEnName].widgets[m.componentEnTitle] = { ...m, type: m.componentEnTitle, label: m.componentTitle, market: true }
 						} else {
 							widgetsObject[item.componentTypeEnName] = {
-								type: item.componentTypeEnName,
-								label: item.componentTypeName,
-								widgets: { [m.componentEnTitle]: { ...m, type: m.componentEnTitle, label: m.componentTitle, market: true } }
+								componentTypeEnName: item.componentTypeEnName,
+								componentTypeName: item.componentTypeName,
+								children: { [m.componentEnTitle]: { ...m, type: m.componentEnTitle, label: m.componentTitle, market: true } }
 							}
 						}
 					})
@@ -30,9 +30,9 @@ const market = async function () {
 			})
 		})
 		custom.actions.setCustomWidgets({
-			name: item.componentTypeEnName,
-			label: item.componentTypeName,
-			widgets: widgetsObject
+			componentTypeEnName: item.componentTypeEnName,
+			componentTypeName: item.componentTypeName,
+			children: widgetsObject
 		})
 	})
 }

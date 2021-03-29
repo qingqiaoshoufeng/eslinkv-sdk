@@ -13,7 +13,7 @@
 	export default class XLine extends Vue {
 		platform = platform.state
 		x = 0
-		canvas = null
+		canvas:HTMLCanvasElement = null
 		context = null
 
 		@Watch('platform.ruler.zoom')
@@ -88,7 +88,7 @@
 		}
 
 		mounted() {
-			this.canvas = <HTMLCanvasElement>document.getElementById('ruler-h')
+			this.canvas = document.getElementById('ruler-h')
 			this.context = this.canvas.getContext('2d')
 			this.context.font = '10px sans-serif'
 			this.init()

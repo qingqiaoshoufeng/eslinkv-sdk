@@ -11,7 +11,7 @@
 	import scene from '../../store/scene.store'
 	import instance from '../../store/instance.store'
 	import { Component, Vue, Provide } from 'vue-property-decorator'
-	
+
 	@Component({
 		components: {
 			parts,
@@ -61,14 +61,14 @@
 			content: '';
 		}
 
-		/deep/ {
+		&::v-deep {
 			& > .widget-part {
 				position: absolute !important;
 			}
 		}
 	}
 
-	/deep/ {
+	&::v-deep {
 		.load-mask {
 			position: fixed !important;
 		}
