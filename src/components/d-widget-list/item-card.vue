@@ -1,12 +1,11 @@
 <template lang="pug">
-  vue-lazy-component.widget-item-wrapper.pos-r
-    div(slot="skeleton") 加载中...
-    .fn-flex.flex-row.d-widget-list-card
-      .d-widget-list-img.fn-flex(draggable="true" @dragstart="dragstart($event, type, index,tabKey,widget)")
-        img(:src="widget.componentAvatar" )
-      .fn-flex.flex-column
-        i.d-widget-list-type.ellipsis {{label}}
-        i.d-widget-list-type.ellipsis {{type}}
+vue-lazy-component.widget-item-wrapper.pos-r
+  div(slot="skeleton") 加载中...
+  .fn-flex.flex-column.d-widget-list-card(draggable="true" @dragstart="dragstart($event)")
+    h2.ellipsis {{ componentTitle }}
+    .d-widget-list-img.fn-flex(
+      :style="{backgroundImage:`url(${componentAvatar})`}"
+    )
 </template>
 <script lang="ts">
 	import { Component, Vue, Prop } from 'vue-property-decorator'
@@ -18,31 +17,24 @@
     }
   })
 	export default class ItemCard extends Vue {
-	  @Prop() widget:any
-	  @Prop() type
-	  @Prop() index
-	  @Prop() tabKey
-	  @Prop() label
+	  @Prop() componentEnTitle
+	  @Prop() componentConfig
+	  @Prop() componentAvatar
+	  @Prop() componentId
+	  @Prop() componentVersion
+	  @Prop() componentTitle
+    @Prop() market:boolean
 
 		/**
 		 * @description h5 原生拖拽事件
 		 */
-		dragstart (e, title, index, tabKey, obj) {
-			const { market, componentVersion, componentConfig, componentId } = obj
-			if (!index) return
-			let widgetConfig
-			if (market) {
-				widgetConfig = { config: { layout: componentConfig.layout } }
-			} else {
-				widgetConfig = this.custom.widgets[tabKey].widgets[title].widgets[index]
-			}
-			const { config } = widgetConfig
+		dragstart (e) {
 			e.dataTransfer.setData('widget-config', JSON.stringify({
-				type: index,
-				config,
-				market,
-				componentVersion,
-				componentId,
+				type: this.componentEnTitle,
+				config: { layout: this.componentConfig.layout },
+				market: this.market,
+        componentVersion: this.componentVersion,
+        componentId: this.componentId,
 				startX: e.offsetX,
 				startY: e.offsetY
 			}))
@@ -50,22 +42,25 @@
 	}
   </script>
 <style lang="scss" scoped>
-.d-widget-list-type {
-	width: 74px;
-	margin-left: 10px;
-}
-
 .d-widget-list-card {
-	align-items: center;
+  width: 80px;
+	h2{
+    font-size: 12px;
+    padding: 0 5px;
+    background: #212326;
+    white-space: nowrap;
+    line-height: 22px;
+  }
 }
 
 .d-widget-list-img {
-	align-items: center;
-
-	img {
-		max-width: 144px;
-		max-height: 144px;
-	}
+	width: 80px;
+  height: 58px;
+  background-clip: content-box;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #17191c;
 }
 
 .widget-item-wrapper {
@@ -75,15 +70,11 @@
 	margin-bottom: 5px;
 	overflow: hidden;
 	background: rgba(0, 0, 0, 1);
-	opacity: 0.9;
 	transition: 0.3s;
+  width: 80px;
 
-	&:last-child {
-		margin-bottom: 0;
-	}
-
-	&:hover {
-		opacity: 1;
+	&:nth-child(2n) {
+		margin-right: 0;
 	}
 
 	::v-deep {

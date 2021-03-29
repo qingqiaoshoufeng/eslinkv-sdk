@@ -55,11 +55,11 @@
 	}
 </style>
 <style lang="scss" scoped>
-	.canvas-wrapper {
-		&::before {
-			display: flex;
-			content: '';
-		}
+.canvas-wrapper {
+	&::before {
+		display: flex;
+		content: '';
+	}
 
 	::v-deep {
 		& > .widget-part {

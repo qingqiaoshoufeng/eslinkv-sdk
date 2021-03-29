@@ -14,7 +14,7 @@ const actions = {
 		state.components = { ...state.components, ...value }
 	},
 	setCustomWidgets (value) {
-		state.widgets[`d-${+new Date()}`] = value
+		state.widgets = { ...value, ...state.widgets }
 	}
 }
 const custom = store('custom', state, actions)

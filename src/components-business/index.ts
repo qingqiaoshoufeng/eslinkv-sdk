@@ -13,26 +13,48 @@ component.keys().forEach(name => {
 	const title = name.split('/')[2]
 	components[title] = component(name).default
 })
-conf.keys().forEach(name => {
-	const type = name.split('/')[1]
-	const title = name.split('/')[2]
-	const obj = { config: { layout: conf(name).value ? conf(name).value.layout : {} } }
-	const componentAvatar = snapshots[title] || 'https://via.placeholder.com/150'
-	if (obj) {
-		if (widgetsObject[type]) {
-			widgetsObject[type].widgets = [{ id: title, ...obj, componentType: title, label: title, componentAvatar }]
+conf.keys().forEach((name, index) => {
+	const typeOne = name.split('/')[1]
+	const typeTwo = name.split('/')[2]
+	const componentConfig = { ...conf(name).value, componentEnTitle: typeTwo }
+	const componentAvatar = snapshots[typeTwo]
+	if (componentConfig) {
+		if (widgetsObject[index]) {
+			widgetsObject[index].children.push([{
+				componentId: Date.now(),
+				componentConfig,
+				componentTitle: typeTwo,
+				componentEnTitle: typeTwo,
+				componentAvatar,
+				market: false
+			}])
 		} else {
-			widgetsObject[type] = {
-				type,
-				label: type,
-				widgets: { [title]: { ...obj, type: title, label: title, componentAvatar } }
+			widgetsObject[index] = {
+				componentTypeName: typeOne,
+				componentTypeEnName: typeOne,
+				componentTypeId: typeOne,
+				market: false,
+				children: [{
+					componentId: Date.now(),
+					componentConfig,
+					market: false,
+					componentTitle: typeTwo,
+					componentEnTitle: typeTwo,
+					componentTypeId: typeTwo,
+					componentAvatar
+				}]
 			}
 		}
 	}
 })
-
+const obj = {
+	测: {
+		componentTypeName: '测',
+		componentTypeEnName: '测',
+		componentTypeId: '测',
+		market: false,
+		children: widgetsObject
+	}
+}
 custom.actions.setCustomComponents(components)
-custom.actions.setCustomWidgets({
-	label: '杭燃样式',
-	widgets: widgetsObject
-})
+custom.actions.setCustomWidgets(obj)

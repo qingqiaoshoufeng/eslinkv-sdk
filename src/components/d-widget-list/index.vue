@@ -1,23 +1,32 @@
 <template lang="pug">
-  .widgets-panel.pos-a(:class="{ fixed: platform.panelFixed }")
-    i-tabs(:animated="false")
-      i-tab-pane(v-for="(tab,tabKey) in custom.widgets" :key="tab.name" :label="tab.label" :name="tab.name")
-        i-collapse(accordion simple)
-          i-panel(:key="type" :name="type||componentEnTitle" v-for="{ label, type, widgets,componentEnTitle,componentTitle } in tab.widgets")
-            span {{ label||componentTitle }}
-            template(slot="content")
-              item-card(v-for="(widget, index) in widgets"
-                :key="index"
-                :index="index"
-                :widget="widget"
-                :tabKey="tabKey"
-                :type="widget.type||componentEnTitle"
-                :label="widget.label||componentTitle"
-                )
+  .widgets-panel.pos-a.fn-flex.flex-row(:class="{ fixed: platform.panelFixed }")
+    ul.widgets-panel-left
+      li.fn-flex.pos-r.pointer(v-for="item in custom.widgets"
+        :key="item.componentTypeId"
+        @click="leftIndex=item.componentTypeId"
+        :title="item.componentTypeName"
+        :class="{active:leftIndex===item.componentTypeId}") {{item.componentTypeName[0]}}
+    ul.widgets-panel-right(v-if="leftIndex")
+      li(v-for="item in custom.widgets[leftIndex].children"
+        :class="{active:openList[item.componentTypeId]}")
+        i-icon(type="ios-arrow-down"  @click="handleCheckType(item.componentTypeId,item.market)")
+        label( @click="handleCheckType(item.componentTypeId,item.market)") {{item.componentTypeName}}
+        .widgets-panel-list.fn-flex(v-if="list[item.componentTypeId]&&openList[item.componentTypeId]")
+          item-card(
+            v-for="widget in list[item.componentTypeId]"
+            :market="item.market"
+            :componentEnTitle="widget.componentEnTitle"
+            :componentConfig="widget.componentConfig"
+            :componentVersion="widget.componentVersion"
+            :componentId="widget.componentId"
+            :componentAvatar="widget.componentAvatar"
+            :componentTitle="widget.componentTitle"
+          )
+    .widgets-panel-empty.fn-flex(v-else) 快来选择你心仪的组件了
 </template>
 <script>
 	import parts from '../d-widget-part/index'
-	import { Collapse, TabPane, Tabs, Panel } from 'view-design'
+	import { Icon } from 'view-design'
 	import custom from '../../store/custom.store'
 	import platform from '../../store/platform.store'
 	import itemCard from './item-card'
@@ -25,63 +34,127 @@
 	export default {
 		components: {
 			parts,
-			'i-collapse': Collapse,
-			'i-tab-pane': TabPane,
-			'i-tabs': Tabs,
-			'i-panel': Panel,
+			'i-icon': Icon,
 			itemCard
 		},
 		data () {
 			return {
 				custom: custom.state,
 				platform: platform.state,
-				widgetListToggleTimer: {}
+				leftIndex: null,
+				rightIndex: null,
+				list: {},
+				openList: {}
 			}
 		},
 		methods: {
-			format (type) {
-				return type.split('-').join('_')
-			},
-			/**
-			 * @description h5 原生拖拽事件
-			 */
-			dragstart (e, title, index, tabKey, obj) {
-				const { market, componentVersion, componentConfig, componentId } = obj
-				if (!index) return
-				let widgetConfig
-				if (market) {
-					widgetConfig = { config: { layout: componentConfig.layout } }
+			handleCheckType (componentTypeId, market) {
+				if (this.openList[componentTypeId]) {
+					this.$set(this.openList, componentTypeId, false)
 				} else {
-					widgetConfig = this.custom.widgets[tabKey].widgets[title].widgets[index]
+					this.$set(this.openList, componentTypeId, true)
 				}
-				const { config } = widgetConfig
-				e.dataTransfer.setData('widget-config', JSON.stringify({
-					type: index,
-					config,
-					market,
-					componentVersion,
-					componentId,
-					startX: e.offsetX,
-					startY: e.offsetY
-				}))
+				if (!this.list[componentTypeId]) {
+					if (market) {
+						this.$api.marketComponent.list({
+							componentTypeId,
+							isCurrentVersion: true,
+							status: 'SUCCESS',
+							pageNum: 1,
+							pageSize: 999
+						}).then(res => {
+							this.$set(this.list, componentTypeId, res.list)
+						})
+					} else {
+						const list = this.custom.widgets[this.leftIndex].children
+						list.forEach(item => {
+							if (item.componentTypeId === componentTypeId) {
+								this.$set(this.list, componentTypeId, item.children)
+							}
+						})
+					}
+				}
 			}
 		}
 	}
 </script>
 <style lang="scss" scoped>
-	.d-widget-list-img {
-		height: 100px;
+@import "src/scss/conf";
+.widgets-panel-list{
+  padding: 5px;
+  background: #0a0b0d;
+  justify-content: space-between;
+  width: 100%;
+}
+.widgets-panel-empty{
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.d-widget-list-img {
+	height: 100px;
+}
+
+.widgets-panel {
+	top: 0;
+	left: 0;
+
+	/* todo 修改尺寸 */
+	width: 226px;
+	height: 100%;
+	padding: 0;
+	background-color: #191c21;
+}
+
+.widgets-panel-left {
+	background-color: #22242b;
+
+	li {
+		align-items: center;
+		justify-content: center;
+		width: 46px;
+		height: 46px;
+    color: rgb(188,201,212);
+		&.active {
+			background-color: #191c21;
+      color: $themeColor;
+			&::before {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 2px;
+				height: 100%;
+				content: '';
+				background-color: $themeColor;
+			}
+		}
+	}
+}
+
+.widgets-panel-right {
+  width: 100%;
+	li{
+    width: 100%;
+    &.active{
+      ::v-deep{
+        .ivu-icon{
+          transform: rotate(0);
+        }
+      }
+    }
+    ::v-deep{
+      .ivu-icon{
+        color: rgb(188,201,212);
+        margin: 0 10px;
+        transform: rotate(-90deg);
+        transition: all .3s;
+      }
+    }
 	}
 
-	.widgets-panel {
-		top: 0;
-		left: 0;
-
-		/* todo 修改尺寸 */
-		width: 260px;
-		height: 100%;
-		padding: 0;
-		overflow: visible;
-		background-color: #22242b;
+	label {
+		line-height: 40px;
+    color: rgb(188,201,212);
 	}
+}
 </style>

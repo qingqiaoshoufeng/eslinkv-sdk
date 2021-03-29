@@ -66,7 +66,7 @@ class Mixins extends Vue {
 
 	// 小工具放置到画布
 	handleWidgetDrop (e, data) {
-		const { clientX, clientY, offsetX, offsetY } = e
+		const { offsetX, offsetY } = e
 		const { type, config: inputConfig, startX, startY, market = false, componentVersion, componentId } = JSON.parse(data)
 		const { layout = {}, config = {}, widget = {}, api } = inputConfig || {}
 		if (!layout.size) layout.size = {}
@@ -82,7 +82,7 @@ class Mixins extends Vue {
 		if (layout.zIndex) layout.zIndex = 10
 		widget.id = id
 		widget.componentVersion = componentVersion
-		widget.componentId = componentId
+		widget.componentId = componentId // todo delete
 		const value = { layout, widget, config, api }
 		this.initWidgetConfig(id, type, this.scene.index, market)
 		this.updateWidget(value)
