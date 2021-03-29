@@ -86,7 +86,7 @@ export default {
                 clientX -= 260
             }
             this.clientX = clientX
-            this.clientY = clientY
+            this.clientY = clientY - this.platform.ruler.panelTopDistance
             if (this.contentDrag) {
                 if (!this.contentMoveStartX) {
                     this.contentMoveStartX = this.clientX
@@ -115,6 +115,7 @@ export default {
                 /*todo 修改尺寸*/
                 clientX -= 260
             }
+            clientY -= this.platform.ruler.panelTopDistance
             if (!this.isMoved) {
                 return this.clickDraw(clientX, clientY)
             }

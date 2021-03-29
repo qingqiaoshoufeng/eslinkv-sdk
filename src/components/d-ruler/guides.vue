@@ -54,7 +54,7 @@
 					clientX -= 160
 				}
 				this.platform.ruler.guideDragStartX = clientX
-				this.platform.ruler.guideDragStartY = clientY
+				this.platform.ruler.guideDragStartY = clientY - this.platform.ruler.panelTopDistance
 				this.platform.ruler.isDrag = true
 				this.platform.ruler.dragFlag = type
 				this.platform.ruler.dragGuideId = id

@@ -1,22 +1,24 @@
 <template lang="pug">
-	.vue-ruler-wrapper.pos-r
-		section(v-show="platform.ruler.rulerVisible"
-			:style="(contentMove || platform.ruler.zoom !== 1 || platform.ruler.lockGuides) && 'pointer-events: none'")
-			.ruler-wrapper.h(ref="horizontalRuler" @mousedown.stop="horizontalDragRuler")
-				x-line
-			.ruler-wrapper.v(ref="verticalRuler" @mousedown.stop="verticalDragRuler")
-				y-line
-			.mouse-position.x.pos-a(:style="`transform: translateX(${clientX}px)`")
-			.mouse-position.y.pos-a(:style="`transform: translateY(${clientY}px)`")
-		guides(
-			:vGuideTop="verticalDottedTop"
-			:hGuideLeft="horizontalDottedLeft"
-			:contentMove="contentMove"
-			:contentWidth="contentWidth"
-			:contentHeight="contentHeight")
-		.vue-ruler-content(:class="{ drag: contentMove }" @mousedown="handleContentMoveStart" @mousemove.prevent)
-			.content-body(:id="platform.ruler.dragId" :style="contentStyle")
-				slot
+  .vue-ruler-wrapper.pos-r
+    section(v-show="platform.ruler.rulerVisible"
+      :style="(contentMove || platform.ruler.zoom !== 1 || platform.ruler.lockGuides) && 'pointer-events: none'")
+      .ruler-wrapper.h(ref="horizontalRuler" @mousedown.stop="horizontalDragRuler" @mouseenter="showYHelp=true" @mouseleave="showYHelp=false")
+        x-line
+      .ruler-wrapper.v(ref="verticalRuler" @mousedown.stop="verticalDragRuler" @mouseenter="showXHelp=true" @mouseleave="showXHelp=false")
+        y-line
+      .mouse-position.x.pos-a(:style="`transform: translateX(${clientX}px)`" v-if="showYHelp")
+        .num {{ xSite }}
+      .mouse-position.y.pos-a(:style="`transform: translateY(${clientY}px)`" v-if="showXHelp")
+        .num {{ ySite }}
+    guides(
+      :vGuideTop="verticalDottedTop"
+      :hGuideLeft="horizontalDottedLeft"
+      :contentMove="contentMove"
+      :contentWidth="contentWidth"
+      :contentHeight="contentHeight")
+    .vue-ruler-content(:class="{ drag: contentMove }" @mousedown="handleContentMoveStart" @mousemove.prevent)
+      .content-body(:id="platform.ruler.dragId" :style="contentStyle")
+        slot
 </template>
 <script lang="ts">
 	import guides from './guides.vue'
@@ -39,6 +41,8 @@
 
 		platform = platform.state
 		size = 18
+    showYHelp = false
+    showXHelp = false
 
 		@Watch('platform.ruler.contentScrollLeft')
 		contentXChange () {
@@ -53,6 +57,20 @@
 		get contentStyle () {
 			return `transform:translate3d(${this.platform.ruler.contentX}px, ${this.platform.ruler.contentY}px, 0) scale(${this.platform.ruler.zoom});width:${this.contentWidth + 18 * 2} px;height:${this.contentHeight + 18 * 2} px;`
 		}
+
+    get ySite () {
+      const stepLength = this.platform.ruler.stepLength
+      const { size } = this
+      const site = this.guideStepFence((this.clientY - size) * (stepLength / 50) - this.platform.ruler.contentY)
+      return site
+    }
+
+    get xSite () {
+      const stepLength = this.platform.ruler.stepLength
+      const { size } = this
+      const site = this.guideStepFence((this.clientX - size) * (stepLength / 50) - this.platform.ruler.contentX)
+      return site
+    }
 	}
 </script>
 
@@ -146,16 +164,35 @@
 		z-index: 30;
 		pointer-events: none;
 
+    .num {
+      position: absolute;
+      background: black;
+      color: #fff;
+      padding: 1px;
+      font-size: 12px;
+      height: 14px;
+      line-height: 14px;
+    }
+
 		&.x {
 			width: 1px;
-			height: 18px;
+			height: 9999px;
 			background-color: red;
+      .num {
+        left: 3px;
+        top: 2px;
+      }
 		}
 
 		&.y {
-			width: 18px;
+			width: 9999px;
 			height: 1px;
 			background-color: red;
+      .num {
+        left: -2px;
+        top: -22px;
+        transform: rotate(-90deg);
+      }
 		}
 	}
 
