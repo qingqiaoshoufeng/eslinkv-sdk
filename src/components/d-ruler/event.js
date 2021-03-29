@@ -83,19 +83,18 @@ export default {
             } = e
             if (this.platform.panelFixed) {
                 /*todo 修改尺寸*/
-                clientX -= 260
+                this.clientX = clientX - 260
             }
-            this.clientX = clientX
             this.clientY = clientY - this.platform.ruler.panelTopDistance
             if (this.contentDrag) {
                 if (!this.contentMoveStartX) {
-                    this.contentMoveStartX = this.clientX
-                    this.contentMoveStartY = this.clientY
+                    this.contentMoveStartX = clientX
+                    this.contentMoveStartY = clientY
                 }
-                this.platform.ruler.contentScrollLeft = Math.ceil(this.clientX - this.contentMoveStartX)
-                this.platform.ruler.contentScrollTop = Math.ceil(this.clientY - this.contentMoveStartY)
-                this.contentMoveStartX = this.clientX
-                this.contentMoveStartY = this.clientY
+                this.platform.ruler.contentScrollLeft = Math.ceil(clientX - this.contentMoveStartX)
+                this.platform.ruler.contentScrollTop = Math.ceil(clientY - this.contentMoveStartY)
+                this.contentMoveStartX = clientX
+                this.contentMoveStartY = clientY
             } else {
                 this.dottedLineMove(this.clientX, this.clientY)
             }
@@ -116,10 +115,9 @@ export default {
                 clientX -= 260
             }
             clientY -= this.platform.ruler.panelTopDistance
-            if (!this.isMoved) {
-                return this.clickDraw(clientX, clientY)
+            if (!this.platform.ruler.dragGuideId || this.isMoved) {
+                this.handleGuideLine()
             }
-            this.dragDrawEnd(clientX, clientY)
         },
         /**
          * @description 设置缩放比例

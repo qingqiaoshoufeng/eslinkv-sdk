@@ -8,7 +8,7 @@
 				:title="item.title" :style="{...getLineStyle(item)}"
 				:key="item.id"
 				:class="[`vue-ruler-ref-line-${item.type}`, { locked: platform.ruler.lockGuides, 'no-pointer': platform.ruler.zoom !== 1 || contentMove || platform.ruler.lockGuides }]"
-				@mousedown="e=>handleGuideDrag(e,item)"
+				@mousedown.stop="e=>handleGuideDrag(e,item)"
 				@contextmenu="openGuideMenu(item.id, $event)"
 			)
 		ul.guide-right-menu(v-show="showGuideMenu" :style="`left: ${menuLeft}px; top:${menuTop - 10}px`")
@@ -48,6 +48,7 @@
 			// 水平线/垂直线 处按下鼠标
 			handleGuideDrag (e, item) {
 				if (e.which !== 1) return
+        console.log('handleGuideDrag', item)
 				let { clientX, clientY } = e
 				const { type, id } = item
 				if (this.platform.panelFixed) {
@@ -95,7 +96,7 @@
 	.guides-wrapper {
 		top: 18px;
 		left: 18px;
-		z-index: 3;
+		z-index: 10;
 		overflow: visible;
 		pointer-events: none;
 		transition: transform 0.3s;

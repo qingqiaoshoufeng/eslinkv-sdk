@@ -2,9 +2,9 @@
   .vue-ruler-wrapper.pos-r
     section(v-show="platform.ruler.rulerVisible"
       :style="(contentMove || platform.ruler.zoom !== 1 || platform.ruler.lockGuides) && 'pointer-events: none'")
-      .ruler-wrapper.h(ref="horizontalRuler" @mousedown.stop="horizontalDragRuler" @mouseenter="showYHelp=true" @mouseleave="showYHelp=false")
+      .ruler-wrapper.h(ref="horizontalRuler" @mouseenter="showYHelp=true" @mouseleave="showYHelp=false" @mousedown.stop="handleGuideLine('v')")
         x-line
-      .ruler-wrapper.v(ref="verticalRuler" @mousedown.stop="verticalDragRuler" @mouseenter="showXHelp=true" @mouseleave="showXHelp=false")
+      .ruler-wrapper.v(ref="verticalRuler" @mouseenter="showXHelp=true" @mouseleave="showXHelp=false" @mousedown.stop="handleGuideLine('h')")
         y-line
       .mouse-position.x.pos-a(:style="`transform: translateX(${clientX}px)`" v-if="showYHelp")
         .num {{ xSite }}
@@ -70,6 +70,46 @@
       const { size } = this
       const site = this.guideStepFence((this.clientX - size) * (stepLength / 50) - this.platform.ruler.contentX)
       return site
+    }
+
+    handleGuideLine (dragFlag) {
+      this.platform.ruler.dragFlag = dragFlag || this.platform.ruler.dragFlag
+      const site = this.platform.ruler.dragFlag === 'v' ? this.xSite : this.ySite
+      if (this.platform.ruler.dragGuideId) {
+        platform.actions.changeGuideLine(site)
+      } else {
+        platform.actions.guideAdd(site)
+      }
+      this.platform.ruler.isDrag = false
+      this.isMoved = false
+      this.platform.ruler.dragGuideId = ''
+      this.verticalDottedTop = this.horizontalDottedLeft = -999
+    }
+
+    insertX () {
+		  this.platform.ruler.dragFlag = 'v'
+      if (this.platform.ruler.dragGuideId) {
+        platform.actions.changeGuideLine(this.xSite)
+      } else {
+        platform.actions.guideAdd(this.xSite)
+      }
+      this.platform.ruler.isDrag = false
+      this.isMoved = false
+      this.platform.ruler.dragGuideId = ''
+      this.verticalDottedTop = this.horizontalDottedLeft = -999
+    }
+
+    insertY () {
+		  this.platform.ruler.dragFlag = 'h'
+      if (this.platform.ruler.dragGuideId) {
+        platform.actions.changeGuideLine(this.ySite)
+      } else {
+        platform.actions.guideAdd(this.ySite)
+      }
+      this.platform.ruler.isDrag = false
+      this.isMoved = false
+      this.platform.ruler.dragGuideId = ''
+      this.verticalDottedTop = this.horizontalDottedLeft = -999
     }
 	}
 </script>
