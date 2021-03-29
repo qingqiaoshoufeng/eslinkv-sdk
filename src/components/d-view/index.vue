@@ -68,7 +68,7 @@
 	}
 }
 
-&::v-deep {
+::v-deep {
 	.load-mask {
 		position: fixed !important;
 	}
