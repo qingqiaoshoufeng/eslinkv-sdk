@@ -48,7 +48,6 @@
 			// 水平线/垂直线 处按下鼠标
 			handleGuideDrag (e, item) {
 				if (e.which !== 1) return
-				console.log('handleGuideDrag', item)
 				let { clientX, clientY } = e
 				const { type, id } = item
 				if (this.platform.panelFixed) {

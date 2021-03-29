@@ -83,32 +83,6 @@
       this.platform.ruler.dragGuideId = ''
       this.verticalDottedTop = this.horizontalDottedLeft = -999
     }
-
-    insertX () {
-		  this.platform.ruler.dragFlag = 'v'
-      if (this.platform.ruler.dragGuideId) {
-        platform.actions.changeGuideLine(this.xSite)
-      } else {
-        platform.actions.guideAdd(this.xSite)
-      }
-      this.platform.ruler.isDrag = false
-      this.isMoved = false
-      this.platform.ruler.dragGuideId = ''
-      this.verticalDottedTop = this.horizontalDottedLeft = -999
-    }
-
-    insertY () {
-		  this.platform.ruler.dragFlag = 'h'
-      if (this.platform.ruler.dragGuideId) {
-        platform.actions.changeGuideLine(this.ySite)
-      } else {
-        platform.actions.guideAdd(this.ySite)
-      }
-      this.platform.ruler.isDrag = false
-      this.isMoved = false
-      this.platform.ruler.dragGuideId = ''
-      this.verticalDottedTop = this.horizontalDottedLeft = -999
-    }
 	}
 </script>
 

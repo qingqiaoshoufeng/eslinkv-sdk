@@ -30,7 +30,7 @@ function getInitRuler () {
 		rulerVisible: true, // 标尺可见
 		stepLength: 50, // 标尺步长
 		size: 18, // 标尺高度，容差
-        panelTopDistance: 60,
+        panelTopDistance: 60, // 上边导航栏高度
 		zoom: 1,
 		lockGuides: false, // 锁定参考线
 		contentLayout: {
