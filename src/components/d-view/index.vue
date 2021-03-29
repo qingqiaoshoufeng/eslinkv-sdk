@@ -61,14 +61,14 @@
 		content: '';
 	}
 
-	::v-deep {
+	&::v-deep {
 		& > .widget-part {
 			position: absolute !important;
 		}
 	}
 }
 
-::v-deep {
+&::v-deep {
 	.load-mask {
 		position: fixed !important;
 	}

@@ -80,17 +80,20 @@
 </script>
 <style lang="scss" scoped>
 @import "src/scss/conf";
-.widgets-panel-list{
-  padding: 5px;
-  background: #0a0b0d;
-  justify-content: space-between;
-  width: 100%;
+
+.widgets-panel-list {
+	justify-content: space-between;
+	width: 100%;
+	padding: 5px;
+	background: #0a0b0d;
 }
-.widgets-panel-empty{
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+
+.widgets-panel-empty {
+	align-items: center;
+	justify-content: center;
+	width: 100%;
 }
+
 .d-widget-list-img {
 	height: 100px;
 }
@@ -114,10 +117,12 @@
 		justify-content: center;
 		width: 46px;
 		height: 46px;
-    color: rgb(188,201,212);
+		color: rgb(188, 201, 212);
+
 		&.active {
+			color: $themeColor;
 			background-color: #191c21;
-      color: $themeColor;
+
 			&::before {
 				position: absolute;
 				top: 0;
@@ -132,29 +137,32 @@
 }
 
 .widgets-panel-right {
-  width: 100%;
-	li{
-    width: 100%;
-    &.active{
-      ::v-deep{
-        .ivu-icon{
-          transform: rotate(0);
-        }
-      }
-    }
-    ::v-deep{
-      .ivu-icon{
-        color: rgb(188,201,212);
-        margin: 0 10px;
-        transform: rotate(-90deg);
-        transition: all .3s;
-      }
-    }
+	width: 100%;
+
+	li {
+		width: 100%;
+
+		&.active {
+			&::v-deep {
+				.ivu-icon {
+					transform: rotate(0);
+				}
+			}
+		}
+
+		&::v-deep {
+			.ivu-icon {
+				margin: 0 10px;
+				color: rgb(188, 201, 212);
+				transition: all 0.3s;
+				transform: rotate(-90deg);
+			}
+		}
 	}
 
 	label {
 		line-height: 40px;
-    color: rgb(188,201,212);
+		color: rgb(188, 201, 212);
 	}
 }
 </style>

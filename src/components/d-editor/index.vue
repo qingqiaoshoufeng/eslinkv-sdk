@@ -85,7 +85,7 @@
 	import dRightManage from '../d-right-manage'
 	import dRightWidget from '../d-right-widget'
 	import dRightGit from '../d-right-git'
-  import dFooter from '../d-footer'
+	import dFooter from '../d-footer'
 	import platform from '../../store/platform.store'
 	import instance from '../../store/instance.store'
 	import scene from '../../store/scene.store'
@@ -99,7 +99,7 @@
 		components: {
 			parts,
 			rulerCanvas,
-      dFooter,
+			dFooter,
 			vdr,
 			databaseConfig,
 			dRightManage,

@@ -77,12 +77,12 @@ export default {
             }
         },
         setMove: throttle(50, false, function (e) {
-            let {
+            const {
                 clientX,
                 clientY
             } = e
             if (this.platform.panelFixed) {
-                /*todo 修改尺寸*/
+                /* todo 修改尺寸 */
                 this.clientX = clientX - 260
             }
             this.clientY = clientY - this.platform.ruler.panelTopDistance
@@ -111,7 +111,7 @@ export default {
                 clientY
             } = $event
             if (this.platform.panelFixed) {
-                /*todo 修改尺寸*/
+                /* todo 修改尺寸 */
                 clientX -= 260
             }
             clientY -= this.platform.ruler.panelTopDistance

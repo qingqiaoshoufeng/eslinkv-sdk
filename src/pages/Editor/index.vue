@@ -21,7 +21,7 @@
     components: {
       dWidgetList,
       dEditor,
-      dDetail,
+      dDetail
     }
   })
 	export default class editor extends Vue {
@@ -42,7 +42,7 @@
 		position: fixed;
 	}
 
-	::v-deep {
+	&::v-deep {
 		.widgets-panel.fixed + .center {
 			/* todo 修改尺寸 */
 			width: calc(100% - 226px) !important;

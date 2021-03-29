@@ -43,41 +43,42 @@ vue-lazy-component.widget-item-wrapper.pos-r
   </script>
 <style lang="scss" scoped>
 .d-widget-list-card {
-  width: 80px;
-	h2{
-    font-size: 12px;
-    padding: 0 5px;
-    background: #212326;
-    white-space: nowrap;
-    line-height: 22px;
-  }
+	width: 80px;
+
+	h2 {
+		padding: 0 5px;
+		font-size: 12px;
+		line-height: 22px;
+		white-space: nowrap;
+		background: #212326;
+	}
 }
 
 .d-widget-list-img {
 	width: 80px;
-  height: 58px;
-  background-clip: content-box;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: #17191c;
+	height: 58px;
+	background-color: #17191c;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-clip: content-box;
+	background-size: contain;
 }
 
 .widget-item-wrapper {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: 80px;
 	margin-bottom: 5px;
 	overflow: hidden;
 	background: rgba(0, 0, 0, 1);
 	transition: 0.3s;
-  width: 80px;
 
 	&:nth-child(2n) {
 		margin-right: 0;
 	}
 
-	::v-deep {
+	&::v-deep {
 		& > .d-widget-list-img {
 			cursor: grab;
 			outline: transparent dotted 1px;

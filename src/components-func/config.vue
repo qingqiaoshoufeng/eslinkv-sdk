@@ -136,24 +136,24 @@
 	}
 </script>
 <style lang="scss" scoped>
-	.d-manage-modal-background {
-		&:hover {
-			img {
-				filter: grayscale(100%);
-			}
+.d-manage-modal-background {
+	&:hover {
+		img {
+			filter: grayscale(100%);
+		}
 
-		::v-deep {
+		&::v-deep {
 			.ivu-icon {
 				opacity: 1;
 			}
 		}
 	}
 
-		img {
-			transition: all 0.3s;
-		}
+	img {
+		transition: all 0.3s;
+	}
 
-	::v-deep {
+	&::v-deep {
 		.ivu-icon {
 			top: 50%;
 			left: 50%;
@@ -164,10 +164,10 @@
 	}
 }
 
-	.d-manage-modal-control-config {
-		margin-bottom: 10px;
+.d-manage-modal-control-config {
+	margin-bottom: 10px;
 
-	::v-deep {
+	&::v-deep {
 		.ivu-color-picker-confirm {
 			.ivu-btn-default {
 				margin-right: 5px;

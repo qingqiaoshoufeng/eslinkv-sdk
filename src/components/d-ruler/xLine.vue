@@ -2,7 +2,7 @@
 	canvas#ruler-h.pos-a(width="9999" height="18")
 </template>
 <script lang="ts">
-	import {Component, Vue, Watch} from 'vue-property-decorator'
+	import { Component, Vue, Watch } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
 
 	let i = 0
@@ -17,21 +17,21 @@
 		context = null
 
 		@Watch('platform.ruler.zoom')
-		zoomChange() {
+		zoomChange () {
 			this.init()
 		}
 
 		@Watch('platform.ruler.contentX')
-		contentXChange() {
+		contentXChange () {
 			this.init()
 		}
 
 		@Watch('platform.panelConfig.size.width')
-		widthChange() {
+		widthChange () {
 			this.init()
 		}
 
-		translateAnimation(num) {
+		translateAnimation (num) {
 			const animation = requestAnimationFrame(() => this.translateAnimation(num))
 			if (i === num) {
 				cancelAnimationFrame(animation)
@@ -42,18 +42,18 @@
 			if (num < 0) i--
 		}
 
-		handleTranslate(num) {
+		handleTranslate (num) {
 			this.clearRulerCanvas()
 			this.context.translate(num, 0)
 			this.init()
 		}
 
-		clearRulerCanvas() {
+		clearRulerCanvas () {
 			const t = this.context.getTransform()
 			this.context.clearRect(-t.e, 0, this.canvas.width - t.e, this.canvas.height)
 		}
 
-		initDraw() {
+		initDraw () {
 			this.clearRulerCanvas()
 			const t = this.context.getTransform()
 			let x = 0
@@ -73,7 +73,7 @@
 			}
 		}
 
-		init() {
+		init () {
 			this.context.translate(this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX - this.x, 0)
 			this.x = this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX
 			if (loadImg) {
@@ -87,7 +87,7 @@
 			}
 		}
 
-		mounted() {
+		mounted () {
 			this.canvas = document.getElementById('ruler-h')
 			this.context = this.canvas.getContext('2d')
 			this.context.font = '10px sans-serif'

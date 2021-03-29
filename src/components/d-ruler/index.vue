@@ -61,15 +61,13 @@
     get ySite () {
       const stepLength = this.platform.ruler.stepLength
       const { size } = this
-      const site = this.guideStepFence((this.clientY - size) * (stepLength / 50) - this.platform.ruler.contentY)
-      return site
+      return this.guideStepFence((this.clientY - size) * (stepLength / 50) - this.platform.ruler.contentY)
     }
 
     get xSite () {
       const stepLength = this.platform.ruler.stepLength
       const { size } = this
-      const site = this.guideStepFence((this.clientX - size) * (stepLength / 50) - this.platform.ruler.contentX)
-      return site
+      return this.guideStepFence((this.clientX - size) * (stepLength / 50) - this.platform.ruler.contentX)
     }
 
     handleGuideLine (dragFlag) {
@@ -204,35 +202,37 @@
 		z-index: 30;
 		pointer-events: none;
 
-    .num {
-      position: absolute;
-      background: black;
-      color: #fff;
-      padding: 1px;
-      font-size: 12px;
-      height: 14px;
-      line-height: 14px;
-    }
+		.num {
+			position: absolute;
+			height: 14px;
+			padding: 1px;
+			font-size: 12px;
+			line-height: 14px;
+			color: #fff;
+			background: black;
+		}
 
 		&.x {
 			width: 1px;
 			height: 9999px;
 			background-color: red;
-      .num {
-        left: 3px;
-        top: 2px;
-      }
+
+			.num {
+				top: 2px;
+				left: 3px;
+			}
 		}
 
 		&.y {
 			width: 9999px;
 			height: 1px;
 			background-color: red;
-      .num {
-        left: -2px;
-        top: -22px;
-        transform: rotate(-90deg);
-      }
+
+			.num {
+				top: -22px;
+				left: -2px;
+				transform: rotate(-90deg);
+			}
 		}
 	}
 
