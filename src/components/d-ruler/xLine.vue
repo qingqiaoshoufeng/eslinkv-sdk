@@ -14,101 +14,101 @@
 
 	@Component
 	export default class XLine extends Vue {
-	  @Prop() clientX
-		platform = platform.state
-    showHelp:boolean=false
-		canvas:HTMLCanvasElement = null
-		context = null
+        @Prop() clientX
+        platform = platform.state
+        showHelp:boolean=false
+        canvas:HTMLCanvasElement = null
+        context = null
+    
+        get site () {
+          return ~~((this.clientX - this.platform.ruler.size - this.platform.ruler.xRoom - this.platform.ruler.guideStartX) / this.platform.ruler.zoom)
+        }
+    
+        @Watch('platform.ruler.zoom')
+        zoomChange () {
+            this.init()
+        }
+    
+        @Watch('platform.ruler.contentX')
+        contentXChange () {
+            this.init()
+        }
+    
+        @Watch('platform.panelConfig.size.width')
+        widthChange () {
+            this.init()
+        }
+    
+        mousedownStop () {
+          this.platform.ruler.dragFlag = 'x'
+          if (this.platform.ruler.dragGuideId) {
+            platform.actions.changeGuideLine(this.site)
+          } else {
+            platform.actions.guideAdd(this.site)
+          }
+          this.platform.ruler.guideDrag = false
+          this.isMoved = false
+          this.platform.ruler.dragGuideId = ''
+          this.verticalDottedTop = this.horizontalDottedLeft = -999
+          this.$emit('mousedownStop')
+        }
+    
+        translateAnimation (num) {
+            const animation = requestAnimationFrame(() => this.translateAnimation(num))
+            if (i === num) {
+                cancelAnimationFrame(animation)
+                i = 0
+            }
+            this.handleTranslate(1)
+            if (num > 0) i++
+            if (num < 0) i--
+        }
 
-    get site () {
-      return ~~((this.clientX - this.platform.ruler.size - this.platform.ruler.xRoom - this.platform.ruler.guideStartX) / this.platform.ruler.zoom)
-    }
+        handleTranslate (num) {
+            this.clearRulerCanvas()
+            this.context.translate(num, 0)
+            this.init()
+        }
 
-		@Watch('platform.ruler.zoom')
-		zoomChange () {
-			this.init()
-		}
+        clearRulerCanvas () {
+            const t = this.context.getTransform()
+            this.context.clearRect(-t.e, 0, this.canvas.width - t.e, this.canvas.height)
+        }
 
-		@Watch('platform.ruler.contentX')
-		contentXChange () {
-			this.init()
-		}
+        initDraw () {
+            this.clearRulerCanvas()
+            const t = this.context.getTransform()
+            let x = 0
+            while (x < this.canvas.width - t.e) {
+                this.context.drawImage(bgImg, x, 0)
+                this.context.fillText(~~(x / this.platform.ruler.zoom), x + 4, 10)
+                x = x + this.platform.ruler.stepLength
+            }
 
-		@Watch('platform.panelConfig.size.width')
-		widthChange () {
-			this.init()
-		}
-
-    mousedownStop () {
-      this.platform.ruler.dragFlag = 'x'
-      if (this.platform.ruler.dragGuideId) {
-        platform.actions.changeGuideLine(this.site)
-      } else {
-        platform.actions.guideAdd(this.site)
-      }
-      this.platform.ruler.guideDrag = false
-      this.isMoved = false
-      this.platform.ruler.dragGuideId = ''
-      this.verticalDottedTop = this.horizontalDottedLeft = -999
-      this.$emit('mousedownStop')
-    }
-
-		translateAnimation (num) {
-			const animation = requestAnimationFrame(() => this.translateAnimation(num))
-			if (i === num) {
-				cancelAnimationFrame(animation)
-				i = 0
-			}
-			this.handleTranslate(1)
-			if (num > 0) i++
-			if (num < 0) i--
-		}
-
-		handleTranslate (num) {
-			this.clearRulerCanvas()
-			this.context.translate(num, 0)
-			this.init()
-		}
-
-		clearRulerCanvas () {
-			const t = this.context.getTransform()
-			this.context.clearRect(-t.e, 0, this.canvas.width - t.e, this.canvas.height)
-		}
-
-		initDraw () {
-			this.clearRulerCanvas()
-			const t = this.context.getTransform()
-			let x = 0
-			while (x < this.canvas.width - t.e) {
-				this.context.drawImage(bgImg, x, 0)
-				this.context.fillText(~~(x / this.platform.ruler.zoom), x + 2, 10)
-				x = x + this.platform.ruler.stepLength
-			}
-
-			if (t.e > 0) {
-				let xe = 0
-				while (xe < t.e) {
-					xe = xe + this.platform.ruler.stepLength
-					this.context.drawImage(bgImg, -xe, 0)
-					this.context.fillText(-~~(xe / this.platform.ruler.zoom), -xe + 2, 10)
-				}
-			}
-		}
-
-    /**
-     * @description
-     *
-     * 画布高度 * （1-缩放比例）      ===》2边缩放距离
-     * 2边缩放距离 / 2               ===》单边缩放距离
-     * 单边缩放距离 + 面板拖动距离     ===》0点距离左侧边界像素值
-     */
+            if (t.e > 0) {
+                let xe = 0
+                while (xe < t.e) {
+                    xe = xe + this.platform.ruler.stepLength
+                    this.context.drawImage(bgImg, -xe, 0)
+                    this.context.fillText(xe === 0 ? '0' : -~~(xe / this.platform.ruler.zoom), -xe + 2, 10)
+                }
+            }
+        }
+    
+        /**
+         * @description
+         *
+         * 画布高度 * （1-缩放比例）      ===》2边缩放距离
+         * 2边缩放距离 / 2               ===》单边缩放距离
+         * 单边缩放距离 + 面板拖动距离     ===》0点距离左侧边界像素值
+         */
 		init () {
 			this.context.translate(this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX - this.platform.ruler.guideStartX, 0)
 			this.platform.ruler.guideStartX = this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX
 			if (loadImg) {
 				this.initDraw()
 			} else {
-        bgImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAMAAAAuTX21AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACNJREFUeNpiYCAdMDKRCka1jGoBA2JZZGshiaCXFpIBQIABAAplBkCmQpujAAAAAElFTkSuQmCC'
+                bgImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAMAAAAuTX21AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACNJREFUeNpiYCAdMDKRCka1jGoBA2JZZGshiaCXFpIBQIABAAplBkCmQpujAAAAAElFTkSuQmCC'
 				bgImg.onload = () => {
 					loadImg = true
 					this.initDraw()

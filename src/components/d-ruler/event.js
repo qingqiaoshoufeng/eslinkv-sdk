@@ -37,6 +37,12 @@ export default {
             this.contentMoveStartX = this.contentMoveStartY = 0
         },
         startContentMove (e) {
+            if ((e.ctrlKey === true || e.metaKey === true) &&
+                (e.which === 189 || e.which === 187 ||
+                    e.which === 173 || e.which === 61 ||
+                    e.which === 107 || e.which === 109)) {
+                e.preventDefault()
+            }
             if (e.keyCode === 32) this.contentMove = true
         },
         stopContentMove () {
@@ -85,6 +91,10 @@ export default {
                 }
                 this.zoomUpdateTime = +new Date()
             }
+        },
+        handleWheelWindow (e) {
+            e.preventDefault()
+            e.stopPropagation()
         },
         handleWheel (e) {
             e.preventDefault()

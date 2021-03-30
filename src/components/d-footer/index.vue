@@ -18,9 +18,9 @@
     .d-footer-bar.fn-flex(:style="{marginLeft:'auto'}")
       label {{ zoom }}
     .d-footer-bar.fn-flex
-      d-svg.pointer(icon-class="zoomIn" @click="handleZoomIn")
-    .d-footer-bar.fn-flex
       d-svg.pointer(icon-class="zoomOut" @click="handleZoomOut")
+    .d-footer-bar.fn-flex
+      d-svg.pointer(icon-class="zoomIn" @click="handleZoomIn")
     .d-footer-bar.fn-flex(:style="{marginRight:'0'}")
       i-icon.pointer(:type="platform.fullscreen?'md-contract':'md-expand'" :size="18" @click="handleFullscreen")
 </template>
