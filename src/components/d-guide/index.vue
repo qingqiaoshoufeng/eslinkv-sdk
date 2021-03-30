@@ -27,6 +27,11 @@
     removeId= null
     platform= platform.state
 
+    /**
+     * @description
+     *
+     * 0点距离左侧边界像素值 < 0 ? 0 : 0点距离左侧边界像素值 + 标尺宽度
+     */
     get guideStyle () {
       return {
         left: `${this.platform.ruler.guideStartX < 0 ? 0 : this.platform.ruler.guideStartX + this.platform.ruler.size}px`,
@@ -51,6 +56,11 @@
       this.platform.ruler.guideLines.splice(index, 1)
     }
 
+    /**
+     * @description
+     *
+     * 0点距离左侧边界像素值 < 0 ? 显示像素 * 缩放比例 + 0点距离左侧边界像素值 + 标尺宽度 : 显示像素 * 缩放比例
+     */
     lineStyle ({ type, site }) {
       const style = {}
       if (type === 'h') {

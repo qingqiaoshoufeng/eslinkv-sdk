@@ -95,6 +95,13 @@
 			}
 		}
 
+    /**
+     * @description
+     *
+     * 画布高度 * （1-缩放比例）      ===》2边缩放距离
+     * 2边缩放距离 / 2               ===》单边缩放距离
+     * 单边缩放距离 + 面板拖动距离     ===》0点距离左侧边界像素值
+     */
 		init () {
 			this.context.translate(this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX - this.platform.ruler.guideStartX, 0)
 			this.platform.ruler.guideStartX = this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX
