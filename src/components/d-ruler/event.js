@@ -36,56 +36,25 @@ export default {
             this.contentDrag = false
             this.contentMoveStartX = this.contentMoveStartY = 0
         },
-        init () {
-            this.box()
-        },
-        windowResize () {
-            this.init()
-        },
         startContentMove (e) {
             if (e.keyCode === 32) this.contentMove = true
         },
         stopContentMove () {
             this.contentMove = false
         },
-        box () {
+        windowResize () {
             const id = this.platform.ruler.dragId
             const dragContent = document.getElementById(id)
             this.contentWidth = dragContent.firstChild.scrollWidth
             this.contentHeight = dragContent.firstChild.scrollHeight
-        },
-        dispatchHotKey (e) {
-            this.stopContentMove()
-            switch (e.keyCode) {
-                case 82: // r
-                    if (e.altKey) {
-                        this.platform.ruler.rulerVisible = !this.platform.ruler.rulerVisible
-                    }
-                    break
-                case 67: // c
-                    if (e.altKey) this.clearGuides()
-                    break
-                case 72: // h
-                    if (e.altKey) this.insertGuide('h')
-                    break
-                case 76: // l
-                    if (e.altKey) this.platform.ruler.lockGuides = !this.platform.ruler.lockGuides
-                    break
-                case 86: // v
-                    if (e.altKey) this.insertGuide('v')
-                    break
-            }
         },
         setMove: throttle(50, false, function (e) {
             const {
                 clientX,
                 clientY
             } = e
-            if (this.platform.panelFixed) {
-                /* todo 修改尺寸 */
-                this.clientX = clientX - 238
-            }
-            this.clientY = clientY - this.platform.ruler.panelTopDistance
+            this.clientX = clientX
+            this.clientY = clientY
             if (this.contentDrag) {
                 if (!this.contentMoveStartX) {
                     this.contentMoveStartX = clientX
@@ -95,28 +64,11 @@ export default {
                 this.platform.ruler.contentScrollTop = Math.ceil(clientY - this.contentMoveStartY)
                 this.contentMoveStartX = clientX
                 this.contentMoveStartY = clientY
-            } else {
-                this.dottedLineMove(this.clientX, this.clientY)
             }
         }),
-        stopMove ($event) {
+        stopMove (e) {
             if (this.contentDrag) {
-                this.handleContentMoveEnd($event)
-                return
-            }
-            // 虚线松开
-            if (!this.platform.ruler.isDrag) return
-            let {
-                clientX,
-                clientY
-            } = $event
-            if (this.platform.panelFixed) {
-                /* todo 修改尺寸 */
-                clientX -= 238
-            }
-            clientY -= this.platform.ruler.panelTopDistance
-            if (!this.platform.ruler.dragGuideId || this.isMoved) {
-                this.handleGuideLine()
+                this.handleContentMoveEnd(e)
             }
         },
         /**
@@ -181,12 +133,12 @@ export default {
         const dragContent = document.getElementById(id)
         document.addEventListener('mousemove', this.setMove)
         document.addEventListener('mouseup', this.stopMove)
-        document.addEventListener('keyup', this.dispatchHotKey, true)
+        document.addEventListener('keyup', this.stopContentMove)
         document.addEventListener('keydown', this.startContentMove)
         window.addEventListener('resize', this.windowResize)
         dragContent.addEventListener('wheel', this.handleWheel)
         dragContent.addEventListener('dblclick', this.resetZoom)
-        requestAnimationFrame(this.init)
+        requestAnimationFrame(this.windowResize)
 
         // todo 画板居中优化
         setTimeout(() => {
@@ -198,7 +150,7 @@ export default {
         const dragContent = document.getElementById(id)
         document.removeEventListener('mousemove', this.setMove)
         document.removeEventListener('mouseup', this.stopMove)
-        document.removeEventListener('keyup', this.dispatchHotKey, true)
+        document.removeEventListener('keyup', this.stopContentMove)
         document.removeEventListener('keydown', this.startContentMove)
         window.removeEventListener('resize', this.windowResize)
         if (dragContent) {

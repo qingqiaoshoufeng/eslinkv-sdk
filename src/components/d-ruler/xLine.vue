@@ -1,8 +1,11 @@
 <template lang="pug">
-	canvas#ruler-h.pos-a(width="9999" height="18")
+  .d-ruler-wrapper-x(@mouseenter="showHelp=true" @mouseleave="showHelp=false" @mousedown.stop="mousedownStop")
+    canvas#ruler-x.pos-a(width="9999" height="18")
+    .d-ruler-mouse-x.pos-a(:style="`transform: translateX(${(clientX-platform.ruler.size - platform.ruler.xRoom)}px)`" v-if="showHelp")
+      .num {{ site }}
 </template>
 <script lang="ts">
-	import { Component, Vue, Watch } from 'vue-property-decorator'
+	import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
 
 	let i = 0
@@ -11,10 +14,15 @@
 
 	@Component
 	export default class XLine extends Vue {
+	  @Prop() clientX
 		platform = platform.state
-		x = 0
+    showHelp:boolean=false
 		canvas:HTMLCanvasElement = null
 		context = null
+
+    get site () {
+      return ~~((this.clientX - this.platform.ruler.size - this.platform.ruler.xRoom - this.platform.ruler.guideStartX) / this.platform.ruler.zoom)
+    }
 
 		@Watch('platform.ruler.zoom')
 		zoomChange () {
@@ -30,6 +38,20 @@
 		widthChange () {
 			this.init()
 		}
+
+    mousedownStop () {
+      this.platform.ruler.dragFlag = 'x'
+      if (this.platform.ruler.dragGuideId) {
+        platform.actions.changeGuideLine(this.site)
+      } else {
+        platform.actions.guideAdd(this.site)
+      }
+      this.platform.ruler.guideDrag = false
+      this.isMoved = false
+      this.platform.ruler.dragGuideId = ''
+      this.verticalDottedTop = this.horizontalDottedLeft = -999
+      this.$emit('mousedownStop')
+    }
 
 		translateAnimation (num) {
 			const animation = requestAnimationFrame(() => this.translateAnimation(num))
@@ -60,13 +82,13 @@
 			while (x < this.canvas.width - t.e) {
 				this.context.drawImage(bgImg, x, 0)
 				this.context.fillText(~~(x / this.platform.ruler.zoom), x + 2, 10)
-				x = x + bgImg.width
+				x = x + this.platform.ruler.stepLength
 			}
 
 			if (t.e > 0) {
 				let xe = 0
 				while (xe < t.e) {
-					xe = xe + bgImg.width
+					xe = xe + this.platform.ruler.stepLength
 					this.context.drawImage(bgImg, -xe, 0)
 					this.context.fillText(-~~(xe / this.platform.ruler.zoom), -xe + 2, 10)
 				}
@@ -74,8 +96,8 @@
 		}
 
 		init () {
-			this.context.translate(this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX - this.x, 0)
-			this.x = this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX
+			this.context.translate(this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX - this.platform.ruler.guideStartX, 0)
+			this.platform.ruler.guideStartX = this.platform.panelConfig.size.width * (1 - this.platform.ruler.zoom) / 2 + this.platform.ruler.contentX
 			if (loadImg) {
 				this.initDraw()
 			} else {
@@ -88,7 +110,7 @@
 		}
 
 		mounted () {
-			this.canvas = document.getElementById('ruler-h')
+			this.canvas = document.getElementById('ruler-x')
 			this.context = this.canvas.getContext('2d')
 			this.context.font = '10px sans-serif'
 			this.init()
@@ -96,8 +118,41 @@
 	}
 </script>
 <style lang="scss" scoped>
-	canvas {
-		left: 0;
-		height: 100%;
+@import "src/scss/conf";
+
+canvas {
+	left: 0;
+	height: 100%;
+}
+
+.d-ruler-wrapper-x {
+	position: absolute;
+	top: 0;
+	left: 18px;
+	z-index: 9;
+	width: calc(100% - 18px);
+	height: 18px;
+	box-shadow: #111 0 0 1px;
+}
+
+.d-ruler-mouse-x {
+	top: 0;
+	left: 0;
+	z-index: 30;
+	width: 0;
+	height: 9999px;
+	pointer-events: none;
+	border-left: 1px dashed $themeColor_08;
+
+	.num {
+		position: absolute;
+		top: 2px;
+		left: 3px;
+		font-size: 12px;
+    line-height: 12px;
+    padding: 4px;
+		color: #fff;
+		background: $themeColor_08;
 	}
+}
 </style>

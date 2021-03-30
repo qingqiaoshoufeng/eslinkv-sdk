@@ -18,21 +18,21 @@ function getInitRuler () {
 	return {
 		dragId: `drag-content-${+new Date()}`,
 		origin: '',
+		xRoom: 238,
+		yRoom: 60,
 		guideLines: [], // 参考线
-		guideDragStartX: 0, // 参考线开始移动的位置
-		guideDragStartY: 0, // 参考线开始移动的位置
+		guideStartX: 0, // 参考线开始移动的位置
+		guideStartY: 0, // 参考线开始移动的位置
+		guideVisible: true, // 参考线可见
 		contentX: 0, // 当前位置x
 		contentY: 0, // 当前位置y
 		contentScrollLeft: 0, // 滚动距离
 		contentScrollTop: 0, // 滚动距离
-		isDrag: false, // 点击拖拽参考线
+		guideDrag: false, // 点击拖拽参考线
 		dragGuideId: '', // 被移动线的ID
-		rulerVisible: true, // 标尺可见
 		stepLength: 50, // 标尺步长
 		size: 18, // 标尺高度，容差
-        panelTopDistance: 60, // 上边导航栏高度
 		zoom: 1,
-		lockGuides: false, // 锁定参考线
 		contentLayout: {
 			top: 0, left: 0 // 刻度修正，根据 contentLayout 参数确定 0 刻度位置
 		},
@@ -76,13 +76,8 @@ const state = Vue.observable({
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏
-	panelFixed: true, // 左侧列表是否固定
 	hotKeys: [ // 热键
-		{ name: '插入水平参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'H', type: 'text' }] },
-		{ name: '插入垂直参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'V', type: 'text' }] },
-		{ name: '锁定标尺参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'L', type: 'text' }] },
 		{ name: '清除全部参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'C', type: 'text' }] },
-		{ name: '隐藏标尺参考线', key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'R', type: 'text' }] },
 		{ name: '缩放画布', key: [{ value: ctrl, type: 'text' }, { type: '+' }, { value: mouseWheelImg, type: 'img' }] },
 		{ name: '移动画布', key: [{ value: space, type: 'text' }] },
 		{ name: '水平移动画布', key: [{ value: shift, type: 'text' }, { type: '+' }, { value: mouseWheelImg, type: 'img' }] },
@@ -119,7 +114,7 @@ const actions = {
 	},
 	guideAdd (site) {
 		const line = state.ruler.guideLines
-		const type = state.ruler.dragFlag = state.ruler.dragFlag === 'x' ? 'h' : state.ruler.dragFlag === 'y' ? 'v' : state.ruler.dragFlag
+		const type = state.ruler.dragFlag = state.ruler.dragFlag === 'x' ? 'v' : state.ruler.dragFlag === 'y' ? 'h' : state.ruler.dragFlag
 		line.push({
 			id: `${type}_${state.ruler.guideLines.length}`,
 			type,

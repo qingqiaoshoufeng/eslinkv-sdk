@@ -4,12 +4,6 @@
       label 自动贴靠参考线
       i-switch(v-model="platform.autoAlignGuide")
     .d-manage-modal-control
-      label 标尺可见
-      i-switch(v-model="platform.ruler.rulerVisible")
-    .d-manage-modal-control
-      label 锁定参考线
-      i-switch(v-model="platform.ruler.lockGuides")
-    .d-manage-modal-control
       label 画布左边距
       i-input-number(v-model="platform.ruler.contentScrollLeft")
     .d-manage-modal-control

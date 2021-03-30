@@ -1,5 +1,5 @@
 <template lang="pug">
-  .widgets-panel.pos-a.fn-flex.flex-row(:class="{ fixed: platform.panelFixed }")
+  .widgets-panel.pos-a.fn-flex.flex-row.z-index-9
     ul.widgets-panel-left
       li.fn-flex.pos-r.pointer(v-for="item in custom.widgets"
         :key="item.componentTypeId"
@@ -82,11 +82,11 @@
 @import "src/scss/conf";
 
 .widgets-panel-list {
+	flex-wrap: wrap;
 	justify-content: space-between;
 	width: 100%;
 	padding: 5px;
 	background: #0a0b0d;
-  flex-wrap: wrap;
 }
 
 .widgets-panel-empty {
@@ -102,8 +102,6 @@
 .widgets-panel {
 	top: 0;
 	left: 0;
-
-	/* todo 修改尺寸 */
 	width: 238px;
 	height: 100%;
 	padding: 0;
@@ -139,7 +137,7 @@
 
 .widgets-panel-right {
 	width: 100%;
-  overflow-y: auto;
+	overflow-y: auto;
 
 	li {
 		width: 100%;

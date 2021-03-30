@@ -1,18 +1,18 @@
 <template lang="pug">
     // 操作区
     // todo css 改造 适配组件嵌入式，非全屏
-    .center(ref="canvas-wrapper"
+    .center.pos-r(ref="canvas-wrapper"
         :class="{ fullscreen: platform.fullscreen }"
-        class=""
+       :style="{width: `calc(100% - ${platform.ruler.xRoom}px)`,marginLeft:`${platform.ruler.xRoom}px`}"
         @click="hideSubPanels"
         @select.prevent.stop
         @contextmenu.stop.prevent)
         // 标尺容器
         ruler-canvas(ref="rulerCanvas")
             // 大屏
-            section#kanban(
+            #kanban(
                 :style="canvasStyle"
-                :class="['canvas-wrapper', { preview: !platform.ruler.rulerVisible }]"
+                :class="['canvas-wrapper', { preview: false }]"
                 @dragenter="isDragIn = true"
                 @dragleave.self="isDragIn = false"
                 @drop="drop"
@@ -37,7 +37,7 @@
                         :z="item.config.layout.zIndex"
                         :snap="platform.autoAlignGuide"
                         :snap-tolerance="10"
-                        :class="[{'no-pointer': isDragIn,locked: item.config.widget.locked,preview: !platform.ruler.rulerVisible,'widget-hide': item.config.widget.hide}, `widget-${item.id}`]"
+                        :class="[{'no-pointer': isDragIn,locked: item.config.widget.locked,preview: false,'widget-hide': item.config.widget.hide}, `widget-${item.id}`]"
                         :widget-info="`${item.id} ${item.config.widget.name || ''}`"
                         snap-to-target="guide-line"
                         class-name="vdr-custom-style"
@@ -62,6 +62,7 @@
                     v-show="item.display"
                     :style="{ top: item.position, left: item.origin, width: item.lineLength }"
                     :key="`h-${index}`")
+        d-guide
         // 右键菜单
         right-menu(ref="rightMenu" @deactivateWidget="deactivateWidget")
         // 数仓配置面板
@@ -86,6 +87,7 @@
 	import dRightWidget from '../d-right-widget'
 	import dRightGit from '../d-right-git'
 	import dFooter from '../d-footer'
+	import dGuide from '../d-guide'
 	import platform from '../../store/platform.store'
 	import instance from '../../store/instance.store'
 	import scene from '../../store/scene.store'
@@ -100,6 +102,7 @@
 			parts,
 			rulerCanvas,
 			dFooter,
+			dGuide,
 			vdr,
 			databaseConfig,
 			dRightManage,
