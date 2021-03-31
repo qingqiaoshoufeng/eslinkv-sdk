@@ -119,21 +119,14 @@ export default {
          * @description 恢复默认缩放比例+居中
          */
         resetZoom (e) {
-            const id = this.platform.ruler.dragId
-            const dragContent = document.getElementById(id)
             e && e.stopPropagation()
-            this.platform.ruler.zoom = 1
-            const {
-                offsetWidth,
-                offsetHeight
-            } = document.body
-            if (!dragContent) return
-            const {
-                width,
-                height
-            } = dragContent.getBoundingClientRect()
-            const deltaX = (offsetWidth - width) * 0.5
-            const deltaY = (offsetHeight - height) * 0.5
+            const rulerOffsetWidth = this.$refs.rulerContent.offsetWidth
+            const rulerOffsetHeight = this.$refs.rulerContent.offsetHeight
+            const platformWidth = this.platform.panelConfig.size.width
+            const platformHeight = this.platform.panelConfig.size.height
+            this.platform.ruler.zoom = ~~(rulerOffsetWidth / platformWidth * 10) / 10
+            const deltaX = (rulerOffsetWidth - platformWidth) * 0.5
+            const deltaY = (rulerOffsetHeight - platformHeight) * 0.5
             this.platform.ruler.contentX = Math.ceil(deltaX)
             this.platform.ruler.contentY = Math.ceil(deltaY)
         }

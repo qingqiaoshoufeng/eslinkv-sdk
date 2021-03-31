@@ -6,8 +6,9 @@
         v-for="item in platform.ruler.guideLines"
         :style="{...lineStyle(item)}"
         :key="item.id"
-        :class="[`d-guide-line-${item.type}`, {'no-pointer': platform.ruler.zoom !== 1 || contentMove}]"
+        :class="[`d-guide-line-${item.type}`, {'no-pointer': contentMove || hideCursor}]"
         @mousedown.stop="e=>handleGuideDrag(e,item)"
+        @mousemove="handleMousemove"
         @contextmenu="openGuideMenu(item.id, $event)"
       )
           .num.pos-a {{item.title}}
@@ -21,11 +22,17 @@
   @Component
 	export default class Guide extends Vue {
 	  @Prop() contentMove
-    showGuideMenu= false
-    menuLeft= 0
-    menuTop= 0
-    removeId= null
-    platform= platform.state
+    showGuideMenu = false
+    menuLeft = 0
+    menuTop = 0
+    removeId = null
+    platform = platform.state
+    hideCursor = false
+
+    handleMousemove (e) {
+	    console.log(e.offsetX , e.offsetY)
+      this.hideCursor = e.offsetX + e.offsetY > this.platform.ruler.size
+    }
 
     /**
      * @description
@@ -42,6 +49,7 @@
     // 水平线/垂直线 处按下鼠标
     handleGuideDrag (e, item) {
       if (e.which !== 1) return
+      if (e.offsetX + e.offsetY > this.platform.ruler.size) return
       const { clientX, clientY } = e
       const { type, id } = item
       this.platform.ruler.guideDragStartX = clientX
@@ -225,6 +233,6 @@
 	}
 
 	.no-pointer {
-		pointer-events: none;
+    cursor: auto;
 	}
 </style>

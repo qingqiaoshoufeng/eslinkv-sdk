@@ -1,5 +1,5 @@
 <template lang="pug">
-  .d-ruler-wrapper-x(@mouseenter="showHelp=true" @mouseleave="showHelp=false" @mousedown.stop="mousedownStop")
+  .d-ruler-wrapper-x(@mouseenter="showHelp=true" @mouseleave="showHelp=false" @mousedown.stop="mousedownStop" @mouseup.stop="mouseup")
     canvas#ruler-x.pos-a(width="9999" height="18")
     .d-ruler-mouse-x.pos-a(:style="`transform: translateX(${(clientX-platform.ruler.size - platform.ruler.xRoom)}px)`" v-if="showHelp")
       .num {{ site }}
@@ -47,10 +47,15 @@
             platform.actions.guideAdd(this.site)
           }
           this.platform.ruler.guideDrag = false
-          this.isMoved = false
           this.platform.ruler.dragGuideId = ''
-          this.verticalDottedTop = this.horizontalDottedLeft = -999
-          this.$emit('mousedownStop')
+        }
+
+        mouseup () {
+          if (this.platform.ruler.guideDrag) {
+            platform.actions.changeGuideLine(this.site)
+            this.platform.ruler.guideDrag = false
+            this.platform.ruler.dragGuideId = ''
+          }
         }
     
         translateAnimation (num) {

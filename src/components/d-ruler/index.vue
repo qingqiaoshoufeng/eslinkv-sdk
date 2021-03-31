@@ -3,9 +3,9 @@
     i-icon.pos-a.d-ruler-guide-visible.pointer.z-index-999.text-center(
       :type="platform.ruler.guideVisible?'ios-eye-off-outline':'ios-eye-outline'"
       @click="platform.ruler.guideVisible=!platform.ruler.guideVisible")
-    x-line(:clientX="clientX")
-    y-line(:clientY="clientY")
-    .d-ruler-content(:class="{ drag: contentMove }" @mousedown="handleContentMoveStart" @mousemove.prevent)
+    x-line(:clientX="clientX" ref="xline")
+    y-line(:clientY="clientY" ref="yline")
+    .d-ruler-content(ref="rulerContent" :class="{ drag: contentMove }" @mousedown="handleContentMoveStart" @mousemove.prevent)
       .content-body.pos-a(:id="platform.ruler.dragId" :style="contentStyle")
         slot
 </template>
