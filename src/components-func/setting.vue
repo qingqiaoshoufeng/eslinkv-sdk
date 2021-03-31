@@ -4,18 +4,8 @@
       label 自动贴靠参考线
       i-switch(v-model="platform.autoAlignGuide")
     .d-manage-modal-control
-      label 画布左边距
-      i-input-number(v-model="platform.ruler.contentScrollLeft")
-    .d-manage-modal-control
-      label 画布上边距
-      i-input-number(v-model="platform.ruler.contentScrollTop")
-    .d-manage-modal-control
-      label 画布缩放比例
-      i-select(v-model="zoom")
-        i-option(:value="item" v-for="(item) in zooms" :key="item") {{item}}
-    .d-manage-modal-control
       label 平台版本
-      span {{platform.version}}
+      span.d-manage-modal-control-text {{platform.version}}
 </template>
 <script lang="ts">
 	import { Component } from 'vue-property-decorator'
@@ -45,5 +35,3 @@
 		}
 	}
 </script>
-<style lang="scss" scoped>
-</style>

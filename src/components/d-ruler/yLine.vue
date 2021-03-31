@@ -134,42 +134,42 @@
 	}
 </script>
 <style lang="scss" scoped>
-    @import "src/scss/conf";
-    
-    canvas {
-        left: 0;
-    }
-    
-    .d-ruler-wrapper-y {
-        position: absolute;
-        top: 18px;
-        left: 0;
-        z-index: 9;
-        width: 18px;
-        height: calc(100% - 18px);
-        box-shadow: #111 0 0 1px;
-    }
-    
-    .d-ruler-mouse-y {
-        top: 0;
-        left: 0;
-        z-index: 30;
-        width: 9999px;
-        height: 0;
-        pointer-events: none;
-        border-top: 1px dashed $themeColor;
-        
-        .num {
-            position: absolute;
-            top: -22px;
-            left: 0;
-            padding: 4px;
-            font-size: 12px;
-            line-height: 14px;
-            color: #fff;
-            background: $themeColor_08;
-            transform: rotate(-90deg);
-        }
-    }
+	@import "src/scss/conf";
+
+	canvas {
+		left: 0;
+	}
+
+	.d-ruler-wrapper-y {
+		position: absolute;
+		top: 18px;
+		left: 0;
+		z-index: 9;
+		width: 18px;
+		height: calc(100% - 18px);
+		box-shadow: #111 0 0 1px;
+	}
+
+	.d-ruler-mouse-y {
+		top: 0;
+		left: 0;
+		z-index: 30;
+		width: 9999px;
+		height: 0;
+		pointer-events: none;
+		border-top: 1px dashed $themeColor;
+
+		.num {
+			position: absolute;
+			top: -22px;
+			left: 0;
+			padding: 4px;
+			font-size: 12px;
+			line-height: 14px;
+			color: #fff;
+			background: $themeColor_08;
+			transform: rotate(-90deg);
+		}
+	}
 
 </style>

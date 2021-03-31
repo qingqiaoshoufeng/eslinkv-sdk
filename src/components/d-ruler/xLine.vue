@@ -155,9 +155,9 @@ canvas {
 		position: absolute;
 		top: 2px;
 		left: 3px;
+		padding: 4px;
 		font-size: 12px;
-    line-height: 12px;
-    padding: 4px;
+		line-height: 12px;
 		color: #fff;
 		background: $themeColor_08;
 	}

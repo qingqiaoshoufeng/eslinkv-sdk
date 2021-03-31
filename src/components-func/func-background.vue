@@ -27,9 +27,9 @@
 	export default class FuncBackground extends func {
     action=`${baseURL}/upload/file`
     get formData () {
-          return {
-            library: `componentStatic/${this.item.type}/${this.item.config.widget.componentVersion}`
-          }
+      return {
+        library: `componentStatic/${this.item.type}/${this.item.config.widget.componentVersion}`
+      }
     }
 
     handlePreview (file) {

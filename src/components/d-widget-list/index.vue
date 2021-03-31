@@ -1,5 +1,5 @@
 <template lang="pug">
-  .widgets-panel.pos-a.fn-flex.flex-row.z-index-9
+  .widgets-panel.pos-a.fn-flex.flex-row.z-index-999
     ul.widgets-panel-left
       li.fn-flex.pos-r.pointer(v-for="item in custom.widgets"
         :key="item.componentTypeId"

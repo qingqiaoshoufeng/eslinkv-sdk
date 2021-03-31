@@ -2,23 +2,23 @@
 .home-container
 	.layout-wrapper
 		d-detail(:disabled="false")
-		.main-container
+		.main-container(:style="{height: `calc(100% - ${platform.ruler.yRoom}px)`}")
 			.d-editor-box.pos-r.fn-flex
-				d-widget-list(
-					ref="widgets",
-					:class="{ 'd-editor-fullscreen': platform.fullscreen }"
-				)
+				d-widget-list
 				d-editor(ref="kanboardEditor")
+				d-right-manage
 </template>
 <script lang="ts">
 	import { Vue, Component, Provide } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
 	import dWidgetList from '../../components/d-widget-list/index.vue'
 	import dEditor from '../../components/d-editor/index.vue'
+	import dRightManage from '../../components/d-right-manage/index.vue'
 	import dDetail from '../../components/d-detail/index.vue'
   @Component({
     components: {
       dWidgetList,
+      dRightManage,
       dEditor,
       dDetail
     }
@@ -32,10 +32,6 @@
 .d-editor-box {
 	width: 100%;
 	height: 100%;
-
-	.d-editor-fullscreen {
-		position: fixed;
-	}
 }
 
 .layout-wrapper {
@@ -48,7 +44,6 @@
 
 .main-container {
 	width: 100%;
-	height: calc(100% - 50px);
 }
 
 .line {

@@ -8,14 +8,13 @@
 	import widgetMixin from '../../../../mixins'
 	import { Component } from 'vue-property-decorator'
 	import { mixins } from 'vue-class-component'
-	import { value } from './index.component'
+	import { value, customConfig } from './index.component'
 
   @Component
 	export default class extends mixins(widgetMixin) {
         created () {
-            setTimeout(() => {
-                this.configValue = this.parseConfigValue(value)
-            }, 1000)
+            this.configValue = this.parseConfigValue(value)
+            // this.configValue = this.parseConfigValue(value, customConfig)
         }
     }
 </script>

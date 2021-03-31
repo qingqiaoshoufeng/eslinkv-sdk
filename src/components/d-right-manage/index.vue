@@ -1,54 +1,67 @@
 <template lang="pug">
-  d-right-modal.d-manage-modal(title="看板配置" :width="330" :top="33" icon="ios-easel")
-    .d-manage-modal-tab.fn-flex.flex-row(v-if="platform.chooseWidgetState")
-      h2.pointer(v-for="(item,index) in list" :class="tabIndex===index?'active':''" @click="handleChangeTab(index)") {{item.title}}
-    .d-manage-modal-tab.fn-flex.flex-row(v-else)
-      h2.pointer(v-for="(item,index) in chooseList" :class="tabIndex===index?'active':''" @click="handleChangeTab(index)") {{item.title}}
-    template(v-if="platform.chooseWidgetState")
-      itemList(v-for="(item,index) in list" :list="item.key" v-if="tabIndex===index" :needChoose="item.needChoose")
-    template(v-else)
-      itemList(v-for="(item,index) in chooseList" :list="item.key" v-if="tabIndex===index" :needChoose="item.needChoose")
+  .d-right-modal-box.z-index-999
+    .d-right-modal-title.pointer.text-center.fn-flex.flex-row
+      span.pos-r(v-for="(item,index) in title" @click="handleClick(index)" :key="item" :class="{active:index===choose}") {{item}}
+    .d-right-modal.d-scrollbar
+      template(v-if="platform.chooseWidgetState")
+        itemList(v-for="(item,index) in list" :list="item.key" v-if="choose===index" :needChoose="item.needChoose")
+      template(v-else)
+        itemList(v-for="(item,index) in chooseList" :list="item.key" v-if="choose===index" :needChoose="item.needChoose")
 </template>
 <script lang="ts">
 	import { Component, Vue, Watch } from 'vue-property-decorator'
 	import itemList from './item-list.vue'
-	import dRightModal from '../d-right-modal/index.vue'
 	import platform from '../../store/platform.store'
 
 	@Component({
 		components: {
-			itemList, dRightModal
+			itemList
 		}
 	})
 	export default class DRightManage extends Vue {
-		tabIndex = 0
+    choose = 0
 		platform = platform.state
 		chooseList: any = [
 			{
-				title: '基础', key: [{ type: 'base' }], needChoose: true
+				 key: [{ type: 'base' }], needChoose: true
 			},
 			{
-				title: '样式', key: [{ type: 'style' }], needChoose: true
+				 key: [{ type: 'style' }], needChoose: true
 			},
 			{
-				title: '数据', key: [{ type: 'data' }], needChoose: true
+				 key: [{ type: 'data' }], needChoose: true
 			},
 			{
-				title: '动画', key: [{ type: 'animation' }], needChoose: true
+				key: [{ type: 'animation' }], needChoose: true
 			},
 			{
-				title: '自定义', key: [], needChoose: true
+				 key: [], needChoose: true
 			}
 		]
 
     list: any = [
       {
-        title: '大屏设置', key: [{ type: 'config' }], needChoose: false
+        key: [{ type: 'config' }], needChoose: false
       },
       {
-        title: '编辑器设置', key: [{ type: 'setting' }], needChoose: false
+        key: [{ type: 'scene' }], needChoose: false
+      },
+      {
+        key: [{ type: 'setting' }], needChoose: false
       }
     ]
+
+    get title () {
+      if (this.platform.chooseWidgetState) {
+        return ['大屏', '场景', '编辑器']
+      } else {
+        if (this.chooseList[4].key.length > 0) {
+          return ['基础', '样式', '数据', '动画', '自定义']
+        } else {
+          return ['基础', '样式', '数据', '动画']
+        }
+      }
+    }
 
     @Watch('platform.chooseWidgetState')
     onChooseWidgetId () {
@@ -61,78 +74,143 @@
 			this.chooseList[4].key = val
 		}
 
-		handleChangeTab (index) {
-			this.tabIndex = index
+    handleClick (index) {
+			this.choose = index
 		}
 	}
 </script>
 <style lang="scss">
 	@import "../../../src/scss/conf";
 
-	.d-manage-modal-control-more {
-		.d-manage-modal-control {
-			flex: 1;
-			margin-right: 10px;
+	.d-right-modal-box {
+		width: 350px;
+	}
 
-			&:last-child {
-				margin-right: 0;
+	.d-right-modal-title {
+		height: 40px;
+		font-size: 14px;
+		line-height: 40px;
+		color: #d8d8d8;
+		background-color: #2d2f38;
+
+		span {
+			flex: 1;
+			height: 100%;
+
+			&.active {
+				&::before {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 2px;
+					content: '';
+					background-color: $themeColor;
+				}
+
+				background-color: #22242b;
 			}
 		}
 	}
 
+	.d-right-modal {
+		height: calc(100vh - 60px);
+		padding: 10px;
+		overflow-y: auto;
+		letter-spacing: 0;
+		background-color: #22242b;
+	}
+
 	.d-manage-modal-control {
+		display: flex;
+		display: -webkit-flex;
+		margin-bottom: 10px;
+
+		.ivu-color-picker-confirm {
+			.ivu-btn-default {
+				margin-right: 5px;
+			}
+		}
+
+		.ivu-color-picker-color {
+			div {
+				border: 1px solid #393b4a;
+			}
+		}
+
+		.d-manage-modal-control-text {
+			color: #fff;
+		}
+
+		.d-manage-modal-control-right {
+			width: 210px;
+		}
+
+		.ivu-input-number {
+			border: none;
+			border-radius: 2px;
+		}
+
+		.ivu-select-dropdown {
+			padding: 0;
+			margin: 0;
+			background-color: #2d2f38;
+			border-radius: 2px;
+
+			li {
+				&:hover,
+				&.ivu-select-item-focus {
+					color: $themeColor;
+					background-color: #22242b;
+				}
+			}
+		}
+
+		.ivu-input-number-handler-wrap {
+			background-color: #181b24;
+		}
+
+		.ivu-input,
+		.ivu-select-selection,
+		.ivu-input-number-input {
+			background-color: #181b24;
+			border: 1px solid #393b4a;
+			border-radius: 2px;
+
+			&:focus {
+				border: 1px solid $themeColor;
+			}
+		}
+
 		.ivu-color-picker {
 			display: block;
 		}
 
 		> label {
 			display: block;
-			margin-bottom: 10px;
-			font-size: 14px;
+			flex: 1;
+			font-size: 12px;
+			color: #fafafa;
 		}
 
 		.d-manage-modal-control-editor {
-			margin-bottom: 10px;
+
 		}
 
 		.ivu-input-number {
 			display: block;
-			width: 100%;
-			margin-bottom: 10px;
 		}
 
 		.ivu-switch {
-			margin-top: 5px;
-			margin-bottom: 10px;
 		}
 
 		.ivu-input-wrapper,
 		.ivu-select {
-			margin-bottom: 10px;
+
 		}
 
 		.ivu-radio-group-button {
 			display: block;
-			margin-bottom: 10px;
-		}
-	}
-
-	.d-manage-modal-tab {
-		h2 {
-			height: 40px;
-			margin-right: 10px;
-			font-size: 16px;
-			color: rgba(0, 0, 0, 0.3);
-			user-select: none;
-
-			&:hover,
-			&.active {
-				color: $themeColor;
-			}
-
-			&:last-child {
-				margin-right: 0;
-			}
 		}
 	}
 </style>

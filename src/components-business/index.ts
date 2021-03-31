@@ -1,6 +1,7 @@
 import custom from '../store/custom.store.js'
 
-const components = {}; const snapshots = {}
+const components = {}
+const snapshots = {}
 const widgetsObject = []
 const w = {}
 const conf = require.context('./', true, /\.(component.ts)$/)

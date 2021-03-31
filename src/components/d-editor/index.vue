@@ -3,7 +3,7 @@
     // todo css 改造 适配组件嵌入式，非全屏
     .center.pos-r(ref="canvas-wrapper"
         :class="{ fullscreen: platform.fullscreen }"
-       :style="{width: `calc(100% - ${platform.ruler.xRoom}px)`,marginLeft:`${platform.ruler.xRoom}px`}"
+       :style="{width: `calc(100% - ${platform.ruler.xRoom+platform.ruler.xRoomR}px)`,marginLeft:`${platform.ruler.xRoom}px`}"
         @click="hideSubPanels"
         @select.prevent.stop
         @contextmenu.stop.prevent)
@@ -62,17 +62,12 @@
                     v-show="item.display"
                     :style="{ top: item.position, left: item.origin, width: item.lineLength }"
                     :key="`h-${index}`")
+        // 参考线
         d-guide
         // 右键菜单
         right-menu(ref="rightMenu" @deactivateWidget="deactivateWidget")
         // 数仓配置面板
         database-config(ref="dataBaseConfig" :showModal="showDatabaseConfigModal" @close="showDatabaseConfigModal = false" @update="updateApiSystem" @keyup.native.stop)
-        // 看板配置
-        d-right-manage
-        // 小工具清单
-        d-right-widget
-        // 编辑器版本
-        d-right-git
         d-footer
 </template>
 <script>
@@ -84,8 +79,6 @@
 	import widgetOperation from './widget-operation'
 	import databaseConfig from '../data-warehouse/index.vue'
 	import dRightManage from '../d-right-manage'
-	import dRightWidget from '../d-right-widget'
-	import dRightGit from '../d-right-git'
 	import dFooter from '../d-footer'
 	import dGuide from '../d-guide'
 	import platform from '../../store/platform.store'
@@ -106,8 +99,6 @@
 			vdr,
 			databaseConfig,
 			dRightManage,
-			dRightWidget,
-			dRightGit,
 			rightMenu
 		},
 		provide () {

@@ -2,87 +2,86 @@
   .d-manage-modal-control-config
     .d-manage-modal-control
       label 大屏id
-      i-input(v-model="platform.panelConfig.id" :disabled="true")
+      .d-manage-modal-control-right
+        i-input(v-model="platform.panelConfig.id" :disabled="true")
     .d-manage-modal-control
       label 大屏名称
-      i-input(v-model="platform.panelConfig.info.name")
+      .d-manage-modal-control-right
+        i-input(v-model="platform.panelConfig.info.name")
     .d-manage-modal-control
       label 大屏描述
-      i-input(v-model="platform.panelConfig.info.remark")
-    .fn-flex.flex-row.d-manage-modal-control-more
-      .d-manage-modal-control
-        label 宽度
-        i-input-number(:min="1" :step="1" v-model="platform.panelConfig.size.width")
-      .d-manage-modal-control
-        label 高度
-        i-input-number(:min="1" :step="1" v-model="platform.panelConfig.size.height")
-      .d-manage-modal-control
-        label 单位
-        i-select(v-model="platform.panelConfig.size.unit")
+      .d-manage-modal-control-right
+        i-input(v-model="platform.panelConfig.info.remark")
+    .d-manage-modal-control
+      label 常规尺寸
+      .d-manage-modal-control-right
+        i-select(@on-change="sizeChange")
+          i-option(value="1920×1080") 1920×1080
+          i-option(value="1600×900") 1600×900
+          i-option(value="1366×768") 1366×768
+          i-option(value="1080×1920") 1080×1920
+          i-option(value="2560×1600") 2560×1600
+    .d-manage-modal-control
+      label
+      .d-manage-modal-control-right.fn-flex.flex-row
+        i-input-number(:min="1" :step="1" :formatter="value => `${value} w`"
+          v-model="platform.panelConfig.size.width" :style="{marginRight:'10px'}")
+        i-input-number(:min="1" :step="1" :formatter="value => `${value} h`"
+          v-model="platform.panelConfig.size.height" :style="{marginRight:'10px'}")
+        i-select(v-model="platform.panelConfig.size.unit" :style="{width:'60px'}")
           i-option(value="px") px
           i-option(value="%") %
           i-option(value="vw/vh") vw/vh
     .d-manage-modal-control
-      label 常规尺寸
-      i-select(@on-change="sizeChange")
-        i-option(value="1920×1080") 1920×1080
-        i-option(value="1600×900") 1600×900
-        i-option(value="1366×768") 1366×768
-        i-option(value="1080×1920") 1080×1920
-        i-option(value="2560×1600") 2560×1600
-    .fn-flex.flex-row.d-manage-modal-control-more
-      .d-manage-modal-control
-        label 背景色
+      label 背景色
+      .d-manage-modal-control-right
         i-colorPicker(:alpha="true" v-model="platform.panelConfig.background.color")
     .d-manage-modal-control
-      label 背景图片url地址
-      .d-manage-modal-background.pos-r(:style="{marginBottom:'10px'}")
-        img(:src="platform.panelConfig.background.url" v-if="platform.panelConfig.background.url" :style="{maxWidth:'100%',maxHeight:'270px'}")
-        i-icon.pos-a.pointer(type="md-trash" color="#fff" :size="20" @click="handleImgRemove")
-      i-upload(:action="action" :data="formData" :on-success="handleImgSuccess" :on-preview="handleImgPreview")
-        i-button(icon="ios-cloud-upload-outline") 上传图片
+      label 背景图片
+      .d-manage-modal-control-right
+        .d-manage-modal-background.pos-r(:style="{marginBottom:'10px'}")
+          img(:src="platform.panelConfig.background.url" v-if="platform.panelConfig.background.url" :style="{maxWidth:'100%',maxHeight:'270px'}")
+          i-icon.pos-a.pointer(type="md-trash" color="#fff" :size="20" @click="handleImgRemove")
+        i-upload(:action="action" :data="formData" :on-success="handleImgSuccess" :on-preview="handleImgPreview")
+          i-button(icon="ios-cloud-upload-outline") 上传图片
     .d-manage-modal-control
-      label 背景图片重复
-      i-select(v-model="platform.panelConfig.background.repeat")
-        i-option(value="repeat") repeat
-        i-option(value="no-repeat") no-repeat
-        i-option(value="repeat-x") repeat-x
-        i-option(value="repeat-y") repeat-y
-        i-option(value="space") space
-        i-option(value="round") round
-    .fn-flex.flex-row.d-manage-modal-control-more
-      .d-manage-modal-control
-        label 背景图片尺寸
-        i-select(v-model="platform.panelConfig.background.size")
+      label
+      .d-manage-modal-control-right.fn-flex
+        i-select(v-model="platform.panelConfig.background.repeat")
+          i-option(value="repeat") repeat
+          i-option(value="no-repeat") no-repeat
+          i-option(value="repeat-x") repeat-x
+          i-option(value="repeat-y") repeat-y
+          i-option(value="space") space
+          i-option(value="round") round
+    .d-manage-modal-control
+      label
+      .d-manage-modal-control-right.fn-flex
+        i-select(v-model="platform.panelConfig.background.size" :style="{marginRight:'10px'}")
           i-option(value="cover") cover
           i-option(value="contain") contain
           i-option(value="auto") auto
-      .d-manage-modal-control
-        label 自定义
         i-input(v-model="platform.panelConfig.background.size")
-    .fn-flex.flex-row.d-manage-modal-control-more
-      .d-manage-modal-control
-        label 背景图片位置
-        i-select(v-model="platform.panelConfig.background.position")
+    .d-manage-modal-control
+      label
+      .d-manage-modal-control-right.fn-flex
+        i-select(v-model="platform.panelConfig.background.position" :style="{marginRight:'10px'}")
           i-option(value="center") center
           i-option(value="left") left
           i-option(value="right") right
           i-option(value="top") top
           i-option(value="bottom") bottom
-      .d-manage-modal-control
-        label 自定义
         i-input(v-model="platform.panelConfig.background.position")
-    .fn-flex.flex-row.d-manage-modal-control-more
-      .d-manage-modal-control
-        label 移动看板
+    .d-manage-modal-control
+      label 移动看板
+      .d-manage-modal-control-right
         i-switch(v-model="platform.panelConfig.size.isMobileKanboard")
-      .d-manage-modal-control(v-if="platform.panelConfig.size.isMobileKanboard")
-        label 设备类型
-        i-select(v-model="platform.panelConfig.size.deviceType")
+    .d-manage-modal-control(v-if="platform.panelConfig.size.isMobileKanboard")
+      label
+      .d-manage-modal-control-right.fn-flex
+        i-select(v-model="platform.panelConfig.size.deviceType" :style="{marginRight:'10px'}")
           i-option(value="mobile") 手机
           i-option(value="pad") 平板
-      .d-manage-modal-control(v-if="platform.panelConfig.size.isMobileKanboard")
-        label 布局模式
         i-select(v-model="platform.panelConfig.size.layoutMode")
           i-option(value="full-size") 充满页面
           i-option(value="full-width") 100%宽度
@@ -160,18 +159,6 @@
 			margin-top: -10px;
 			margin-left: -10px;
 			opacity: 0;
-		}
-	}
-}
-
-.d-manage-modal-control-config {
-	margin-bottom: 10px;
-
-	&::v-deep {
-		.ivu-color-picker-confirm {
-			.ivu-btn-default {
-				margin-right: 5px;
-			}
 		}
 	}
 }

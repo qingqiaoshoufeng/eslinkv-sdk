@@ -1,5 +1,5 @@
 <template lang="pug">
-	d-right-modal.d-widget-modal(title="小工具清单" :width="360" icon="ios-apps" :top="70")
+	.d-widget-modal
 		header.fn-flex.flex-row
 			i-input(:value="scene.obj[scene.index].name" @on-change="handleSceneName" v-if="editScene")
 				i-icon(type="md-checkmark" slot="suffix" @click="editScene=false")
@@ -43,16 +43,14 @@
 				i-input(v-model="scene.index" search readonly enter-button="复制" @on-search="handleCopy")
 </template>
 <script lang="ts">
-	import dRightModal from '../d-right-modal/index.vue'
 	import { Component, Vue } from 'vue-property-decorator'
 	import { Icon, Input, Select, Option, DropdownMenu, DropdownItem, Dropdown, Modal, Button } from 'view-design'
-	import scene from '../../store/scene.store'
-	import platform from '../../store/platform.store'
-	import { copyText } from '../../utils/index'
+	import scene from '../store/scene.store'
+	import platform from '../store/platform.store'
+	import { copyText } from '../utils/index'
 
 	@Component({
 		components: {
-			dRightModal,
 			'i-icon': Icon,
 			'i-modal': Modal,
 			'i-input': Input,
@@ -168,7 +166,7 @@
 	}
 </script>
 <style lang="scss" scoped>
-	@import "../../../src/scss/conf";
+	@import "../scss/conf";
 
 	.d-widget-list {
 		li {

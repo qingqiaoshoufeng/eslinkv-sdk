@@ -130,25 +130,27 @@
 		top: 18px;
 		left: 18px;
 		z-index: 10;
+		width: 100%;
+		height: 100%;
 		overflow: visible;
 		pointer-events: none;
-    height: 100%;
-    width: 100%;
 		transition: transform 0.3s;
 	}
-  .d-guide-line{
-    .num{
-      top: 2px;
-      left: 3px;
-      font-size: 12px;
-      line-height: 12px;
-      padding: 4px;
-      color: #fff;
-      background: $themeColor_08;
-    }
-  }
+
+	.d-guide-line {
+		.num {
+			top: 2px;
+			left: 3px;
+			padding: 4px;
+			font-size: 12px;
+			line-height: 12px;
+			color: #fff;
+			background: $themeColor_08;
+		}
+	}
+
 	.d-guide-line-v,
-	.d-guide-line-h{
+	.d-guide-line-h {
 		top: 0;
 		left: 0;
 		pointer-events: auto;

@@ -44,9 +44,7 @@ export default class Func extends Vue {
 	@Prop() parent // group时会有
 
 	get item () {
-		if (this.parent) {
-			return this.parent
-		} else if (this.platform.widgetAdded[this.platform.chooseWidgetId]) {
+		if (this.platform.widgetAdded[this.platform.chooseWidgetId]) {
 			return this.platform.widgetAdded[this.platform.chooseWidgetId]
 		} else {
 			return null

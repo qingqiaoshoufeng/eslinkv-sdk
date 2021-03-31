@@ -19,6 +19,7 @@ function getInitRuler () {
 		dragId: `drag-content-${+new Date()}`,
 		origin: '',
 		xRoom: 238,
+		xRoomR: 350,
 		yRoom: 60,
 		guideLines: [], // 参考线
 		guideStartX: 0, // 参考线开始移动的位置
@@ -131,7 +132,9 @@ const actions = {
 		state.chooseWidgetState = false
 	},
 	setChooseWidgetCustomConfig (value = []) {
-		state.chooseWidgetCustomConfig = [...value, { type: 'custom' }]
+		if (value.length > 0) {
+			state.chooseWidgetCustomConfig = [...value, { type: 'custom' }]
+		}
 	},
 	updateApiData (id, data) {
 		if (!state.widgetAdded[id].config.api) {
