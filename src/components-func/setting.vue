@@ -2,10 +2,12 @@
   .d-manage-modal-control-setting
     .d-manage-modal-control
       label 自动贴靠参考线
-      i-switch(v-model="platform.autoAlignGuide")
+      .d-manage-modal-control-right
+        i-switch(v-model="platform.autoAlignGuide")
     .d-manage-modal-control
       label 平台版本
-      span.d-manage-modal-control-text {{platform.version}}
+      .d-manage-modal-control-right
+        span.d-manage-modal-control-text {{platform.version}}
 </template>
 <script lang="ts">
 	import { Component } from 'vue-property-decorator'

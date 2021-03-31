@@ -26,9 +26,6 @@
 				 key: [{ type: 'base' }], needChoose: true
 			},
 			{
-				 key: [{ type: 'style' }], needChoose: true
-			},
-			{
 				 key: [{ type: 'data' }], needChoose: true
 			},
 			{
@@ -55,10 +52,10 @@
       if (this.platform.chooseWidgetState) {
         return ['大屏', '场景', '编辑器']
       } else {
-        if (this.chooseList[4].key.length > 0) {
-          return ['基础', '样式', '数据', '动画', '自定义']
+        if (this.chooseList[3].key.length > 0) {
+          return ['基础', '数据', '动画', '自定义']
         } else {
-          return ['基础', '样式', '数据', '动画']
+          return ['基础', '数据', '动画']
         }
       }
     }
@@ -124,7 +121,9 @@
 	.d-manage-modal-control {
 		display: flex;
 		display: -webkit-flex;
+		min-height: 32px;
 		margin-bottom: 10px;
+    align-items: center;
 
 		.ivu-color-picker-confirm {
 			.ivu-btn-default {
@@ -139,13 +138,19 @@
 		}
 
 		.d-manage-modal-control-text {
-			color: #fff;
+			line-height: 32px;
+			color: #fafafa;
 		}
 
 		.d-manage-modal-control-right {
+      justify-content: flex-end;
+      display: flex;
+      display: -webkit-flex;
 			width: 210px;
 		}
-
+    .ivu-select-not-found{
+      padding: 4px 0;
+    }
 		.ivu-input-number {
 			border: none;
 			border-radius: 2px;
@@ -169,14 +174,16 @@
 		.ivu-input-number-handler-wrap {
 			background-color: #181b24;
 		}
-
+    .ivu-select-placeholder{
+      color: #fafafa;
+    }
 		.ivu-input,
 		.ivu-select-selection,
 		.ivu-input-number-input {
 			background-color: #181b24;
 			border: 1px solid #393b4a;
 			border-radius: 2px;
-
+      color: #fafafa;
 			&:focus {
 				border: 1px solid $themeColor;
 			}
@@ -190,6 +197,7 @@
 			display: block;
 			flex: 1;
 			font-size: 12px;
+			line-height: 32px;
 			color: #fafafa;
 		}
 

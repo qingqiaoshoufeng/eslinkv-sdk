@@ -71,7 +71,6 @@
 	height: 32px;
 	padding: 0 15px;
 	background-color: #313239;
-	border-top: 1px solid #0d0e10;
 }
 
 .d-footer-bar-box {

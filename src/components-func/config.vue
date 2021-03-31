@@ -3,7 +3,7 @@
     .d-manage-modal-control
       label 大屏id
       .d-manage-modal-control-right
-        i-input(v-model="platform.panelConfig.id" :disabled="true")
+        span.d-manage-modal-control-text {{platform.panelConfig.id}}
     .d-manage-modal-control
       label 大屏名称
       .d-manage-modal-control-right
@@ -23,7 +23,7 @@
           i-option(value="2560×1600") 2560×1600
     .d-manage-modal-control
       label
-      .d-manage-modal-control-right.fn-flex.flex-row
+      .d-manage-modal-control-right
         i-input-number(:min="1" :step="1" :formatter="value => `${value} w`"
           v-model="platform.panelConfig.size.width" :style="{marginRight:'10px'}")
         i-input-number(:min="1" :step="1" :formatter="value => `${value} h`"
@@ -46,7 +46,7 @@
           i-button(icon="ios-cloud-upload-outline") 上传图片
     .d-manage-modal-control
       label
-      .d-manage-modal-control-right.fn-flex
+      .d-manage-modal-control-right
         i-select(v-model="platform.panelConfig.background.repeat")
           i-option(value="repeat") repeat
           i-option(value="no-repeat") no-repeat
@@ -56,7 +56,7 @@
           i-option(value="round") round
     .d-manage-modal-control
       label
-      .d-manage-modal-control-right.fn-flex
+      .d-manage-modal-control-right
         i-select(v-model="platform.panelConfig.background.size" :style="{marginRight:'10px'}")
           i-option(value="cover") cover
           i-option(value="contain") contain
@@ -64,7 +64,7 @@
         i-input(v-model="platform.panelConfig.background.size")
     .d-manage-modal-control
       label
-      .d-manage-modal-control-right.fn-flex
+      .d-manage-modal-control-right
         i-select(v-model="platform.panelConfig.background.position" :style="{marginRight:'10px'}")
           i-option(value="center") center
           i-option(value="left") left
@@ -78,7 +78,7 @@
         i-switch(v-model="platform.panelConfig.size.isMobileKanboard")
     .d-manage-modal-control(v-if="platform.panelConfig.size.isMobileKanboard")
       label
-      .d-manage-modal-control-right.fn-flex
+      .d-manage-modal-control-right
         i-select(v-model="platform.panelConfig.size.deviceType" :style="{marginRight:'10px'}")
           i-option(value="mobile") 手机
           i-option(value="pad") 平板

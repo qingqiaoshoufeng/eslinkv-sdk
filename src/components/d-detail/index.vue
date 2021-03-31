@@ -172,6 +172,7 @@
 		width: 100%;
 		height: 60px;
 		background-color: #313239;
+		border-bottom: 1px solid #000;
 
 		&::v-deep button {
 			margin-left: 10px;
