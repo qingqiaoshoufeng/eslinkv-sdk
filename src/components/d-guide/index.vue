@@ -30,7 +30,6 @@
     hideCursor = false
 
     handleMousemove (e) {
-	    console.log(e.offsetX , e.offsetY)
       this.hideCursor = e.offsetX + e.offsetY > this.platform.ruler.size
     }
 
