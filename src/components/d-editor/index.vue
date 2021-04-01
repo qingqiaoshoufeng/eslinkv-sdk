@@ -57,7 +57,7 @@
         // 右键菜单
         right-menu(ref="rightMenu" @deactivateWidget="deactivateWidget")
         // 数仓配置面板
-        database-config(ref="dataBaseConfig" :showModal="showDatabaseConfigModal" @close="showDatabaseConfigModal = false" @update="updateApiSystem" @keyup.native.stop)
+        //database-config(ref="dataBaseConfig" :showModal="showDatabaseConfigModal" @close="showDatabaseConfigModal = false" @update="updateApiSystem" @keyup.native.stop)
         d-footer
 </template>
 <script>

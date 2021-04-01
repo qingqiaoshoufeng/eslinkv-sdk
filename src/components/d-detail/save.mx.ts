@@ -8,23 +8,21 @@ export default {
 	},
 	methods: {
 		handleSave (type) {
-			let isNew = false
-			if (this.screenType === 'CUSTOM' && type === 'TEMPLATE') {
-				isNew = true
-			}
-			this.screenType = type
 			this.$Modal.confirm({
 				title: `确定另保存${type === 'TEMPLATE' ? '模版' : ''}吗？`,
 				okText: '确定',
 				cancelText: '取消',
 				onOk: () => {
-					setTimeout(() => {
-						if (this.isNew || isNew) {
-							this.addBoard()
-						} else {
-							this.editBoard()
-						}
-					}, 300)
+					this.screenType = type
+					let isNew = false
+					if (this.screenType === 'CUSTOM' && type === 'TEMPLATE') {
+						isNew = true
+					}
+					if (this.isNew || isNew) {
+						this.addBoard()
+					} else {
+						this.editBoard()
+					}
 				}
 			})
 		},
