@@ -5,7 +5,8 @@
         :key="item.componentTypeId"
         @click="leftIndex=item.componentTypeId"
         :title="item.componentTypeName"
-        :class="{active:leftIndex===item.componentTypeId}") {{item.componentTypeName[0]}}
+        :class="{active:leftIndex===item.componentTypeId}")
+        p.ellipsis {{item.componentTypeName}}
     ul.widgets-panel-right.d-scrollbar(v-if="leftIndex")
       li(v-for="item in custom.widgets[leftIndex].children"
         :class="{active:openList[item.componentTypeId]}")
@@ -115,6 +116,7 @@
 		align-items: center;
 		justify-content: center;
 		width: 46px;
+		min-width: 0;
 		height: 46px;
 		color: rgb(188, 201, 212);
 

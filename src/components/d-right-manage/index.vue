@@ -68,7 +68,7 @@
 
 		@Watch('platform.chooseWidgetCustomConfig', { deep: true })
 		changeChooseWidgetCustomConfig (val) {
-			this.chooseList[4].key = val
+			this.chooseList[3].key = val
 		}
 
     handleClick (index) {
@@ -121,9 +121,9 @@
 	.d-manage-modal-control {
 		display: flex;
 		display: -webkit-flex;
+		align-items: center;
 		min-height: 32px;
 		margin-bottom: 10px;
-    align-items: center;
 
 		.ivu-color-picker-confirm {
 			.ivu-btn-default {
@@ -143,14 +143,16 @@
 		}
 
 		.d-manage-modal-control-right {
-      justify-content: flex-end;
-      display: flex;
-      display: -webkit-flex;
+			display: flex;
+			display: -webkit-flex;
+			justify-content: flex-end;
 			width: 210px;
 		}
-    .ivu-select-not-found{
-      padding: 4px 0;
-    }
+
+		.ivu-select-not-found {
+			padding: 4px 0;
+		}
+
 		.ivu-input-number {
 			border: none;
 			border-radius: 2px;
@@ -174,16 +176,19 @@
 		.ivu-input-number-handler-wrap {
 			background-color: #181b24;
 		}
-    .ivu-select-placeholder{
-      color: #fafafa;
-    }
+
+		.ivu-select-placeholder {
+			color: #fafafa;
+		}
+
 		.ivu-input,
 		.ivu-select-selection,
 		.ivu-input-number-input {
+			color: #fafafa;
 			background-color: #181b24;
 			border: 1px solid #393b4a;
 			border-radius: 2px;
-      color: #fafafa;
+
 			&:focus {
 				border: 1px solid $themeColor;
 			}

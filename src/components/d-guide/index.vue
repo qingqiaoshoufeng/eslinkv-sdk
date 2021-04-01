@@ -232,6 +232,6 @@
 	}
 
 	.no-pointer {
-    cursor: auto;
+		cursor: auto;
 	}
 </style>

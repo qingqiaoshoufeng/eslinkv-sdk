@@ -17,9 +17,9 @@
       li.fn-flex.flex-column.pointer(@click="handleSave('CUSTOM')")
         i-icon(type="ios-cloud-done-outline" :size="24")
         span 保存
-      li.fn-flex.flex-column.pointer(@click="handleSave('TEMPLATE')" v-if="screenType==='CUSTOM'")
-        i-icon(type="ios-cloud-circle-outline" :size="24")
-        span 模板
+      //li.fn-flex.flex-column.pointer(@click="handleSave('TEMPLATE')" v-if="screenType==='CUSTOM'")
+      //  i-icon(type="ios-cloud-circle-outline" :size="24")
+      //  span 模板
       li.fn-flex.flex-column.pointer(@click="publishBoard")
         i-icon(type="ios-paper-plane-outline" :size="24")
         span 发布

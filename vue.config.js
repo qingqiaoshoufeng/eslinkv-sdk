@@ -31,8 +31,8 @@ module.exports = {
 		disableHostCheck: true,
 		proxy: {
 			'^/node': {
-				// target: 'http://127.0.0.1:7001',
-				target: 'http://10.30.3.156:7001',
+				target: 'http://127.0.0.1:7001',
+				// target: 'http://10.30.3.156:7001',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/node': '/'
