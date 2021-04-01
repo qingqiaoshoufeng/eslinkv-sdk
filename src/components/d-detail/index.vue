@@ -1,8 +1,13 @@
 <template lang="pug">
   .d-detail.fn-flex(v-if="show")
     .d-detail-left.fn-flex
-      .d-detail-left-icon
+      .d-detail-left-icon.fn-flex
         i-icon.pointer(type="ios-arrow-dropleft" @click="exit" :size="24")
+      .d-detail-left-icon-box.fn-flex
+        i-icon.pointer(title="组件" type="ios-cube-outline" @click="handleLeft1" :size="18" :class="{active:left1}")
+        i-icon.pointer(title="场景" type="ios-photos-outline" @click="handleLeft2" :size="18" :class="{active:left2}")
+        i-icon.pointer(title="设置" type="ios-archive-outline" @click="handleRight1" :size="18" :class="{active:right1}")
+    .d-detail-middle.fn-flex
       span.d-detail-title {{ platform.panelConfig.info ? platform.panelConfig.info.name : '' }}
     ul.d-detail-right.fn-flex
       li.fn-flex.flex-column.pointer(@click="preview" v-if="!isNew")
@@ -63,10 +68,49 @@
 
 		platform = platform.state
 		scene = scene.state
-		saving = false
-		loading = false
-		isNew = true
+		saving:boolean = false
+		loading:boolean = false
+		isNew:boolean = true
     screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
+    left1:boolean = true
+    right1:boolean = true
+    left2:boolean = true
+    xRoomL1:number = 0
+    xRoomL2:number = 0
+    xRoomR1:number = 0
+
+    handleLeft1 () {
+		  this.left1 = !this.left1
+      if (this.left1) {
+        this.platform.ruler.xRoomL1 = this.xRoomL1
+        this.xRoomL1 = 0
+      } else {
+        this.xRoomL1 = this.platform.ruler.xRoomL1
+        this.platform.ruler.xRoomL1 = 0
+      }
+    }
+
+    handleRight1 () {
+      this.right1 = !this.right1
+      if (this.right1) {
+        this.platform.ruler.xRoomR1 = this.xRoomR1
+        this.xRoomR1 = 0
+      } else {
+        this.xRoomR1 = this.platform.ruler.xRoomR1
+        this.platform.ruler.xRoomR1 = 0
+      }
+    }
+
+    handleLeft2 () {
+      this.left2 = !this.left2
+      if (this.left2) {
+        this.platform.ruler.xRoomL2 = this.xRoomL2
+        this.xRoomL2 = 0
+      } else {
+        this.xRoomL2 = this.platform.ruler.xRoomL2
+        this.platform.ruler.xRoomL2 = 0
+      }
+    }
 
 		preview () {
       window.open(`${location.origin}/detail/${this.$route.params.id}`)
@@ -165,7 +209,60 @@
 </script>
 <style lang="scss" scoped>
 	@import "../../scss/conf";
+  .d-detail-left-icon-box{
+    margin-left: 20px;
+    .ivu-icon{
+      border-radius: 2px;
+      padding: 4px 10px;
+      margin-right: 10px;
+      border: 1px solid rgba(255,235,235,.1);
+      background-color: #303640;
+      color: rgb(161,174,179);
+      &:hover{
+        background-color: #414750;
+      }
+      &.active{
+        color: #fff;
+        border: 1px solid $themeColor;
+        background-color: $themeColor;
+      }
+    }
+  }
+  .d-detail-left {
+    align-items: center;
+  }
+  .d-detail-right {
+    height: 100%;
 
+    li {
+      justify-content: center;
+      height: 100%;
+      padding: 0 15px;
+      color: #fff;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+
+  .d-detail-left-icon {
+    height: 100%;
+    padding: 0 15px;
+    color: #fff;
+    align-items: center;
+
+    >i {
+      line-height: 60px;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+  .d-detail-import-button {
+    line-height: 32px;
+  }
 	.d-detail {
 		align-items: center;
 		justify-content: space-between;
@@ -178,52 +275,13 @@
 			margin-left: 10px;
 		}
 
-		.d-detail-left {
-			align-items: center;
-		}
-
-		.d-detail-right {
-			height: 100%;
-
-			li {
-				justify-content: center;
-				height: 100%;
-				padding: 0 15px;
-				color: #fff;
-
-				&:hover {
-					background-color: rgba(255, 255, 255, 0.1);
-				}
-			}
-		}
-
-		.d-detail-import-button {
-			line-height: 32px;
-		}
-
-		.d-detail-left-icon {
-			height: 100%;
-			padding: 0 15px;
-			color: #fff;
-
-			>i {
-				line-height: 60px;
-			}
-
-			&:hover {
-				background-color: rgba(255, 255, 255, 0.1);
-			}
-		}
-
-		.d-detail-left {
-			align-items: center;
-			height: 100%;
-
-			.d-detail-title {
-				padding-left: 15px;
-				font-size: 15px;
-				color: #fff;
-			}
-		}
 	}
+  .d-detail-title {
+    font-size: 15px;
+    color: #fff;
+  }
+  .d-detail-left {
+    align-items: center;
+    height: 100%;
+  }
 </style>

@@ -1,5 +1,5 @@
 <template lang="pug">
-	.d-widget-modal
+	.d-left-scene.pos-a(:style="{width:`${platform.ruler.xRoomL2}px`,left:`${platform.ruler.xRoomL1}px`}")
 		header.fn-flex.flex-row
 			i-input(:value="scene.obj[scene.index].name" @on-change="handleSceneName" v-if="editScene")
 				i-icon(type="md-checkmark" slot="suffix" @click="editScene=false")
@@ -20,7 +20,7 @@
 						span 编辑场景
 					i-dropdown-item(name="destroy")
 						span 删除场景
-		ul.d-scrollbar.d-widget-list
+		ul.d-scrollbar.d-left-scene-list
 			li.pointer.pos-r(v-for="item in list" :class="[{active:platform.chooseWidgetId===item.id}]" :key="item.id" @click="handleChoose(item.id)")
 				.fn-flex.flex-row
 					.d-widget-left
@@ -30,9 +30,6 @@
 								i-icon(:type="`md-${item.config.widget.locked ? '' : 'un'}lock`" :title="!item.config.widget.locked ? '锁定' : '解锁'" @click="handleTaggerLock(item.id)" @click.stop)
 								i-icon(type="md-trash" title="删除" @click="handleDelete(item.id)" @click.stop)
 							h2 {{item.config.widget.name}}
-					.d-widget-middle
-						.fn-flex.flex-column
-							p ID: {{item.id}}
 					.d-widget-right.fn-flex.flex-column
 						i-icon(type="ios-arrow-dropup" @click="handleUpZIndex(item.id)" @click.stop)
 						span {{item.config.layout.zIndex}}
@@ -45,9 +42,9 @@
 <script lang="ts">
 	import { Component, Vue } from 'vue-property-decorator'
 	import { Icon, Input, Select, Option, DropdownMenu, DropdownItem, Dropdown, Modal, Button } from 'view-design'
-	import scene from '../store/scene.store'
-	import platform from '../store/platform.store'
-	import { copyText } from '../utils/index'
+	import scene from '../../store/scene.store'
+	import platform from '../../store/platform.store'
+	import { copyText } from '../../utils/index'
 
 	@Component({
 		components: {
@@ -166,9 +163,9 @@
 	}
 </script>
 <style lang="scss" scoped>
-	@import "../scss/conf";
+	@import "../../scss/conf";
 
-	.d-widget-list {
+	.d-left-scene-list {
 		li {
 			align-items: center;
 			justify-content: center;
@@ -208,9 +205,8 @@
 		}
 	}
 
-	.d-widget-modal {
+	.d-left-scene {
 		ul {
-			height: calc(100% - 42px);
 			overflow-y: auto;
 		}
 
@@ -223,10 +219,9 @@
 			font-size: 14px;
 			font-weight: bold;
 			line-height: 42px;
-			border-bottom: 1px solid $borderColor;
 
 			.ivu-select {
-				width: 180px;
+				width: 120px;
 			}
 
 			span {
@@ -235,7 +230,6 @@
 		}
 
 		.d-widget-left,
-		.d-widget-middle,
 		.d-widget-right {
 			align-items: center;
 		}

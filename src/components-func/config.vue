@@ -1,6 +1,10 @@
 <template lang="pug">
   .d-manage-modal-control-config
     .d-manage-modal-control
+      label 平台版本
+      .d-manage-modal-control-right
+        span.d-manage-modal-control-text {{platform.version}}
+    .d-manage-modal-control
       label 大屏id
       .d-manage-modal-control-right
         span.d-manage-modal-control-text {{platform.panelConfig.id}}
@@ -90,6 +94,10 @@
       label
       .d-manage-modal-control-right
         i-button(@click="screenAvatar" type="primary") 截屏
+    .d-manage-modal-control
+      label 自动贴靠参考线
+      .d-manage-modal-control-right
+        i-switch(v-model="platform.autoAlignGuide")
 </template>
 <script lang="ts">
 	import func from './func.mx'

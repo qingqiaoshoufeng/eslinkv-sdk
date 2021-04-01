@@ -3,7 +3,7 @@
     // todo css 改造 适配组件嵌入式，非全屏
     .center.pos-r(ref="canvas-wrapper"
         :class="{ fullscreen: platform.fullscreen }"
-       :style="{width: `calc(100% - ${platform.ruler.xRoom+platform.ruler.xRoomR}px)`,marginLeft:`${platform.ruler.xRoom}px`}"
+       :style="{width: `calc(100% - ${platform.ruler.xRoomL1+platform.ruler.xRoomL2+platform.ruler.xRoomR1}px)`,marginLeft:`${platform.ruler.xRoomL1+platform.ruler.xRoomL2}px`}"
         @click="hideSubPanels"
         @select.prevent.stop
         @contextmenu.stop.prevent)
@@ -56,8 +56,6 @@
         d-guide
         // 右键菜单
         right-menu(ref="rightMenu" @deactivateWidget="deactivateWidget")
-        // 数仓配置面板
-        //database-config(ref="dataBaseConfig" :showModal="showDatabaseConfigModal" @close="showDatabaseConfigModal = false" @update="updateApiSystem" @keyup.native.stop)
         d-footer
 </template>
 <script>
@@ -67,7 +65,6 @@
 	import 'vue-draggable-resizable-gorkys2/src/components/vue-draggable-resizable.css'
 	import parts from '../d-widget-part/index'
 	import widgetOperation from './widget-operation'
-	import databaseConfig from '../data-warehouse/index.vue'
 	import dRightManage from '../d-right-manage'
 	import dFooter from '../d-footer'
 	import dGuide from '../d-guide'
@@ -87,7 +84,6 @@
 			dFooter,
 			dGuide,
 			vdr,
-			databaseConfig,
 			dRightManage,
 			rightMenu
 		},

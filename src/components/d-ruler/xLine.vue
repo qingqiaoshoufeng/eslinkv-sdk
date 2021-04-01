@@ -1,7 +1,7 @@
 <template lang="pug">
   .d-ruler-wrapper-x(@mouseenter="showHelp=true" @mouseleave="showHelp=false" @mousedown.stop="mousedownStop" @mouseup.stop="mouseup")
     canvas#ruler-x.pos-a(width="9999" height="18")
-    .d-ruler-mouse-x.pos-a(:style="`transform: translateX(${(clientX-platform.ruler.size - platform.ruler.xRoom)}px)`" v-if="showHelp")
+    .d-ruler-mouse-x.pos-a(:style="`transform: translateX(${(clientX-platform.ruler.size - platform.ruler.xRoomL1- platform.ruler.xRoomL2)}px)`" v-if="showHelp")
       .num {{ site }}
 </template>
 <script lang="ts">
@@ -21,7 +21,7 @@
         context = null
 
         get site () {
-          return ~~((this.clientX - this.platform.ruler.size - this.platform.ruler.xRoom - this.platform.ruler.guideStartX) / this.platform.ruler.zoom)
+          return ~~((this.clientX - this.platform.ruler.size - this.platform.ruler.xRoomL1 - this.platform.ruler.xRoomL2 - this.platform.ruler.guideStartX) / this.platform.ruler.zoom)
         }
 
         @Watch('platform.ruler.zoom')

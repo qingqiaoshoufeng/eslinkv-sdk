@@ -1,7 +1,9 @@
 <template lang="pug">
-	.d-manage-modal-control-base
-		.d-manage-modal-control
-			i-button(icon="md-sync" @click="handleSync") 强制刷新当前组件
+  .d-manage-modal-control-base
+    .d-manage-modal-control
+      label
+      .d-manage-modal-control-right
+        i-button(icon="md-sync" @click="handleSync" type="primary") 强制刷新当前组件
 </template>
 <script lang="ts">
 	import func from './func.mx'

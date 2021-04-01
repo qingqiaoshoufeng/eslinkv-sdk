@@ -1,18 +1,18 @@
 <template lang="pug">
-  .widgets-panel.pos-a.fn-flex.flex-row.z-index-999
-    ul.widgets-panel-left
+  .d-left-widgets.pos-a.fn-flex.flex-row.z-index-999(:style="{width:`${platform.ruler.xRoomL1}px`}")
+    ul.d-left-widgets-left
       li.fn-flex.pos-r.pointer(v-for="item in custom.widgets"
         :key="item.componentTypeId"
         @click="leftIndex=item.componentTypeId"
         :title="item.componentTypeName"
         :class="{active:leftIndex===item.componentTypeId}")
         p.ellipsis {{item.componentTypeName}}
-    ul.widgets-panel-right.d-scrollbar(v-if="leftIndex")
+    ul.d-left-widgets-right.d-scrollbar(v-if="leftIndex")
       li(v-for="item in custom.widgets[leftIndex].children"
         :class="{active:openList[item.componentTypeId]}")
         i-icon(type="ios-arrow-down"  @click="handleCheckType(item.componentTypeId,item.market)")
         label( @click="handleCheckType(item.componentTypeId,item.market)") {{item.componentTypeName}}
-        .widgets-panel-list.fn-flex(v-if="list[item.componentTypeId]&&openList[item.componentTypeId]")
+        .d-left-widgets-list.fn-flex(v-if="list[item.componentTypeId]&&openList[item.componentTypeId]")
           item-card(
             v-for="widget in list[item.componentTypeId]"
             :market="item.market"
@@ -23,7 +23,7 @@
             :componentAvatar="widget.componentAvatar"
             :componentTitle="widget.componentTitle"
           )
-    .widgets-panel-empty.fn-flex(v-else) 快来选择你心仪的组件了
+    .d-left-widgets-empty.fn-flex(v-else) 快来选择你心仪的组件了
 </template>
 <script>
 	import parts from '../d-widget-part/index'
@@ -82,7 +82,7 @@
 <style lang="scss" scoped>
 @import "src/scss/conf";
 
-.widgets-panel-list {
+.d-left-widgets-list {
 	flex-wrap: wrap;
 	justify-content: space-between;
 	width: 100%;
@@ -90,7 +90,7 @@
 	background: #0a0b0d;
 }
 
-.widgets-panel-empty {
+.d-left-widgets-empty {
 	align-items: center;
 	justify-content: center;
 	width: 100%;
@@ -100,16 +100,16 @@
 	height: 100px;
 }
 
-.widgets-panel {
+.d-left-widgets {
 	top: 0;
 	left: 0;
-	width: 238px;
 	height: 100%;
+  overflow: hidden;
 	padding: 0;
 	background-color: #191c21;
 }
 
-.widgets-panel-left {
+.d-left-widgets-left {
 	background-color: #22242b;
 
 	li {
@@ -137,7 +137,7 @@
 	}
 }
 
-.widgets-panel-right {
+.d-left-widgets-right {
 	width: 100%;
 	overflow-y: auto;
 

@@ -18,8 +18,9 @@ function getInitRuler () {
 	return {
 		dragId: `drag-content-${+new Date()}`,
 		origin: '',
-		xRoom: 238,
-		xRoomR: 350,
+		xRoomL1: 238,
+		xRoomL2: 238,
+		xRoomR1: 350,
 		yRoom: 60,
 		guideLines: [], // 参考线
 		guideStartX: 0, // 参考线开始移动的位置

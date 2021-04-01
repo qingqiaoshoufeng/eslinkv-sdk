@@ -1,26 +1,32 @@
 <template lang="pug">
 .home-container
-	.layout-wrapper
-		d-detail(:disabled="false")
-		.main-container(:style="{height: `calc(100% - ${platform.ruler.yRoom}px)`}")
-			.d-editor-box.pos-r.fn-flex
-				d-widget-list
-				d-editor(ref="kanboardEditor")
-				d-right-manage
+  .layout-wrapper
+    d-detail(:disabled="false")
+    .main-container(:style="{height: `calc(100% - ${platform.ruler.yRoom}px)`}")
+      .d-editor-box.pos-r.fn-flex
+        d-left-widget
+        d-left-scene
+        d-editor(ref="kanboardEditor")
+        d-right-manage(v-if="platform.chooseWidgetState")
+        d-right-setting(v-else)
 </template>
 <script lang="ts">
 	import { Vue, Component, Provide } from 'vue-property-decorator'
 	import platform from '../../store/platform.store'
-	import dWidgetList from '../../components/d-widget-list/index.vue'
+	import dLeftWidget from '../../components/d-left-widget/index.vue'
+	import dLeftScene from '../../components/d-left-scene/index.vue'
 	import dEditor from '../../components/d-editor/index.vue'
 	import dRightManage from '../../components/d-right-manage/index.vue'
+	import dRightSetting from '../../components/d-right-setting/index.vue'
 	import dDetail from '../../components/d-detail/index.vue'
 	import market from '../../plugins/market'
 
   @Component({
     components: {
-      dWidgetList,
+      dLeftWidget,
+      dLeftScene,
       dRightManage,
+      dRightSetting,
       dEditor,
       dDetail
     }

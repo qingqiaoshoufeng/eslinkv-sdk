@@ -1,7 +1,8 @@
 <template lang="pug">
   .d-upload
     .d-upload-img.pos-r(v-if="value")
-      img(:src="value")
+      img(:src="value" v-if="type==='img'")
+      video(:src="value" v-if="type==='video'")
       i-upload.pointer.pos-a(:action="action" :data="data"
         :on-success="handleSuccess")
       i-icon.d-upload-download-icon.pos-a.pointer(title="下载" type="ios-download-outline" color="#fff" size="14" @click="handleDown")
@@ -26,6 +27,7 @@
 
     @Prop({ default: `${baseURL}/upload/file` }) action
     @Prop() data
+    @Prop({ default: 'img' }) type
     @Prop() value
 
     handleDown () {
