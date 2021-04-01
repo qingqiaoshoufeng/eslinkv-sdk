@@ -49,7 +49,7 @@ module.exports = {
 		}
 	},
 	css: {
-		extract: false,
+		extract: true,
 		sourceMap: false,
 	},
 	configureWebpack: (config) => {
@@ -67,9 +67,19 @@ module.exports = {
 		config.resolve.extensions = ['.js', '.vue', '.json', '.ts', '.tsx']
 		config.externals = [
 			{
-				vue: 'Vue',
+				vue: {
+                    root: 'Vue',
+                    commonjs: 'vue',
+                    commonjs2: 'vue',
+                    amd: 'vue'
+                },
 				'vue-router': 'VueRouter',
-				'vue-class-component': 'VueClassComponent',
+				'vue-class-component': {
+                    root: 'VueClassComponent',
+                    commonjs: 'vue-class-component',
+                    commonjs2: 'vue-class-component',
+                    amd: 'vue-class-component'
+                },
 				echarts: 'echarts'
 			}
 		]

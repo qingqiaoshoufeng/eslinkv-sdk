@@ -1,6 +1,6 @@
 {
   "name": "eslinkv-sdk",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "main": "lib/eslinkv-sdk.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -88,5 +88,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "files": [
+    "lib"
+  ]
 }

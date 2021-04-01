@@ -16,12 +16,10 @@ import loadMask from '../src/components/load-mask/index.vue'
 import '../src/plugins'
 import market from '../src/plugins/market.ts'
 import './other.js'
-import { requestNoBaseURL } from '../src/api/request'
 
 const eslinkV = {
     widgetMixin,
     dEditor,
-    request: requestNoBaseURL,
     platform,
     configMerge,
     commonConfigValue,
@@ -42,4 +40,22 @@ if (!window.eslinkV) {
 }
 window.eslinkV = { ...window.eslinkV, ...eslinkV }
 
+export {
+    widgetMixin,
+    dEditor,
+    platform,
+    configMerge,
+    commonConfigValue,
+    dWidgetList,
+    dDetail,
+    dRightManage,
+    dFooter,
+    scene,
+    instance,
+    custom,
+    event,
+    dView,
+    loadMask,
+    market
+}
 export default window.eslinkV
