@@ -39,11 +39,7 @@
     .d-manage-modal-control
       label 背景图片
       .d-manage-modal-control-right
-        .d-manage-modal-background.pos-r(:style="{marginBottom:'10px'}")
-          img(:src="platform.panelConfig.background.url" v-if="platform.panelConfig.background.url" :style="{maxWidth:'100%',maxHeight:'270px'}")
-          i-icon.pos-a.pointer(type="md-trash" color="#fff" :size="20" @click="handleImgRemove")
-        i-upload(:action="action" :data="formData" :on-success="handleImgSuccess" :on-preview="handleImgPreview")
-          i-button(icon="ios-cloud-upload-outline") 上传图片
+        d-upload(v-model="platform.panelConfig.background.url" :data="backGroundFormData")
     .d-manage-modal-control
       label
       .d-manage-modal-control-right
@@ -86,39 +82,43 @@
           i-option(value="full-size") 充满页面
           i-option(value="full-width") 100%宽度
           i-option(value="full-height") 100%高度
+    .d-manage-modal-control
+      label 封面
+      .d-manage-modal-control-right
+        d-upload(v-model="platform.screenAvatar" :data="screenAvatarFormData" @success="handleScreenAvatar")
+    .d-manage-modal-control
+      label
+      .d-manage-modal-control-right
+        i-button(@click="screenAvatar" type="primary") 截屏
 </template>
 <script lang="ts">
 	import func from './func.mx'
 	import { Component } from 'vue-property-decorator'
-	import { baseURL } from '../api/request.js'
-	@Component
+	import html2canvas from 'html2canvas'
+	import platform from '../store/platform.store.js'
+	import dUpload from '../components/d-upload'
+
+	@Component({
+    components: {
+      dUpload
+    }
+  })
 	export default class FuncConfig extends func {
-    action=`${baseURL}/upload/file`
-
-    get formData () {
-      return {
-        library: 'componentBackGround'
-      }
+    platform=platform.state
+    backGroundFormData={
+      library: 'componentBackGround'
     }
 
-    handleImgRemove () {
-      this.$Modal.confirm({
-        title: '是否删除背景图',
-        okText: '确定',
-        cancelText: '取消',
-        onOk: () => {
-          this.platform.panelConfig.background.url = ''
-        }
+    screenAvatarFormData={
+      library: 'screenAvatar'
+    }
+
+    handleScreenAvatar (screenAvatar) {
+      const { params: { id } } = this.$route
+      this.$api.screen.update({
+        screenId: id,
+        screenAvatar
       })
-    }
-
-    handleImgPreview (file) {
-      this.platform.panelConfig.background.url = file.url
-    }
-
-    handleImgSuccess (res, file) {
-      file.url = res.result.url
-      this.platform.panelConfig.background.url = res.result.url
     }
 
 		sizeChange (value) {
@@ -132,6 +132,84 @@
 				this.platform.panelConfig.size.height = 1080
 			}
 		}
+
+		async screenAvatar () {
+      const { params: { id } } = this.$route
+      if (id) {
+        const screenAvatar = await this.capture({ selector: '#kanban' }).catch(e => {
+          this.$Message.error('截屏创建失败')
+        })
+        this.platform.screenAvatar = screenAvatar.url
+        this.$api.screen.update({
+          screenId: id,
+          screenAvatar: screenAvatar.url
+        })
+      }
+    }
+
+    /**
+     * 快照上传
+     */
+    upload (blob, resolve, reject) {
+      const name = `screenShot-${Date.now()}.jpg`
+      const data = new FormData()
+      data.append('file', blob, name)
+      data.append('library', 'screenAvatar')
+      this.$api.upload.file(data).then((data) => {
+        resolve(data)
+      }).catch(reject).finally(() => {
+      })
+    }
+
+    /**
+     * 请求创建快照
+     */
+    capture ({ selector, returnSource = false, options = {} }) {
+      return new Promise((resolve, reject) => {
+        html2canvas(document.querySelector(selector), {
+          allowTaint: true,
+          scale: 1,
+          useCORS: true,
+          ...options
+        }).then(canvas => {
+          try {
+            if (!returnSource) {
+              canvas.toBlob(blob => {
+                this.upload(blob, resolve, reject)
+              }, 'image/jpeg', 0.9)
+            } else {
+              resolve(canvas.toDataURL('image/jpeg', 0.9))
+            }
+          } catch (e) {
+            if (e.message.indexOf('Tainted canvases') > -1) {
+              this.$Message.warning('外部素材可能导致截屏异常')
+            }
+            reject(e)
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    }
+
+    saveSnapshot () {
+      const nodes = document.querySelectorAll('.widget-part')
+      nodes.forEach(node => {
+        html2canvas(node, {
+          allowTaint: true,
+          scale: 1,
+          useCORS: true,
+          backgroundColor: 'transparent'
+        }).then(canvas => {
+          const link = document.createElement('a')
+          link.href = canvas.toDataURL()
+          link.setAttribute('download', 'screenAvatar.png')
+          link.style.display = 'none'
+          document.body.appendChild(link)
+          link.click()
+        })
+      })
+    }
 	}
 </script>
 <style lang="scss" scoped>

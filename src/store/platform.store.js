@@ -71,6 +71,7 @@ function getInitPanelConfig () {
 const state = Vue.observable({
 	version: '1.0.3',
 	widgetAdded: {},
+	screenAvatar:'',
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
 	chooseWidgetId: null, // 选中项id
 	chooseWidgetState: true, // 是否可编辑

@@ -214,14 +214,6 @@
 			display: block;
 		}
 
-		.ivu-switch {
-		}
-
-		.ivu-input-wrapper,
-		.ivu-select {
-
-		}
-
 		.ivu-radio-group-button {
 			display: block;
 		}

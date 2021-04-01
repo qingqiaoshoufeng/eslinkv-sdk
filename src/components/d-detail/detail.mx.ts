@@ -4,6 +4,11 @@ import { getQueryString } from '../../utils/index'
 
 // todo 加载动画 下面注释部分
 export default {
+    data () {
+      return {
+          platform: platform.state
+      }
+    },
     methods: {
         renderByDetail (res) {
             if (res.screenConfig.scene) {
@@ -63,6 +68,7 @@ export default {
         if (id) {
             this.$api.screen.detail({ screenId: id }).then(res => {
                 this.screenType = res.screenType
+                this.platform.screenAvatar = res.screenAvatar
                 this.renderByDetail(res)
             })
         }
