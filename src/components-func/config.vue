@@ -31,15 +31,17 @@
 			i-input-number(
 				:min="1",
 				:step="1",
-				:formatter="value => `${value} w`",
+				:formatter="value => `w:${value}`",
 				v-model="platform.panelConfig.size.width",
-				:style="{ marginRight: '10px' }")
+				:style="{ marginRight: '10px' }"
+				:parser="value => value.replace('w:', '')")
 			i-input-number(
 				:min="1",
 				:step="1",
-				:formatter="value => `${value} h`",
+				:formatter="value => `h:${value}`",
 				v-model="platform.panelConfig.size.height",
-				:style="{ marginRight: '10px' }")
+				:style="{ marginRight: '10px' }"
+				:parser="value => value.replace('h:', '')")
 			i-select(v-model="platform.panelConfig.size.unit", :style="{ width: '60px' }")
 				i-option(value="px") px
 				i-option(value="%") %
