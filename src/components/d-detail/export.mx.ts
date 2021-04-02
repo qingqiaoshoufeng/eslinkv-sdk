@@ -5,7 +5,7 @@ export default {
 	methods: {
 		handleExport() {
 			const data = this.platFormData()
-			const fileName = `${data.name}-${+new Date()}`
+			const fileName = `${data.screenName}-${+new Date()}`
 			this.$Modal.confirm({
 				title: '看板导出',
 				render: h => {
@@ -15,7 +15,7 @@ export default {
 							h(
 								'label',
 								{ class: 'form-label text-right' },
-								'文件名称',
+								'文件名称：',
 							),
 							h('span', `${fileName}.json`),
 						]),
