@@ -16,7 +16,6 @@ module.exports = {
 		'dom7'
 	],
 	assetsDir: './',
-	// assetsDir: 'static',
 	publicPath: isProduction ? `/${pkg.version}` : '/',
 	outputDir: `dist/${pkg.version}`,
 	indexPath: '../index.html',
@@ -49,8 +48,8 @@ module.exports = {
 		}
 	},
 	css: {
-		extract: true,
-		sourceMap: false,
+		extract: false,
+		sourceMap: false
 	},
 	configureWebpack: (config) => {
 		if (isProduction) {
@@ -65,24 +64,35 @@ module.exports = {
 			)
 		}
 		config.resolve.extensions = ['.js', '.vue', '.json', '.ts', '.tsx']
-		config.externals = [
-			{
-				vue: {
-                    root: 'Vue',
-                    commonjs: 'vue',
-                    commonjs2: 'vue',
-                    amd: 'vue'
-                },
-				'vue-router': 'VueRouter',
-				'vue-class-component': {
-                    root: 'VueClassComponent',
-                    commonjs: 'vue-class-component',
-                    commonjs2: 'vue-class-component',
-                    amd: 'vue-class-component'
-                },
-				echarts: 'echarts'
-			}
-		]
+		if (process.env.VUE_APP_BUILD_MODE === 'NPM') {
+			config.externals = [
+				{
+					vue: {
+					    root: 'Vue',
+					    commonjs: 'vue',
+					    commonjs2: 'vue',
+					    amd: 'vue'
+					},
+					'vue-router': 'VueRouter',
+					'vue-class-component': {
+					    root: 'VueClassComponent',
+					    commonjs: 'vue-class-component',
+					    commonjs2: 'vue-class-component',
+					    amd: 'vue-class-component'
+					},
+					echarts: 'echarts'
+				}
+			]
+		} else {
+			config.externals = [
+				{
+					vue: 'Vue',
+					'vue-router': 'VueRouter',
+					'vue-class-component': 'VueClassComponent',
+					echarts: 'echarts'
+				}
+			]
+		}
 		config.plugins.push(
 			new webpack.DefinePlugin({
 				'process.env.staticVuePath': JSON.stringify(isProduction ? 'vue.min.js' : 'vue.js')

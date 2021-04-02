@@ -1,5 +1,6 @@
 <template lang="pug">
-  .d-right-modal-box.z-index-999(:style="{width:`${platform.ruler.xRoomR1}px`}")
+  div(v-if="platform.chooseWidgetState")
+  .d-right-modal-box.z-index-999(:style="{width:`${platform.ruler.xRoomR1}px`}" v-else)
     .d-right-modal-title.pointer.text-center.fn-flex.flex-row
       span.pos-r(v-for="(item,index) in title" @click="handleClick(index)" :key="item" :class="{active:index===choose}") {{item}}
     .d-right-modal.d-scrollbar
@@ -18,7 +19,7 @@
 			itemList
 		}
 	})
-	export default class DRightManage extends Vue {
+	export default class DRightSetting extends Vue {
     choose = 0
 		platform = platform.state
 		chooseList: any = [

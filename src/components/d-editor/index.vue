@@ -187,10 +187,6 @@
 @import "src/scss/conf";
 
 .center {
-	z-index: 1;
-	height: 100%;
-	padding: 0;
-	margin: 0;
 	background-color: #363946;
 
 	&.fullscreen {

@@ -53,7 +53,7 @@
 			'i-dropdown': Dropdown
 		}
 	})
-	export default class DRightWidget extends Vue {
+	export default class DLeftScene extends Vue {
 		scene: any = scene.state
 		platform: any = platform.state
 		editScene = false
@@ -84,9 +84,15 @@
 					this.createScene()
 					break
 				case 'edit':
+          if (this.scene.index === 0) {
+            return false
+          }
 					this.editScene = true
 					break
 				case 'destroy':
+				  if (this.scene.index === 0) {
+            return false
+          }
 					this.destroyScene()
 					break
 				case 'copy':

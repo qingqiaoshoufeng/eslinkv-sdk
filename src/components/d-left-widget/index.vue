@@ -28,58 +28,57 @@
             )
       .d-left-widgets-empty.fn-flex(v-else) 快来选择你心仪的组件了
 </template>
-<script>
-	import parts from '../d-widget-part/index'
+<script lang="ts">
+	import parts from '../d-widget-part/index.vue'
 	import { Icon } from 'view-design'
 	import custom from '../../store/custom.store'
 	import platform from '../../store/platform.store'
-	import itemCard from './item-card'
+	import itemCard from './item-card.vue'
+	import { Component, Vue } from 'vue-property-decorator'
 
-	export default {
-		components: {
-			parts,
-			'i-icon': Icon,
-			itemCard
-		},
-		data () {
-			return {
-				custom: custom.state,
-				platform: platform.state,
-				leftIndex: null,
-				rightIndex: null,
-				list: {},
-				openList: {}
-			}
-		},
-		methods: {
-			handleCheckType (componentTypeId, market) {
-				if (this.openList[componentTypeId]) {
-					this.$set(this.openList, componentTypeId, false)
-				} else {
-					this.$set(this.openList, componentTypeId, true)
-				}
-				if (!this.list[componentTypeId]) {
-					if (market) {
-						this.$api.marketComponent.list({
-							componentTypeId,
-							isCurrentVersion: true,
-							status: 'SUCCESS',
-							pageNum: 1,
-							pageSize: 999
-						}).then(res => {
-							this.$set(this.list, componentTypeId, res.list)
-						})
-					} else {
-						const list = this.custom.widgets[this.leftIndex].children
-						list.forEach(item => {
-							if (item.componentTypeId === componentTypeId) {
-								this.$set(this.list, componentTypeId, item.children)
-							}
-						})
-					}
-				}
-			}
-		}
+  @Component({
+    components: {
+      parts,
+      'i-icon': Icon,
+      itemCard
+    }
+  })
+	export default class DLeftWidget extends Vue {
+    custom= custom.state
+    platform= platform.state
+    leftIndex= null
+    rightIndex= null
+    list= {}
+    openList= {}
+
+    handleCheckType (componentTypeId, market) {
+      if (this.openList[componentTypeId]) {
+        this.$set(this.openList, componentTypeId, false)
+      } else {
+        this.$set(this.openList, componentTypeId, true)
+      }
+      if (!this.list[componentTypeId]) {
+        if (market) {
+          this.$api.marketComponent.list({
+            componentTypeId,
+            isCurrentVersion: true,
+            status: 'SUCCESS',
+            pageNum: 1,
+            pageSize: 999
+          }).then(res => {
+            this.$set(this.list, componentTypeId, res.list)
+          })
+        } else {
+          const list = this.custom.widgets[this.leftIndex].children
+          list.forEach(item => {
+            if (item.componentTypeId === componentTypeId) {
+              this.$set(this.list, componentTypeId, item.children)
+            }
+          })
+        }
+      }
+    }
+
 	}
 </script>
 <style lang="scss" scoped>

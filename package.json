@@ -1,13 +1,13 @@
 {
   "name": "eslinkv-sdk",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "lib/eslinkv-sdk.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "update": "auto-vers -t",
     "lint": "eslint --fix --ext .js --ext .jsx --ext .vue --ext .ts src/",
     "stylelint": "stylelint 'src/**/*.{scss,vue}' --config '.stylelintrc.js' --fix",
-    "lib": "vue-cli-service build --target lib --dest lib packages/index.js",
+    "lib": "vue-cli-service build --mode npm --target lib --dest lib packages/index.js",
     "commit": "git add .&&git cz"
   },
   "dependencies": {
@@ -56,6 +56,7 @@
     "commitizen": "^4.2.3",
     "compression-webpack-plugin": "^6.1.1",
     "cz-conventional-changelog": "^3.3.0",
+    "es-dev-standard": "^1.1.4",
     "eslint": "^6.8.0",
     "eslint-plugin-flowtype": "^5.4.0",
     "eslint-plugin-import": "^2.22.1",

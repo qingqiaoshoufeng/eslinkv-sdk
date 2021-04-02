@@ -4,6 +4,7 @@ import dEditor from '../src/components/d-editor/index.vue'
 import platform from '../src/store/platform.store.js'
 import commonConfigValue from '../common-config-value.js'
 import dLeftWidget from '../src/components/d-left-widget/index.vue'
+import dScreen from '../src/components/d-screen/index.vue'
 import dLeftScene from '../src/components/d-left-scene/index.vue'
 import dRightManage from '../src/components/d-right-manage/index.vue'
 import dRightSetting from '../src/components/d-right-setting/index.vue'
@@ -21,23 +22,24 @@ import './other.js'
 
 const eslinkV = {
     widgetMixin,
-    dEditor,
     platform,
+    scene,
+    instance,
+    custom,
+    event,
     configMerge,
     commonConfigValue,
+    market,
+    dEditor,
+    dScreen,
     dLeftWidget,
     dLeftScene,
     dRightSetting,
     dRightManage,
     dDetail,
     dFooter,
-    scene,
-    instance,
-    custom,
-    event,
     dView,
-    loadMask,
-    market
+    loadMask
 }
 if (!window.eslinkV) {
     window.eslinkV = {}
@@ -46,22 +48,23 @@ window.eslinkV = { ...window.eslinkV, ...eslinkV }
 
 export {
     widgetMixin,
-    dEditor,
     platform,
+    scene,
+    instance,
+    custom,
+    event,
     configMerge,
     commonConfigValue,
+    market,
+    dEditor,
+    dScreen,
     dLeftWidget,
     dLeftScene,
     dRightSetting,
     dRightManage,
     dDetail,
     dFooter,
-    scene,
-    instance,
-    custom,
-    event,
     dView,
-    loadMask,
-    market
+    loadMask
 }
 export default window.eslinkV
