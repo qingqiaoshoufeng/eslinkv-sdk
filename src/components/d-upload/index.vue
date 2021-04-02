@@ -50,50 +50,56 @@
 </script>
 <style lang="scss" scoped>
 @import "src/scss/conf";
-.d-upload-download-icon{
-  right: 30px;
-  top: 10px;
+
+.d-upload-download-icon {
+	top: 10px;
+	right: 30px;
 }
-.d-upload-remove-icon{
-  right: 10px;
-  top: 10px;
+
+.d-upload-remove-icon {
+	top: 10px;
+	right: 10px;
 }
+
 .d-upload-img {
-  width: 208px;
-  height: 115px;
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	justify-content: center;
+	width: 208px;
+	height: 115px;
 
-  img {
-    max-width: 100%;
-    max-height: 100%;
-  }
+	img {
+		max-width: 100%;
+		max-height: 100%;
+	}
 }
+
 .d-upload {
-  border: 1px solid #393b4a;
-  &:hover {
-    border: 1px solid $themeColor;
+	border: 1px solid #393b4a;
 
-    .d-upload-text {
-      color: $themeColor;
-    }
-  }
-  &::v-deep{
-    .ivu-upload-select {
-      width: 208px;
-      height: 115px;
-      transition: all .3s;
-      display: flex;
-      display: -webkit-flex;
-      align-items: center;
-      justify-content: center;
+	&:hover {
+		border: 1px solid $themeColor;
 
-      .d-upload-text {
-        font-size: 14px;
-      }
-    }
-  }
+		.d-upload-text {
+			color: $themeColor;
+		}
+	}
+
+	&::v-deep {
+		.ivu-upload-select {
+			display: flex;
+			display: -webkit-flex;
+			align-items: center;
+			justify-content: center;
+			width: 208px;
+			height: 115px;
+			transition: all 0.3s;
+
+			.d-upload-text {
+				font-size: 14px;
+			}
+		}
+	}
 }
 </style>

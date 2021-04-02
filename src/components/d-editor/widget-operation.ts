@@ -6,7 +6,6 @@ import scene from '../../store/scene.store'
 @Component
 class Mixins extends Vue {
 	currentWidgetType = null
-	activatedWidgetId = null
 	isWidgetProcessing = false
 	widgetProcessingStyle = null
 	rightMenuBindWidgetId = null
@@ -39,7 +38,7 @@ class Mixins extends Vue {
 		this.updateWidget(value)
 		requestAnimationFrame(() => {
 			this.isWidgetProcessing = false
-			this.activatedWidgetId = item.id
+			this.platform.chooseWidgetId = item.id
 		})
 	}
 
@@ -100,7 +99,7 @@ class Mixins extends Vue {
 		if (this.widgetActivating) return
 		this.widgetActivating = true
 		this.currentWidgetType = type
-		this.activatedWidgetId = id
+		this.platform.chooseWidgetId = id
 		setTimeout(() => {
 			this.widgetActivating = false
 		}, 300)
@@ -108,7 +107,7 @@ class Mixins extends Vue {
 
 	handleDeactivated (item) {
 		if (!this.widgetEditable(item)) {
-			this.activatedWidgetId = null
+			this.platform.chooseWidgetId = null
 			platform.actions.unChooseWidget()
 		}
 	}
@@ -121,7 +120,7 @@ class Mixins extends Vue {
 			const widget = this.$refs[`widget_${id}`]
 			if (!widget || !widget[0]) return
 			widget[0].enabled = false
-			this.activatedWidgetId = null
+			this.platform.chooseWidgetId = null
 			platform.actions.unChooseWidget()
 		})
 	}
@@ -140,7 +139,7 @@ class Mixins extends Vue {
 		return !config.widget.locked && !config.widget.hide
 	}
 
-	@Watch('activatedWidgetId')
+	@Watch('platform.chooseWidgetId')
 	onActivatedWidgetIdChange (id, oldId) {
 		if (!id) return
 

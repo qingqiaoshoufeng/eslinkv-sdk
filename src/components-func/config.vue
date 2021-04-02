@@ -220,32 +220,3 @@
     }
 	}
 </script>
-<style lang="scss" scoped>
-.d-manage-modal-background {
-	&:hover {
-		img {
-			filter: grayscale(100%);
-		}
-
-		&::v-deep {
-			.ivu-icon {
-				opacity: 1;
-			}
-		}
-	}
-
-	img {
-		transition: all 0.3s;
-	}
-
-	&::v-deep {
-		.ivu-icon {
-			top: 50%;
-			left: 50%;
-			margin-top: -10px;
-			margin-left: -10px;
-			opacity: 0;
-		}
-	}
-}
-</style>

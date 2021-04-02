@@ -17,7 +17,7 @@
                 @dragleave.self="isDragIn = false"
                 @drop="drop"
                 @dragover.prevent
-                @mousedown.self="deactivateWidget(activatedWidgetId)")
+                @mousedown.self="deactivateWidget(platform.chooseWidgetId)")
                 // 小工具清单
                 template(v-for="item in platform.widgetAdded")
                     vdr(v-if="showParts(item)"
@@ -28,7 +28,7 @@
                         :scale-ratio="platform.ruler.zoom"
                         :draggable="widgetEditable(item)"
                         :resizable="widgetEditable(item)"
-                        :active="item.id === activatedWidgetId && widgetEditable(item)"
+                        :active="item.id === platform.chooseWidgetId && widgetEditable(item)"
                         :prevent-deactivation="true"
                         :w="item.config.layout.size.width"
                         :h="item.config.layout.size.height"
@@ -179,6 +179,10 @@
 		}
 	}
 </script>
+<style lang="scss">
+@import 'index.scss';
+</style>
+
 <style lang="scss" scoped>
 @import "src/scss/conf";
 

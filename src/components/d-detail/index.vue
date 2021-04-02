@@ -209,60 +209,68 @@
 </script>
 <style lang="scss" scoped>
 	@import "../../scss/conf";
-  .d-detail-left-icon-box{
-    margin-left: 20px;
-    .ivu-icon{
-      border-radius: 2px;
-      padding: 4px 10px;
-      margin-right: 10px;
-      border: 1px solid rgba(255,235,235,.1);
-      background-color: #303640;
-      color: rgb(161,174,179);
-      &:hover{
-        background-color: #414750;
-      }
-      &.active{
-        color: #fff;
-        border: 1px solid $themeColor;
-        background-color: $themeColor;
-      }
-    }
-  }
-  .d-detail-left {
-    align-items: center;
-  }
-  .d-detail-right {
-    height: 100%;
 
-    li {
-      justify-content: center;
-      height: 100%;
-      padding: 0 15px;
-      color: #fff;
+	.d-detail-left-icon-box {
+		margin-left: 20px;
 
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-    }
-  }
+		.ivu-icon {
+			padding: 4px 10px;
+			margin-right: 10px;
+			color: rgb(161, 174, 179);
+			background-color: #303640;
+			border: 1px solid rgba(255, 235, 235, 0.1);
+			border-radius: 2px;
 
-  .d-detail-left-icon {
-    height: 100%;
-    padding: 0 15px;
-    color: #fff;
-    align-items: center;
+			&:hover {
+				background-color: #414750;
+			}
 
-    >i {
-      line-height: 60px;
-    }
+			&.active {
+				color: #fff;
+				background-color: $themeColor;
+				border: 1px solid $themeColor;
+			}
+		}
+	}
 
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-  }
-  .d-detail-import-button {
-    line-height: 32px;
-  }
+	.d-detail-left {
+		align-items: center;
+	}
+
+	.d-detail-right {
+		height: 100%;
+
+		li {
+			justify-content: center;
+			height: 100%;
+			padding: 0 15px;
+			color: #fff;
+
+			&:hover {
+				background-color: rgba(255, 255, 255, 0.1);
+			}
+		}
+	}
+
+	.d-detail-left-icon {
+		align-items: center;
+		height: 100%;
+		padding: 0 15px;
+		color: #fff;
+
+		>i {
+			line-height: 60px;
+		}
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.1);
+		}
+	}
+
+	.d-detail-import-button {
+		line-height: 32px;
+	}
+
 	.d-detail {
 		align-items: center;
 		justify-content: space-between;
@@ -274,14 +282,15 @@
 		&::v-deep button {
 			margin-left: 10px;
 		}
-
 	}
-  .d-detail-title {
-    font-size: 15px;
-    color: #fff;
-  }
-  .d-detail-left {
-    align-items: center;
-    height: 100%;
-  }
+
+	.d-detail-title {
+		font-size: 15px;
+		color: #fff;
+	}
+
+	.d-detail-left {
+		align-items: center;
+		height: 100%;
+	}
 </style>

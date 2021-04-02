@@ -33,7 +33,7 @@
 <style lang="scss" scoped>
 	.wrap {
 		padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #393b4a;
+		margin-bottom: 10px;
+		border: 1px solid #393b4a;
 	}
 </style>

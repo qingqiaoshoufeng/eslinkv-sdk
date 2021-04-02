@@ -1,43 +1,37 @@
 <template lang="pug">
-	.d-left-scene.pos-a(:style="{width:`${platform.ruler.xRoomL2}px`,left:`${platform.ruler.xRoomL1}px`}")
-		header.fn-flex.flex-row
-			i-input(:value="scene.obj[scene.index].name" @on-change="handleSceneName" v-if="editScene")
-				i-icon(type="md-checkmark" slot="suffix" @click="editScene=false")
-			i-select(v-model="scene.index" v-if="!editScene")
-				i-option(:value="0") 主场景
-				i-option(:value="key" v-for="(item,key) in scene.obj" :key="key") {{item.name}}
-				i-option(:value="-1") 场景回收站
-			i-dropdown(@on-click="handleSetScene" v-if="!editScene")
-				a
-					span {{have}}/{{total}} 设置
-					i-icon(type="ios-arrow-down")
-				i-dropdown-menu(slot="list")
-					i-dropdown-item(name="copy")
-						span 复制场景ID
-					i-dropdown-item(name="create")
-						span 新增场景
-					i-dropdown-item(name="edit" :disabled="scene.index===0")
-						span 编辑场景
-					i-dropdown-item(name="destroy")
-						span 删除场景
-		ul.d-scrollbar.d-left-scene-list
-			li.pointer.pos-r(v-for="item in list" :class="[{active:platform.chooseWidgetId===item.id}]" :key="item.id" @click="handleChoose(item.id)")
-				.fn-flex.flex-row
-					.d-widget-left
-						.fn-flex.flex-column
-							.fn-flex-row
-								i-icon(:type="`md-eye${item.config.widget.hide ? '-off' : ''}`" :title="!item.config.widget.hide ? '隐藏' : '显示'" @click="handleTaggerHide(item.id)" @click.stop)
-								i-icon(:type="`md-${item.config.widget.locked ? '' : 'un'}lock`" :title="!item.config.widget.locked ? '锁定' : '解锁'" @click="handleTaggerLock(item.id)" @click.stop)
-								i-icon(type="md-trash" title="删除" @click="handleDelete(item.id)" @click.stop)
-							h2 {{item.config.widget.name}}
-					.d-widget-right.fn-flex.flex-column
-						i-icon(type="ios-arrow-dropup" @click="handleUpZIndex(item.id)" @click.stop)
-						span {{item.config.layout.zIndex}}
-						i-icon(type="ios-arrow-dropdown" @click="handleDownZIndex(item.id)" @click.stop)
-		i-modal(v-model="copyModel" title="提示" :footer-hide="true")
-			.fn-flex.flex-row
-				span.fn-hide.copy-id {{scene.index}}
-				i-input(v-model="scene.index" search readonly enter-button="复制" @on-search="handleCopy")
+  .d-left-scene.pos-a.fn-flex.flex-column(:style="{width:`${platform.ruler.xRoomL2}px`,left:`${platform.ruler.xRoomL1}px`}")
+    .d-left-modal-title.text-center
+      span 场景
+    header.fn-flex.flex-row
+      i-input(:value="scene.obj[scene.index].name" @on-change="handleSceneName" v-if="editScene")
+        i-icon(type="md-checkmark" slot="suffix" @click="editScene=false")
+      i-select(v-model="scene.index" v-if="!editScene")
+        i-option(:value="0") 主场景
+        i-option(:value="key" v-for="(item,key) in scene.obj" :key="key") {{item.name}}
+        i-option(:value="-1") 场景回收站
+    ul.d-scrollbar.d-left-scene-list
+      li.pointer.pos-r(v-for="item in list" :class="[{active:platform.chooseWidgetId===item.id}]" :key="item.id" @click="handleChoose(item.id)")
+        .fn-flex.flex-row
+          .d-left-scene-left
+            .fn-flex.flex-column
+              .fn-flex-row
+                i-icon(:type="`md-eye${item.config.widget.hide ? '-off' : ''}`" :title="!item.config.widget.hide ? '隐藏' : '显示'" @click="handleTaggerHide(item.id)" @click.stop)
+                i-icon(:type="`md-${item.config.widget.locked ? '' : 'un'}lock`" :title="!item.config.widget.locked ? '锁定' : '解锁'" @click="handleTaggerLock(item.id)" @click.stop)
+                i-icon(type="md-trash" title="删除" @click="handleDelete(item.id)" @click.stop)
+              h2 {{item.config.widget.name}}
+          .d-left-scene-right.fn-flex.flex-column
+            i-icon(type="ios-arrow-dropup" @click="handleUpZIndex(item.id)" @click.stop)
+            span {{item.config.layout.zIndex}}
+            i-icon(type="ios-arrow-dropdown" @click="handleDownZIndex(item.id)" @click.stop)
+    .d-left-scene-bottom.fn-flex.flex-row
+      .d-left-scene-bottom-btn.text-center(@click="handleSetScene('copy')") 复制
+      .d-left-scene-bottom-btn.text-center(@click="handleSetScene('create')") 新增
+      .d-left-scene-bottom-btn.text-center(@click="handleSetScene('edit')" :class="{disabled:scene.index===0}") 编辑
+      .d-left-scene-bottom-btn.text-center(@click="handleSetScene('destroy')" :class="{disabled:scene.index===0}") 删除
+    i-modal(v-model="copyModel" title="提示" :footer-hide="true")
+      .fn-flex.flex-row
+        span.fn-hide.copy-id {{scene.index}}
+        i-input(v-model="scene.index" search readonly enter-button="复制" @on-search="handleCopy")
 </template>
 <script lang="ts">
 	import { Component, Vue } from 'vue-property-decorator'
@@ -62,23 +56,17 @@
 	export default class DRightWidget extends Vue {
 		scene: any = scene.state
 		platform: any = platform.state
-		total: number = 0
-		have: number = 0
 		editScene = false
 		copyModel = false
 
 		get list () {
-			const list = []; let total = 0; let have = 0
+			const list = []
 			for (const key in this.platform.widgetAdded) {
-				total++
 				const item = this.platform.widgetAdded[key]
 				if (item.scene === this.scene.index) {
 					list.push(item)
-					have++
 				}
 			}
-			this.total = total
-			this.have = have
 			return list
 		}
 
@@ -109,7 +97,6 @@
 
 		handleChoose (id) {
 			this.platform.chooseWidgetId = id
-			this.$emit('handleActivated', id)
 		}
 
 		handleCopy () {
@@ -164,8 +151,24 @@
 </script>
 <style lang="scss" scoped>
 	@import "../../scss/conf";
-
+  .d-left-scene-bottom{
+    width: 100%;
+    .d-left-scene-bottom-btn{
+      height: 30px;
+      line-height: 30px;
+      border-top: 1px solid #282f3a;
+      flex: 1;
+      color: #999;
+      cursor: pointer;
+      &.disabled{
+        cursor: no-drop;
+        color: rgb(61,77,102);
+      }
+    }
+  }
 	.d-left-scene-list {
+    padding-left: 8px;
+    flex: 1;
 		li {
 			align-items: center;
 			justify-content: center;
@@ -173,7 +176,7 @@
 			padding: 10px;
 			margin: 10px 0;
 			font-size: 12px;
-			border: 1px solid #ddd;
+			border: 1px solid #393b4a;
 			transition: all 0.3s;
 
 			&::v-deep {
@@ -206,35 +209,21 @@
 	}
 
 	.d-left-scene {
+		height: 100%;
+		overflow: hidden;
+		background-color: #1d2127;
+		border-left: 1px solid #000;
+
 		ul {
 			overflow-y: auto;
 		}
 
-		header {
-			flex: 0 0 auto;
-			align-items: center;
-			justify-content: space-between;
-			width: 100%;
-			height: 42px;
-			font-size: 14px;
-			font-weight: bold;
-			line-height: 42px;
-
-			.ivu-select {
-				width: 120px;
-			}
-
-			span {
-				margin-left: auto;
-			}
-		}
-
-		.d-widget-left,
-		.d-widget-right {
+		.d-left-scene-left,
+		.d-left-scene-right {
 			align-items: center;
 		}
 
-		.d-widget-left {
+		.d-left-scene-left {
 			width: 150px;
 
 			.ivu-icon {
@@ -247,7 +236,7 @@
 			}
 		}
 
-		.d-widget-right {
+		.d-left-scene-right {
 			justify-content: center;
 			margin-left: auto;
 			font-weight: bold;
