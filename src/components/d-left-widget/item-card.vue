@@ -1,40 +1,44 @@
 <template lang="pug">
 .widget-item-wrapper.pos-r
-  .fn-flex.flex-column.d-widget-list-card(draggable="true" @dragstart="dragstart($event)")
-    h2.ellipsis {{ componentTitle }}
-    .d-widget-list-img.fn-flex(
-      :style="{backgroundImage:`url(${componentAvatar})`}"
-    )
+	.fn-flex.flex-column.d-widget-list-card(
+		draggable="true",
+		@dragstart="dragstart($event)")
+		h2.ellipsis {{ componentTitle }}
+		.d-widget-list-img.fn-flex(
+			:style="{ backgroundImage: `url(${componentAvatar})` }")
 </template>
 <script lang="ts">
-	import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
-  @Component
-	export default class ItemCard extends Vue {
-	  @Prop() componentEnTitle
-	  @Prop() componentConfig
-	  @Prop() componentAvatar
-	  @Prop() componentId
-	  @Prop() componentVersion
-	  @Prop() componentTitle
-    @Prop() market:boolean
+@Component
+export default class ItemCard extends Vue {
+	@Prop() componentEnTitle
+	@Prop() componentConfig
+	@Prop() componentAvatar
+	@Prop() componentId
+	@Prop() componentVersion
+	@Prop() componentTitle
+	@Prop() market: boolean
 
-		/**
-		 * @description h5 原生拖拽事件
-		 */
-		dragstart (e) {
-			e.dataTransfer.setData('widget-config', JSON.stringify({
+	/**
+	 * @description h5 原生拖拽事件
+	 */
+	dragstart(e) {
+		e.dataTransfer.setData(
+			'widget-config',
+			JSON.stringify({
 				type: this.componentEnTitle,
 				config: { layout: this.componentConfig.layout },
 				market: this.market,
-        componentVersion: this.componentVersion,
-        componentId: this.componentId,
+				componentVersion: this.componentVersion,
+				componentId: this.componentId,
 				startX: e.offsetX,
-				startY: e.offsetY
-			}))
-		}
+				startY: e.offsetY,
+			}),
+		)
 	}
-  </script>
+}
+</script>
 <style lang="scss" scoped>
 .d-widget-list-card {
 	width: 80px;

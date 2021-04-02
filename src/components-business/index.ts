@@ -28,7 +28,7 @@ conf.keys().forEach(name => {
 				componentTitle: typeTwo,
 				componentEnTitle: typeTwo,
 				componentAvatar,
-				market: false
+				market: false,
 			})
 		} else {
 			w[typeOne] = true
@@ -37,15 +37,17 @@ conf.keys().forEach(name => {
 				componentTypeEnName: typeOne,
 				componentTypeId: typeOne,
 				market: false,
-				children: [{
-					componentId: Date.now(),
-					componentConfig,
-					market: false,
-					componentTitle: typeTwo,
-					componentEnTitle: typeTwo,
-					componentTypeId: typeTwo,
-					componentAvatar
-				}]
+				children: [
+					{
+						componentId: Date.now(),
+						componentConfig,
+						market: false,
+						componentTitle: typeTwo,
+						componentEnTitle: typeTwo,
+						componentTypeId: typeTwo,
+						componentAvatar,
+					},
+				],
 			})
 		}
 	}
@@ -56,8 +58,8 @@ const obj = {
 		componentTypeEnName: '测',
 		componentTypeId: '测',
 		market: false,
-		children: widgetsObject
-	}
+		children: widgetsObject,
+	},
 }
 custom.actions.setCustomComponents(components)
 custom.actions.setCustomWidgets(obj)

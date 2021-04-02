@@ -15,24 +15,24 @@ const state = Vue.observable({
 	status: 'inEdit', // inEdit  在编辑器中  inPreview 在预览中
 	sceneObj: {},
 	showMainScene: true, // 是否显示主场景
-	showAnimationStyle: 'zoom' // 实例化场景，动画
+	showAnimationStyle: 'zoom', // 实例化场景，动画
 })
 const actions = {
-	changeShowMainScene (value) {
+	changeShowMainScene(value) {
 		if (value !== state.showMainScene) {
-state.showMainScene = value
-}
+			state.showMainScene = value
+		}
 	},
-	setStatus (status) {
+	setStatus(status) {
 		state.status = status
 	},
-	initScene (value) {
+	initScene(value) {
 		const { scene } = value
 		if (scene instanceof Array) {
 			state.list = scene
 			scene.forEach(item => {
 				state.obj[item] = {
-					name: `场景${item}`
+					name: `场景${item}`,
 				}
 			})
 		} else {
@@ -52,19 +52,19 @@ state.showMainScene = value
 			const index = list.indexOf(item.scene)
 			if (index !== -1) {
 				if (!state.sceneObj[list[index]]) {
-state.sceneObj[list[index]] = {}
-}
+					state.sceneObj[list[index]] = {}
+				}
 				if (!state.sceneObj[list[index]].list) {
-state.sceneObj[list[index]].list = []
-}
+					state.sceneObj[list[index]].list = []
+				}
 				state.sceneObj[list[index]].list.push(item)
 			}
 		})
 	},
-	setSceneName (key, name) {
+	setSceneName(key, name) {
 		state.obj[key].name = name.replace(/ /g, '')
 	},
-	setSceneIndex (index) {
+	setSceneIndex(index) {
 		if (index !== state.index) {
 			state.index = index
 		}
@@ -72,13 +72,13 @@ state.sceneObj[list[index]].list = []
 		document.dispatchEvent(event)
 		event = null
 	},
-	createScene () {
+	createScene() {
 		const name = uuid()
 		state.list.push(name)
 		state.obj[name] = { name: `场景${name}` }
 		state.index = name
 	},
-	destroyScene (index) {
+	destroyScene(index) {
 		if (state.status === 'inPreview') {
 			const showAnimationStyle = state.showAnimationStyle
 			switch (showAnimationStyle) {
@@ -105,12 +105,16 @@ state.sceneObj[list[index]].list = []
 			}, 300)
 		}
 	},
-	deleteScene (index) {
+	deleteScene(index) {
 		delete state.obj[index]
 		delete state.sceneObj[index]
 		state.list.splice(index, 1)
 	},
-	createSceneInstance (id, showAnimationStyle = 'fadeIn', pointerEvents = 'auto') {
+	createSceneInstance(
+		id,
+		showAnimationStyle = 'fadeIn',
+		pointerEvents = 'auto',
+	) {
 		if (state.status === 'inPreview') {
 			const kanban = document.getElementById('kanban')
 			const transform = kanban.style.transform
@@ -130,22 +134,24 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 						v-for="item in array"
 						:key="item.id"></parts>
 					</div></div>`,
-				provide () {
+				provide() {
 					return { kanboard: _self, kanboardEditor: _self }
 				},
-				data () {
+				data() {
 					return {
-						array
+						array,
 					}
 				},
 				components: { parts },
-				mounted () {
+				mounted() {
 					instance.actions.setInstance('createKanboard', this)
-				}
+				},
 			})
 			const comp = new Comp().$mount()
 			instance.actions.setInstance('createComp', comp)
-			document.getElementsByClassName('detail-container')[0].appendChild(comp.$el)
+			document
+				.getElementsByClassName('detail-container')[0]
+				.appendChild(comp.$el)
 			switch (showAnimationStyle) {
 				case 'zoomIn':
 					setTimeout(() => {
@@ -176,7 +182,7 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 					break
 			}
 		}
-	}
+	},
 }
 const scene = store('scene', state, actions)
 

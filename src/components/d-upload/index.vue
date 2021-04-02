@@ -1,55 +1,70 @@
 <template lang="pug">
-  .d-upload
-    .d-upload-img.pos-r(v-if="value")
-      img(:src="value" v-if="type==='img'")
-      video(:src="value" v-if="type==='video'")
-      i-upload.pointer.pos-a(:action="action" :data="data"
-        :on-success="handleSuccess")
-      i-icon.d-upload-download-icon.pos-a.pointer(title="下载" type="ios-download-outline" color="#fff" size="14" @click="handleDown")
-      i-icon.d-upload-remove-icon.pos-a.pointer(title="删除" type="ios-trash-outline" color="#fff" size="14" @click="handleRemove")
-    i-upload.pointer(v-else :action="action" :data="data"
-      :on-success="handleSuccess")
-      .d-upload-text 点击上传
+.d-upload
+	.d-upload-img.pos-r(v-if="value")
+		img(:src="value", v-if="type === 'img'")
+		video(:src="value", v-if="type === 'video'")
+		i-upload.pointer.pos-a(
+			:action="action",
+			:data="data",
+			:on-success="handleSuccess")
+		i-icon.d-upload-download-icon.pos-a.pointer(
+			title="下载",
+			type="ios-download-outline",
+			color="#fff",
+			size="14",
+			@click="handleDown")
+		i-icon.d-upload-remove-icon.pos-a.pointer(
+			title="删除",
+			type="ios-trash-outline",
+			color="#fff",
+			size="14",
+			@click="handleRemove")
+	i-upload.pointer(
+		v-else,
+		:action="action",
+		:data="data",
+		:on-success="handleSuccess")
+		.d-upload-text 点击上传
 </template>
 <script lang="ts">
-	import { baseURL } from '../../../src/api/request.js'
-	import platform from '../../../src/store/platform.store.js'
-	import { Component, Vue, Prop } from 'vue-property-decorator'
-	import { Upload, Icon } from 'view-design'
-  @Component({
-    components: {
-      'i-upload': Upload,
-      'i-icon': Icon
-    }
-  })
-	export default class DUpload extends Vue {
-    platform = platform.state
+import { baseURL } from '../../../src/api/request.js'
+import platform from '../../../src/store/platform.store.js'
+import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Upload, Icon } from 'view-design'
+@Component({
+	components: {
+		'i-upload': Upload,
+		'i-icon': Icon,
+	},
+})
+export default class DUpload extends Vue {
+	platform = platform.state
 
-    @Prop({ default: `${baseURL}/upload/file` }) action
-    @Prop() data
-    @Prop({ default: 'img' }) type
-    @Prop() value
+	@Prop({ default: `${baseURL}/upload/file` }) action
+	@Prop() data
+	@Prop({ default: 'img' }) type
+	@Prop() value
 
-    handleDown () {
-      const a = document.createElement('a')
-      a.setAttribute('download', this.value)
-      a.setAttribute('href', this.value)
-      a.click()
-    }
-
-    handleRemove () {
-      this.$emit('input', '')
-      this.$emit('success', '')
-    }
-
-		handleSuccess (res) {
-      this.$emit('input', res.result.url)
-			this.$emit('success', res)
-		}
+	handleDown() {
+		const a = document.createElement('a')
+		a.setAttribute('download', this.value)
+		a.setAttribute('href', this.value)
+		a.click()
 	}
+
+	handleRemove() {
+		this.$emit('input', '')
+		this.$emit('success', '')
+	}
+
+	handleSuccess(res) {
+		this.$emit('input', res.result.url)
+		this.$emit('success', res)
+	}
+}
 </script>
 <style lang="scss" scoped>
-@import "src/scss/conf";
+@import 'src/scss/conf';
 
 .d-upload-download-icon {
 	top: 10px;

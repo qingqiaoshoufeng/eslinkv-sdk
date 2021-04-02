@@ -18,10 +18,18 @@
 				ref="tab"
 			>
 				<TabPane label="选择查询" name="querySelect">
-					<select-query ref="selectQuery" @getQueryCond="getQueryCond" :lastQuery="lastQuery"></select-query>
+					<select-query
+						ref="selectQuery"
+						@getQueryCond="getQueryCond"
+						:lastQuery="lastQuery"
+					></select-query>
 				</TabPane>
 				<TabPane label="单表查询" name="querySingle">
-					<single-query ref="singleQuery" @getQueryCond="getQueryCond" :lastQuery="lastQuery"></single-query>
+					<single-query
+						ref="singleQuery"
+						@getQueryCond="getQueryCond"
+						:lastQuery="lastQuery"
+					></single-query>
 				</TabPane>
 				<TabPane label="自定义查询" name="queryCustom">
 					<custom-query
@@ -40,64 +48,67 @@
 	</Modal>
 </template>
 <script>
-	import selectQuery from './selectQuery'
-	import singleQuery from './singleQuery'
-	import customQuery from './customQuery'
-	import { Modal, Tabs, TabPane, Button } from 'view-design'
+import selectQuery from './selectQuery'
+import singleQuery from './singleQuery'
+import customQuery from './customQuery'
+import { Modal, Tabs, TabPane, Button } from 'view-design'
 
-	export default {
-		components: {
-			selectQuery,
-			singleQuery,
-			customQuery,
-			Modal,
-			Tabs,
-			TabPane,
-			Button
+export default {
+	components: {
+		selectQuery,
+		singleQuery,
+		customQuery,
+		Modal,
+		Tabs,
+		TabPane,
+		Button,
+	},
+	props: {
+		// 弹窗状态
+		showModal: {
+			type: Boolean,
+			default: false,
 		},
-		props: {
-			// 弹窗状态
-			showModal: {
-				type: Boolean,
-				default: false
-			}
-		},
-		data () {
-			return {
-				height: '100%',
-				chartType: 0, // 0：选择查询；1：单表查询；2：自定义查询
-				queryCond: {},
-				lastQuery: {},
-				isVisible: false
-			}
-		},
-		methods: {
-			// 选择查询模式
-			clickTabs (name) {
-				if (name === 'querySelect') this.chartType = 0
-				else if (name === 'querySingle') this.chartType = 1
-				else this.chartType = 2
-			},
-			getQueryCond (obj) {
-				this.queryCond = obj
-			},
-			setQueryCond (obj) {
-				this.lastQuery = obj
-			},
-			exit () {
-				this.$emit('close')
-			},
-			ok () {
-				this.$emit('update', { ...this.queryCond, chartQueryType: this.chartType })
-			},
-			setVisibility (status) {
-				if (status) this.isVisible = true
-				if (!status) {
-					setTimeout(() => {
-						this.isVisible = false
-					}, 400)
-				}
-			}
+	},
+	data() {
+		return {
+			height: '100%',
+			chartType: 0, // 0：选择查询；1：单表查询；2：自定义查询
+			queryCond: {},
+			lastQuery: {},
+			isVisible: false,
 		}
-	}
+	},
+	methods: {
+		// 选择查询模式
+		clickTabs(name) {
+			if (name === 'querySelect') this.chartType = 0
+			else if (name === 'querySingle') this.chartType = 1
+			else this.chartType = 2
+		},
+		getQueryCond(obj) {
+			this.queryCond = obj
+		},
+		setQueryCond(obj) {
+			this.lastQuery = obj
+		},
+		exit() {
+			this.$emit('close')
+		},
+		ok() {
+			this.$emit('update', {
+				...this.queryCond,
+				chartQueryType: this.chartType,
+			})
+		},
+		setVisibility(status) {
+			if (status) this.isVisible = true
+			if (!status) {
+				setTimeout(() => {
+					this.isVisible = false
+				}, 400)
+			}
+		},
+	},
+}
 </script>

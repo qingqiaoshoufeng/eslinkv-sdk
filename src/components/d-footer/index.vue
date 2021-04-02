@@ -1,71 +1,74 @@
 <template lang="pug">
-  .d-footer.fn-flex.flex-row.pos-r.z-index-999
-    .d-footer-bar.fn-flex.flex-row
-      label {{scene.index===0?'主场景':scene.obj[scene.index].name}}
-      label.d-footer-info.fn-flex.flex-row(v-if="platform.panelConfig.info")
-        span {{ platform.panelConfig.size.width}}×{{platform.panelConfig.size.height}}{{ platform.panelConfig.size.unit}}
-    .d-footer-bar.fn-flex
-      label.d-footer-hot-keys.pos-r.fn-flex.flex-row
-        span.pointer(@click="showHotKey=!showHotKey") 快捷键
-        .d-footer-hot-key-list.pos-a(:class="{active:showHotKey}")
-          ul
-            li.fn-flex.flex-row(v-for="item in platform.hotKeys" :key="item.name")
-              label.d-footer-name {{ item.name }}
-              .d-footer-key-code.fn-flex.flex-row(v-for="child in item.key")
-                i.d-footer-hot-key-text(v-if="child.type==='text'") {{ child.value }}
-                span.d-footer-hot-key-item(v-if="child.type==='+'") +
-                img.d-footer-hot-key-img(v-if="child.type==='img'" :src="child.value")
-    .d-footer-bar.fn-flex(:style="{marginLeft:'auto'}")
-      label {{ zoom }}
-    .d-footer-bar.fn-flex
-      d-svg.pointer(icon-class="zoomOut" @click="handleZoomOut")
-    .d-footer-bar.fn-flex
-      d-svg.pointer(icon-class="zoomIn" @click="handleZoomIn")
-    .d-footer-bar.fn-flex(:style="{marginRight:'0'}")
-      i-icon.pointer(:type="platform.fullscreen?'md-contract':'md-expand'" :size="18" @click="handleFullscreen")
+.d-footer.fn-flex.flex-row.pos-r.z-index-999
+	.d-footer-bar.fn-flex.flex-row
+		label {{ scene.index === 0 ? '主场景' : scene.obj[scene.index].name }}
+		label.d-footer-info.fn-flex.flex-row(v-if="platform.panelConfig.info")
+			span {{ platform.panelConfig.size.width }}×{{ platform.panelConfig.size.height }}{{ platform.panelConfig.size.unit }}
+	.d-footer-bar.fn-flex
+		label.d-footer-hot-keys.pos-r.fn-flex.flex-row
+			span.pointer(@click="showHotKey = !showHotKey") 快捷键
+			.d-footer-hot-key-list.pos-a(:class="{ active: showHotKey }")
+				ul
+					li.fn-flex.flex-row(v-for="item in platform.hotKeys", :key="item.name")
+						label.d-footer-name {{ item.name }}
+						.d-footer-key-code.fn-flex.flex-row(v-for="child in item.key")
+							i.d-footer-hot-key-text(v-if="child.type === 'text'") {{ child.value }}
+							span.d-footer-hot-key-item(v-if="child.type === '+'") +
+							img.d-footer-hot-key-img(v-if="child.type === 'img'", :src="child.value")
+	.d-footer-bar.fn-flex(:style="{ marginLeft: 'auto' }")
+		label {{ zoom }}
+	.d-footer-bar.fn-flex
+		d-svg.pointer(icon-class="zoomOut", @click="handleZoomOut")
+	.d-footer-bar.fn-flex
+		d-svg.pointer(icon-class="zoomIn", @click="handleZoomIn")
+	.d-footer-bar.fn-flex(:style="{ marginRight: '0' }")
+		i-icon.pointer(
+			:type="platform.fullscreen ? 'md-contract' : 'md-expand'",
+			:size="18",
+			@click="handleFullscreen")
 </template>
 <script lang="ts">
-	import { Vue, Component } from 'vue-property-decorator'
-	import platform from '../../store/platform.store'
-	import scene from '../../store/scene.store'
-	import { Icon } from 'view-design'
-	import BigNumber from 'bignumber.js'
+import { Vue, Component } from 'vue-property-decorator'
+import platform from '../../store/platform.store'
+import scene from '../../store/scene.store'
+import { Icon } from 'view-design'
+import BigNumber from 'bignumber.js'
 
-	BigNumber.set({ DECIMAL_PLACES: 20 })
-  @Component({
-    components: {
-      'i-icon': Icon
-    }
-  })
-	export default class footer extends Vue {
-    platform = platform.state
-    scene = scene.state
-    showHotKey:boolean=false
+BigNumber.set({ DECIMAL_PLACES: 20 })
+@Component({
+	components: {
+		'i-icon': Icon,
+	},
+})
+export default class footer extends Vue {
+	platform = platform.state
+	scene = scene.state
+	showHotKey: boolean = false
 
-    get zoom () {
-      const zoom = new BigNumber(this.platform.ruler.zoom)
-      return `${zoom.multipliedBy(100)}%`
-    }
-
-    handleFullscreen () {
-      if (this.platform.fullscreen) {
-        document.exitFullscreen()
-      } else {
-        document.body.requestFullscreen()
-      }
-    }
-
-    handleZoomIn () {
-      platform.actions.zoomIn()
-    }
-
-    handleZoomOut () {
-      platform.actions.zoomOut()
-    }
+	get zoom() {
+		const zoom = new BigNumber(this.platform.ruler.zoom)
+		return `${zoom.multipliedBy(100)}%`
 	}
+
+	handleFullscreen() {
+		if (this.platform.fullscreen) {
+			document.exitFullscreen()
+		} else {
+			document.body.requestFullscreen()
+		}
+	}
+
+	handleZoomIn() {
+		platform.actions.zoomIn()
+	}
+
+	handleZoomOut() {
+		platform.actions.zoomOut()
+	}
+}
 </script>
 <style lang="scss" scoped>
-@import "../../../src/scss/conf";
+@import '../../../src/scss/conf';
 
 .d-footer {
 	height: 32px;

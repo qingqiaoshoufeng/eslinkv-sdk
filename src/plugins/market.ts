@@ -10,13 +10,13 @@ const market = async function () {
 				widgetsObject[item.componentTypeId] = {
 					...item,
 					market: true,
-					children: []
+					children: [],
 				}
 			}
 			array.forEach(child => {
 				widgetsObject[item.componentTypeId].children.push({
 					...child,
-					market: true
+					market: true,
 				})
 			})
 			custom.actions.setCustomWidgets(widgetsObject)
@@ -25,4 +25,3 @@ const market = async function () {
 }
 
 export default market
-

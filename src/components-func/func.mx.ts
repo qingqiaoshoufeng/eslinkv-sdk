@@ -11,7 +11,7 @@ import {
 	CheckboxGroup,
 	Checkbox,
 	Icon,
-	Upload
+	Upload,
 } from 'view-design'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import platform from '../store/platform.store'
@@ -34,8 +34,8 @@ const editor = require('vue2-ace-editor')
 		'i-button': Button,
 		CheckboxGroup,
 		Checkbox,
-		editor
-	}
+		editor,
+	},
 })
 export default class Func extends Vue {
 	platform = platform.state
@@ -43,7 +43,7 @@ export default class Func extends Vue {
 	@Prop() config
 	@Prop() parent // group时会有
 
-	get item () {
+	get item() {
 		if (this.platform.widgetAdded[this.platform.chooseWidgetId]) {
 			return this.platform.widgetAdded[this.platform.chooseWidgetId]
 		} else {
@@ -51,7 +51,7 @@ export default class Func extends Vue {
 		}
 	}
 
-	get obj () {
+	get obj() {
 		if (!this.config.prop) return null
 		let res = this.item
 		const props = this.config.prop.split('.')
@@ -63,13 +63,13 @@ export default class Func extends Vue {
 	}
 
 	// config.api.data，返回‘data‘
-	get inputKey () {
+	get inputKey() {
 		if (!this.config.prop) return null
 		const props = this.config.prop.split('.')
 		return props.reverse()[0]
 	}
 
-	editorInit () {
+	editorInit() {
 		require('brace/ext/language_tools')
 		require('brace/mode/html')
 		require('brace/mode/javascript')
@@ -79,7 +79,7 @@ export default class Func extends Vue {
 		require('brace/snippets/javascript')
 	}
 
-	getJson (key) {
+	getJson(key) {
 		const req = this.getItemValue(key)
 		if (typeof req === 'object') {
 			return JSON.stringify(req, null, '\t')
@@ -91,7 +91,7 @@ export default class Func extends Vue {
 		}
 	}
 
-	setJson (val, key) {
+	setJson(val, key) {
 		const data = this.getItemObj(key)
 		const prop = key.split('.').reverse()[0]
 		if (val) {
@@ -101,7 +101,7 @@ export default class Func extends Vue {
 		}
 	}
 
-	getItemValue (keyString) {
+	getItemValue(keyString) {
 		let res = this.item
 		const props = keyString.split('.')
 		props.forEach(v => {
@@ -110,7 +110,7 @@ export default class Func extends Vue {
 		return res
 	}
 
-	getItemObj (keyString) {
+	getItemObj(keyString) {
 		let res = this.item
 		const props = keyString.split('.')
 		props.length = props.length - 1

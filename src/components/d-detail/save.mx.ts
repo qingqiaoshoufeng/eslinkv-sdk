@@ -1,6 +1,6 @@
 export default {
 	methods: {
-		handleSave (type) {
+		handleSave(type) {
 			this.$Modal.confirm({
 				title: `确定另保存${type === 'TEMPLATE' ? '模版' : ''}吗？`,
 				okText: '确定',
@@ -16,36 +16,44 @@ export default {
 					} else {
 						this.editBoard()
 					}
-				}
+				},
 			})
 		},
-		async addBoard () {
+		async addBoard() {
 			const data = this.platFormData()
 			data.screenType = this.screenType
 			this.loading = true
-			this.$api.screen.create(data).then(() => {
-				this.kanboardEdited = false
-				this.$Message.success('保存成功！')
-				this.loading = false
-				this.$router.back()
-			}).catch(() => {
-				this.loading = false
-			})
+			this.$api.screen
+				.create(data)
+				.then(() => {
+					this.kanboardEdited = false
+					this.$Message.success('保存成功！')
+					this.loading = false
+					this.$router.back()
+				})
+				.catch(() => {
+					this.loading = false
+				})
 		},
-		editBoard () {
+		editBoard() {
 			const data = this.platFormData()
 			this.saving = true
-			const { params: { id } } = this.$route
+			const {
+				params: { id },
+			} = this.$route
 			data.screenType = this.screenType
-			this.$api.screen.update({ ...data, screenId: id }).then(() => {
-				this.kanboardEdited = false
-				this.$Message.success('修改成功')
-				this.loading = false
-				this.saving = false
-			}).catch(() => {
-				this.loading = false
-				this.saving = false
-			})
-		}
-	}
+			this.$api.screen
+				.update({ ...data, screenId: id })
+				.then(() => {
+					this.kanboardEdited = false
+					this.$Message.success('修改成功')
+					this.loading = false
+					this.saving = false
+				})
+				.catch(() => {
+					this.loading = false
+					this.saving = false
+				})
+		},
+	},
 }

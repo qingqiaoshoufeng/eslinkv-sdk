@@ -3,11 +3,14 @@ import axios from 'axios'
 
 const request = axios.create()
 request.defaults.timeout = 30000
-request.interceptors.request.use(function (config) {
-	return config
-}, function (error) {
-	return Promise.reject(error)
-})
+request.interceptors.request.use(
+	function (config) {
+		return config
+	},
+	function (error) {
+		return Promise.reject(error)
+	},
+)
 
 /**
  * @description
@@ -18,25 +21,28 @@ request.interceptors.request.use(function (config) {
  * }
  */
 const errMessage = '网络异常，请重试'
-request.interceptors.response.use(response => {
-	const { data } = response
-	if (data) {
-		if (data.returnCode === '0000') {
-			return data
+request.interceptors.response.use(
+	response => {
+		const { data } = response
+		if (data) {
+			if (data.returnCode === '0000') {
+				return data
+			} else {
+				Message.error(data.returnMessage || errMessage)
+				// eslint-disable-next-line prefer-promise-reject-errors
+				return Promise.reject(false)
+			}
 		} else {
-			Message.error(data.returnMessage || errMessage)
+			Message.error(errMessage)
 			// eslint-disable-next-line prefer-promise-reject-errors
 			return Promise.reject(false)
 		}
-	} else {
+	},
+	function (e) {
 		Message.error(errMessage)
 		// eslint-disable-next-line prefer-promise-reject-errors
 		return Promise.reject(false)
-	}
-}, function (e) {
-	Message.error(errMessage)
-	// eslint-disable-next-line prefer-promise-reject-errors
-	return Promise.reject(false)
-})
+	},
+)
 
 export default request

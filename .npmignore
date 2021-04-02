@@ -2,8 +2,13 @@ packages/
 public/
 src/
 .browserslistrc
+.editorconfig
+.env.npm
+.eslintignore
 .eslintrc.js
 .gitignore
+.prettierignore
+.prettierrc
 .stylelintrc.js
 babel.config.js
 commitlint.config.js

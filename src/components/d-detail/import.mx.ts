@@ -1,11 +1,11 @@
 export default {
-	data () {
+	data() {
 		return {
-			importModal: false
+			importModal: false,
 		}
 	},
 	methods: {
-		handleFile (e) {
+		handleFile(e) {
 			const file = e.target.files[0]
 			const reader = new FileReader()
 			reader.onload = e => {
@@ -24,6 +24,6 @@ export default {
 				this.$Message.error('配置文件识别失败')
 			}
 			reader.readAsText(file)
-		}
-	}
+		},
+	},
 }

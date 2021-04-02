@@ -6,12 +6,12 @@ import Vue from 'vue'
 import { store } from './index'
 
 const state = Vue.observable({
-	func: {}
+	func: {},
 })
 const actions = {
-	setEvent (key, func) {
+	setEvent(key, func) {
 		Vue.set(state.func, key, func)
-	}
+	},
 }
 const scene = store('event', state, actions)
 

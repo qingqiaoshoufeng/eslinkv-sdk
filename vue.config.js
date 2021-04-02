@@ -5,7 +5,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const isProduction = process.env.NODE_ENV === 'production'
 const needReport = false
 
-function resolve (dir) {
+function resolve(dir) {
 	return path.join(__dirname, dir)
 }
 module.exports = {
@@ -13,13 +13,13 @@ module.exports = {
 		'@simonwep',
 		'vue-draggable-resizable-gorkys2',
 		'swiper',
-		'dom7'
+		'dom7',
 	],
 	assetsDir: './',
 	publicPath: isProduction ? `/${pkg.version}` : '/',
 	outputDir: `dist/${pkg.version}`,
 	indexPath: '../index.html',
-    filenameHashing: false,
+	filenameHashing: false,
 	productionSourceMap: false,
 	lintOnSave: false,
 	devServer: {
@@ -34,24 +34,24 @@ module.exports = {
 				// target: 'http://10.30.3.156:7001',
 				changeOrigin: true,
 				pathRewrite: {
-					'^/node': '/'
-				}
+					'^/node': '/',
+				},
 			},
 			'^/cdn': {
 				target: 'http://127.0.0.1:7001',
 				// target: 'http://10.30.3.156:7001',
 				changeOrigin: true,
 				pathRewrite: {
-					'^/cdn': '/'
-				}
-			}
-		}
+					'^/cdn': '/',
+				},
+			},
+		},
 	},
 	css: {
-		extract: false,
-		sourceMap: false
+		extract: process.env.VUE_APP_BUILD_MODE === 'NPM',
+		sourceMap: false,
 	},
-	configureWebpack: (config) => {
+	configureWebpack: config => {
 		if (isProduction) {
 			config.mode = 'production'
 			config.plugins.push(
@@ -59,8 +59,8 @@ module.exports = {
 					algorithm: 'gzip',
 					test: /.js|\.html|.json$|.css/,
 					threshold: 10240,
-					minRatio: 0.8
-				})
+					minRatio: 0.8,
+				}),
 			)
 		}
 		config.resolve.extensions = ['.js', '.vue', '.json', '.ts', '.tsx']
@@ -68,20 +68,20 @@ module.exports = {
 			config.externals = [
 				{
 					vue: {
-					    root: 'Vue',
-					    commonjs: 'vue',
-					    commonjs2: 'vue',
-					    amd: 'vue'
+						root: 'Vue',
+						commonjs: 'vue',
+						commonjs2: 'vue',
+						amd: 'vue',
 					},
 					'vue-router': 'VueRouter',
 					'vue-class-component': {
-					    root: 'VueClassComponent',
-					    commonjs: 'vue-class-component',
-					    commonjs2: 'vue-class-component',
-					    amd: 'vue-class-component'
+						root: 'VueClassComponent',
+						commonjs: 'vue-class-component',
+						commonjs2: 'vue-class-component',
+						amd: 'vue-class-component',
 					},
-					echarts: 'echarts'
-				}
+					echarts: 'echarts',
+				},
 			]
 		} else {
 			config.externals = [
@@ -89,17 +89,19 @@ module.exports = {
 					vue: 'Vue',
 					'vue-router': 'VueRouter',
 					'vue-class-component': 'VueClassComponent',
-					echarts: 'echarts'
-				}
+					echarts: 'echarts',
+				},
 			]
 		}
 		config.plugins.push(
 			new webpack.DefinePlugin({
-				'process.env.staticVuePath': JSON.stringify(isProduction ? 'vue.min.js' : 'vue.js')
-			})
+				'process.env.staticVuePath': JSON.stringify(
+					isProduction ? 'vue.min.js' : 'vue.js',
+				),
+			}),
 		)
 	},
-	chainWebpack: (config) => {
+	chainWebpack: config => {
 		config.module
 			.rule('vue')
 			.use('iview')
@@ -112,10 +114,7 @@ module.exports = {
 			.use('babel')
 			.loader('babel-loader')
 			.end()
-		config.module
-			.rule('svg')
-			.exclude.add(resolve('src/icons'))
-			.end()
+		config.module.rule('svg').exclude.add(resolve('src/icons')).end()
 		config.module
 			.rule('icons')
 			.test(/\.svg$/)
@@ -124,7 +123,7 @@ module.exports = {
 			.use('svg-sprite-loader')
 			.loader('svg-sprite-loader')
 			.options({
-				symbolId: 'icon-[name]'
+				symbolId: 'icon-[name]',
 			})
 			.end()
 		if (isProduction) {
@@ -132,7 +131,7 @@ module.exports = {
 				config
 					.plugin('webpack-bundle-analyzer')
 					.use(
-						require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+						require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
 					)
 					.end()
 			}
@@ -140,5 +139,5 @@ module.exports = {
 		} else {
 			config.resolve.symlinks(true)
 		}
-	}
+	},
 }

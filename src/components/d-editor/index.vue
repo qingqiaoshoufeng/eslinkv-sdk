@@ -1,190 +1,205 @@
 <template lang="pug">
-    // 操作区
-    // todo css 改造 适配组件嵌入式，非全屏
-    .center.pos-r(ref="canvas-wrapper"
-        :class="{ fullscreen: platform.fullscreen }"
-       :style="{width: `calc(100% - ${platform.ruler.xRoomL1+platform.ruler.xRoomL2+platform.ruler.xRoomR1}px)`,marginLeft:`${platform.ruler.xRoomL1+platform.ruler.xRoomL2}px`}"
-        @click="hideSubPanels"
-        @select.prevent.stop
-        @contextmenu.stop.prevent)
-        // 标尺容器
-        ruler-canvas(ref="rulerCanvas")
-            // 大屏
-            #kanban(
-                :style="canvasStyle"
-                :class="['canvas-wrapper', { preview: false }]"
-                @dragenter="isDragIn = true"
-                @dragleave.self="isDragIn = false"
-                @drop="drop"
-                @dragover.prevent
-                @mousedown.self="deactivateWidget(platform.chooseWidgetId)")
-                // 小工具清单
-                template(v-for="item in platform.widgetAdded")
-                    vdr(v-if="showParts(item)"
-                        :key="item.id"
-                        :ref="`widget_${item.id}`"
-                        :parent="true"
-                        :parent-size="canvasSize"
-                        :scale-ratio="platform.ruler.zoom"
-                        :draggable="widgetEditable(item)"
-                        :resizable="widgetEditable(item)"
-                        :active="item.id === platform.chooseWidgetId && widgetEditable(item)"
-                        :prevent-deactivation="true"
-                        :w="item.config.layout.size.width"
-                        :h="item.config.layout.size.height"
-                        :x="item.config.layout.position.left"
-                        :y="item.config.layout.position.top"
-                        :z="item.config.layout.zIndex"
-                        :snap="platform.autoAlignGuide"
-                        :snap-tolerance="10"
-                        :class="[{'no-pointer': isDragIn,locked: item.config.widget.locked,preview: false,'widget-hide': item.config.widget.hide}, `widget-${item.id}`]"
-                        snap-to-target="guide-line"
-                        class-name="vdr-custom-style"
-                        @resizing="onResizing"
-                        @dragging="onDragging"
-                        @refLineParams="getRefLineParams"
-                        @activated="handleActivated(item, widgetEditable(item) && !item.config.widget.innerEditing)"
-                        @deactivated="handleDeactivated(item)"
-                        @contextmenu.native="showRightMenu($event, item)")
-                        parts(
-                            :ref="item.id"
-                            :type="item.type"
-                            :config="item.config"
-                            :market="item.market"
-                            @widget-config-update="(data) => handleWidgetConfig(data, item)")
-        // 参考线
-        d-guide
-        // 右键菜单
-        right-menu(ref="rightMenu" @deactivateWidget="deactivateWidget")
-        d-footer
+// 操作区
+// todo css 改造 适配组件嵌入式，非全屏
+.center.pos-r(
+	ref="canvas-wrapper",
+	:class="{ fullscreen: platform.fullscreen }",
+	:style="{ width: `calc(100% - ${platform.ruler.xRoomL1 + platform.ruler.xRoomL2 + platform.ruler.xRoomR1}px)`, marginLeft: `${platform.ruler.xRoomL1 + platform.ruler.xRoomL2}px` }",
+	@click="hideSubPanels",
+	@select.prevent.stop,
+	@contextmenu.stop.prevent)
+	// 标尺容器
+	ruler-canvas(ref="rulerCanvas")
+		// 大屏
+		#kanban(
+			:style="canvasStyle",
+			:class="['canvas-wrapper', { preview: false }]",
+			@dragenter="isDragIn = true",
+			@dragleave.self="isDragIn = false",
+			@drop="drop",
+			@dragover.prevent,
+			@mousedown.self="deactivateWidget(platform.chooseWidgetId)")
+			// 小工具清单
+			template(v-for="item in platform.widgetAdded")
+				vdr(
+					v-if="showParts(item)",
+					:key="item.id",
+					:ref="`widget_${item.id}`",
+					:parent="true",
+					:parent-size="canvasSize",
+					:scale-ratio="platform.ruler.zoom",
+					:draggable="widgetEditable(item)",
+					:resizable="widgetEditable(item)",
+					:active="item.id === platform.chooseWidgetId && widgetEditable(item)",
+					:prevent-deactivation="true",
+					:w="item.config.layout.size.width",
+					:h="item.config.layout.size.height",
+					:x="item.config.layout.position.left",
+					:y="item.config.layout.position.top",
+					:z="item.config.layout.zIndex",
+					:snap="platform.autoAlignGuide",
+					:snap-tolerance="10",
+					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'widget-hide': item.config.widget.hide }, `widget-${item.id}`]",
+					snap-to-target="guide-line",
+					class-name="vdr-custom-style",
+					@resizing="onResizing",
+					@dragging="onDragging",
+					@refLineParams="getRefLineParams",
+					@activated="handleActivated(item, widgetEditable(item) && !item.config.widget.innerEditing)",
+					@deactivated="handleDeactivated(item)",
+					@contextmenu.native="showRightMenu($event, item)")
+					parts(
+						:ref="item.id",
+						:type="item.type",
+						:config="item.config",
+						:market="item.market",
+						@widget-config-update="data => handleWidgetConfig(data, item)")
+	// 参考线
+	d-guide
+	// 右键菜单
+	right-menu(ref="rightMenu", @deactivateWidget="deactivateWidget")
+	d-footer
 </template>
 <script>
-	import rightMenu from '../right-menu/index'
-	import rulerCanvas from '../d-ruler/index.vue'
-	import vdr from 'vue-draggable-resizable-gorkys2/src/components/vue-draggable-resizable'
-	import 'vue-draggable-resizable-gorkys2/src/components/vue-draggable-resizable.css'
-	import parts from '../d-widget-part/index'
-	import widgetOperation from './widget-operation'
-	import dRightManage from '../d-right-manage'
-	import dFooter from '../d-footer'
-	import dGuide from '../d-guide'
-	import platform from '../../store/platform.store'
-	import instance from '../../store/instance.store'
-	import scene from '../../store/scene.store'
-	import styleParser from '../../../style-parser'
+import rightMenu from '../right-menu/index'
+import rulerCanvas from '../d-ruler/index.vue'
+import vdr from 'vue-draggable-resizable-gorkys2/src/components/vue-draggable-resizable'
+import 'vue-draggable-resizable-gorkys2/src/components/vue-draggable-resizable.css'
+import parts from '../d-widget-part/index'
+import widgetOperation from './widget-operation'
+import dRightManage from '../d-right-manage'
+import dFooter from '../d-footer'
+import dGuide from '../d-guide'
+import platform from '../../store/platform.store'
+import instance from '../../store/instance.store'
+import scene from '../../store/scene.store'
+import styleParser from '../../../style-parser'
 
-	export default {
-		name: 'kanboard-editor',
-		mixins: [
-			widgetOperation
-		],
-		components: {
-			parts,
-			rulerCanvas,
-			dFooter,
-			dGuide,
-			vdr,
-			dRightManage,
-			rightMenu
-		},
-		provide () {
-			return { kanboardEditor: this }
-		},
-		data () {
-			return {
-				platform: platform.state,
-				scene: scene.state,
-				vLine: [],
-				hLine: [],
-				isDragIn: false,
-				showDatabaseConfigModal: false
-			}
-		},
-		methods: {
-			handleFullscreenChange () {
-				this.platform.fullscreen = !this.platform.fullscreen
-			},
-			showRightMenu (e, item) {
-				e.preventDefault()
-				this.handleActivated(this.platform.widgetAdded[item.id])
-				const rightMenu = this.$refs.rightMenu.$el
-				rightMenu.classList.add('active')
-				rightMenu.style.left = e.clientX + 'px'
-				rightMenu.style.top = e.clientY + 'px'
-			},
-			drop (e) {
-				this.isDragIn = false
-				const widgetConfig = e.dataTransfer.getData('widget-config')
-				if (widgetConfig) {
-					this.handleWidgetDrop(e, widgetConfig)
-				}
-			},
-			updateApiSystem (value) {
-				Object.assign(this.currentWidgetValue.api.system.params, value)
-				this.showDatabaseConfigModal = false
-			},
-			onDragging (left, top) {
-				this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.position.left = left
-				this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.position.top = top
-			},
-			onResizing (left, top, width, height) {
-				this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.size.width = width
-				this.platform.widgetAdded[this.platform.chooseWidgetId].config.layout.size.height = height
-			},
-			getRefLineParams ({ vLine, hLine }) {
-				this.vLine = vLine
-				this.hLine = hLine
-			},
-			hideSubPanels () {
-				this.$refs.rightMenu && this.$refs.rightMenu.$el.classList.remove('active')
-			}
-		},
-		computed: {
-			canvasStyle () {
-				return styleParser(this.platform.panelConfig)
-			},
-			canvasSize () {
-				const { width, height } = this.platform.panelConfig.size
-				return { width, height }
-			},
-			widgetAdded () {
-				return this.platform.widgetAdded
-			},
-			showParts () {
-				return (item) => {
-					if (item.scene === 0 && this.scene.showMainScene) {
-						return true
-					}
-					if (item.scene === this.scene.index) {
-						return true
-					}
-					return false
-				}
-			}
-		},
-		beforeDestroy () {
-			this.platform.fullscreen = false
-			document.removeEventListener('fullscreenchange', this.handleFullscreenChange)
-		},
-		watch: {
-			isDragIn (value) {
-				if (value) this.hideSubPanels()
-			}
-		},
-		mounted () {
-			document.addEventListener('fullscreenchange', this.handleFullscreenChange)
-			platform.actions.initKanboard()
-			instance.actions.setInstance('kanboard', this)
-			scene.actions.setStatus('inEdit')
+export default {
+	name: 'kanboard-editor',
+	mixins: [widgetOperation],
+	components: {
+		parts,
+		rulerCanvas,
+		dFooter,
+		dGuide,
+		vdr,
+		dRightManage,
+		rightMenu,
+	},
+	provide() {
+		return { kanboardEditor: this }
+	},
+	data() {
+		return {
+			platform: platform.state,
+			scene: scene.state,
+			vLine: [],
+			hLine: [],
+			isDragIn: false,
+			showDatabaseConfigModal: false,
 		}
-	}
+	},
+	methods: {
+		handleFullscreenChange() {
+			this.platform.fullscreen = !this.platform.fullscreen
+		},
+		showRightMenu(e, item) {
+			e.preventDefault()
+			this.handleActivated(this.platform.widgetAdded[item.id])
+			const rightMenu = this.$refs.rightMenu.$el
+			rightMenu.classList.add('active')
+			rightMenu.style.left = e.clientX + 'px'
+			rightMenu.style.top = e.clientY + 'px'
+		},
+		drop(e) {
+			this.isDragIn = false
+			const widgetConfig = e.dataTransfer.getData('widget-config')
+			if (widgetConfig) {
+				this.handleWidgetDrop(e, widgetConfig)
+			}
+		},
+		updateApiSystem(value) {
+			Object.assign(this.currentWidgetValue.api.system.params, value)
+			this.showDatabaseConfigModal = false
+		},
+		onDragging(left, top) {
+			this.platform.widgetAdded[
+				this.platform.chooseWidgetId
+			].config.layout.position.left = left
+			this.platform.widgetAdded[
+				this.platform.chooseWidgetId
+			].config.layout.position.top = top
+		},
+		onResizing(left, top, width, height) {
+			this.platform.widgetAdded[
+				this.platform.chooseWidgetId
+			].config.layout.size.width = width
+			this.platform.widgetAdded[
+				this.platform.chooseWidgetId
+			].config.layout.size.height = height
+		},
+		getRefLineParams({ vLine, hLine }) {
+			this.vLine = vLine
+			this.hLine = hLine
+		},
+		hideSubPanels() {
+			this.$refs.rightMenu &&
+				this.$refs.rightMenu.$el.classList.remove('active')
+		},
+	},
+	computed: {
+		canvasStyle() {
+			return styleParser(this.platform.panelConfig)
+		},
+		canvasSize() {
+			const { width, height } = this.platform.panelConfig.size
+			return { width, height }
+		},
+		widgetAdded() {
+			return this.platform.widgetAdded
+		},
+		showParts() {
+			return item => {
+				if (item.scene === 0 && this.scene.showMainScene) {
+					return true
+				}
+				if (item.scene === this.scene.index) {
+					return true
+				}
+				return false
+			}
+		},
+	},
+	beforeDestroy() {
+		this.platform.fullscreen = false
+		document.removeEventListener(
+			'fullscreenchange',
+			this.handleFullscreenChange,
+		)
+	},
+	watch: {
+		isDragIn(value) {
+			if (value) this.hideSubPanels()
+		},
+	},
+	mounted() {
+		document.addEventListener(
+			'fullscreenchange',
+			this.handleFullscreenChange,
+		)
+		platform.actions.initKanboard()
+		instance.actions.setInstance('kanboard', this)
+		scene.actions.setStatus('inEdit')
+	},
+}
 </script>
 <style lang="scss">
 @import 'index.scss';
 </style>
 
 <style lang="scss" scoped>
-@import "src/scss/conf";
+@import 'src/scss/conf';
 
 .center {
 	background-color: #363946;
@@ -372,8 +387,7 @@
 	border-top-width: 0;
 	border-radius: 5px;
 	opacity: 1;
-	transition:
-		transform 0.34s cubic-bezier(0.5, 0, 0.5, 1),
+	transition: transform 0.34s cubic-bezier(0.5, 0, 0.5, 1),
 		opacity 0.2s cubic-bezier(0.5, 0, 0.5, 1);
 	transform: translate3d(0, 0, 0);
 
@@ -508,10 +522,8 @@
 			width: 8px;
 			height: 8px;
 			background-color: rgba(0, 0, 0, 0.1);
-			box-shadow:
-				-16px 0 0 0 rgba(0, 0, 0, 0.15),
-				16px 0 0 0 rgba(0, 0, 0, 0.15),
-				-32px 0 0 0 rgba(0, 0, 0, 0.1),
+			box-shadow: -16px 0 0 0 rgba(0, 0, 0, 0.15),
+				16px 0 0 0 rgba(0, 0, 0, 0.15), -32px 0 0 0 rgba(0, 0, 0, 0.1),
 				32px 0 0 0 rgba(0, 0, 0, 0.1);
 		}
 	}
@@ -520,8 +532,7 @@
 .canvas-config-wrapper {
 	pointer-events: none;
 	opacity: 0;
-	transition:
-		transform 0.5s cubic-bezier(0.5, 0, 0.5, 1),
+	transition: transform 0.5s cubic-bezier(0.5, 0, 0.5, 1),
 		opacity 0.5s cubic-bezier(0.5, 0, 0.5, 1);
 	transform: translate3d(-50%, 0, 0);
 
@@ -644,5 +655,4 @@
 		}
 	}
 }
-
 </style>

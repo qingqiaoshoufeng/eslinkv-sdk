@@ -15,7 +15,7 @@ Highlight.install = function (Vue) {
 			for (let i = 0; i < blocks.length; i++) {
 				Hljs.highlightBlock(blocks[i])
 			}
-		}
+		},
 	})
 }
 export default Highlight
