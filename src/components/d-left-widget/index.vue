@@ -65,7 +65,7 @@ export default class DLeftWidget extends Vue {
 		if (!this.list[componentTypeId]) {
 			if (market) {
 				this.$api.marketComponent
-					.list({
+					.typeList({
 						componentTypeId,
 						isCurrentVersion: true,
 						status: 'SUCCESS',

@@ -21,4 +21,3 @@ style-parser.js
 tsconfig.json
 vue.config.js
 .idea/
-lib/*.gz

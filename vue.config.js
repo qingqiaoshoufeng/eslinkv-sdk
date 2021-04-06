@@ -1,7 +1,6 @@
 const path = require('path')
 const pkg = require('./package.json')
 const webpack = require('webpack')
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const isProduction = process.env.NODE_ENV === 'production'
 const needReport = false
 
@@ -54,14 +53,6 @@ module.exports = {
 	configureWebpack: config => {
 		if (isProduction) {
 			config.mode = 'production'
-			config.plugins.push(
-				new CompressionWebpackPlugin({
-					algorithm: 'gzip',
-					test: /.js|\.html|.json$|.css/,
-					threshold: 10240,
-					minRatio: 0.8,
-				}),
-			)
 		}
 		config.resolve.extensions = ['.js', '.vue', '.json', '.ts', '.tsx']
 		if (process.env.VUE_APP_BUILD_MODE === 'NPM') {

@@ -18,6 +18,15 @@ export function use(data) {
 	})
 }
 
+export function typeList(data) {
+	return request({
+		url: '/market/component/typeList',
+		method: 'post',
+		data,
+		headers,
+	})
+}
+
 export function update(data) {
 	return request({
 		url: '/market/component/update',

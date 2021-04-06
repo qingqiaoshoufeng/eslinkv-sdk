@@ -4,7 +4,7 @@ div(v-if="platform.chooseWidgetState")
 	:style="{ width: `${platform.ruler.xRoomR1}px` }",
 	v-else)
 	.d-right-modal-name.fn-flex.flex-row
-		span(contenteditable="editName", @input="changeName") {{ platform.widgetAdded[platform.chooseWidgetId].config.widget.name }}
+		span(contenteditable="editName", @input="changeName") {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].config.widget.name : '' }}
 		i-icon(
 			type="md-checkmark",
 			slot="suffix",
@@ -14,9 +14,9 @@ div(v-if="platform.chooseWidgetState")
 		i-icon(type="md-eye", @click="handleHide", v-if="!editName")
 		i-icon(type="md-lock", @click="handleLock", v-if="!editName")
 	.d-right-modal-id
-		span ID: {{ platform.widgetAdded[platform.chooseWidgetId].id }}
+		span ID: {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].id : '' }}
 	.d-right-modal-type
-		span 类型: {{ platform.widgetAdded[platform.chooseWidgetId].type }}
+		span 类型: {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].type : '' }}
 	.d-right-modal-title.pointer.text-center.fn-flex.flex-row
 		span.pos-r(
 			v-for="(item, index) in title",
