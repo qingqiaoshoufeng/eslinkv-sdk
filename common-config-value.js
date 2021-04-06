@@ -26,7 +26,7 @@ const commonConfigValue = useColorTheme =>
 			},
 			zIndex: 10,
 		},
-		config: useColorTheme ? colorTheme : {},
+		config: useColorTheme ? { colorTheme } : {},
 		api: {
 			url: '',
 			method: 'GET',
