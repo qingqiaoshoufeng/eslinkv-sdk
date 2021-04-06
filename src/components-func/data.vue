@@ -68,24 +68,31 @@
 				@keyup.native.stop)
 	.d-manage-modal-control
 		label 请求参数
+			i-icon(type="ios-paper-outline" @click="showFullParamsEditor = true" class="full-icon" title="全屏编辑")
 	.d-manage-modal-control
 		editor.d-manage-modal-control-editor(
 			v-model="item.config.api.params",
 			@init="editorInit",
 			lang="json",
 			theme="chrome",
-			height="100")
+			height="150")
 	.d-manage-modal-control
 		label 响应数据
+			i-icon(type="ios-paper-outline" @click="showFullApiDataEditor = true" class="full-icon" title="全屏编辑")
 	.d-manage-modal-control
 		editor.d-manage-modal-control-editor(
 			v-model="apiData",
 			@init="editorInit",
 			lang="json",
 			theme="chrome",
-			height="100")
+			height="150")
 	.d-manage-modal-control
 		label 数据加工
+			i-icon(
+				v-if="item.config.api.process.enable"
+				type="ios-paper-outline"
+				@click="showFullMethodBodyEditor = true"
+				class="full-icon" title="全屏编辑")
 		.d-manage-modal-control-right
 			i-switch(
 				v-model="item.config.api.process.enable",
@@ -96,7 +103,7 @@
 			@init="editorInit",
 			lang="javascript",
 			theme="chrome",
-			height="100")
+			height="150")
 	.d-manage-modal-control
 		label 定时刷新
 		.d-manage-modal-control-right
@@ -121,6 +128,28 @@
 	.d-manage-modal-control(v-if="item.config.api.bind.enable")
 		checkbox-group(v-model="item.config.api.bind.refIds")
 			checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
+			
+	i-modal(v-model="showFullParamsEditor")
+		editor.d-manage-modal-control-editor(
+			v-model="item.config.api.params",
+			@init="editorInit",
+			lang="json",
+			theme="chrome",
+			height="200")
+	i-modal(v-model="showFullMethodBodyEditor")
+		editor.d-manage-modal-control-editor(
+			v-model="item.config.api.process.methodBody",
+			@init="editorInit",
+			lang="javascript",
+			theme="chrome",
+			height="200")
+	i-modal(v-model="showFullApiDataEditor")
+		editor.d-manage-modal-control-editor(
+			v-model="apiData",
+			@init="editorInit",
+			lang="json",
+			theme="chrome",
+			height="200")
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -130,6 +159,9 @@ import scene from '../store/scene.store'
 
 @Component({ components: { databaseConfig } })
 export default class FuncData extends func {
+	showFullApiDataEditor = false
+	showFullParamsEditor = false
+	showFullMethodBodyEditor = false
 	showDatabaseConfigModal = false
 	apiType = '无'
 
@@ -192,3 +224,10 @@ export default class FuncData extends func {
 	}
 }
 </script>
+
+<style lang="scss" scoped>
+.full-icon {
+	padding-left: 6px;
+	cursor: pointer;
+}
+</style>
