@@ -69,11 +69,13 @@
 			i-input-number(
 				v-model="item.config.layout.position.top",
 				:formatter="value => `${value} 上`",
+				:parser="value => value.replace('上', '')",
 				:disabled="platform.chooseWidgetState",
 				:style="{ marginRight: '10px' }")
 			i-input-number(
 				v-model="item.config.layout.position.bottom",
 				:formatter="value => `${value} 下`",
+				:parser="value => value.replace('下', '')",
 				:disabled="platform.chooseWidgetState")
 	.d-manage-modal-control
 		label
@@ -81,11 +83,13 @@
 			i-input-number(
 				v-model="item.config.layout.position.left",
 				:formatter="value => `${value} 左`",
+				:parser="value => value.replace('左', '')",
 				:disabled="platform.chooseWidgetState",
 				:style="{ marginRight: '10px' }")
 			i-input-number(
 				v-model="item.config.layout.position.right",
 				:formatter="value => `${value} 右`",
+				:parser="value => value.replace('右', '')",
 				:disabled="platform.chooseWidgetState")
 	.d-manage-modal-control
 		label 宽高
@@ -96,6 +100,7 @@
 				:formatter="value => `${value} w`",
 				v-model="item.config.layout.size.width",
 				:disabled="platform.chooseWidgetState",
+				:parser="value => value.replace('w', '')",
 				:style="{ marginRight: '10px' }")
 			i-input-number(
 				:min="1",
@@ -103,6 +108,7 @@
 				:formatter="value => `${value} h`",
 				v-model="item.config.layout.size.height",
 				:disabled="platform.chooseWidgetState",
+				:parser="value => value.replace('h', '')",
 				:style="{ marginRight: '10px' }")
 			i-select(
 				v-model="item.config.layout.size.unit",

@@ -18,6 +18,7 @@
 		.d-manage-modal-control-right
 			i-input-number(
 				:formatter="value => `${value} ms`",
+				:parser="value => value.replace('ms', '')",
 				v-model="item.config.animation.delay",
 				:disabled="platform.chooseWidgetState")
 	.d-manage-modal-control
@@ -25,6 +26,7 @@
 		.d-manage-modal-control-right
 			i-input-number(
 				:formatter="value => `${value} ms`",
+				:parser="value => value.replace('ms', '')",
 				v-model="item.config.animation.duration",
 				:disabled="platform.chooseWidgetState")
 </template>
