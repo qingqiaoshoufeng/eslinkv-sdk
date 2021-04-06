@@ -1,3 +1,4 @@
+import { colorTheme } from './packages/index.js'
 const commonConfigValue = () =>
 	Object.freeze({
 		widget: {
@@ -24,7 +25,9 @@ const commonConfigValue = () =>
 			},
 			zIndex: 10,
 		},
-		config: {},
+		config: {
+			colorTheme,
+		},
 		api: {
 			url: '',
 			method: 'GET',
