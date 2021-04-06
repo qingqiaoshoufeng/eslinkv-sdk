@@ -87,7 +87,6 @@ export default class DFooter extends mixins(
 	publishMx,
 ) {
 	@Prop(Boolean) kanboardEdited: boolean
-	@Prop({ default: false }) disabled: boolean
 	@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
 
 	platform = platform.state

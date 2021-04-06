@@ -1,6 +1,6 @@
 <template lang="pug">
 .home-container
-	d-detail(:disabled="false")
+	d-detail
 	d-screen
 </template>
 <script lang="ts">

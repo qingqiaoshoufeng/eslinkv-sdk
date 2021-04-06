@@ -22,10 +22,12 @@ class Mixins extends Vue {
 			if (oldId) {
 				configPanel && (configPanel as any).reset()
 				this.$nextTick(() => {
-					this.currentWidgetValue = this.widgetAdded[id].config
+					this.currentWidgetValue = this.platform.widgetAdded[
+						id
+					].config
 				})
 			} else {
-				this.currentWidgetValue = this.widgetAdded[id].config
+				this.currentWidgetValue = this.platform.widgetAdded[id].config
 			}
 			this.configPanelValueUpdateTimer = null
 		}
@@ -41,17 +43,9 @@ class Mixins extends Vue {
 	updateWidget(value) {
 		if (this.widgetMoving || !value || !value.widget) return
 		const id = value.widget.id
-		const currentWidget = this.widgetAdded[id]
+		const currentWidget = this.platform.widgetAdded[id]
 		if (!id || !currentWidget) return
 		this.$set(currentWidget, 'config', value)
-	}
-
-	showProcessing(top, left, width, height, widget) {
-		this.widgetProcessingStyle = `
-                transform: translate3d(${left}px, ${top}px, 0);
-                width: ${width}px;
-                height: ${height}px;
-            `
 	}
 
 	initWidgetConfig(id, type, scene, market) {
@@ -77,14 +71,11 @@ class Mixins extends Vue {
 		const left = offsetX - startX
 		layout.position.top = top
 		layout.position.left = left
-		const { width, height } = layout.size
-		// 小工具初始化提示
-		this.showProcessing(top, left, width, height, widget)
 		const id = uuid()
 		if (layout.zIndex) layout.zIndex = 10
 		widget.id = id
 		widget.componentVersion = componentVersion
-		widget.componentId = componentId // todo delete
+		widget.componentId = componentId
 		const value = { layout, widget, config, api }
 		this.initWidgetConfig(id, type, this.scene.index, market)
 		this.updateWidget(value)
@@ -110,7 +101,6 @@ class Mixins extends Vue {
 
 	handleDeactivated(item) {
 		if (!this.widgetEditable(item)) {
-			this.platform.chooseWidgetId = null
 			platform.actions.unChooseWidget()
 		}
 	}
@@ -120,10 +110,9 @@ class Mixins extends Vue {
 	 */
 	deactivateWidget(id) {
 		this.$nextTick(() => {
-			const widget = this.$refs[`widget_${id}`]
-			if (!widget || !widget[0]) return
-			widget[0].enabled = false
-			this.platform.chooseWidgetId = null
+			// const widget = this.$refs[`widget_${id}`]
+			// if (!widget || !widget[0]) return
+			// widget[0].enabled = false
 			platform.actions.unChooseWidget()
 		})
 	}

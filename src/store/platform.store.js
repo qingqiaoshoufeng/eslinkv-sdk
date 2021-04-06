@@ -171,6 +171,7 @@ const actions = {
 	},
 	unChooseWidget() {
 		state.chooseWidgetState = true
+		state.chooseWidgetId = null
 	},
 	chooseWidget(id) {
 		state.chooseWidgetId = id

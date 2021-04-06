@@ -8,6 +8,7 @@
 	.d-ruler-content(
 		ref="rulerContent",
 		:class="{ drag: contentMove }",
+		@click="deactivateWidget",
 		@mousedown="handleContentMoveStart",
 		@mousemove.prevent)
 		.content-body.pos-a(:id="platform.ruler.dragId", :style="contentStyle")
@@ -51,6 +52,10 @@ export default class DRuler extends mixins(eventHandlers) {
 		}px, 0) scale(${this.platform.ruler.zoom});width:${
 			this.contentWidth + 18 * 2
 		} px;height:${this.contentHeight + 18 * 2} px;`
+	}
+
+	deactivateWidget() {
+		platform.actions.unChooseWidget()
 	}
 }
 </script>

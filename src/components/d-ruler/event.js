@@ -126,11 +126,13 @@ export default {
 		 */
 		resetZoom(e) {
 			e && e.stopPropagation()
-			const rulerOffsetWidth = this.$refs.rulerContent.offsetWidth - this.platform.ruler.size
+			const rulerOffsetWidth =
+				this.$refs.rulerContent.offsetWidth - this.platform.ruler.size
 			const rulerOffsetHeight = this.$refs.rulerContent.offsetHeight
 			const platformWidth = this.platform.panelConfig.size.width
 			const platformHeight = this.platform.panelConfig.size.height
-			this.platform.ruler.zoom = (~~((rulerOffsetWidth / platformWidth) * 10) / 10) || 0.1
+			this.platform.ruler.zoom =
+				~~((rulerOffsetWidth / platformWidth) * 10) / 10 || 0.1
 			const deltaX = (rulerOffsetWidth - platformWidth) * 0.5
 			const deltaY = (rulerOffsetHeight - platformHeight) * 0.5
 			this.platform.ruler.contentX = Math.ceil(deltaX)
@@ -149,7 +151,6 @@ export default {
 		dragContent.addEventListener('dblclick', this.resetZoom)
 		requestAnimationFrame(this.windowResize)
 
-		// todo 画板居中优化
 		setTimeout(() => {
 			this.resetZoom()
 		})

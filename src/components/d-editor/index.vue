@@ -11,12 +11,12 @@
 	// 标尺容器
 	ruler-canvas(ref="rulerCanvas")
 		// 大屏
-		#kanban(
+		.canvas-wrapper#kanban(
 			:style="canvasStyle",
-			:class="['canvas-wrapper', { preview: false }]",
 			@dragenter="isDragIn = true",
 			@dragleave.self="isDragIn = false",
 			@drop="drop",
+			@click.stop,
 			@dragover.prevent,
 			@mousedown.self="deactivateWidget(platform.chooseWidgetId)")
 			// 小工具清单
@@ -38,14 +38,12 @@
 					:y="item.config.layout.position.top",
 					:z="item.config.layout.zIndex",
 					:snap="platform.autoAlignGuide",
-					:snap-tolerance="10",
 					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'widget-hide': item.config.widget.hide }, `widget-${item.id}`]",
-					snap-to-target="guide-line",
+					snap-to-target="d-guide-line",
 					class-name="vdr-custom-style",
 					@resizing="onResizing",
 					@dragging="onDragging",
-					@refLineParams="getRefLineParams",
-					@activated="handleActivated(item, widgetEditable(item) && !item.config.widget.innerEditing)",
+					@activated="handleActivated(item, widgetEditable(item))",
 					@deactivated="handleDeactivated(item)",
 					@contextmenu.native="showRightMenu($event, item)")
 					parts(
@@ -94,10 +92,7 @@ export default {
 		return {
 			platform: platform.state,
 			scene: scene.state,
-			vLine: [],
-			hLine: [],
 			isDragIn: false,
-			showDatabaseConfigModal: false,
 		}
 	},
 	methods: {
@@ -119,10 +114,6 @@ export default {
 				this.handleWidgetDrop(e, widgetConfig)
 			}
 		},
-		updateApiSystem(value) {
-			Object.assign(this.currentWidgetValue.api.system.params, value)
-			this.showDatabaseConfigModal = false
-		},
 		onDragging(left, top) {
 			this.platform.widgetAdded[
 				this.platform.chooseWidgetId
@@ -139,10 +130,6 @@ export default {
 				this.platform.chooseWidgetId
 			].config.layout.size.height = height
 		},
-		getRefLineParams({ vLine, hLine }) {
-			this.vLine = vLine
-			this.hLine = hLine
-		},
 		hideSubPanels() {
 			this.$refs.rightMenu &&
 				this.$refs.rightMenu.$el.classList.remove('active')
@@ -155,9 +142,6 @@ export default {
 		canvasSize() {
 			const { width, height } = this.platform.panelConfig.size
 			return { width, height }
-		},
-		widgetAdded() {
-			return this.platform.widgetAdded
 		},
 		showParts() {
 			return item => {
@@ -197,7 +181,6 @@ export default {
 <style lang="scss">
 @import 'index.scss';
 </style>
-
 <style lang="scss" scoped>
 @import 'src/scss/conf';
 
