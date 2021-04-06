@@ -80,6 +80,7 @@ class Mixins extends Vue {
 		this.initWidgetConfig(id, type, this.scene.index, market)
 		this.updateWidget(value)
 		this.currentWidgetType = type
+		this.platform.chooseWidgetId = id
 		return id
 	}
 
