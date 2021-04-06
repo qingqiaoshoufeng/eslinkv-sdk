@@ -95,7 +95,7 @@
 		.d-manage-modal-control-right
 			i-switch(v-model="platform.panelConfig.size.isMobileKanboard")
 	.d-manage-modal-control
-		label 预览模式
+		label 适配模式
 		.d-manage-modal-control-right
 			i-select(v-model="platform.panelConfig.size.layoutMode")
 				i-option(value="full-size") 充满页面

@@ -1,6 +1,10 @@
 <template lang="pug">
 .d-manage-modal-control-base
 	.d-manage-modal-control
+		label 主题色盘
+		.d-manage-modal-control-right
+			span 尽请期待
+	.d-manage-modal-control
 		label
 		.d-manage-modal-control-right
 			i-button(icon="md-sync", @click="handleSync", type="primary") 强制刷新当前组件
