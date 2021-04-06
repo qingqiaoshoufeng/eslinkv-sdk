@@ -136,7 +136,7 @@ export default class DFooter extends mixins(
 	}
 
 	preview() {
-		window.open(`${location.origin}/detail/${this.$route.params.id}`)
+		window.open(`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.platform.panelConfig.size.layoutMode}`)
 	}
 
 	exit() {

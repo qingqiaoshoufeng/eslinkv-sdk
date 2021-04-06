@@ -94,14 +94,9 @@
 		label 移动看板
 		.d-manage-modal-control-right
 			i-switch(v-model="platform.panelConfig.size.isMobileKanboard")
-	.d-manage-modal-control(v-if="platform.panelConfig.size.isMobileKanboard")
-		label
+	.d-manage-modal-control
+		label 预览模式
 		.d-manage-modal-control-right
-			i-select(
-				v-model="platform.panelConfig.size.deviceType",
-				:style="{ marginRight: '10px' }")
-				i-option(value="mobile") 手机
-				i-option(value="pad") 平板
 			i-select(v-model="platform.panelConfig.size.layoutMode")
 				i-option(value="full-size") 充满页面
 				i-option(value="full-width") 100%宽度

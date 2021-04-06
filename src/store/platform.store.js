@@ -61,8 +61,7 @@ function getInitPanelConfig() {
 			unit: 'px',
 			preset: '1920×1080',
 			isMobileKanboard: false,
-			deviceType: 'mobile',
-			layoutMode: 'full-size',
+			layoutMode: 'full-height',
 		},
 		background: {
 			url: '',
