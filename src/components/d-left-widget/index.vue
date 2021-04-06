@@ -3,7 +3,7 @@
 	:style="{ width: `${platform.ruler.xRoomL1}px` }")
 	.d-left-modal-title.text-center
 		span 组件区
-	.fn-flex.flex-row(:style="{ flex: 1，height:'100%' }")
+	.fn-flex.flex-row(:style="{ flex: 1, height: '100%' }")
 		ul.d-left-widgets-left
 			li.fn-flex.pos-r.pointer(
 				v-for="item in custom.widgets",
