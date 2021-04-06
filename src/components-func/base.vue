@@ -1,32 +1,6 @@
 <template lang="pug">
 .d-manage-modal-control-base
 	.d-manage-modal-control
-		label 组件id
-		.d-manage-modal-control-right
-			span.d-manage-modal-control-text {{ item.id }}
-	.d-manage-modal-control
-		label 组件类型
-		.d-manage-modal-control-right
-			span.d-manage-modal-control-text {{ item.type }}
-	.d-manage-modal-control
-		label 组件名称
-		.d-manage-modal-control-right
-			i-input(
-				v-model="item.config.widget.name",
-				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control
-		label 组件市场
-		.d-manage-modal-control-right
-			i-switch(v-model="item.market")
-	.d-manage-modal-control
-		label 锁定
-		.d-manage-modal-control-right
-			i-switch(v-model="item.config.widget.locked")
-	.d-manage-modal-control
-		label 隐藏
-		.d-manage-modal-control-right
-			i-switch(v-model="item.config.widget.hide")
-	.d-manage-modal-control
 		label 场景
 		.d-manage-modal-control-right
 			i-select(v-model="item.scene", :disabled="platform.chooseWidgetState")
@@ -68,28 +42,28 @@
 		.d-manage-modal-control-right
 			i-input-number(
 				v-model="item.config.layout.position.top",
-				:formatter="value => `${value} 上`",
-				:parser="value => value.replace('上', '')",
+				:formatter="value => `上:${value}`",
+				:parser="value => value.replace('上:', '')",
 				:disabled="platform.chooseWidgetState",
 				:style="{ marginRight: '10px' }")
 			i-input-number(
 				v-model="item.config.layout.position.bottom",
-				:formatter="value => `${value} 下`",
-				:parser="value => value.replace('下', '')",
+				:formatter="value => `下:${value}`",
+				:parser="value => value.replace('下:', '')",
 				:disabled="platform.chooseWidgetState")
 	.d-manage-modal-control
 		label
 		.d-manage-modal-control-right
 			i-input-number(
 				v-model="item.config.layout.position.left",
-				:formatter="value => `${value} 左`",
-				:parser="value => value.replace('左', '')",
+				:formatter="value => `左:${value}`",
+				:parser="value => value.replace('左:', '')",
 				:disabled="platform.chooseWidgetState",
 				:style="{ marginRight: '10px' }")
 			i-input-number(
 				v-model="item.config.layout.position.right",
-				:formatter="value => `${value} 右`",
-				:parser="value => value.replace('右', '')",
+				:formatter="value => `右:${value}`",
+				:parser="value => value.replace('右:', '')",
 				:disabled="platform.chooseWidgetState")
 	.d-manage-modal-control
 		label 宽高
@@ -97,23 +71,23 @@
 			i-input-number(
 				:min="1",
 				:step="1",
-				:formatter="value => `${value} w`",
+				:formatter="value => `w:${value}`",
 				v-model="item.config.layout.size.width",
 				:disabled="platform.chooseWidgetState",
-				:parser="value => value.replace('w', '')",
-				:style="{ marginRight: '10px' }")
+				:parser="value => value.replace('w:', '')",
+				:style="{ marginRight: '10px', width: '67px' }")
 			i-input-number(
 				:min="1",
 				:step="1",
-				:formatter="value => `${value} h`",
+				:formatter="value => `h:${value}`",
 				v-model="item.config.layout.size.height",
 				:disabled="platform.chooseWidgetState",
-				:parser="value => value.replace('h', '')",
-				:style="{ marginRight: '10px' }")
+				:parser="value => value.replace('h:', '')",
+				:style="{ marginRight: '10px', width: '67px' }")
 			i-select(
 				v-model="item.config.layout.size.unit",
 				:disabled="platform.chooseWidgetState",
-				:style="{ width: '60px' }")
+				:style="{ width: '55px' }")
 				i-option(value="px") px
 				i-option(value="%") %
 				i-option(value="rem") rem
@@ -141,6 +115,35 @@
 				i-option(value="scroll") scroll
 				i-option(value="auto") auto
 				i-option(value="inherit") inherit
+	.d-manage-modal-control
+		label 启用动画
+		.d-manage-modal-control-right
+			i-switch(
+				v-model="item.config.animation.transitionEnable",
+				:disabled="platform.chooseWidgetState")
+	.d-manage-modal-control(v-if="item.config.animation.transitionEnable")
+		label 入场效果
+		.d-manage-modal-control-right
+			i-select(
+				v-model="item.config.animation.enter",
+				:disabled="platform.chooseWidgetState")
+				i-option(:value="k", v-for="k in animationEnterNames", :key="k") {{ k }}
+	.d-manage-modal-control(v-if="item.config.animation.transitionEnable")
+		label 延时时长
+		.d-manage-modal-control-right
+			i-input-number(
+				:formatter="value => `${value} ms`",
+				:parser="value => value.replace('ms', '')",
+				v-model="item.config.animation.delay",
+				:disabled="platform.chooseWidgetState")
+	.d-manage-modal-control(v-if="item.config.animation.transitionEnable")
+		label 动画时长
+		.d-manage-modal-control-right
+			i-input-number(
+				:formatter="value => `${value} ms`",
+				:parser="value => value.replace('ms', '')",
+				v-model="item.config.animation.duration",
+				:disabled="platform.chooseWidgetState")
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -149,6 +152,62 @@ import { Component } from 'vue-property-decorator'
 @Component
 export default class FuncBase extends func {
 	versionList = []
+	animationEnterNames: string[] = [
+		'bounce',
+		'flash',
+		'pulse',
+		'rubberBand',
+		'shakeX',
+		'shakeY',
+		'headShake',
+		'swing',
+		'tada',
+		'wobble',
+		'jello',
+		'heartBeat',
+		'backInDown',
+		'backInLeft',
+		'backInRight',
+		'backInUp',
+		'bounceIn',
+		'bounceInDown',
+		'bounceInLeft',
+		'bounceInRight',
+		'bounceInUp',
+		'fadeIn',
+		'fadeInDown',
+		'fadeInDownBig',
+		'fadeInLeft',
+		'fadeInLeftBig',
+		'fadeInRight',
+		'fadeInRightBig',
+		'fadeInUp',
+		'fadeInUpBig',
+		'fadeInTopLeft',
+		'fadeInTopRight',
+		'fadeInBottomLeft',
+		'fadeInBottomRight',
+		'flipInX',
+		'flipInY',
+		'lightSpeedInRight',
+		'lightSpeedInLeft',
+		'rotateIn',
+		'rotateInDownLeft',
+		'rotateInDownRight',
+		'rotateInUpLeft',
+		'rotateInUpRight',
+		'jackInTheBox',
+		'rollIn',
+		'zoomIn',
+		'zoomInDown',
+		'zoomInLeft',
+		'zoomInRight',
+		'zoomInUp',
+		'slideInDown',
+		'slideInLeft',
+		'slideInRight',
+		'slideInUp',
+	]
 
 	async getVersionList() {
 		const res = await this.$api.marketComponent.getVersionList({

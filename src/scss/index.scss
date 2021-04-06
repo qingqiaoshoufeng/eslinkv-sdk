@@ -50,7 +50,7 @@ body {
 	&::after {
 		display: table;
 		line-height: 0;
-		content: "";
+		content: '';
 	}
 
 	&::after {
@@ -119,6 +119,7 @@ body {
 
 .d-scrollbar {
 	padding-right: 8px;
+	overflow-y: auto;
 
 	&::-webkit-scrollbar {
 		width: 4px;

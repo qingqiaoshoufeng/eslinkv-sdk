@@ -147,7 +147,6 @@ export default class DLeftWidget extends Vue {
 
 .d-left-widgets-right {
 	width: 100%;
-	overflow-y: auto;
 
 	li {
 		width: 100%;

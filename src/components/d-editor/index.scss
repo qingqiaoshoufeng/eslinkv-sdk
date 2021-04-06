@@ -28,7 +28,9 @@
 		}
 	}
 }
-
+.d-right-modal-border {
+	border-bottom: 1px solid #000;
+}
 .d-right-modal-title,
 .d-left-modal-title {
 	height: 40px;
@@ -59,14 +61,34 @@
 
 .d-right-modal-box {
 	overflow: hidden;
-}
-
-.d-right-modal {
-	height: calc(100vh - 60px);
-	padding: 10px;
-	overflow-y: auto;
-	letter-spacing: 0;
 	background-color: #22242b;
+}
+.d-right-modal-id {
+	margin-left: 10px;
+}
+.d-right-modal-type {
+	margin-left: 10px;
+	padding-bottom: 10px;
+}
+.d-right-modal-name {
+	font-size: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
+	color: #d8d8d8;
+	padding: 20px 0 5px 0;
+	align-items: flex-end;
+	line-height: 20px;
+	span {
+		margin-right: 5px;
+		outline: none;
+	}
+	.ivu-icon {
+		font-size: 12px;
+		margin-left: 5px;
+	}
+}
+.d-right-modal {
+	padding: 10px;
 }
 
 .d-manage-modal-control {

@@ -223,6 +223,7 @@ export default class DLeftScene extends Vue {
 .d-left-scene-list {
 	padding-left: 8px;
 	flex: 1;
+
 	li {
 		align-items: center;
 		justify-content: center;

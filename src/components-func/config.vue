@@ -1,17 +1,5 @@
 <template lang="pug">
-.d-manage-modal-control-config
-	.d-manage-modal-control
-		label 平台版本
-		.d-manage-modal-control-right
-			span.d-manage-modal-control-text {{ platform.version }}
-	.d-manage-modal-control
-		label 大屏id
-		.d-manage-modal-control-right
-			span.d-manage-modal-control-text {{ platform.panelConfig.id }}
-	.d-manage-modal-control
-		label 大屏名称
-		.d-manage-modal-control-right
-			i-input(v-model="platform.panelConfig.info.name")
+.d-right-modal.d-scrollbar
 	.d-manage-modal-control
 		label 大屏描述
 		.d-manage-modal-control-right
@@ -33,16 +21,18 @@
 				:step="1",
 				:formatter="value => `w:${value}`",
 				v-model="platform.panelConfig.size.width",
-				:style="{ marginRight: '10px' }"
+				:style="{ marginRight: '10px', width: '67px' }",
 				:parser="value => value.replace('w:', '')")
 			i-input-number(
 				:min="1",
 				:step="1",
 				:formatter="value => `h:${value}`",
 				v-model="platform.panelConfig.size.height",
-				:style="{ marginRight: '10px' }"
+				:style="{ marginRight: '10px', width: '67px' }",
 				:parser="value => value.replace('h:', '')")
-			i-select(v-model="platform.panelConfig.size.unit", :style="{ width: '60px' }")
+			i-select(
+				v-model="platform.panelConfig.size.unit",
+				:style="{ width: '55px' }")
 				i-option(value="px") px
 				i-option(value="%") %
 				i-option(value="vw/vh") vw/vh
@@ -73,23 +63,27 @@
 		.d-manage-modal-control-right
 			i-select(
 				v-model="platform.panelConfig.background.size",
-				:style="{ marginRight: '10px' }")
+				:style="{ marginRight: '10px', width: '99px' }")
 				i-option(value="cover") cover
 				i-option(value="contain") contain
 				i-option(value="auto") auto
-			i-input(v-model="platform.panelConfig.background.size")
+			i-input(
+				v-model="platform.panelConfig.background.size",
+				:style="{ width: '99px' }")
 	.d-manage-modal-control
 		label
 		.d-manage-modal-control-right
 			i-select(
 				v-model="platform.panelConfig.background.position",
-				:style="{ marginRight: '10px' }")
+				:style="{ marginRight: '10px', width: '99px' }")
 				i-option(value="center") center
 				i-option(value="left") left
 				i-option(value="right") right
 				i-option(value="top") top
 				i-option(value="bottom") bottom
-			i-input(v-model="platform.panelConfig.background.position")
+			i-input(
+				v-model="platform.panelConfig.background.position",
+				:style="{ width: '99px' }")
 	.d-manage-modal-control
 		label 移动看板
 		.d-manage-modal-control-right

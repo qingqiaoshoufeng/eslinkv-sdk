@@ -89,10 +89,17 @@ const mx = {
 		 * @description
 		 *
 		 */
-		parseConfigValue(localConfigValue = null, customConfig) {
+		parseConfigValue(
+			localConfigValue = null,
+			customConfig,
+			useColorTheme = false,
+		) {
 			const mergedValue = localConfigValue
-				? configMerge(localConfigValue, globalConfigValue())
-				: globalConfigValue()
+				? configMerge(
+						localConfigValue,
+						globalConfigValue(useColorTheme),
+				  )
+				: globalConfigValue(useColorTheme)
 			const inputConfig = Object.freeze(this.config || {})
 			const res = configMerge(inputConfig, mergedValue)
 			// 过滤可用属性

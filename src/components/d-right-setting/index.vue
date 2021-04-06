@@ -3,6 +3,20 @@ div(v-if="platform.chooseWidgetState")
 .d-right-modal-box.z-index-999(
 	:style="{ width: `${platform.ruler.xRoomR1}px` }",
 	v-else)
+	.d-right-modal-name.fn-flex.flex-row
+		span(contenteditable="editName", @input="changeName") {{ platform.widgetAdded[platform.chooseWidgetId].config.widget.name }}
+		i-icon(
+			type="md-checkmark",
+			slot="suffix",
+			@click="editName = false",
+			v-if="editName")
+		i-icon(type="ios-create-outline", @click="editName = true", v-if="!editName")
+		i-icon(type="md-eye", @click="handleHide", v-if="!editName")
+		i-icon(type="md-lock", @click="handleLock", v-if="!editName")
+	.d-right-modal-id
+		span ID: {{ platform.widgetAdded[platform.chooseWidgetId].id }}
+	.d-right-modal-type
+		span 类型: {{ platform.widgetAdded[platform.chooseWidgetId].type }}
 	.d-right-modal-title.pointer.text-center.fn-flex.flex-row
 		span.pos-r(
 			v-for="(item, index) in title",
@@ -27,14 +41,17 @@ div(v-if="platform.chooseWidgetState")
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import itemList from './item-list.vue'
 import platform from '../../store/platform.store'
-
+import { Icon, Input } from 'view-design'
 @Component({
 	components: {
 		itemList,
+		'i-icon': Icon,
+		'i-input': Input,
 	},
 })
 export default class DRightSetting extends Vue {
 	choose = 0
+	editName: boolean = false
 	platform = platform.state
 	chooseList: any = [
 		{
@@ -46,7 +63,7 @@ export default class DRightSetting extends Vue {
 			needChoose: true,
 		},
 		{
-			key: [{ type: 'animation' }],
+			key: [{ type: 'theme' }],
 			needChoose: true,
 		},
 		{
@@ -67,9 +84,9 @@ export default class DRightSetting extends Vue {
 			return ['大屏']
 		} else {
 			if (this.chooseList[3].key.length > 0) {
-				return ['基础', '数据', '动画', '自定义']
+				return ['基础', '数据', '主题', '自定义']
 			} else {
-				return ['基础', '数据', '动画']
+				return ['基础', '数据', '主题']
 			}
 		}
 	}
@@ -82,6 +99,28 @@ export default class DRightSetting extends Vue {
 	@Watch('platform.chooseWidgetCustomConfig', { deep: true })
 	changeChooseWidgetCustomConfig(val) {
 		this.chooseList[3].key = val
+	}
+
+	changeName(e) {
+		this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+		].config.widget.name = e.target.innerText
+	}
+
+	handleHide() {
+		this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+		].config.widget.hide = !this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+		].config.widget.hide
+	}
+
+	handleLock() {
+		this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+		].config.widget.locked = !this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+		].config.widget.locked
 	}
 
 	handleClick(index) {

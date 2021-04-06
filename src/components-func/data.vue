@@ -68,7 +68,10 @@
 				@keyup.native.stop)
 	.d-manage-modal-control
 		label 请求参数
-			i-icon(type="ios-paper-outline" @click="showFullParamsEditor = true" class="full-icon" title="全屏编辑")
+			i-icon.full-icon(
+				type="ios-paper-outline",
+				@click="showFullParamsEditor = true",
+				title="全屏编辑")
 	.d-manage-modal-control
 		editor.d-manage-modal-control-editor(
 			v-model="item.config.api.params",
@@ -78,7 +81,10 @@
 			height="150")
 	.d-manage-modal-control
 		label 响应数据
-			i-icon(type="ios-paper-outline" @click="showFullApiDataEditor = true" class="full-icon" title="全屏编辑")
+			i-icon.full-icon(
+				type="ios-paper-outline",
+				@click="showFullApiDataEditor = true",
+				title="全屏编辑")
 	.d-manage-modal-control
 		editor.d-manage-modal-control-editor(
 			v-model="apiData",
@@ -88,11 +94,11 @@
 			height="150")
 	.d-manage-modal-control
 		label 数据加工
-			i-icon(
-				v-if="item.config.api.process.enable"
-				type="ios-paper-outline"
-				@click="showFullMethodBodyEditor = true"
-				class="full-icon" title="全屏编辑")
+			i-icon.full-icon(
+				v-if="item.config.api.process.enable",
+				type="ios-paper-outline",
+				@click="showFullMethodBodyEditor = true",
+				title="全屏编辑")
 		.d-manage-modal-control-right
 			i-switch(
 				v-model="item.config.api.process.enable",
@@ -128,7 +134,7 @@
 	.d-manage-modal-control(v-if="item.config.api.bind.enable")
 		checkbox-group(v-model="item.config.api.bind.refIds")
 			checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
-			
+
 	i-modal(v-model="showFullParamsEditor")
 		editor.d-manage-modal-control-editor(
 			v-model="item.config.api.params",

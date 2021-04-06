@@ -9,7 +9,7 @@ ul.right-menu.pos-f(ref="rightMenu", @contextmenu.stop.prevent)
 			li(@click="handleZIndexTop") 置顶
 			li(@click="handleZIndexBottom") 置底
 	li(@click="copyWidget") 复制
-	li(@click="handleUnActive") 取消选定
+	li(@click="handleUnActive") 取消选择
 	li(@click="handleLock") {{ isLock ? '解锁' : '锁定' }}
 	li(@click="hideWidget") 隐藏
 	li(@click="deleteWidget") 删除
@@ -96,7 +96,7 @@ export default class rightMenu extends Vue {
 	}
 
 	handleUnActive() {
-		this.platform.chooseWidgetId = null
+		platform.actions.unChooseWidget()
 	}
 
 	handleLock() {
