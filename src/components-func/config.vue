@@ -133,13 +133,13 @@ export default class FuncConfig extends func {
 		library: 'screenAvatar',
 	}
 
-	handleScreenAvatar(screenAvatar) {
+	handleScreenAvatar(res) {
 		const {
 			params: { id },
 		} = this.$route
 		this.$api.screen.update({
 			screenId: id,
-			screenAvatar,
+			screenAvatar: res.result.url,
 		})
 	}
 
