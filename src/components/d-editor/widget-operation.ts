@@ -6,7 +6,6 @@ import scene from '../../store/scene.store'
 @Component
 class Mixins extends Vue {
 	currentWidgetType = null
-	isWidgetProcessing = false
 	widgetProcessingStyle = null
 	rightMenuBindWidgetId = null
 	widgetMovingTimer = null
@@ -37,10 +36,6 @@ class Mixins extends Vue {
 
 	handleWidgetConfig({ value = {} }, item) {
 		this.updateWidget(value)
-		requestAnimationFrame(() => {
-			this.isWidgetProcessing = false
-			this.platform.chooseWidgetId = item.id
-		})
 	}
 
 	updateWidget(value) {
@@ -57,7 +52,6 @@ class Mixins extends Vue {
                 width: ${width}px;
                 height: ${height}px;
             `
-		this.isWidgetProcessing = true
 	}
 
 	initWidgetConfig(id, type, scene, market) {
