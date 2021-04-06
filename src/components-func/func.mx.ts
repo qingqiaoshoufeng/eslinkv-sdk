@@ -12,7 +12,7 @@ import {
 	Checkbox,
 	Icon,
 	Upload,
-	Modal
+	Modal,
 } from 'view-design'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import platform from '../store/platform.store'
@@ -29,7 +29,7 @@ const editor = require('vue2-ace-editor')
 		'i-select': Select,
 		'i-option': Option,
 		'i-switch': Switch,
-		'i-colorPicker': ColorPicker,
+		'i-color-picker': ColorPicker,
 		'i-collapse': Collapse,
 		'i-panel': Panel,
 		'i-button': Button,

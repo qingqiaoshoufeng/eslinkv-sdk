@@ -1,9 +1,9 @@
 <template lang="pug">
 .d-manage-modal-control-base
-	.d-manage-modal-control
-		label 主题色盘
+	.d-manage-modal-control(v-if="item && item.config.config.colorTheme")
+		label 主题皮肤
 		.d-manage-modal-control-right
-			span 尽请期待
+			span 尽情期待
 	.d-manage-modal-control
 		label
 		.d-manage-modal-control-right
@@ -14,11 +14,13 @@ import func from './func.mx'
 import { Component } from 'vue-property-decorator'
 import instance from '../store/instance.store'
 import platform from '../store/platform.store'
+// import { colorTheme } from '../../packages/index.js'
 
 @Component
-export default class FuncBase extends func {
+export default class FuncCustom extends func {
 	instance = instance.state
 	platform = platform.state
+	// colorTheme = colorTheme
 
 	handleSync() {
 		this.instance.kanboard.$refs[

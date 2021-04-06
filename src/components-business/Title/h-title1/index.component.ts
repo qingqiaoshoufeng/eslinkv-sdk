@@ -52,6 +52,7 @@ export const value = {
 				title: '开户(户)',
 			},
 		],
+		colorTheme: {},
 		abc: '/static/icons/s-progress1-1.svg',
 	},
 }

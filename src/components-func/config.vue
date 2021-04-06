@@ -49,7 +49,7 @@
 	.d-manage-modal-control
 		label 背景色
 		.d-manage-modal-control-right
-			i-colorPicker(
+			i-color-picker(
 				:alpha="true",
 				v-model="platform.panelConfig.background.color")
 	.d-manage-modal-control

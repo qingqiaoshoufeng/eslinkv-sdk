@@ -54,10 +54,12 @@ const eslinkV = {
 	dView,
 	loadMask,
 }
-if (!window.eslinkV) {
-	window.eslinkV = {}
+if (window !== undefined) {
+	if (!window.eslinkV) {
+		window.eslinkV = {}
+	}
+	window.eslinkV = { ...window.eslinkV, ...eslinkV }
 }
-window.eslinkV = { ...window.eslinkV, ...eslinkV }
 
 export {
 	widgetMixin,
@@ -81,4 +83,4 @@ export {
 	dView,
 	loadMask,
 }
-export default window.eslinkV
+export default eslinkV
