@@ -20,6 +20,18 @@ import '../src/plugins'
 import market from '../src/plugins/market.ts'
 import './other.js'
 
+const colorTheme = {
+	colorDisk: [
+		'#00DDFF',
+		'#0B88FF',
+		'#624BEB',
+		'#FA71CB',
+		'#FFDC45',
+		'#E5615B',
+		'#00FFCF',
+		'#FF9F61',
+	],
+}
 const eslinkV = {
 	widgetMixin,
 	platform,
@@ -27,6 +39,7 @@ const eslinkV = {
 	instance,
 	custom,
 	event,
+	colorTheme,
 	configMerge,
 	commonConfigValue,
 	market,
@@ -53,6 +66,7 @@ export {
 	instance,
 	custom,
 	event,
+	colorTheme,
 	configMerge,
 	commonConfigValue,
 	market,
