@@ -1,6 +1,5 @@
 const path = require('path')
 const pkg = require('./package.json')
-const webpack = require('webpack')
 const isProduction = process.env.NODE_ENV === 'production'
 const needReport = false
 
@@ -51,9 +50,6 @@ module.exports = {
 		sourceMap: false,
 	},
 	configureWebpack: config => {
-		if (isProduction) {
-			config.mode = 'production'
-		}
 		config.resolve.extensions = ['.js', '.vue', '.json', '.ts', '.tsx']
 		if (process.env.VUE_APP_BUILD_MODE === 'NPM') {
 			config.externals = [
@@ -84,13 +80,6 @@ module.exports = {
 				},
 			]
 		}
-		config.plugins.push(
-			new webpack.DefinePlugin({
-				'process.env.staticVuePath': JSON.stringify(
-					isProduction ? 'vue.min.js' : 'vue.js',
-				),
-			}),
-		)
 	},
 	chainWebpack: config => {
 		config.module

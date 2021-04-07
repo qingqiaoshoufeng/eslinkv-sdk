@@ -87,7 +87,6 @@ import { mixins } from 'vue-class-component'
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 import commonConfigValue from '../../../common-config-value'
-import { isObjectString } from '../../utils/index'
 import loadMask from '../load-mask/index.vue'
 import importMx from './import.mx'
 import exportMx from './export.mx'
@@ -239,12 +238,10 @@ export default class DFooter extends mixins(
 			({ id, market = false, type, config, scene = 0 }) => {
 				const api = config.api
 				if (api && api.data) {
-					if (isObjectString(api.data)) {
-						try {
-							api.data = JSON.stringify(JSON.parse(api.data))
-						} catch (e) {
-							throw new Error(e)
-						}
+					try {
+						api.data = JSON.stringify(JSON.parse(api.data))
+					} catch (e) {
+						console.warn(e)
 					}
 				}
 				this.checkAttr(config, '', defaultConfig)

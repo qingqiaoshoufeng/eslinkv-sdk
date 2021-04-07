@@ -135,16 +135,6 @@ export function toLength(e) {
 		: '0px'
 }
 
-export function isImageUrl(e) {
-	const t = e.toLowerCase()
-	return !!(
-		t.indexOf('.jpg') >= 0 ||
-		t.indexOf('.jpeg') >= 0 ||
-		t.indexOf('.png') >= 0 ||
-		t.startsWith('data:image')
-	)
-}
-
 /**
  * 处理formitem的校验规则
  *
@@ -307,39 +297,6 @@ export function uuid() {
 }
 
 /**
- * @description 连字符转驼峰
- */
-export function cssStyle2DomStyle(str) {
-	if (str) {
-		return str.replace(/(\w*)-(\w*)/g, function ($1, $2, $3) {
-			return $2 + $3[0].toUpperCase() + $3.slice(1)
-		})
-	}
-}
-
-/**
- * @description 驼峰转连字符
- */
-export function domStyle2CssStyle(str) {
-	return str.replace(/([A-Z])/g, function ($1) {
-		return '-' + $1.toLocaleLowerCase()
-	})
-}
-
-/**
- * @description style对象转字符串 {background: '#fff', fontSize: '16px'} => "background: '#fff';font-size: 16px"
- */
-export function styleObj2Str(styles = {}) {
-	try {
-		let cssStr = JSON.stringify(styles)
-		cssStr = cssStr.replace(/\{|\}/g, '').replace(/,/g, ';')
-		return domStyle2CssStyle(cssStr)
-	} catch (error) {
-		return ''
-	}
-}
-
-/**
  * @description 获取url参数
  */
 export function getQueryString(name) {
@@ -347,16 +304,6 @@ export function getQueryString(name) {
 	const r = window.location.search.substr(1).match(reg)
 	if (r != null) return unescape(r[2])
 	return null
-}
-
-export const isObjectString = input => {
-	if (typeof input !== 'string') return false
-	input.trim()
-	const length = input.length
-	return (
-		(input.indexOf('[') === 0 && input.lastIndexOf(']') === length - 1) ||
-		(input.indexOf('{') === 0 && input.lastIndexOf('}') === length - 1)
-	)
 }
 
 export function isExternal(path) {
