@@ -40,7 +40,7 @@
 		//li.fn-flex.flex-column.pointer(@click="handleSave('TEMPLATE')" v-if="screenType==='CUSTOM'")
 		//  i-icon(type="ios-cloud-circle-outline" :size="24")
 		//  span 模板
-		li.fn-flex.flex-column.pointer(@click="handleShare")
+		li.fn-flex.flex-column.pointer(@click="handleShare", v-if="!isNew")
 			i-icon(type="ios-paper-plane-outline", :size="24")
 			span 分享
 	load-mask(:show="loading") {{ loadingMsg }}
