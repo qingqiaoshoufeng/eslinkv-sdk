@@ -3,7 +3,7 @@ const getUnit = (unit = '') => {
 	return unit.split('/')
 }
 
-const styleParser = function (layout, updateTime = Date.now()) {
+const styleParser = function (layout) {
 	const style = []
 	const { size, position, background, zIndex } = layout || {}
 
@@ -24,7 +24,7 @@ const styleParser = function (layout, updateTime = Date.now()) {
 			contentBlendMode,
 			color,
 		} = background
-		url && style.push(`background-image:url(${url}?t=${updateTime})`)
+		url && style.push(`background-image:url(${url})`)
 		size && style.push(`background-size:${size}`)
 		position && style.push(`background-position:${position}`)
 		repeat && style.push(`background-repeat:${repeat}`)

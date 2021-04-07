@@ -7,9 +7,6 @@ export default {
 			clientX: 0, // 当前鼠标位置，用于标尺上的红线
 			clientY: 0,
 			platform: platform.state,
-			zoomUpdateTime: +new Date(),
-			scrollYTime: +new Date(),
-			scrollXTime: +new Date(),
 			contentWidth: 0,
 			contentHeight: 0,
 			contentMoveStartX: 0, // 内容容器移动起始点水平时点值
@@ -89,20 +86,17 @@ export default {
 		 * e.wheelDeltaY 滚轮方向
 		 */
 		handleWheelZoom(e) {
-			if (+new Date() - this.zoomUpdateTime >= 500) {
-				if (e.wheelDelta > 0) {
-					platform.actions.zoomIn()
-				} else {
-					platform.actions.zoomOut()
-				}
-				this.zoomUpdateTime = +new Date()
+			if (e.wheelDelta > 0) {
+				platform.actions.zoomIn()
+			} else {
+				platform.actions.zoomOut()
 			}
 		},
 		handleWheelWindow(e) {
 			e.preventDefault()
 			e.stopPropagation()
 		},
-		handleWheel(e) {
+		handleWheel: throttle(50, false, function (e) {
 			e.preventDefault()
 			e.stopPropagation()
 			if (e.ctrlKey) {
@@ -110,17 +104,11 @@ export default {
 				return false
 			}
 			if (e.shiftKey) {
-				if (+new Date() - this.scrollXTime >= 500) {
-					this.platform.ruler.contentX += e.wheelDelta > 0 ? 10 : -10
-					this.scrollXTime = +new Date()
-				}
+				this.platform.ruler.contentX += e.wheelDelta > 0 ? 10 : -10
 				return false
 			}
-			if (+new Date() - this.scrollYTime >= 500) {
-				this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
-				this.scrollYTime = +new Date()
-			}
-		},
+			this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
+		}),
 		/**
 		 * @description 恢复默认缩放比例+居中
 		 */

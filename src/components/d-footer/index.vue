@@ -14,7 +14,9 @@
 						.d-footer-key-code.fn-flex.flex-row(v-for="child in item.key")
 							i.d-footer-hot-key-text(v-if="child.type === 'text'") {{ child.value }}
 							span.d-footer-hot-key-item(v-if="child.type === '+'") +
-							img.d-footer-hot-key-img(v-if="child.type === 'img'", :src="child.value")
+							img.d-footer-hot-key-img(
+								v-if="child.type === 'img'",
+								:src="child.value")
 	.d-footer-bar.fn-flex(:style="{ marginLeft: 'auto' }")
 		label {{ zoom }}
 	.d-footer-bar.fn-flex
@@ -32,9 +34,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 import { Icon } from 'view-design'
-import BigNumber from 'bignumber.js'
 
-BigNumber.set({ DECIMAL_PLACES: 20 })
 @Component({
 	components: {
 		'i-icon': Icon,
@@ -43,11 +43,11 @@ BigNumber.set({ DECIMAL_PLACES: 20 })
 export default class footer extends Vue {
 	platform = platform.state
 	scene = scene.state
-	showHotKey: boolean = false
+	showHotKey = false
 
 	get zoom() {
-		const zoom = new BigNumber(this.platform.ruler.zoom)
-		return `${zoom.multipliedBy(100)}%`
+		const zoom = this.platform.ruler.zoom
+		return `${zoom * 10 * 10}%`
 	}
 
 	handleFullscreen() {
