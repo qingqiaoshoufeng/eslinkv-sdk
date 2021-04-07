@@ -77,7 +77,7 @@
 			v-model="item.config.api.params",
 			@init="editorInit",
 			lang="json",
-			theme="chrome",
+			theme="idle_fingers",
 			height="150")
 	.d-manage-modal-control
 		label 响应数据
@@ -90,7 +90,7 @@
 			v-model="apiData",
 			@init="editorInit",
 			lang="json",
-			theme="chrome",
+			theme="idle_fingers",
 			height="150")
 	.d-manage-modal-control
 		label 数据加工
@@ -108,7 +108,7 @@
 			v-model="item.config.api.process.methodBody",
 			@init="editorInit",
 			lang="javascript",
-			theme="chrome",
+			theme="idle_fingers",
 			height="150")
 	.d-manage-modal-control
 		label 定时刷新
@@ -134,28 +134,27 @@
 	.d-manage-modal-control(v-if="item.config.api.bind.enable")
 		checkbox-group(v-model="item.config.api.bind.refIds")
 			checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
-
 	i-modal(v-model="showFullParamsEditor")
 		editor.d-manage-modal-control-editor(
 			v-model="item.config.api.params",
 			@init="editorInit",
 			lang="json",
-			theme="chrome",
-			height="200")
+			theme="idle_fingers",
+			height="600")
 	i-modal(v-model="showFullMethodBodyEditor")
 		editor.d-manage-modal-control-editor(
 			v-model="item.config.api.process.methodBody",
 			@init="editorInit",
 			lang="javascript",
-			theme="chrome",
-			height="200")
+			theme="idle_fingers",
+			height="600")
 	i-modal(v-model="showFullApiDataEditor")
 		editor.d-manage-modal-control-editor(
 			v-model="apiData",
 			@init="editorInit",
 			lang="json",
-			theme="chrome",
-			height="200")
+			theme="idle_fingers",
+			height="600")
 </template>
 <script lang="ts">
 import func from './func.mx'

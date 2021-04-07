@@ -40,22 +40,48 @@
 		//li.fn-flex.flex-column.pointer(@click="handleSave('TEMPLATE')" v-if="screenType==='CUSTOM'")
 		//  i-icon(type="ios-cloud-circle-outline" :size="24")
 		//  span 模板
-		li.fn-flex.flex-column.pointer(@click="publishBoard")
+		li.fn-flex.flex-column.pointer(@click="handleShare")
 			i-icon(type="ios-paper-plane-outline", :size="24")
-			span 发布
-	load-mask(:show="saving") 正在保存数据…
-	Modal(v-model="importModal")
-		Form
-			FormItem
-				label.ivu-btn.ivu-btn-primary.d-detail-import-button(for="originFile") 全覆盖导入
+			span 分享
+	load-mask(:show="loading") {{ loadingMsg }}
+	i-modal(v-model="importModal")
+		i-form
+			i-form-item
+				label.ivu-btn.ivu-btn-primary.d-detail-import-button(for="originFile") 选择导入文件
 				input#originFile.fn-hide(
 					type="file",
 					accept="application/json",
 					@change="handleFile")
+	i-modal(v-model="shareModal", :footer-hide="true")
+		p(:style="{ marginBottom: '10px' }") 链接已生成，快分享给你的好友吧
+		.fn-flex.flex-row(:style="{ marginBottom: '10px' }")
+			label.ivu-btn.d-detail-share-button(
+				:class="{ 'ivu-btn-primary': shareType === 'PASSWORD' }",
+				@click="shareType = 'PASSWORD'") 加密分享
+			label.ivu-btn.d-detail-share-button(
+				:class="{ 'ivu-btn-primary': shareType === 'TIME' }",
+				@click="shareType = 'TIME'") 时效分享
+		.fn-flex.flex-row(:style="{ marginBottom: '10px' }")
+			i-input(
+				v-show="shareType === 'PASSWORD'",
+				:style="{ width: '150px' }",
+				v-model="sharePassword")
+				span(slot="prepend") 密钥
+			i-input(
+				v-show="shareType === 'TIME'",
+				:style="{ width: '150px' }",
+				v-model="shareTime")
+				span(slot="append") 小时
+			i-button(
+				type="primary",
+				@click="shareSubmit",
+				:style="{ marginLeft: '10px' }") 生成
+		.fn-flex.flex-row
+		i-input(search, readonly, enter-button="复制", @on-search="handleCopy")
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
-import { Icon, Button, Modal, Form, FormItem } from 'view-design'
+import { Icon, Button, Modal, Form, FormItem, Input } from 'view-design'
 import copy from 'fast-copy'
 import { mixins } from 'vue-class-component'
 import platform from '../../store/platform.store'
@@ -65,18 +91,19 @@ import { isObjectString } from '../../utils/index'
 import loadMask from '../load-mask/index.vue'
 import importMx from './import.mx'
 import exportMx from './export.mx'
-import publishMx from './publish.mx'
 import detailMx from './detail.mx'
 import saveMx from './save.mx'
+import shareMx from './share.mx'
 
 @Component({
 	components: {
 		'i-icon': Icon,
 		'i-button': Button,
 		loadMask,
-		Modal,
-		Form,
-		FormItem,
+		'i-modal': Modal,
+		'i-form': Form,
+		'i-form-item': FormItem,
+		'i-input': Input,
 	},
 })
 export default class DFooter extends mixins(
@@ -84,14 +111,14 @@ export default class DFooter extends mixins(
 	detailMx,
 	saveMx,
 	importMx,
-	publishMx,
+	shareMx,
 ) {
 	@Prop(Boolean) kanboardEdited: boolean
 	@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
 
 	platform = platform.state
 	scene = scene.state
-	saving: boolean = false
+	loadingMsg: string = '正在保存数据…'
 	loading: boolean = false
 	isNew: boolean = true
 	screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
@@ -136,7 +163,9 @@ export default class DFooter extends mixins(
 	}
 
 	preview() {
-		window.open(`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.platform.panelConfig.size.layoutMode}`)
+		window.open(
+			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.platform.panelConfig.size.layoutMode}`,
+		)
 	}
 
 	exit() {
@@ -304,6 +333,11 @@ export default class DFooter extends mixins(
 	&:hover {
 		background-color: rgba(255, 255, 255, 0.1);
 	}
+}
+
+.d-detail-share-button {
+	line-height: 32px;
+	border-radius: 0;
 }
 
 .d-detail-import-button {

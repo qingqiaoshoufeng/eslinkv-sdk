@@ -1,6 +1,5 @@
 import request, { headers, requestNoBaseURL } from './request'
 import { setDefault } from '../utils'
-import platform from '../store/platform.store'
 
 export function create(data) {
 	return request({

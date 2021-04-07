@@ -37,7 +37,6 @@ export default {
 		},
 		editBoard() {
 			const data = this.platFormData()
-			this.saving = true
 			const {
 				params: { id },
 			} = this.$route
@@ -48,11 +47,9 @@ export default {
 					this.kanboardEdited = false
 					this.$Message.success('修改成功')
 					this.loading = false
-					this.saving = false
 				})
 				.catch(() => {
 					this.loading = false
-					this.saving = false
 				})
 		},
 	},

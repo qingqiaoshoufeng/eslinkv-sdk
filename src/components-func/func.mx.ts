@@ -77,7 +77,7 @@ export default class Func extends Vue {
 		require('brace/mode/javascript')
 		require('brace/mode/less')
 		require('brace/mode/json')
-		require('brace/theme/chrome')
+		require('brace/theme/idle_fingers')
 		require('brace/snippets/javascript')
 	}
 
