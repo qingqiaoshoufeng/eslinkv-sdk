@@ -53,7 +53,7 @@
 					accept="application/json",
 					@change="handleFile")
 	i-modal(v-model="shareModal", :footer-hide="true")
-		p(:style="{ marginBottom: '10px' }") 链接已生成，快分享给你的好友吧
+		p(:style="{ marginBottom: '10px' }") 快生成链接，分享给你的好友吧
 		.fn-flex.flex-row(:style="{ marginBottom: '10px' }")
 			label.ivu-btn.d-detail-share-button(
 				:class="{ 'ivu-btn-primary': shareType === 'PASSWORD' }",
