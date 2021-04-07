@@ -53,6 +53,7 @@ function getInitPanelConfig() {
 		info: {
 			id: '',
 			name: '未命名',
+			remark: '',
 		},
 		size: {
 			width: 1920,

@@ -1,6 +1,10 @@
 <template lang="pug">
 .d-right-modal.d-scrollbar
 	.d-manage-modal-control
+		label 大屏描述
+		.d-manage-modal-control-right
+			i-input(v-model="platform.panelConfig.info.remark")
+	.d-manage-modal-control
 		label 常规尺寸
 		.d-manage-modal-control-right
 			i-select(@on-change="sizeChange")
@@ -135,7 +139,7 @@ export default class FuncConfig extends func {
 		} = this.$route
 		this.$api.screen.update({
 			screenId: id,
-			screenAvatar: res ? res.result.url : '',
+			screenAvatar: res.result.url,
 		})
 	}
 

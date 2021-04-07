@@ -115,7 +115,6 @@ export default class DLeftWidget extends Vue {
 	padding: 0;
 	overflow: hidden;
 	background-color: #191c21;
-	transition: width 0.3s;
 }
 
 .d-left-widgets-left {

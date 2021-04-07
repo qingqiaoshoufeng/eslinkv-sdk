@@ -216,7 +216,7 @@ export default class FuncData extends func {
 		const prop = 'config.api.data'.split('.').reverse()[0]
 		if (v) {
 			try {
-				data[prop] = JSON.stringify(JSON.parse(v))
+				data[prop] = JSON.stringify(JSON.parse('config.api.data'))
 			} catch (e) {
 				console.warn(e)
 			}

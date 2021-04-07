@@ -6,7 +6,6 @@
 		i-upload.pointer.pos-a(
 			:action="action",
 			:data="data",
-			:show-upload-list="false",
 			:on-success="handleSuccess")
 		i-icon.d-upload-download-icon.pos-a.pointer(
 			title="下载",
@@ -24,7 +23,6 @@
 		v-else,
 		:action="action",
 		:data="data",
-		:show-upload-list="false",
 		:on-success="handleSuccess")
 		.d-upload-text 点击上传
 </template>
