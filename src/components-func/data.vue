@@ -3,10 +3,7 @@
 	.d-manage-modal-control
 		label 请求方式
 		.d-manage-modal-control-right
-			i-select(
-				v-model="apiType",
-				:disabled="platform.chooseWidgetState",
-				@on-change="apiTypeChange")
+			i-select(v-model="apiType", :disabled="platform.chooseWidgetState")
 				i-option(value="无") 无
 				i-option(value="自定义URL") 自定义URL
 				i-option(value="数仓平台") 数仓平台
@@ -22,7 +19,7 @@
 			i-select(
 				v-model="item.config.api.method",
 				:disabled="platform.chooseWidgetState",
-				:style="{ marginRight: '10px' }")
+				:style="{ marginRight: '10px', width: '100px' }")
 				i-option(value="GET") GET
 				i-option(value="POST") POST
 				i-option(value="PUT") PUT
@@ -30,6 +27,7 @@
 				i-option(value="PATCH") PATCH
 			i-input(
 				v-model="item.config.api.path",
+				:style="{ width: '100px' }",
 				:disabled="platform.chooseWidgetState")
 	.d-manage-modal-control(v-if="apiType === '数仓平台'")
 		label 数仓接口
@@ -51,7 +49,7 @@
 			i-select(
 				v-model="item.config.api.system.method",
 				:disabled="platform.chooseWidgetState",
-				:style="{ marginRight: '10px' }")
+				:style="{ marginRight: '10px', width: '100px' }")
 				i-option(value="GET") GET
 				i-option(value="POST") POST
 				i-option(value="PUT") PUT
@@ -59,6 +57,7 @@
 				i-option(value="PATCH") PATCH
 			i-input(
 				v-model="item.config.api.system.path",
+				:style="{ width: '100px' }",
 				:disabled="platform.chooseWidgetState")
 			database-config(
 				ref="dataBaseConfig",
@@ -158,7 +157,7 @@
 </template>
 <script lang="ts">
 import func from './func.mx'
-import { Component, Watch } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import databaseConfig from '../components/data-warehouse/index.vue'
 import scene from '../store/scene.store'
 
@@ -168,25 +167,62 @@ export default class FuncData extends func {
 	showFullParamsEditor = false
 	showFullMethodBodyEditor = false
 	showDatabaseConfigModal = false
-	apiType = '无'
 
-	@Watch('platform.chooseWidgetId')
-	onChooseWidgetId() {
+	get apiType() {
 		if (this.item.config.api.system.enable) {
-			this.apiType = '数仓平台'
+			return '数仓平台'
 		} else if (this.item.config.api.url) {
-			this.apiType = '自定义URL'
+			return '自定义URL'
 		} else {
-			this.apiType = '无'
+			return '无'
+		}
+	}
+
+	set apiType(val) {
+		if (val === '数仓平台') {
+			this.item.config.api.system.enable = true
+			this.item.config.api.url = ''
+		} else if (val === '无') {
+			this.item.config.api.url = ''
+			this.item.config.api.system.enable = false
+		} else {
+			this.item.config.api.url = '/'
+			this.item.config.api.system.enable = false
 		}
 	}
 
 	get apiData() {
-		return this.getJson('config.api.data')
+		const req = this.getItemValue('config.api.data')
+		if (typeof req === 'object') {
+			try {
+				return JSON.stringify(req, null, '\t')
+			} catch (e) {
+				console.warn(e)
+			}
+		} else {
+			if (req) {
+				try {
+					return JSON.stringify(JSON.parse(req), null, '\t')
+				} catch (e) {
+					console.warn(e)
+				}
+			}
+			return ''
+		}
 	}
 
 	set apiData(v) {
-		this.setJson(v, 'config.api.data')
+		const data = this.getItemObj('config.api.data')
+		const prop = 'config.api.data'.split('.').reverse()[0]
+		if (v) {
+			try {
+				data[prop] = JSON.stringify(JSON.parse('config.api.data'))
+			} catch (e) {
+				console.warn(e)
+			}
+		} else {
+			data[prop] = ''
+		}
 	}
 
 	get relateList() {
@@ -203,14 +239,6 @@ export default class FuncData extends func {
 		return list
 	}
 
-	apiTypeChange(name) {
-		if (name === '数仓平台') {
-			this.item.config.api.system.enable = true
-		} else {
-			this.item.config.api.system.enable = false
-		}
-	}
-
 	updateApiSystem(value) {
 		Object.assign(this.item.config.api.system.params, value)
 		this.showDatabaseConfigModal = false
@@ -219,11 +247,6 @@ export default class FuncData extends func {
 	openSystemConfig() {
 		const value = this.item.config
 		if (!value) return
-		const api = value.api
-		if (!api || !api.system) {
-			this.$Message.warning('当前小工具不支持数仓配置！')
-			return
-		}
 		this.showDatabaseConfigModal = true
 		this.$refs.dataBaseConfig.setQueryCond(value.api.system.params)
 	}

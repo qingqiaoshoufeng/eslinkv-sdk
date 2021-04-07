@@ -37,12 +37,6 @@ const commonConfigValue = useColorTheme =>
 				enable: false,
 				duration: 5000,
 			},
-			check: {
-				enable: true,
-				key: 'status',
-				value: 200,
-				type: 'Number',
-			},
 			system: {
 				enable: false,
 				interface: 'api/impalaByQueryId',

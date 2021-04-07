@@ -81,28 +81,6 @@ export default class Func extends Vue {
 		require('brace/snippets/javascript')
 	}
 
-	getJson(key) {
-		const req = this.getItemValue(key)
-		if (typeof req === 'object') {
-			return JSON.stringify(req, null, '\t')
-		} else {
-			if (req) {
-				return JSON.stringify(JSON.parse(req), null, '\t')
-			}
-			return ''
-		}
-	}
-
-	setJson(val, key) {
-		const data = this.getItemObj(key)
-		const prop = key.split('.').reverse()[0]
-		if (val) {
-			data[prop] = JSON.stringify(JSON.parse(val))
-		} else {
-			data[prop] = ''
-		}
-	}
-
 	getItemValue(keyString) {
 		let res = this.item
 		const props = keyString.split('.')

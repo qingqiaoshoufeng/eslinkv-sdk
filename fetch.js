@@ -1,11 +1,12 @@
 import axios from 'axios'
-import jsonic from 'jsonic'
 
 const parseParams = (params = {}) => {
-	if (typeof params === 'string') {
+	if (typeof params === 'string' && params !== '') {
 		try {
-			return jsonic(params.trim())
-		} catch (e) {}
+			return JSON.parse(params)
+		} catch (e) {
+			console.warn(e)
+		}
 	}
 	return params
 }
@@ -40,26 +41,6 @@ export default {
 		}
 	},
 	methods: {
-		handleResponse(response, { path, check, process, url }) {
-			// if (response?.data?.returnCode !== '0000') return
-			if (check && check.enable) {
-				const { key = 'code', value = 0, type = 'Number' } = check
-				let checkValue = value
-				if (type === 'Number') checkValue = value - 0
-				// if (type === 'Boolean' && response[key] || response[key] === checkValue) {
-				this.parseQueryResult(response, { path, process })
-				// } else {
-				// 	console.warn(`${this.config.widget.name || this.$options.label}数据检查失败\n接口: ${url}\n规则：${JSON.stringify({
-				// 		key,
-				// 		value,
-				// 		type
-				// 	})}`)
-				// 	this.queryFailed = true
-				// }
-			} else {
-				this.parseQueryResult(response, { path, process })
-			}
-		},
 		outerQuery(api) {
 			const { url, method } = api
 			if (!url) return
@@ -73,7 +54,7 @@ export default {
 				[method.toUpperCase() === 'GET' ? 'params' : 'data']: params,
 			})
 				.then(response => {
-					this.handleResponse(response, api)
+					this.parseQueryResult(response, api)
 				})
 				.catch(e => {
 					console.warn(`${this.$options.label}接口请求失败`, e)
@@ -88,15 +69,12 @@ export default {
 			let {
 				interface: innerUrl,
 				params: conditions,
-				path,
-				check,
-				method,
+				path = 'data',
+				method = 'POST',
 			} = api.system
 			if (!innerUrl) return
-
 			// 解析 params
 			let params = { ...parseParams(api.params) }
-
 			if (typeof params === 'object') {
 				Object.keys(params).forEach(key => {
 					const value = params[key]
@@ -110,29 +88,15 @@ export default {
 				params = filterFalsyKey(conditions)
 			}
 			if (!Object.keys(params).length) return
-
 			this.querying = true
 			this.queryFailed = false
-
-			if (!path) path = 'data'
-			if (!check) {
-				check = {
-					enable: true,
-					key: 'responseCode',
-					value: '100000',
-					type: 'String',
-				}
-			}
-			if (!method) method = 'POST'
 			this.$api.dataWarehouse
 				.databaseQuery(params, method, innerUrl)
 				.then(response => {
 					const process = api.process
-					this.handleResponse(response, {
+					this.parseQueryResult(response, {
 						path,
-						check,
 						process,
-						url: innerUrl,
 					})
 					this.querying = false
 					this.lastFetchDoneTime = Date.now()
@@ -183,40 +147,21 @@ export default {
 	},
 	computed: {
 		apiChangeWatcher() {
-			const {
-				url,
-				params,
-				method,
-				path,
-				check = {},
-				process = {},
-				system = {},
-			} = this.config.api || {}
-			const { enable: checkEnable, key, value, type } = check
+			const { url, params, method, path, process = {}, system = {} } =
+				this.config.api || {}
 			const { enable: processEnable, methodBody } = process
 			const {
 				enable: systemEnable,
 				interface: innerUrl,
 				path: innerPath,
-				check: innerCheck = {},
 				params: systemParams,
 				method: innerMethod,
 			} = system
-			const {
-				enable: innerCheckEnable,
-				key: innerCheckKey,
-				value: innerCheckValue,
-				type: innerCheckType,
-			} = innerCheck
 			return {
 				url,
 				params,
 				method,
 				path,
-				checkEnable,
-				key,
-				value,
-				type,
 				processEnable,
 				methodBody,
 				systemEnable,
@@ -224,10 +169,6 @@ export default {
 				systemParams,
 				innerPath,
 				innerMethod,
-				innerCheckEnable,
-				innerCheckKey,
-				innerCheckValue,
-				innerCheckType,
 			}
 		},
 		autoFetchApi() {
