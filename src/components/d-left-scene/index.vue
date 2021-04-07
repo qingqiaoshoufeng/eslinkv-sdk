@@ -268,7 +268,7 @@ export default class DLeftScene extends Vue {
 	overflow: hidden;
 	background-color: #1d2127;
 	border-left: 1px solid #000;
-
+	transition: all 0.3s;
 	ul {
 		overflow-y: auto;
 	}

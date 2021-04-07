@@ -186,6 +186,7 @@ export default {
 
 .center {
 	background-color: #363946;
+	transition: all 0.3s;
 
 	&.fullscreen {
 		position: fixed !important;

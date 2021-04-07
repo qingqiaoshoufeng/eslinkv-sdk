@@ -1,6 +1,6 @@
 {
 	"name": "eslinkv-sdk",
-	"version": "1.0.19",
+	"version": "1.0.20",
 	"main": "lib/eslinkv-sdk.umd.min.js",
 	"scripts": {
 		"serve": "vue-cli-service serve",
