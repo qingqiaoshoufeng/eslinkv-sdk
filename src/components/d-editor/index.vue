@@ -185,7 +185,7 @@ export default {
 @import 'src/scss/conf';
 
 .center {
-	background-color: #363946;
+	background-color: #313239;
 	transition: all 0.3s;
 
 	&.fullscreen {

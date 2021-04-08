@@ -122,7 +122,7 @@
 
 	.ivu-color-picker-color {
 		div {
-			border: 1px solid #393b4a;
+			box-shadow: none;
 		}
 	}
 
@@ -187,8 +187,22 @@
 		}
 	}
 
+	.ivu-input-disabled {
+		background-color: #181b24 !important;
+		&:hover {
+			border: 1px solid $themeColor !important;
+		}
+	}
+
 	.ivu-color-picker {
 		display: block;
+		cursor: pointer;
+		.ivu-icon {
+			display: none;
+		}
+		.ivu-input-icon-normal + .ivu-input {
+			padding-right: 7px;
+		}
 	}
 
 	> label {

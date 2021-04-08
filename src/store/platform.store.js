@@ -58,15 +58,11 @@ function getInitPanelConfig() {
 			width: 1920,
 			height: 1080,
 			unit: 'px',
-			preset: '1920×1080',
 			isMobileKanboard: false,
 			layoutMode: 'full-height',
 		},
 		background: {
 			url: '',
-			size: 'cover',
-			position: 'center',
-			repeat: 'no-repeat',
 			color: 'rgba(24, 27, 36,1)',
 		},
 	}

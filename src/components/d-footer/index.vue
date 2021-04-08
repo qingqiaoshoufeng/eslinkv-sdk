@@ -40,7 +40,7 @@ import { Icon } from 'view-design'
 		'i-icon': Icon,
 	},
 })
-export default class footer extends Vue {
+export default class DFooter extends Vue {
 	platform = platform.state
 	scene = scene.state
 	showHotKey = false
@@ -73,7 +73,7 @@ export default class footer extends Vue {
 .d-footer {
 	height: 32px;
 	padding: 0 15px;
-	background-color: #313239;
+	background-color: #24262e;
 }
 
 .d-footer-bar-box {
@@ -114,15 +114,13 @@ export default class footer extends Vue {
 	.d-footer-hot-key-list {
 		bottom: 100%;
 		padding: 10px;
-		color: #717171;
 		pointer-events: none;
-		background: #fff;
-		border: 1px solid $borderColor;
+		background: #24262e;
 		border-radius: 2px;
 		opacity: 0;
 		transition: all 0.3s;
 		transform: translate3d(0, -20px, 0);
-
+		color: #fff;
 		li {
 			align-items: center;
 			padding: 4px 0;

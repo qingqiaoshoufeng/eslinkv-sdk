@@ -125,7 +125,6 @@ const mx = {
 	},
 	computed: {
 		styles() {
-			// todo 简化
 			const { layout } = this.config
 			return styleParser(layout)
 		},

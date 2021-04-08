@@ -4,9 +4,9 @@
 		label 屏幕大小
 		.d-manage-modal-control-right
 			i-select(v-model="size")
-				i-option(value="1920×1080") 大屏推荐尺寸1920*1080
-				i-option(value="1366×768") web最常见尺寸1366*768
-				i-option(value="1024×768") web最小尺寸1024*768
+				i-option(value="1920*1080") 大屏推荐尺寸1920*1080
+				i-option(value="1366*768") web最常见尺寸1366*768
+				i-option(value="1024*768") web最小尺寸1024*768
 				i-option(value="other") 自定义
 	.d-manage-modal-control
 		label
@@ -37,48 +37,16 @@
 			i-color-picker(
 				:alpha="true",
 				v-model="platform.panelConfig.background.color")
+			i-input(
+				v-model="platform.panelConfig.background.color",
+				:disabled="true",
+				:style="{ width: '166px', marginLeft: '10px' }")
 	.d-manage-modal-control
 		label 背景图
 		.d-manage-modal-control-right
 			d-upload(
 				v-model="platform.panelConfig.background.url",
 				:data="backGroundFormData")
-	.d-manage-modal-control
-		label
-		.d-manage-modal-control-right
-			i-select(v-model="platform.panelConfig.background.repeat")
-				i-option(value="repeat") repeat
-				i-option(value="no-repeat") no-repeat
-				i-option(value="repeat-x") repeat-x
-				i-option(value="repeat-y") repeat-y
-				i-option(value="space") space
-				i-option(value="round") round
-	.d-manage-modal-control
-		label
-		.d-manage-modal-control-right
-			i-select(
-				v-model="platform.panelConfig.background.size",
-				:style="{ marginRight: '10px', width: '99px' }")
-				i-option(value="cover") cover
-				i-option(value="contain") contain
-				i-option(value="auto") auto
-			i-input(
-				v-model="platform.panelConfig.background.size",
-				:style="{ width: '99px' }")
-	.d-manage-modal-control
-		label
-		.d-manage-modal-control-right
-			i-select(
-				v-model="platform.panelConfig.background.position",
-				:style="{ marginRight: '10px', width: '99px' }")
-				i-option(value="center") center
-				i-option(value="left") left
-				i-option(value="right") right
-				i-option(value="top") top
-				i-option(value="bottom") bottom
-			i-input(
-				v-model="platform.panelConfig.background.position",
-				:style="{ width: '99px' }")
 	.d-manage-modal-control
 		label 移动看板
 		.d-manage-modal-control-right
@@ -128,22 +96,18 @@ export default class FuncConfig extends func {
 		const width = this.platform.panelConfig.size.width
 		const height = this.platform.panelConfig.size.height
 		if (width !== 1920 && width !== 1366 && width !== 1024) {
-			console.log(1)
 			return 'other'
 		}
 		if (height !== 1080 && height !== 768) {
-			console.log(2)
 			return 'other'
 		}
-		console.log(3)
-		console.log(`${width}x${height}`)
-		return `${width}x${height}`
+		return `${width}*${height}`
 	}
 
 	set size(value) {
 		if (value !== 'other' && value) {
 			console.log(value)
-			const [width, height] = value.split('×')
+			const [width, height] = value.split('*')
 			this.platform.panelConfig.size.width = +width
 			this.platform.panelConfig.size.height = +height
 			console.log(this.platform.panelConfig.size.width)
