@@ -17,11 +17,13 @@ import {
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import platform from '../store/platform.store'
 import scene from '../store/scene.store'
+import dRightSwiper from '../components/d-right-swiper/index.vue'
 
 const editor = require('vue2-ace-editor')
 
 @Component({
 	components: {
+		dRightSwiper,
 		'i-input': Input,
 		'i-upload': Upload,
 		'i-icon': Icon,

@@ -3,10 +3,20 @@
 	.d-manage-modal-control
 		label 请求方式
 		.d-manage-modal-control-right
-			i-select(v-model="apiType", :disabled="platform.chooseWidgetState")
+			i-select(
+				v-model="apiType",
+				:disabled="platform.chooseWidgetState",
+				:style="{ width: apiType === '数仓平台' ? '122px' : '208px' }")
 				i-option(value="无") 无
 				i-option(value="自定义URL") 自定义URL
 				i-option(value="数仓平台") 数仓平台
+			i-button.setting-btn(
+				@click="openSystemConfig",
+				type="primary",
+				icon="md-settings",
+				:style="{ marginLeft: '10px' }",
+				v-if="apiType === '数仓平台'",
+				:disabled="platform.chooseWidgetState || !item.config.api.system.enable") 配置
 	.d-manage-modal-control(v-if="apiType === '自定义URL'")
 		label 接口地址
 		.d-manage-modal-control-right
@@ -29,14 +39,6 @@
 				v-model="item.config.api.path",
 				:style="{ width: '100px' }",
 				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control(v-if="apiType === '数仓平台'")
-		label 数仓接口
-		.d-manage-modal-control-right
-			i-button.setting-btn(
-				@click="openSystemConfig",
-				type="primary",
-				icon="md-settings",
-				:disabled="platform.chooseWidgetState || !item.config.api.system.enable") 配置
 	.d-manage-modal-control(v-if="item.config.api.system.enable")
 		label 接口地址
 		.d-manage-modal-control-right
@@ -110,19 +112,18 @@
 			theme="idle_fingers",
 			height="150")
 	.d-manage-modal-control
-		label 定时刷新
-		.d-manage-modal-control-right
-			i-switch(
-				v-model="item.config.api.autoFetch.enable",
-				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control(v-if="item.config.api.autoFetch.enable")
-		label
+		label 自动更新
 		.d-manage-modal-control-right
 			i-input-number(
 				:min="1",
 				:step="1",
 				:formatter="value => `${value} ms`",
 				v-model="item.config.api.autoFetch.duration",
+				:style="{ marginRight: '10px' }",
+				v-if="item.config.api.autoFetch.enable",
+				:disabled="platform.chooseWidgetState")
+			i-switch(
+				v-model="item.config.api.autoFetch.enable",
 				:disabled="platform.chooseWidgetState")
 	.d-manage-modal-control
 		label 组件关联
@@ -133,21 +134,21 @@
 	.d-manage-modal-control(v-if="item.config.api.bind.enable")
 		checkbox-group(v-model="item.config.api.bind.refIds")
 			checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
-	i-modal(v-model="showFullParamsEditor")
+	i-modal(v-model="showFullParamsEditor" :footer-hide="true" title="全屏模式")
 		editor.d-manage-modal-control-editor(
 			v-model="item.config.api.params",
 			@init="editorInit",
 			lang="json",
 			theme="idle_fingers",
 			height="600")
-	i-modal(v-model="showFullMethodBodyEditor")
+	i-modal(v-model="showFullMethodBodyEditor" :footer-hide="true" title="全屏模式")
 		editor.d-manage-modal-control-editor(
 			v-model="item.config.api.process.methodBody",
 			@init="editorInit",
 			lang="javascript",
 			theme="idle_fingers",
 			height="600")
-	i-modal(v-model="showFullApiDataEditor")
+	i-modal(v-model="showFullApiDataEditor" :footer-hide="true" title="全屏模式")
 		editor.d-manage-modal-control-editor(
 			v-model="apiData",
 			@init="editorInit",

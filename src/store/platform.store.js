@@ -176,9 +176,7 @@ const actions = {
 		state.chooseWidgetState = false
 	},
 	setChooseWidgetCustomConfig(value = []) {
-		if (value.length > 0) {
-			state.chooseWidgetCustomConfig = [...value, { type: 'custom' }]
-		}
+		state.chooseWidgetCustomConfig = [...value, { type: 'custom' }]
 	},
 	updateApiData(id, data) {
 		if (!state.widgetAdded[id].config.api) {

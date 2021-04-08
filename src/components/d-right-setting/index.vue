@@ -24,18 +24,11 @@ div(v-if="platform.chooseWidgetState")
 			:key="item",
 			:class="{ active: index === choose }") {{ item }}
 	.d-right-modal.d-scrollbar
-		template(v-if="platform.chooseWidgetState")
-			itemList(
-				v-for="(item, index) in list",
-				:list="item.key",
-				v-if="choose === index",
-				:needChoose="item.needChoose")
-		template(v-else)
-			itemList(
-				v-for="(item, index) in chooseList",
-				:list="item.key",
-				v-if="choose === index",
-				:needChoose="item.needChoose")
+		itemList(
+			v-for="(item, index) in chooseList",
+			:list="item.key",
+			v-if="choose === index",
+			:needChoose="item.needChoose")
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
@@ -72,22 +65,11 @@ export default class DRightSetting extends Vue {
 		},
 	]
 
-	list: any = [
-		{
-			key: [{ type: 'config' }],
-			needChoose: false,
-		},
-	]
-
 	get title() {
 		if (this.platform.chooseWidgetState) {
 			return ['大屏']
 		} else {
-			if (this.chooseList[3].key.length > 0) {
-				return ['基础', '数据', '主题', '自定义']
-			} else {
-				return ['基础', '数据', '主题']
-			}
+			return ['基础', '数据', '主题', '自定义']
 		}
 	}
 

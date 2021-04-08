@@ -21,8 +21,6 @@ const commonConfigValue = useColorTheme =>
 				unit: 'px',
 				left: 0,
 				top: 0,
-				right: 0,
-				bottom: 0,
 			},
 			zIndex: 10,
 		},
@@ -70,7 +68,6 @@ const commonConfigValue = useColorTheme =>
 		animation: {
 			transitionEnable: true,
 			enter: 'fadeIn',
-			// leave: 'fadeOut',
 			delay: 0,
 			duration: 600,
 		},

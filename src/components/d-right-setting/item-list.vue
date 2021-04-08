@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-mange-list.d-scrollbar(
+.d-mange-list(
 	v-if="!needChoose || platform.widgetAdded[platform.chooseWidgetId]")
 	DManageItem(:config="child", v-for="(child, i) in list", :key="i")
 </template>
@@ -15,9 +15,3 @@ export default class DManageItemList extends Vue {
 	@Prop(Boolean) needChoose: boolean
 }
 </script>
-<style lang="scss" scoped>
-.d-mange-list {
-	height: calc(100% - 40px);
-	overflow: auto;
-}
-</style>

@@ -12,7 +12,7 @@
 		i-select(v-model="scene.index", v-if="!editScene")
 			i-option(:value="0") 主场景
 			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
-			i-option(:value="-1") 场景回收站
+			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
 		li.pointer.pos-r(
 			v-for="item in list",
@@ -186,8 +186,7 @@ export default class DLeftScene extends Vue {
 	destroyScene() {
 		this.$Modal.confirm({
 			title: '提示',
-			content:
-				'是否删除当前场景？该场景未删除的组件将自动进入场景回收站！',
+			content: '是否删除当前场景？该场景未删除的组件将自动进入回收站！',
 			onOk: () => {
 				const index = this.scene.index
 				scene.actions.setSceneIndex(0)

@@ -3,7 +3,20 @@
 	.d-manage-modal-control
 		label 组件市场
 		.d-manage-modal-control-right
+			i-select(
+				v-model="item.config.widget.componentVersion",
+				v-if="item.market",
+				:style="{ marginRight: '10px', width: '156px' }",
+				:disabled="platform.chooseWidgetState")
+				i-option(
+					:value="item.componentVersion",
+					v-for="(item, i) in versionList",
+					:key="i") {{ item.componentVersion }}
 			i-switch(v-model="item.market")
+	.d-manage-modal-control
+		label 自动贴靠参考线
+		.d-manage-modal-control-right
+			i-switch(v-model="platform.autoAlignGuide")
 	.d-manage-modal-control
 		label
 		.d-manage-modal-control-right
@@ -19,11 +32,25 @@ import platform from '../store/platform.store'
 export default class FuncCustom extends func {
 	instance = instance.state
 	platform = platform.state
+	versionList = []
 
 	handleSync() {
 		this.instance.kanboard.$refs[
 			`widget_${this.platform.chooseWidgetId}`
 		][0].$children[0].updateKey++
+	}
+
+	async getVersionList() {
+		const res = await this.$api.marketComponent.getVersionList({
+			componentEnTitle: this.item.type,
+		})
+		this.versionList = res
+	}
+
+	created() {
+		if (this.item.market) {
+			this.getVersionList()
+		}
 	}
 }
 </script>

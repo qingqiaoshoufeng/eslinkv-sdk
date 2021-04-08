@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-manage-modal-control-base
-	.d-manage-modal-control(v-if="item && item.config.config.colorTheme")
+	.d-manage-modal-control
 		label 色盘
 		.d-manage-modal-control-right
 			i-color-picker(

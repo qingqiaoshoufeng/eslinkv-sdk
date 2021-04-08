@@ -1,30 +1,16 @@
 <template lang="pug">
-.d-manage-modal-control
-	i-collapse(simple)
-		i-panel {{ config.label }}
-			.content(slot="content")
-				.wrap(v-for="(v, n) in obj[inputKey]", :key="n")
-					DManageItem(
-						:config="k",
-						v-for="(k, i) in config.children",
-						:key="i",
-						:parent="v")
-					.fn-flex
-						i-icon.pointer(
-							:style="{ marginLeft: 'auto' }",
-							title="删除",
-							type="ios-trash-outline",
-							color="#fff",
-							size="14",
-							@click="remove(n)")
-				.fn-flex
-					i-icon.pointer(
-						:style="{ marginLeft: 'auto' }",
-						title="新增",
-						type="ios-add-circle-outline",
-						color="#fff",
-						size="14",
-						@click="add")
+.func-group.fn-flex.flex-column
+	d-right-swiper(
+		:title="config.label",
+		:icon="icon",
+		@icon-click="value => handleClick(value, n)",
+		v-for="(v, n) in obj[inputKey]",
+		:key="n")
+		DManageItem(
+			:config="k",
+			v-for="(k, i) in config.children",
+			:key="i",
+			:parent="v")
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -33,23 +19,32 @@ import DManageItem from '../components/d-right-setting/item.vue'
 
 @Component({ components: { DManageItem } })
 export default class FuncGroup extends func {
-	add() {
-		const child = {}
-		this.config.children.forEach(v => {
-			child[v.prop] = ''
-		})
-		this.obj[this.inputKey].push(child)
+	get icon() {
+		if (this.obj[this.inputKey].length > 1) {
+			return ['ios-add-circle-outline', 'ios-trash-outline']
+		} else {
+			return ['ios-add-circle-outline']
+		}
 	}
 
-	remove(n) {
-		this.obj[this.inputKey].splice(n, 1)
+	handleClick(value, index) {
+		if (value === 'ios-add-circle-outline') {
+			const child = {}
+			this.config.children.forEach(v => {
+				child[v.prop] = ''
+			})
+			this.obj[this.inputKey].push(child)
+		}
+		if (value === 'ios-trash-outline') {
+			this.obj[this.inputKey].splice(index, 1)
+		}
 	}
 }
 </script>
 <style lang="scss" scoped>
-.wrap {
-	padding: 10px;
-	margin-bottom: 10px;
-	border: 1px solid #393b4a;
+.func-group {
+	&::v-deep + .d-manage-modal-control {
+		margin-top: 10px;
+	}
 }
 </style>

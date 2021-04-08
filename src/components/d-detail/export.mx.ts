@@ -5,7 +5,7 @@ export default {
 	methods: {
 		handleExport() {
 			const data = this.platFormData()
-			const fileName = `${data.screenName}-${+new Date()}`
+			const fileName = `${data.screenName}`
 			this.$Modal.confirm({
 				title: '看板导出',
 				render: h => {

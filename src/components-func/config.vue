@@ -1,24 +1,23 @@
 <template lang="pug">
 .d-right-modal.d-scrollbar
 	.d-manage-modal-control
-		label 常规尺寸
+		label 屏幕大小
 		.d-manage-modal-control-right
-			i-select(@on-change="sizeChange")
-				i-option(value="1920×1080") 1920×1080
-				i-option(value="1600×900") 1600×900
-				i-option(value="1366×768") 1366×768
-				i-option(value="1080×1920") 1080×1920
-				i-option(value="2560×1600") 2560×1600
+			i-select(v-model="size")
+				i-option(value="1920×1080") 大屏推荐尺寸1920*1080
+				i-option(value="1366×768") web最常见尺寸1366*768
+				i-option(value="1024×768") web最小尺寸1024*768
+				i-option(value="other") 自定义
 	.d-manage-modal-control
 		label
 		.d-manage-modal-control-right
 			i-input-number(
 				:min="1",
 				:step="1",
-				:formatter="value => `w:${value}`",
+				:formatter="value => `W:${value}`",
 				v-model="platform.panelConfig.size.width",
 				:style="{ marginRight: '10px', width: '67px' }",
-				:parser="value => value.replace('w:', '')")
+				:parser="value => value.replace('W:', '')")
 			i-input-number(
 				:min="1",
 				:step="1",
@@ -39,7 +38,7 @@
 				:alpha="true",
 				v-model="platform.panelConfig.background.color")
 	.d-manage-modal-control
-		label 背景图片
+		label 背景图
 		.d-manage-modal-control-right
 			d-upload(
 				v-model="platform.panelConfig.background.url",
@@ -102,10 +101,6 @@
 		label
 		.d-manage-modal-control-right
 			i-button(@click="screenAvatar", type="primary") 截屏
-	.d-manage-modal-control
-		label 自动贴靠参考线
-		.d-manage-modal-control-right
-			i-switch(v-model="platform.autoAlignGuide")
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -129,6 +124,33 @@ export default class FuncConfig extends func {
 		library: 'screenAvatar',
 	}
 
+	get size() {
+		const width = this.platform.panelConfig.size.width
+		const height = this.platform.panelConfig.size.height
+		if (width !== 1920 && width !== 1366 && width !== 1024) {
+			console.log(1)
+			return 'other'
+		}
+		if (height !== 1080 && height !== 768) {
+			console.log(2)
+			return 'other'
+		}
+		console.log(3)
+		console.log(`${width}x${height}`)
+		return `${width}x${height}`
+	}
+
+	set size(value) {
+		if (value !== 'other' && value) {
+			console.log(value)
+			const [width, height] = value.split('×')
+			this.platform.panelConfig.size.width = +width
+			this.platform.panelConfig.size.height = +height
+			console.log(this.platform.panelConfig.size.width)
+			console.log(this.platform.panelConfig.size.height)
+		}
+	}
+
 	handleScreenAvatar(res) {
 		const {
 			params: { id },
@@ -137,19 +159,6 @@ export default class FuncConfig extends func {
 			screenId: id,
 			screenAvatar: res ? res.result.url : '',
 		})
-	}
-
-	sizeChange(value) {
-		if (value === undefined) return
-		if (value) {
-			const [width, height] = value.split('×')
-			if (width !== 'null') this.platform.panelConfig.size.width = +width
-			if (height !== 'null')
-				this.platform.panelConfig.size.height = +height
-		} else {
-			this.platform.panelConfig.size.width = 1920
-			this.platform.panelConfig.size.height = 1080
-		}
 	}
 
 	async screenAvatar() {

@@ -1,7 +1,8 @@
 <template lang="pug">
 .d-manage-modal-control
 	label {{ config.label }}
-	d-upload(v-model="obj[inputKey]", :data="formData")
+	.d-manage-modal-control-right
+		d-upload(v-model="obj[inputKey]", :data="formData")
 </template>
 <script lang="ts">
 import func from './func.mx'

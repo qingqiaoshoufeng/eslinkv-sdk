@@ -1,7 +1,7 @@
 <template lang="pug">
 .d-footer.fn-flex.flex-row.pos-r.z-index-999
 	.d-footer-bar.fn-flex.flex-row
-		label {{ scene.index === 0 ? '主场景' : scene.obj[scene.index].name }}
+		label {{ scene.index === 0 ? '主场景' : scene.index === -1 ? '回收站' : scene.obj[scene.index].name }}
 		label.d-footer-info.fn-flex.flex-row(v-if="platform.panelConfig.info")
 			span {{ platform.panelConfig.size.width }}×{{ platform.panelConfig.size.height }}{{ platform.panelConfig.size.unit }}
 	.d-footer-bar.fn-flex
