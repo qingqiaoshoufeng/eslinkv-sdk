@@ -1,19 +1,17 @@
-<template>
-	<component
-		:is="currentComponent"
-		:class="animationClass"
-		:id="config.widget && config.widget.id"
-		v-bind="{ config, readonly, ...$attrs }"
-		@widget-config-update="data => $emit('widget-config-update', data)"
-		@query-start="querying = true"
-		@query-end="querying = false"
-		@query-failed="querying = true"
-		@config-reset="$emit('config-reset')"
-		v-on="$listeners"
-		:key="`${config.widget.id}${updateKey}`"
-	>
-		<slot />
-	</component>
+<template lang="pug">
+component(
+	:is="currentComponent",
+	:class="animationClass",
+	:id="config.widget && config.widget.id",
+	v-bind="{ config, readonly, ...$attrs }",
+	@widget-config-update="data => $emit('widget-config-update', data)",
+	@query-start="querying = true",
+	@query-end="querying = false",
+	@query-failed="querying = true",
+	@config-reset="$emit('config-reset')",
+	v-on="$listeners",
+	:key="`${config.widget.id}${updateKey}`")
+	slot
 </template>
 <script>
 import Vue from 'vue'
