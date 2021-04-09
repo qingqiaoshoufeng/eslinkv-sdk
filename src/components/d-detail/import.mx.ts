@@ -17,6 +17,7 @@ export default {
 					this.importModal = false
 					this.loading = false
 				} catch (e) {
+					console.error(e)
 					this.$Message.error('配置文件识别失败')
 				}
 			}
