@@ -11,13 +11,8 @@ export const customConfig = [
 			},
 			{
 				prop: 'background',
-				label: '背景图片',
-				type: 'func-background',
-				options: [
-					'/static/icons/s-progress1-1.svg',
-					'/static/icons/s-progress1-2.svg',
-					'/static/icons/s-progress1-3.svg',
-				],
+				label: '动画',
+				type: 'func-webm',
 			},
 		],
 	},
@@ -25,11 +20,6 @@ export const customConfig = [
 		prop: 'abc',
 		label: '背景图片',
 		type: 'func-background',
-		options: [
-			'/static/icons/s-progress1-1.svg',
-			'/static/icons/s-progress1-2.svg',
-			'/static/icons/s-progress1-3.svg',
-		],
 	},
 ]
 export const value = {

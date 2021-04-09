@@ -2,7 +2,7 @@
 .d-upload
 	.d-upload-img.pos-r(v-if="value")
 		img(:src="value", v-if="type === 'img'")
-		video(:src="value", v-if="type === 'video'")
+		video(:src="value", v-if="type === 'video'", loop, autoplay)
 		i-upload.pointer.pos-a(
 			:action="action",
 			:data="data",
@@ -85,7 +85,7 @@ export default class DUpload extends Vue {
 	justify-content: center;
 	width: 208px;
 	height: 115px;
-
+	video,
 	img {
 		max-width: 100%;
 		max-height: 100%;
