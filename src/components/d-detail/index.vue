@@ -105,7 +105,7 @@ import shareMx from './share.mx'
 		'i-input': Input,
 	},
 })
-export default class DFooter extends mixins(
+export default class DDetail extends mixins(
 	exportMx,
 	detailMx,
 	saveMx,
