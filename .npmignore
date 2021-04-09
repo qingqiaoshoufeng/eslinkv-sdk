@@ -21,5 +21,3 @@ style-parser.js
 tsconfig.json
 vue.config.js
 .idea/
-lib/eslinkv-sdk.umd.js
-lib/demo.html
