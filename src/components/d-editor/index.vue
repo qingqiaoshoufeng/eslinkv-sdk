@@ -11,7 +11,7 @@
 	// 标尺容器
 	ruler-canvas(ref="rulerCanvas")
 		// 大屏
-		.canvas-wrapper#kanban(
+		#kanban.canvas-wrapper(
 			:style="canvasStyle",
 			@dragenter="isDragIn = true",
 			@dragleave.self="isDragIn = false",
@@ -21,7 +21,7 @@
 			@mousedown.self="deactivateWidget(platform.chooseWidgetId)")
 			// 小工具清单
 			template(v-for="item in platform.widgetAdded")
-				vdr(
+				dr(
 					v-if="showParts(item)",
 					:key="item.id",
 					:ref="`widget_${item.id}`",
@@ -38,9 +38,8 @@
 					:y="item.config.layout.position.top",
 					:z="item.config.layout.zIndex",
 					:snap="platform.autoAlignGuide",
-					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'widget-hide': item.config.widget.hide }, `widget-${item.id}`]",
+					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 					snap-to-target="d-guide-line",
-					class-name="vdr-custom-style",
 					@resizing="onResizing",
 					@dragging="onDragging",
 					@activated="handleActivated(item, widgetEditable(item))",
@@ -61,8 +60,7 @@
 <script>
 import rightMenu from '../right-menu/index'
 import rulerCanvas from '../d-ruler/index.vue'
-import vdr from 'vue-draggable-resizable-gorkys2/src/components/vue-draggable-resizable'
-import 'vue-draggable-resizable-gorkys2/src/components/vue-draggable-resizable.css'
+import dr from '../../components/d-draggable-resizable'
 import parts from '../d-widget-part/index'
 import widgetOperation from './widget-operation'
 import dRightManage from '../d-right-manage'
@@ -81,7 +79,7 @@ export default {
 		rulerCanvas,
 		dFooter,
 		dGuide,
-		vdr,
+		dr,
 		dRightManage,
 		rightMenu,
 	},
@@ -215,144 +213,10 @@ export default {
 		display: flex;
 		content: '';
 	}
-
-	&.preview {
-		.vdr-custom-style {
-			outline: none;
-
-			&::after,
-			&::before {
-				display: none;
-			}
-		}
-	}
 }
 
 .ref-line {
 	background-color: #0ff;
-}
-
-.vdr-custom-style {
-	border: none;
-
-	&.active {
-		cursor: move;
-		outline: 1px solid $themeColor_08;
-	}
-
-	&::after {
-		position: absolute;
-		top: -15px;
-		left: 0;
-		font-size: 12px;
-		line-height: 1.2;
-		color: #a9a979;
-		transition: 0.2s;
-	}
-
-	&:not(.locked)::before {
-		cursor: move;
-	}
-
-	&::after {
-		right: -3px;
-		left: unset;
-		content: '\1F512';
-		opacity: 0;
-	}
-
-	&.locked::after {
-		opacity: 0.5;
-	}
-
-	&:hover,
-	&.widget-hover {
-		outline: 1px solid $themeColor_08;
-	}
-
-	&.locked:hover {
-		outline: 1px solid $themeColor_04;
-
-		&::after {
-			opacity: 1;
-		}
-	}
-
-	&.locked {
-		outline: none;
-	}
-
-	&.widget-hide {
-		pointer-events: none !important;
-		opacity: 0;
-
-		* {
-			pointer-events: none !important;
-		}
-	}
-
-	.widget-dragging {
-		pointer-events: none !important;
-	}
-
-	&::v-deep {
-		.widget,
-		.widget-part {
-			// 看板编辑中，小工具的定位样式由 vue-draggable-resizable-gorkys 接管
-			position: relative !important;
-			top: 0 !important;
-			left: 0 !important;
-			//width: 100% !important;
-			//height: 100% !important;
-		}
-
-		.handle {
-			z-index: 999;
-			width: 4px;
-			height: 4px;
-			border: none;
-			border-radius: 4px;
-			box-shadow: none;
-		}
-
-		.handle-ml {
-			left: -3px;
-			margin-top: -2px;
-		}
-
-		.handle-bl {
-			bottom: -2px;
-			left: -3px;
-		}
-
-		.handle-bm {
-			bottom: -2px;
-		}
-
-		.handle-br {
-			right: -3px;
-			bottom: -2px;
-		}
-
-		.handle-mr {
-			right: -3px;
-			margin-top: -2px;
-		}
-
-		.handle-tr {
-			top: -2px;
-			right: -3px;
-		}
-
-		.handle-tm {
-			top: -2px;
-		}
-
-		.handle-tl {
-			top: -2px;
-			left: -3px;
-		}
-	}
 }
 
 .canvas-config-wrapper,

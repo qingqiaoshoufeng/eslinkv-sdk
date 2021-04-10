@@ -7,12 +7,7 @@ function resolve(dir) {
 	return path.join(__dirname, dir)
 }
 module.exports = {
-	transpileDependencies: [
-		'@simonwep',
-		'vue-draggable-resizable-gorkys2',
-		'swiper',
-		'dom7',
-	],
+	transpileDependencies: ['@simonwep', 'swiper', 'dom7'],
 	assetsDir: './',
 	publicPath: isProduction ? `/${pkg.version}` : '/',
 	outputDir: `dist/${pkg.version}`,
