@@ -75,7 +75,7 @@ import func from './func.mx'
 import { Component } from 'vue-property-decorator'
 import html2canvas from 'html2canvas'
 import platform from '../store/platform.store.js'
-import dUpload from '../components/d-upload'
+import dUpload from '../components/d-upload/index.vue'
 
 @Component({
 	components: {
@@ -106,12 +106,9 @@ export default class FuncConfig extends func {
 
 	set size(value) {
 		if (value !== 'other' && value) {
-			console.log(value)
 			const [width, height] = value.split('*')
 			this.platform.panelConfig.size.width = +width
 			this.platform.panelConfig.size.height = +height
-			console.log(this.platform.panelConfig.size.width)
-			console.log(this.platform.panelConfig.size.height)
 		}
 	}
 
@@ -133,12 +130,13 @@ export default class FuncConfig extends func {
 			const screenAvatar = await this.capture({
 				selector: '#kanban',
 			}).catch(e => {
+				console.warn(e)
 				this.$Message.error('截屏创建失败')
 			})
-			this.platform.screenAvatar = screenAvatar.url
+			this.platform.screenAvatar = (screenAvatar as any).url
 			this.$api.screen.update({
 				screenId: id,
-				screenAvatar: screenAvatar.url,
+				screenAvatar: (screenAvatar as any).url,
 			})
 		}
 	}
@@ -200,7 +198,7 @@ export default class FuncConfig extends func {
 	saveSnapshot() {
 		const nodes = document.querySelectorAll('.widget-part')
 		nodes.forEach(node => {
-			html2canvas(node, {
+			html2canvas(node as HTMLElement, {
 				allowTaint: true,
 				scale: 1,
 				useCORS: true,

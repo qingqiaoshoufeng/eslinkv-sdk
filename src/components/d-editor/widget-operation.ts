@@ -6,7 +6,6 @@ import scene from '../../store/scene.store'
 @Component
 class Mixins extends Vue {
 	currentWidgetType = null
-	widgetProcessingStyle = null
 	rightMenuBindWidgetId = null
 	widgetMovingTimer = null
 	widgetActivating = false
@@ -36,7 +35,7 @@ class Mixins extends Vue {
 		this.configPanelValueUpdateTimer = setTimeout(update, 380)
 	}
 
-	handleWidgetConfig({ value = {} }, item) {
+	handleWidgetConfig({ value = {} }) {
 		this.updateWidget(value)
 	}
 
@@ -86,7 +85,7 @@ class Mixins extends Vue {
 	handleActivated(obj, activeAllowed = true) {
 		const { config, id, type } = obj
 		if (!activeAllowed) {
-			return this.deactivateWidget(id)
+			return this.deactivateWidget()
 		}
 		platform.actions.chooseWidget(id)
 		platform.actions.setChooseWidgetCustomConfig(config.customConfig)
@@ -108,11 +107,8 @@ class Mixins extends Vue {
 	/**
 	 * @description 刷新以取消选定状态
 	 */
-	deactivateWidget(id) {
+	deactivateWidget() {
 		this.$nextTick(() => {
-			// const widget = this.$refs[`widget_${id}`]
-			// if (!widget || !widget[0]) return
-			// widget[0].enabled = false
 			platform.actions.unChooseWidget()
 		})
 	}

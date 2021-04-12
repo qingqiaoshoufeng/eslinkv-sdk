@@ -22,8 +22,8 @@ const bgImg = new Image()
 export default class XLine extends Vue {
 	@Prop() clientX
 	platform = platform.state
-	showHelp: boolean = false
-	canvas: HTMLCanvasElement = null
+	showHelp = false
+	canvas: null
 	context = null
 
 	get site() {
@@ -158,8 +158,8 @@ export default class XLine extends Vue {
 	}
 
 	mounted() {
-		this.canvas = document.getElementById('ruler-x')
-		this.context = this.canvas.getContext('2d')
+		this.canvas = document.getElementById('ruler-x') as HTMLCanvasElement
+		this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D
 		this.context.font = '10px sans-serif'
 		this.context.fillStyle = '#999'
 		this.init()

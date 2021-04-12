@@ -11,7 +11,7 @@ export default {
 			reader.onload = e => {
 				try {
 					this.loading = true
-					const result = JSON.parse(e.target.result)
+					const result = JSON.parse((e as any).target.result)
 					const { screenConfig, screenName } = result
 					this.renderByDetail({ name: screenName, screenConfig })
 					this.importModal = false

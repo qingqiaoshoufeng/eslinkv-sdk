@@ -134,21 +134,21 @@
 	.d-manage-modal-control(v-if="item.config.api.bind.enable")
 		checkbox-group(v-model="item.config.api.bind.refIds")
 			checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
-	i-modal(v-model="showFullParamsEditor" :footer-hide="true" title="全屏模式")
+	i-modal(v-model="showFullParamsEditor", :footer-hide="true", title="全屏模式")
 		editor.d-manage-modal-control-editor(
 			v-model="item.config.api.params",
 			@init="editorInit",
 			lang="json",
 			theme="idle_fingers",
 			height="600")
-	i-modal(v-model="showFullMethodBodyEditor" :footer-hide="true" title="全屏模式")
+	i-modal(v-model="showFullMethodBodyEditor", :footer-hide="true", title="全屏模式")
 		editor.d-manage-modal-control-editor(
 			v-model="item.config.api.process.methodBody",
 			@init="editorInit",
 			lang="javascript",
 			theme="idle_fingers",
 			height="600")
-	i-modal(v-model="showFullApiDataEditor" :footer-hide="true" title="全屏模式")
+	i-modal(v-model="showFullApiDataEditor", :footer-hide="true", title="全屏模式")
 		editor.d-manage-modal-control-editor(
 			v-model="apiData",
 			@init="editorInit",
@@ -248,8 +248,9 @@ export default class FuncData extends func {
 	openSystemConfig() {
 		const value = this.item.config
 		if (!value) return
-		this.showDatabaseConfigModal = true
-		this.$refs.dataBaseConfig.setQueryCond(value.api.system.params)
+		this.showDatabaseConfigModal = true(
+			this.$refs.dataBaseConfig as any,
+		).setQueryCond(value.api.system.params)
 	}
 }
 </script>

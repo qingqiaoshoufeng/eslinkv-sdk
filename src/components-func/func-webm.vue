@@ -7,7 +7,7 @@
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
-import dUpload from '../components/d-upload'
+import dUpload from '../components/d-upload/index.vue'
 
 @Component({
 	components: {

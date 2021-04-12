@@ -13,7 +13,7 @@
 		@mousedown.stop.prevent="handleDown(handle, $event)",
 		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
 		slot(:name="handle")
-	.dr-line.posa
+	.dr-line.pos-a
 		.dr-line-top.pos-a
 		.dr-line-bottom.pos-a
 		.dr-line-left.pos-a

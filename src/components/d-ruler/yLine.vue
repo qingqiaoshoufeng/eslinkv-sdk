@@ -22,8 +22,8 @@ const bgImg = new Image()
 export default class YLine extends Vue {
 	@Prop() clientY
 	platform = platform.state
-	showHelp: boolean = false
-	canvas: HTMLCanvasElement = null
+	showHelp = false
+	canvas = null
 	context = null
 
 	get site() {
@@ -162,8 +162,8 @@ export default class YLine extends Vue {
 	}
 
 	mounted() {
-		this.canvas = document.getElementById('ruler-v')
-		this.context = this.canvas.getContext('2d')
+		this.canvas = document.getElementById('ruler-v') as HTMLCanvasElement
+		this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D
 		this.context.font = '10px sans-serif'
 		this.context.fillStyle = '#999'
 		this.init()

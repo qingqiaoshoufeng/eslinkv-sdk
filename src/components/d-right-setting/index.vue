@@ -22,12 +22,12 @@ div(v-if="platform.chooseWidgetState")
 			v-for="(item, index) in title",
 			@click="handleClick(index)",
 			:key="item",
-			:class="{ active: index === choose }") {{ item }}
+			:class="{ active: index === tabIndex }") {{ item }}
 	.d-right-modal.d-scrollbar
 		itemList(
 			v-for="(item, index) in chooseList",
 			:list="item.key",
-			v-if="choose === index",
+			v-if="tabIndex === index",
 			:needChoose="item.needChoose")
 </template>
 <script lang="ts">
@@ -43,9 +43,10 @@ import { Icon, Input } from 'view-design'
 	},
 })
 export default class DRightSetting extends Vue {
-	choose = 0
-	editName: boolean = false
+	tabIndex = 0
+	editName = false
 	platform = platform.state
+	title = ['基础', '数据', '主题', '自定义']
 	chooseList: any = [
 		{
 			key: [{ type: 'base' }],
@@ -64,14 +65,6 @@ export default class DRightSetting extends Vue {
 			needChoose: true,
 		},
 	]
-
-	get title() {
-		if (this.platform.chooseWidgetState) {
-			return ['大屏']
-		} else {
-			return ['基础', '数据', '主题', '自定义']
-		}
-	}
 
 	@Watch('platform.chooseWidgetState')
 	onChooseWidgetId() {
@@ -106,7 +99,7 @@ export default class DRightSetting extends Vue {
 	}
 
 	handleClick(index) {
-		this.choose = index
+		this.tabIndex = index
 	}
 }
 </script>
