@@ -126,12 +126,7 @@ const mx = {
 	computed: {
 		styles() {
 			const { layout } = this.config
-			if (this.readonly) {
-				return styleParser(layout)
-			} else {
-				layout.left = 0
-				layout.top = 0
-			}
+			return styleParser(layout)
 		},
 		id() {
 			const now = +new Date()
