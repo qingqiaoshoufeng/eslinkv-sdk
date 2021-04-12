@@ -15,6 +15,14 @@ export default {
 			contentDrag: false, // 是否正在执行内容区拖动
 		}
 	},
+	watch: {
+		'platform.panelConfig.size': {
+			deep: true,
+			handler(val) {
+				this.resetZoom()
+			}
+		}
+	},
 	methods: {
 		/**
 		 * @description 拖动开始时
