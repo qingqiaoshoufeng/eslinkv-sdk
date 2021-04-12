@@ -229,12 +229,11 @@ export default class FuncData extends func {
 	get relateList() {
 		const list = Object.values(this.platform.widgetAdded)
 			.filter(
-				v =>
-					(v as any).config.api.bind.enable &&
-					(v as any).scene === scene.state.index,
+				(v: any) =>
+					v.config.api.bind.enable && v.scene === scene.state.index,
 			)
-			.map(v => {
-				const { id, name } = (v as any).config.widget
+			.map((v: any) => {
+				const { id, name } = v.config.widget
 				return { id, name }
 			})
 		return list
