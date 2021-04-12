@@ -2,6 +2,9 @@ import { downloadFile } from '../../utils/index'
 
 // todo 取消render
 export default {
+	data() {
+		return {}
+	},
 	methods: {
 		handleExport() {
 			const data = this.platFormData()

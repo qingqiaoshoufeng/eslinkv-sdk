@@ -13,8 +13,10 @@ import { value, customConfig } from './index.component'
 @Component
 export default class extends mixins(widgetMixin) {
 	created() {
-		// this.configValue = this.parseConfigValue(value)
-		this.configValue = this.parseConfigValue(value, customConfig)
+		;(this as any).configValue = (this as any).parseConfigValue(
+			value,
+			customConfig,
+		)
 	}
 }
 </script>

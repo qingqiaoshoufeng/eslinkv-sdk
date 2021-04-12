@@ -106,6 +106,7 @@ import shareMx from './share.mx'
 	},
 })
 export default class DDetail extends mixins(
+	// @ts-ignore
 	exportMx,
 	detailMx,
 	saveMx,

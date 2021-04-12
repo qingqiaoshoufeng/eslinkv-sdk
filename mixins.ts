@@ -7,7 +7,7 @@ import platform from './src/store/platform.store'
 import instance from './src/store/instance.store'
 import { configMerge } from './src/utils'
 
-const mx = {
+const mx: any = {
 	mixins: [fetch, dataProcess],
 	inject: ['kanboardEditor'],
 	props: {

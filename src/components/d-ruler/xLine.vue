@@ -95,7 +95,9 @@ export default class XLine extends Vue {
 		this.context.clearRect(
 			-t.e,
 			0,
+			// @ts-ignore
 			this.canvas.width - t.e,
+			// @ts-ignore
 			this.canvas.height,
 		)
 	}
@@ -104,6 +106,7 @@ export default class XLine extends Vue {
 		this.clearRulerCanvas()
 		const t = this.context.getTransform()
 		let x = 0
+		// @ts-ignore
 		while (x < this.canvas.width - t.e) {
 			this.context.drawImage(bgImg, x, 0)
 			this.context.fillText(~~(x / this.platform.ruler.zoom), x + 4, 10)
@@ -158,8 +161,10 @@ export default class XLine extends Vue {
 	}
 
 	mounted() {
-		this.canvas = document.getElementById('ruler-x') as HTMLCanvasElement
-		this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D
+		// @ts-ignore
+		this.canvas = document.getElementById('ruler-x')
+		// @ts-ignore
+		this.context = this.canvas.getContext('2d')
 		this.context.font = '10px sans-serif'
 		this.context.fillStyle = '#999'
 		this.init()

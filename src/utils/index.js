@@ -66,8 +66,8 @@ export function setDefault(o, str = '', defaultConfig = commonConfigValue()) {
 	}
 }
 
-export function deepCopy(e) {
-	let t
+export const deepCopy = e => {
+	let t, d
 	const r = typeOf(e)
 	if (r === 'array') {
 		t = []
@@ -87,7 +87,7 @@ export function deepCopy(e) {
 	return t
 }
 
-export function desensitize(e, t) {
+export const desensitize = (e, t) => {
 	const r = new RegExp(t)
 	return e.replace(r, function () {
 		for (

@@ -50,8 +50,8 @@ export default class DRuler extends mixins(eventHandlers) {
 		return `transform:translate3d(${this.platform.ruler.contentX}px, ${
 			this.platform.ruler.contentY
 		}px, 0) scale(${this.platform.ruler.zoom});width:${
-			this.contentWidth + 18 * 2
-		} px;height:${this.contentHeight + 18 * 2} px;`
+			(this as any).contentWidth + 18 * 2
+		} px;height:${(this as any).contentHeight + 18 * 2} px;`
 	}
 
 	deactivateWidget() {

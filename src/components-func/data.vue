@@ -248,9 +248,9 @@ export default class FuncData extends func {
 	openSystemConfig() {
 		const value = this.item.config
 		if (!value) return
-		this.showDatabaseConfigModal = true(
-			this.$refs.dataBaseConfig as any,
-		).setQueryCond(value.api.system.params)
+		this.showDatabaseConfigModal = true
+		// @ts-ignore
+		this.$refs.dataBaseConfig.setQueryCond(value.api.system.params)
 	}
 }
 </script>

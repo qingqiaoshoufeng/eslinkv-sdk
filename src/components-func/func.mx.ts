@@ -6,6 +6,7 @@ import {
 	Switch,
 	ColorPicker,
 	Collapse,
+	// @ts-ignore
 	Panel,
 	Button,
 	CheckboxGroup,

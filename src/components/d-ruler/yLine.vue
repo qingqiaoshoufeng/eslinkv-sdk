@@ -94,7 +94,9 @@ export default class YLine extends Vue {
 		this.context.clearRect(
 			-t.e,
 			0,
+			// @ts-ignore
 			this.canvas.width,
+			// @ts-ignore
 			this.canvas.height - t.e,
 		)
 	}
@@ -162,8 +164,10 @@ export default class YLine extends Vue {
 	}
 
 	mounted() {
-		this.canvas = document.getElementById('ruler-v') as HTMLCanvasElement
-		this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D
+		// @ts-ignore
+		this.canvas = document.getElementById('ruler-v')
+		// @ts-ignore
+		this.context = this.canvas.getContext('2d')
 		this.context.font = '10px sans-serif'
 		this.context.fillStyle = '#999'
 		this.init()
