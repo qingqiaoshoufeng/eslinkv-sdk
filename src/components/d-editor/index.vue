@@ -34,14 +34,13 @@
 					:prevent-deactivation="true",
 					:w="item.config.layout.size.width",
 					:h="item.config.layout.size.height",
-					:x="x === null ? item.config.layout.position.left : x",
-					:y="y === null ? item.config.layout.position.top : y",
+					:x="item.config.layout.position.left",
+					:y="item.config.layout.position.top",
 					:z="item.config.layout.zIndex",
 					:snap="platform.autoAlignGuide",
 					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 					snap-to-target="d-guide-line",
 					@resizing="onResizing",
-					@dragging="onDragging",
 					@dragstop="onDragstop",
 					@activated="handleActivated(item, widgetEditable(item))",
 					@deactivated="handleDeactivated(item)",
@@ -92,8 +91,6 @@ export default {
 			platform: platform.state,
 			scene: scene.state,
 			isDragIn: false,
-			x: null,
-			y: null
 		}
 	},
 	methods: {
@@ -122,10 +119,6 @@ export default {
 			this.platform.widgetAdded[
 				this.platform.chooseWidgetId
 			].config.layout.position.top = top
-		},
-		onDragging(left, top) {
-			this.x = left
-			this.y = top
 		},
 		onResizing(left, top, width, height) {
 			this.platform.widgetAdded[
