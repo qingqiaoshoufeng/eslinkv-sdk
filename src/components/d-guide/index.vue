@@ -178,6 +178,7 @@ export default class Guide extends Vue {
 		line-height: 12px;
 		color: #fff;
 		background: $themeColor_08;
+		user-select: none;
 	}
 }
 
