@@ -34,14 +34,15 @@
 					:prevent-deactivation="true",
 					:w="item.config.layout.size.width",
 					:h="item.config.layout.size.height",
-					:x="item.config.layout.position.left",
-					:y="item.config.layout.position.top",
+					:x="x === null ? item.config.layout.position.left : x",
+					:y="y === null ? item.config.layout.position.top : y",
 					:z="item.config.layout.zIndex",
 					:snap="platform.autoAlignGuide",
 					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 					snap-to-target="d-guide-line",
 					@resizing="onResizing",
 					@dragging="onDragging",
+					@dragstop="onDragstop",
 					@activated="handleActivated(item, widgetEditable(item))",
 					@deactivated="handleDeactivated(item)",
 					@contextmenu.native="showRightMenu($event, item)")
@@ -91,6 +92,8 @@ export default {
 			platform: platform.state,
 			scene: scene.state,
 			isDragIn: false,
+			x: null,
+			y: null
 		}
 	},
 	methods: {
@@ -112,13 +115,17 @@ export default {
 				this.handleWidgetDrop(e, widgetConfig)
 			}
 		},
-		onDragging(left, top) {
+		onDragstop(left, top) {
 			this.platform.widgetAdded[
 				this.platform.chooseWidgetId
 			].config.layout.position.left = left
 			this.platform.widgetAdded[
 				this.platform.chooseWidgetId
 			].config.layout.position.top = top
+		},
+		onDragging(left, top) {
+			this.x = left
+			this.y = top
 		},
 		onResizing(left, top, width, height) {
 			this.platform.widgetAdded[
@@ -173,6 +180,12 @@ export default {
 		platform.actions.initKanboard()
 		instance.actions.setInstance('kanboard', this)
 		scene.actions.setStatus('inEdit')
+		this.x = this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+			].config.layout.position.left
+		this.y = this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+			].config.layout.position.top
 	},
 }
 </script>
