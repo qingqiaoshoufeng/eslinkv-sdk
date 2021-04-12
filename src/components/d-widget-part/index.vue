@@ -10,7 +10,8 @@ component(
 	@query-failed="querying = true",
 	@config-reset="$emit('config-reset')",
 	v-on="$listeners",
-	:key="`${config.widget.id}${updateKey}`")
+	:key="`${config.widget.id}${updateKey}`"
+	ref="widgets")
 	slot
 </template>
 <script>
