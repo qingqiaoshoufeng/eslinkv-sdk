@@ -110,3 +110,8 @@ export default class DRightSetting extends Vue {
 	}
 }
 </script>
+<style lang="scss" scoped>
+.d-scrollbar {
+	height: calc(100vh - 191px);
+}
+</style>
