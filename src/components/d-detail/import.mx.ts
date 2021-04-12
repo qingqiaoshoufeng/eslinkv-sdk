@@ -1,3 +1,4 @@
+import { setDefault } from '../../utils'
 export default {
 	data() {
 		return {
@@ -13,6 +14,9 @@ export default {
 					this.loading = true
 					const result = JSON.parse((e as any).target.result)
 					const { screenConfig, screenName } = result
+					screenConfig.widgets.forEach(v => {
+						setDefault(v.value)
+					})
 					this.renderByDetail({ name: screenName, screenConfig })
 					this.importModal = false
 					this.loading = false
