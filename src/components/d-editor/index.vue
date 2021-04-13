@@ -195,15 +195,9 @@ export default {
 			'fullscreenchange',
 			this.handleFullscreenChange,
 		)
-		platform.actions.initKanboard()
+		platform.actions.initPlatformConfig()
 		instance.actions.setInstance('kanboard', this)
 		scene.actions.setStatus('inEdit')
-		this.x = this.platform.widgetAdded[
-			this.platform.chooseWidgetId
-		].config.layout.position.left
-		this.y = this.platform.widgetAdded[
-			this.platform.chooseWidgetId
-		].config.layout.position.top
 	},
 }
 </script>

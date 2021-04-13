@@ -130,7 +130,7 @@ const actions = {
 			state.ruler.zoom = ((state.ruler.zoom * 100 - 2) / 100).toFixed(2)
 		}
 	},
-	initKanboard() {
+	initPlatformConfig() {
 		state.ruler = getInitRuler()
 		state.panelConfig = getInitPanelConfig()
 		state.widgetAdded = {}

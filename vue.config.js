@@ -23,20 +23,20 @@ module.exports = {
 		disableHostCheck: true,
 		proxy: {
 			'^/node': {
-				target: 'http://127.0.0.1:7001',
-				// target: 'http://10.30.3.156:7001',
+				// target: 'http://127.0.0.1:7001',
+				target: 'http://eslinkv.eslink.cc',
 				changeOrigin: true,
-				pathRewrite: {
-					'^/node': '/',
-				},
+				// pathRewrite: {
+				// 	'^/node': '/',
+				// },
 			},
 			'^/cdn': {
-				target: 'http://127.0.0.1:7001',
-				// target: 'http://10.30.3.156:7001',
+				// target: 'http://127.0.0.1:7001',
+				target: 'http://eslinkv.eslink.cc',
 				changeOrigin: true,
-				pathRewrite: {
-					'^/cdn': '/',
-				},
+				// pathRewrite: {
+				// 	'^/cdn': '/',
+				// },
 			},
 		},
 	},

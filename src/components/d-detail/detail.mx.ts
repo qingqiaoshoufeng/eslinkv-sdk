@@ -17,43 +17,58 @@ export default {
 			this.refillConfig(res.screenConfig)
 		},
 		refillConfig(res) {
-			const { widgets, kanboard, guides } = res
+			this.loading = true
+			const { widgets, kanboard, guides } = res,
+				marketComponents = [],
+				obj = {},
+				p = [],
+				needMarketLoad = {}
 			this.platform.panelConfig = kanboard
 			this.platform.ruler.guideLines = guides
-			// this.querying = false
-			// this.apis = apis
-			return new Promise(resolve => {
-				// this.refilling = true
-				const widgetsArray = Object.values(widgets)
-				const length = widgetsArray.length
-				// 小工具初始化需要时间，此处进行延时逐个回填
-				const reDrawWidget = obj => {
-					const { id, type, value, scene = 0, market = false } = obj
-					platform.actions.setWidgetsAddedItem(
-						id,
-						type,
-						value,
-						scene,
-						market,
-					)
-					const currentLength = widgetsArray.length
-					if (currentLength) {
-						// this.refillPercent = (length - currentLength) / length * 100 | 0
-						reDrawWidget(widgetsArray.shift())
-					} else {
-						// this.refillPercent = 100
-						// this.refilling = false
-						resolve(true)
-					}
+			widgets.forEach(item => {
+				obj[item.id] = {
+					id: item.id,
+					market: item.market,
+					scene: item.scene,
+					type: item.type,
+					config: item.value,
 				}
-				if (length) {
-					reDrawWidget(widgetsArray.shift())
-				} else {
-					// this.refilling = false
-					// this.refillPercent = 100
-					resolve(true)
+				if (item.market) {
+					marketComponents.push({
+						type: item.type,
+						version: item.value.widget.componentVersion,
+					})
 				}
 			})
+			marketComponents.forEach(item => {
+				if (needMarketLoad[`${item.type}${item.version}`]) return
+				needMarketLoad[`${item.type}${item.version}`] = true
+				p.push(
+					new Promise(resolve => {
+						this.$api.marketComponent
+							.use({
+								componentEnTitle: item.type,
+								componentVersion: item.version,
+							})
+							.then(res => {
+								const script = document.createElement('script')
+								script.onload = () => {
+									resolve(1)
+								}
+								script.src = res.componentJsUrl
+								document.head.appendChild(script)
+							})
+					}),
+				)
+			})
+			Promise.all(p)
+				.then(() => {
+					this.loading = false
+					platform.actions.setWidgetsAdded(obj)
+				})
+				.catch(() => {
+					this.loading = false
+				})
 		},
 	},
 
