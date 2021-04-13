@@ -105,17 +105,24 @@ export default {
 			e.stopPropagation()
 		},
 		handleWheel (e) {
-			e.preventDefault()
-			e.stopPropagation()
 			if (e.ctrlKey) {
+				e.preventDefault()
+				e.stopPropagation()
 				this.handleWheelZoom(e)
 				return false
 			}
-			if (e.shiftKey) {
-				this.platform.ruler.contentX += e.wheelDelta > 0 ? 10 : -10
-				return false
+		},
+		handleDragContentWheel (e) {
+			if (!e.ctrlKey) {
+				e.preventDefault()
+				e.stopPropagation()
+
+				if (e.shiftKey) {
+					this.platform.ruler.contentX += e.wheelDelta > 0 ? 10 : -10
+					return false
+				}
+				this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
 			}
-			this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
 		},
 		/**
 		 * @description 恢复默认缩放比例+居中
@@ -144,6 +151,7 @@ export default {
 		document.addEventListener('keydown', this.startContentMove)
 		window.addEventListener('resize', this.windowResize)
 		document.getElementById('app').addEventListener('wheel', this.handleWheel)
+		dragContent.addEventListener('wheel', this.handleDragContentWheel)
 		dragContent.addEventListener('dblclick', this.resetZoom)
 		requestAnimationFrame(this.windowResize)
 
@@ -162,6 +170,7 @@ export default {
 		document.getElementById('app').removeEventListener('wheel', this.handleWheel)
 		if (dragContent) {
 			dragContent.removeEventListener('dblclick', this.resetZoom)
+			dragContent.removeEventListener('wheel', this.handleDragContentWheel)
 		}
 	},
 }
