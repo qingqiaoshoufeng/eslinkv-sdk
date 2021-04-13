@@ -30,7 +30,6 @@
 </template>
 <script lang="ts">
 import { baseURL } from '../../../src/api/request.js'
-import platform from '../../../src/store/platform.store.js'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Upload, Icon } from 'view-design'
 @Component({
@@ -40,8 +39,6 @@ import { Upload, Icon } from 'view-design'
 	},
 })
 export default class DUpload extends Vue {
-	platform = platform.state
-
 	@Prop({ default: `${baseURL}/upload/file` }) action
 	@Prop() data
 	@Prop({ default: 'img' }) type

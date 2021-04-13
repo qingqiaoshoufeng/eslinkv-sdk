@@ -9,7 +9,7 @@
 			@on-change="handleSceneName",
 			v-if="editScene")
 			i-icon(type="md-checkmark", slot="suffix", @click="editScene = false")
-		i-select(v-model="scene.index", v-if="!editScene")
+		i-select(v-model="scene.index", v-if="!editScene" filterable)
 			i-option(:value="0") 主场景
 			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
