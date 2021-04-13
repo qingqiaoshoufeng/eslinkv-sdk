@@ -47,7 +47,7 @@ export default class DFooter extends Vue {
 
 	get zoom() {
 		const zoom = this.platform.ruler.zoom
-		return `${zoom * 10 * 10}%`
+		return `${~~(zoom * 100)}%`
 	}
 
 	handleFullscreen() {

@@ -104,7 +104,7 @@ export default {
 			e.preventDefault()
 			e.stopPropagation()
 		},
-		handleWheel: throttle(50, false, function (e) {
+		handleWheel (e) {
 			e.preventDefault()
 			e.stopPropagation()
 			if (e.ctrlKey) {
@@ -116,7 +116,7 @@ export default {
 				return false
 			}
 			this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
-		}),
+		},
 		/**
 		 * @description 恢复默认缩放比例+居中
 		 */
@@ -128,7 +128,7 @@ export default {
 			const platformWidth = this.platform.panelConfig.size.width
 			const platformHeight = this.platform.panelConfig.size.height
 			this.platform.ruler.zoom =
-				~~((rulerOffsetWidth / platformWidth) * 10) / 10 || 0.1
+				~~((rulerOffsetWidth / platformWidth) * 100) / 100 || this.platform.ruler.zoomStep
 			const deltaX = (rulerOffsetWidth - platformWidth) * 0.5
 			const deltaY = (rulerOffsetHeight - platformHeight) * 0.5
 			this.platform.ruler.contentX = Math.ceil(deltaX)
@@ -143,7 +143,7 @@ export default {
 		document.addEventListener('keyup', this.stopContentMove)
 		document.addEventListener('keydown', this.startContentMove)
 		window.addEventListener('resize', this.windowResize)
-		dragContent.addEventListener('wheel', this.handleWheel)
+		document.getElementById('app').addEventListener('wheel', this.handleWheel)
 		dragContent.addEventListener('dblclick', this.resetZoom)
 		requestAnimationFrame(this.windowResize)
 
@@ -159,8 +159,8 @@ export default {
 		document.removeEventListener('keyup', this.stopContentMove)
 		document.removeEventListener('keydown', this.startContentMove)
 		window.removeEventListener('resize', this.windowResize)
+		document.getElementById('app').removeEventListener('wheel', this.handleWheel)
 		if (dragContent) {
-			dragContent.removeEventListener('wheel', this.handleWheel)
 			dragContent.removeEventListener('dblclick', this.resetZoom)
 		}
 	},

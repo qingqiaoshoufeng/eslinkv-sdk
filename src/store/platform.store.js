@@ -38,6 +38,7 @@ function getInitRuler() {
 		stepLength: 50, // 标尺步长
 		size: 18, // 标尺高度，容差
 		zoom: 1,
+		zoomStep: 0.02,
 		contentLayout: {
 			top: 0,
 			left: 0, // 刻度修正，根据 contentLayout 参数确定 0 刻度位置
@@ -121,12 +122,12 @@ const state = Vue.observable({
 const actions = {
 	zoomIn() {
 		if (state.ruler.zoom < 4) {
-			state.ruler.zoom = (state.ruler.zoom * 10 + 1) / 10
+			state.ruler.zoom = ((state.ruler.zoom * 100 + 2) / 100).toFixed(2)
 		}
 	},
 	zoomOut() {
-		if (state.ruler.zoom > 0.1) {
-			state.ruler.zoom = (state.ruler.zoom * 10 - 1) / 10
+		if (state.ruler.zoom > state.ruler.zoomStep) {
+			state.ruler.zoom = ((state.ruler.zoom * 100 - 2) / 100).toFixed(2)
 		}
 	},
 	initKanboard() {
