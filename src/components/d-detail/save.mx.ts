@@ -20,9 +20,9 @@ export default {
 			})
 		},
 		async addBoard() {
+			this.loading = true
 			const data = this.platFormData()
 			data.screenType = this.screenType
-			this.loading = true
 			this.$api.screen
 				.create(data)
 				.then(() => {
@@ -36,6 +36,7 @@ export default {
 				})
 		},
 		editBoard() {
+			this.loading = true
 			const data = this.platFormData()
 			const {
 				params: { id },

@@ -11,7 +11,7 @@
 	// 标尺容器
 	ruler-canvas(ref="rulerCanvas")
 		// 大屏
-		#kanban.canvas-wrapper(
+		#kanban.canvas-wrapper.pos-r(
 			:style="canvasStyle",
 			@dragenter="isDragIn = true",
 			@dragleave.self="isDragIn = false",
@@ -41,6 +41,7 @@
 					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 					snap-to-target="d-guide-line",
 					@resizing="onResizing",
+					@refLineParams="params => getRefLineParams(params, item)",
 					@dragstop="onDragstop",
 					@activated="handleActivated(item, widgetEditable(item))",
 					@deactivated="handleDeactivated(item)",
@@ -51,7 +52,14 @@
 						:config="item.config",
 						:market="item.market",
 						@widget-config-update="data => handleWidgetConfig(data, item)")
-	// 参考线
+		span.ref-line.v-line.pos-a(
+			v-for="item in vLine",
+			v-show="item.display",
+			:style="{ left: item.position, top: item.origin, height: item.lineLength }")
+		span.ref-line.h-line.pos-a(
+			v-for="item in hLine",
+			v-show="item.display",
+			:style="{ top: item.position, left: item.origin, width: item.lineLength }")
 	d-guide
 	// 右键菜单
 	right-menu(ref="rightMenu", @deactivateWidget="deactivateWidget")
@@ -72,7 +80,7 @@ import scene from '../../store/scene.store'
 import styleParser from '../../../style-parser'
 
 export default {
-	name: 'kanboard-editor',
+	name: 'd-editor',
 	mixins: [widgetOperation],
 	components: {
 		parts,
@@ -91,9 +99,26 @@ export default {
 			platform: platform.state,
 			scene: scene.state,
 			isDragIn: false,
+			vLine: [],
+			hLine: [],
 		}
 	},
 	methods: {
+		getRefLineParams(params, item) {
+			const { vLine, hLine } = params
+			this.vLine = vLine.map(child => {
+				child.w = item.config.layout.size.width
+				child.h = item.config.layout.size.height
+				if (child.display) console.log(child)
+				return child
+			})
+			this.hLine = hLine.map(child => {
+				child.w = item.config.layout.size.width
+				child.h = item.config.layout.size.height
+				if (child.display) console.log(child)
+				return child
+			})
+		},
 		handleFullscreenChange() {
 			this.platform.fullscreen = !this.platform.fullscreen
 		},
@@ -175,10 +200,10 @@ export default {
 		scene.actions.setStatus('inEdit')
 		this.x = this.platform.widgetAdded[
 			this.platform.chooseWidgetId
-			].config.layout.position.left
+		].config.layout.position.left
 		this.y = this.platform.widgetAdded[
 			this.platform.chooseWidgetId
-			].config.layout.position.top
+		].config.layout.position.top
 	},
 }
 </script>
@@ -187,7 +212,17 @@ export default {
 </style>
 <style lang="scss" scoped>
 @import 'src/scss/conf';
-
+.ref-line {
+	background-color: $lineColor;
+}
+.v-line {
+	width: 1px;
+	height: 100%;
+}
+.h-line {
+	width: 100%;
+	height: 1px;
+}
 .center {
 	background-color: #313239;
 	transition: all 0.3s;
@@ -219,10 +254,6 @@ export default {
 		display: flex;
 		content: '';
 	}
-}
-
-.ref-line {
-	background-color: #0ff;
 }
 
 .canvas-config-wrapper,

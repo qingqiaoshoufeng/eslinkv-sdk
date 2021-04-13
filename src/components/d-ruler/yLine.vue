@@ -198,7 +198,7 @@ canvas {
 	width: 9999px;
 	height: 0;
 	pointer-events: none;
-	border-top: 1px dashed $themeColor;
+	border-top: 1px dashed $lineColor;
 
 	.num {
 		position: absolute;
@@ -208,7 +208,7 @@ canvas {
 		font-size: 12px;
 		line-height: 14px;
 		color: #fff;
-		background: $themeColor_08;
+		background: $lineColor;
 		transform: rotate(-90deg);
 	}
 }

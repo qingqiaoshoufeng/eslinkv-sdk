@@ -118,16 +118,16 @@ export default class DDetail extends mixins(
 
 	platform = platform.state
 	scene = scene.state
-	loadingMsg: string = '正在保存数据…'
-	loading: boolean = false
-	isNew: boolean = true
+	loadingMsg = 'loading…'
+	loading = false
+	isNew = true
 	screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
-	left1: boolean = true
-	right1: boolean = true
-	left2: boolean = true
-	xRoomL1: number = 0
-	xRoomL2: number = 0
-	xRoomR1: number = 0
+	left1 = true
+	right1 = true
+	left2 = true
+	xRoomL1 = 0
+	xRoomL2 = 0
+	xRoomR1 = 0
 
 	handleLeft1() {
 		this.left1 = !this.left1

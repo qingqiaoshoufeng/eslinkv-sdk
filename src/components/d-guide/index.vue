@@ -177,7 +177,7 @@ export default class Guide extends Vue {
 		font-size: 12px;
 		line-height: 12px;
 		color: #fff;
-		background: $themeColor_08;
+		background: $lineColor;
 		user-select: none;
 	}
 }
@@ -191,7 +191,7 @@ export default class Guide extends Vue {
 
 .d-guide-line-v,
 .d-guide-line-h {
-	background-color: $themeColor;
+	background-color: $lineColor;
 	opacity: 1;
 	transform-origin: left top;
 }

@@ -173,17 +173,6 @@
 	cursor: nw-resize;
 }
 
-.ref-line {
-	position: absolute;
-	background-color: rgb(255, 0, 204);
-	z-index: 9999;
-}
-.v-line {
-	width: 1px;
-}
-.h-line {
-	height: 1px;
-}
 @media only screen and (max-width: 768px) {
 	[class*='dr-handle-']:before {
 		content: '';
