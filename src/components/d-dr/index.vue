@@ -1,5 +1,5 @@
 <template lang="pug">
-.dr(
+.dr.pos-a(
 	:style="style",
 	:class="[{ [classNameActive]: enabled, [classNameDragging]: dragging, [classNameResizing]: resizing, [classNameDraggable]: draggable, [classNameResizable]: resizable }, className]",
 	@click="elementEnable",
@@ -36,26 +36,11 @@ const events = {
 	},
 }
 
-// 禁止用户选取
-const userSelectNone = {
-	userSelect: 'none',
-	MozUserSelect: 'none',
-	WebkitUserSelect: 'none',
-	MsUserSelect: 'none',
-}
-// 用户选中自动
-const userSelectAuto = {
-	userSelect: 'auto',
-	MozUserSelect: 'auto',
-	WebkitUserSelect: 'auto',
-	MsUserSelect: 'auto',
-}
-
 let eventsFor = events.mouse
 
 export default {
 	replace: true,
-	name: 'vue-draggable-resizable',
+	name: 'd-dr',
 	props: {
 		className: {
 			type: String,
@@ -190,18 +175,6 @@ export default {
 			default: 'both',
 			validator: val => ['x', 'y', 'both'].includes(val),
 		},
-		grid: {
-			type: Array,
-			default: () => [1, 1],
-		},
-		parent: {
-			type: [Boolean, String],
-			default: false,
-		},
-		parentSize: {
-			type: Object,
-			defualt: null,
-		},
 		onDragStart: {
 			type: Function,
 			default: null,
@@ -234,9 +207,8 @@ export default {
 		},
 		// 缩放比例
 		scaleRatio: {
-			type: Number,
+			type: [Number, String],
 			default: 1,
-			validator: val => typeof val === 'number',
 		},
 	},
 
@@ -252,17 +224,11 @@ export default {
 			top: this.y,
 			right: null,
 			bottom: null,
-
 			aspectFactor: this.w / this.h,
-
-			parentWidth: null,
-			parentHeight: null,
-
 			minW: this.minWidth,
 			minH: this.minHeight,
 			maxW: this.maxWidth,
 			maxH: this.maxHeight,
-
 			handle: null,
 			enabled: this.active,
 			resizing: false,
@@ -290,12 +256,8 @@ export default {
 		if (!this.enableNativeDrag) {
 			this.$el.ondragstart = () => false
 		}
-
-		;[this.parentWidth, this.parentHeight] = this.getParentSize()
-
-		this.rawRight = this.parentWidth - this.rawWidth - this.rawLeft
-		this.rawBottom = this.parentHeight - this.rawHeight - this.rawTop
-
+		this.rawRight = -this.rawWidth - this.rawLeft
+		this.rawBottom = -this.rawHeight - this.rawTop
 		this.settingAttribute()
 
 		addEvent(document.documentElement, 'mousedown', this.deselect)
@@ -304,8 +266,6 @@ export default {
 			'touchend touchcancel',
 			this.deselect,
 		)
-
-		addEvent(window, 'resize', this.checkParentSize)
 	},
 	beforeDestroy() {
 		removeEvent(document.documentElement, 'mousedown', this.deselect)
@@ -318,8 +278,6 @@ export default {
 			'touchend touchcancel',
 			this.deselect,
 		)
-
-		removeEvent(window, 'resize', this.checkParentSize)
 	},
 
 	methods: {
@@ -333,53 +291,6 @@ export default {
 				w: 0,
 				h: 0,
 			}
-
-			this.bounds = {
-				minLeft: null,
-				maxLeft: null,
-				minRight: null,
-				maxRight: null,
-				minTop: null,
-				maxTop: null,
-				minBottom: null,
-				maxBottom: null,
-			}
-		},
-		// 检查父元素大小
-		checkParentSize() {
-			if (this.parent) {
-				const [newParentWidth, newParentHeight] = this.getParentSize()
-
-				const deltaX = this.parentWidth - newParentWidth
-				const deltaY = this.parentHeight - newParentHeight
-
-				this.rawRight -= deltaX
-				this.rawBottom -= deltaY
-
-				this.parentWidth = newParentWidth
-				this.parentHeight = newParentHeight
-			}
-		},
-		// 获取父元素大小
-		getParentSize() {
-			if (this.parent === true) {
-				const style = window.getComputedStyle(this.$el.parentNode, null)
-				return [
-					parseInt(style.getPropertyValue('width'), 10),
-					parseInt(style.getPropertyValue('height'), 10),
-				]
-			}
-			if (typeof this.parent === 'string') {
-				const parentNode = document.querySelector(this.parent)
-				if (!(parentNode instanceof HTMLElement)) {
-					throw new Error(
-						`The selector ${this.parent} does not match any element`,
-					)
-				}
-				return [parentNode.offsetWidth, parentNode.offsetHeight]
-			}
-
-			return [null, null]
 		},
 		// 元素触摸按下
 		elementTouchDown(e) {
@@ -451,53 +362,12 @@ export default {
 				this.mouseClickPosition.top = this.top
 				this.mouseClickPosition.bottom = this.bottom
 
-				if (this.parent) {
-					this.bounds = this.calcDragLimits()
-				}
-
 				addEvent(document.documentElement, eventsFor.move, this.move)
 				addEvent(
 					document.documentElement,
 					eventsFor.stop,
 					this.handleUp,
 				)
-			}
-		},
-		// 计算移动范围
-		calcDragLimits() {
-			return {
-				minLeft: (this.parentWidth + this.left) % this.grid[0],
-				maxLeft:
-					Math.floor(
-						(this.parentWidth - this.width - this.left) /
-							this.grid[0],
-					) *
-						this.grid[0] +
-					this.left,
-				minRight: (this.parentWidth + this.right) % this.grid[0],
-				maxRight:
-					Math.floor(
-						(this.parentWidth - this.width - this.right) /
-							this.grid[0],
-					) *
-						this.grid[0] +
-					this.right,
-				minTop: (this.parentHeight + this.top) % this.grid[1],
-				maxTop:
-					Math.floor(
-						(this.parentHeight - this.height - this.top) /
-							this.grid[1],
-					) *
-						this.grid[1] +
-					this.top,
-				minBottom: (this.parentHeight + this.bottom) % this.grid[1],
-				maxBottom:
-					Math.floor(
-						(this.parentHeight - this.height - this.bottom) /
-							this.grid[1],
-					) *
-						this.grid[1] +
-					this.bottom,
 			}
 		},
 		// 取消
@@ -557,146 +427,8 @@ export default {
 			this.mouseClickPosition.right = this.right
 			this.mouseClickPosition.top = this.top
 			this.mouseClickPosition.bottom = this.bottom
-
-			this.bounds = this.calcResizeLimits()
-
 			addEvent(document.documentElement, eventsFor.move, this.handleMove)
 			addEvent(document.documentElement, eventsFor.stop, this.handleUp)
-		},
-		// 计算调整大小范围
-		calcResizeLimits() {
-			let minW = this.minW
-			let minH = this.minH
-			let maxW = this.maxW
-			let maxH = this.maxH
-
-			const aspectFactor = this.aspectFactor
-			const [gridX, gridY] = this.grid
-			const width = this.width
-			const height = this.height
-			const left = this.left
-			const top = this.top
-			const right = this.right
-			const bottom = this.bottom
-
-			if (this.lockAspectRatio) {
-				if (minW / minH > aspectFactor) {
-					minH = minW / aspectFactor
-				} else {
-					minW = aspectFactor * minH
-				}
-
-				if (maxW && maxH) {
-					maxW = Math.min(maxW, aspectFactor * maxH)
-					maxH = Math.min(maxH, maxW / aspectFactor)
-				} else if (maxW) {
-					maxH = maxW / aspectFactor
-				} else if (maxH) {
-					maxW = aspectFactor * maxH
-				}
-			}
-
-			maxW = maxW - (maxW % gridX)
-			maxH = maxH - (maxH % gridY)
-
-			const limits = {
-				minLeft: null,
-				maxLeft: null,
-				minTop: null,
-				maxTop: null,
-				minRight: null,
-				maxRight: null,
-				minBottom: null,
-				maxBottom: null,
-			}
-
-			if (this.parent) {
-				limits.minLeft = (this.parentWidth + left) % gridX
-				limits.maxLeft =
-					left + Math.floor((width - minW) / gridX) * gridX
-				limits.minTop = (this.parentHeight + top) % gridY
-				limits.maxTop =
-					top + Math.floor((height - minH) / gridY) * gridY
-				limits.minRight = (this.parentWidth + right) % gridX
-				limits.maxRight =
-					right + Math.floor((width - minW) / gridX) * gridX
-				limits.minBottom = (this.parentHeight + bottom) % gridY
-				limits.maxBottom =
-					bottom + Math.floor((height - minH) / gridY) * gridY
-
-				if (maxW) {
-					limits.minLeft = Math.max(
-						limits.minLeft,
-						this.parentWidth - right - maxW,
-					)
-					limits.minRight = Math.max(
-						limits.minRight,
-						this.parentWidth - left - maxW,
-					)
-				}
-
-				if (maxH) {
-					limits.minTop = Math.max(
-						limits.minTop,
-						this.parentHeight - bottom - maxH,
-					)
-					limits.minBottom = Math.max(
-						limits.minBottom,
-						this.parentHeight - top - maxH,
-					)
-				}
-
-				if (this.lockAspectRatio) {
-					limits.minLeft = Math.max(
-						limits.minLeft,
-						left - top * aspectFactor,
-					)
-					limits.minTop = Math.max(
-						limits.minTop,
-						top - left / aspectFactor,
-					)
-					limits.minRight = Math.max(
-						limits.minRight,
-						right - bottom * aspectFactor,
-					)
-					limits.minBottom = Math.max(
-						limits.minBottom,
-						bottom - right / aspectFactor,
-					)
-				}
-			} else {
-				limits.minLeft = null
-				limits.maxLeft =
-					left + Math.floor((width - minW) / gridX) * gridX
-				limits.minTop = null
-				limits.maxTop =
-					top + Math.floor((height - minH) / gridY) * gridY
-				limits.minRight = null
-				limits.maxRight =
-					right + Math.floor((width - minW) / gridX) * gridX
-				limits.minBottom = null
-				limits.maxBottom =
-					bottom + Math.floor((height - minH) / gridY) * gridY
-
-				if (maxW) {
-					limits.minLeft = -(right + maxW)
-					limits.minRight = -(left + maxW)
-				}
-
-				if (maxH) {
-					limits.minTop = -(bottom + maxH)
-					limits.minBottom = -(top + maxH)
-				}
-
-				if (this.lockAspectRatio && maxW && maxH) {
-					limits.minLeft = Math.min(limits.minLeft, -(right + maxW))
-					limits.minTop = Math.min(limits.minTop, -(maxH + bottom))
-					limits.minRight = Math.min(limits.minRight, -left - maxW)
-					limits.minBottom = Math.min(limits.minBottom, -top - maxH)
-				}
-			}
-
-			return limits
 		},
 		// 移动
 		move(e) {
@@ -711,7 +443,6 @@ export default {
 		// 元素移动
 		elementMove(e) {
 			const axis = this.axis
-			const grid = this.grid
 			const mouseClickPosition = this.mouseClickPosition
 
 			const tmpDeltaX =
@@ -725,20 +456,14 @@ export default {
 					  (e.touches ? e.touches[0].pageY : e.pageY)
 					: 0
 
-			const [deltaX, deltaY] = this.snapToGrid(
-				this.grid,
-				tmpDeltaX,
-				tmpDeltaY,
-			)
-
+			const deltaX = Math.round(tmpDeltaX / this.scaleRatio)
+			const deltaY = Math.round(tmpDeltaY / this.scaleRatio)
 			this.rawTop = mouseClickPosition.top - deltaY
 			this.rawBottom = mouseClickPosition.bottom + deltaY
 			this.rawLeft = mouseClickPosition.left - deltaX
 			this.rawRight = mouseClickPosition.right + deltaX
-
-			this.snapCheck()
-
-			this.$emit('dragging', this.left, this.top)
+			// this.snapCheck()
+			//this.$emit('dragging', this.left, this.top)
 		},
 		// 控制柄移动
 		handleMove(e) {
@@ -752,11 +477,8 @@ export default {
 				mouseClickPosition.mouseY -
 				(e.touches ? e.touches[0].pageY : e.pageY)
 
-			const [deltaX, deltaY] = this.snapToGrid(
-				this.grid,
-				tmpDeltaX,
-				tmpDeltaY,
-			)
+			const deltaX = Math.round(tmpDeltaX / this.scaleRatio)
+			const deltaY = Math.round(tmpDeltaY / this.scaleRatio)
 
 			if (handle.includes('b')) {
 				this.rawBottom = mouseClickPosition.bottom + deltaY
@@ -817,18 +539,6 @@ export default {
 				this.handleMove,
 			)
 		},
-		// 对齐网格
-		snapToGrid(grid, pendingX, pendingY) {
-			const x = Math.round(pendingX / grid[0]) * grid[0]
-			const y = Math.round(pendingY / grid[1]) * grid[1]
-
-			// return [x, y]
-			return [
-				Math.floor(x / this.scaleRatio),
-				Math.floor(y / this.scaleRatio),
-			]
-		},
-		// 新增方法 ↓↓↓
 		// 设置属性
 		settingAttribute() {
 			// 设置冲突检测
@@ -1065,32 +775,28 @@ export default {
 						if (ts) {
 							if (bln) {
 								this.rawTop = t - height
-								this.rawBottom =
-									this.parentHeight - this.rawTop - height
+								this.rawBottom = -this.rawTop - height
 							}
 							tem.value.y[0].push(l, r, activeLeft, activeRight)
 						}
 						if (bs) {
 							if (bln) {
 								this.rawTop = t
-								this.rawBottom =
-									this.parentHeight - this.rawTop - height
+								this.rawBottom = -this.rawTop - height
 							}
 							tem.value.y[0].push(l, r, activeLeft, activeRight)
 						}
 						if (TS) {
 							if (bln) {
 								this.rawTop = b - height
-								this.rawBottom =
-									this.parentHeight - this.rawTop - height
+								this.rawBottom = -this.rawTop - height
 							}
 							tem.value.y[1].push(l, r, activeLeft, activeRight)
 						}
 						if (BS) {
 							if (bln) {
 								this.rawTop = b
-								this.rawBottom =
-									this.parentHeight - this.rawTop - height
+								this.rawBottom = -this.rawTop - height
 							}
 							tem.value.y[1].push(l, r, activeLeft, activeRight)
 						}
@@ -1098,32 +804,28 @@ export default {
 						if (ls) {
 							if (bln) {
 								this.rawLeft = l - width
-								this.rawRight =
-									this.parentWidth - this.rawLeft - width
+								this.rawRight = -this.rawLeft - width
 							}
 							tem.value.x[0].push(t, b, activeTop, activeBottom)
 						}
 						if (rs) {
 							if (bln) {
 								this.rawLeft = l
-								this.rawRight =
-									this.parentWidth - this.rawLeft - width
+								this.rawRight = -this.rawLeft - width
 							}
 							tem.value.x[0].push(t, b, activeTop, activeBottom)
 						}
 						if (LS) {
 							if (bln) {
 								this.rawLeft = r - width
-								this.rawRight =
-									this.parentWidth - this.rawLeft - width
+								this.rawRight = -this.rawLeft - width
 							}
 							tem.value.x[1].push(t, b, activeTop, activeBottom)
 						}
 						if (RS) {
 							if (bln) {
 								this.rawLeft = r
-								this.rawRight =
-									this.parentWidth - this.rawLeft - width
+								this.rawRight = -this.rawLeft - width
 							}
 							tem.value.x[1].push(t, b, activeTop, activeBottom)
 						}
@@ -1131,16 +833,14 @@ export default {
 						if (hc) {
 							if (bln) {
 								this.rawTop = t + h / 2 - height / 2
-								this.rawBottom =
-									this.parentHeight - this.rawTop - height
+								this.rawBottom = -this.rawTop - height
 							}
 							tem.value.y[2].push(l, r, activeLeft, activeRight)
 						}
 						if (vc) {
 							if (bln) {
 								this.rawLeft = l + w / 2 - width / 2
-								this.rawRight =
-									this.parentWidth - this.rawLeft - width
+								this.rawRight = -this.rawLeft - width
 							}
 							tem.value.x[2].push(t, b, activeTop, activeBottom)
 						}
@@ -1207,15 +907,10 @@ export default {
 	computed: {
 		style() {
 			return {
-				position: 'absolute',
-				top: this.top + 'px',
-				left: this.left + 'px',
+				transform: `translate3d(${this.left}px, ${this.top}px,0)`,
 				width: this.width + 'px',
 				height: this.height + 'px',
 				zIndex: this.zIndex,
-				...(this.dragging && this.disableUserSelect
-					? userSelectNone
-					: userSelectAuto),
 			}
 		},
 		// 控制柄显示与否
@@ -1224,10 +919,10 @@ export default {
 			return this.handles
 		},
 		width() {
-			return this.parentWidth - this.left - this.right
+			return -this.left - this.right
 		},
 		height() {
-			return this.parentHeight - this.top - this.bottom
+			return -this.top - this.bottom
 		},
 		resizingOnX() {
 			return (
@@ -1241,19 +936,8 @@ export default {
 				(this.handle.includes('t') || this.handle.includes('b'))
 			)
 		},
-		isCornerHandle() {
-			return (
-				Boolean(this.handle) &&
-				['tl', 'tr', 'br', 'bl'].includes(this.handle)
-			)
-		},
 	},
-
 	watch: {
-		parentSize: {
-			handler: 'checkParentSize',
-			deep: true,
-		},
 		active(val) {
 			this.enabled = val
 
@@ -1269,36 +953,20 @@ export default {
 			}
 		},
 		rawLeft(newLeft) {
-			const bounds = this.bounds
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
 			const left = this.left
 			const top = this.top
-
-			if (bounds.minLeft !== null && newLeft < bounds.minLeft) {
-				newLeft = bounds.minLeft
-			} else if (bounds.maxLeft !== null && bounds.maxLeft < newLeft) {
-				newLeft = bounds.maxLeft
-			}
-
 			if (lockAspectRatio && this.resizingOnX) {
 				this.rawTop = top - (left - newLeft) / aspectFactor
 			}
-
 			this.left = newLeft
 		},
 		rawRight(newRight) {
-			const bounds = this.bounds
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
 			const right = this.right
 			const bottom = this.bottom
-
-			if (bounds.minRight !== null && newRight < bounds.minRight) {
-				newRight = bounds.minRight
-			} else if (bounds.maxRight !== null && bounds.maxRight < newRight) {
-				newRight = bounds.maxRight
-			}
 
 			if (lockAspectRatio && this.resizingOnX) {
 				this.rawBottom = bottom - (right - newRight) / aspectFactor
@@ -1307,17 +975,10 @@ export default {
 			this.right = newRight
 		},
 		rawTop(newTop) {
-			const bounds = this.bounds
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
 			const left = this.left
 			const top = this.top
-
-			if (bounds.minTop !== null && newTop < bounds.minTop) {
-				newTop = bounds.minTop
-			} else if (bounds.maxTop !== null && bounds.maxTop < newTop) {
-				newTop = bounds.maxTop
-			}
 
 			if (lockAspectRatio && this.resizingOnY) {
 				this.rawLeft = left - (top - newTop) * aspectFactor
@@ -1326,20 +987,10 @@ export default {
 			this.top = newTop
 		},
 		rawBottom(newBottom) {
-			const bounds = this.bounds
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
 			const right = this.right
 			const bottom = this.bottom
-
-			if (bounds.minBottom !== null && newBottom < bounds.minBottom) {
-				newBottom = bounds.minBottom
-			} else if (
-				bounds.maxBottom !== null &&
-				bounds.maxBottom < newBottom
-			) {
-				newBottom = bounds.maxBottom
-			}
 
 			if (lockAspectRatio && this.resizingOnY) {
 				this.rawRight = right - (bottom - newBottom) * aspectFactor
@@ -1351,33 +1002,17 @@ export default {
 			if (this.resizing || this.dragging) {
 				return
 			}
-
-			if (this.parent) {
-				this.bounds = this.calcDragLimits()
-			}
-
 			const delta = this.x - this.left
-
-			if (delta % this.grid[0] === 0) {
-				this.rawLeft = this.x
-				this.rawRight = this.right - delta
-			}
+			this.rawLeft = this.x
+			this.rawRight = this.right - delta
 		},
 		y() {
 			if (this.resizing || this.dragging) {
 				return
 			}
-
-			if (this.parent) {
-				this.bounds = this.calcDragLimits()
-			}
-
 			const delta = this.y - this.top
-
-			if (delta % this.grid[1] === 0) {
-				this.rawTop = this.y
-				this.rawBottom = this.bottom - delta
-			}
+			this.rawTop = this.y
+			this.rawBottom = this.bottom - delta
 		},
 		lockAspectRatio(val) {
 			if (val) {
@@ -1406,31 +1041,15 @@ export default {
 			if (this.resizing || this.dragging) {
 				return
 			}
-
-			if (this.parent) {
-				this.bounds = this.calcResizeLimits()
-			}
-
 			const delta = this.width - this.w
-
-			if (delta % this.grid[0] === 0) {
-				this.rawRight = this.right + delta
-			}
+			this.rawRight = this.right + delta
 		},
 		h() {
 			if (this.resizing || this.dragging) {
 				return
 			}
-
-			if (this.parent) {
-				this.bounds = this.calcResizeLimits()
-			}
-
 			const delta = this.height - this.h
-
-			if (delta % this.grid[1] === 0) {
-				this.rawBottom = this.bottom + delta
-			}
+			this.rawBottom = this.bottom + delta
 		},
 	},
 }

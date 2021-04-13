@@ -25,8 +25,6 @@
 					v-if="showParts(item)",
 					:key="item.id",
 					:ref="`widget_${item.id}`",
-					:parent="true",
-					:parent-size="canvasSize",
 					:scale-ratio="platform.ruler.zoom",
 					:draggable="widgetEditable(item)",
 					:resizable="widgetEditable(item)",
@@ -40,10 +38,9 @@
 					:snap="platform.autoAlignGuide",
 					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 					snap-to-target="d-guide-line",
-					@resizing="onResizing",
-					@refLineParams="params => getRefLineParams(params, item)",
-					@dragstop="onDragstop",
-					@activated="handleActivated(item, widgetEditable(item))",
+					@resizestop="onResizeStop",
+					@dragstop="onDragStop",
+					@activated="handleActivated(item)",
 					@deactivated="handleDeactivated(item)",
 					@contextmenu.native="showRightMenu($event, item)")
 					parts(
@@ -52,14 +49,6 @@
 						:config="item.config",
 						:market="item.market",
 						@widget-config-update="data => handleWidgetConfig(data, item)")
-		span.ref-line.v-line.pos-a(
-			v-for="item in vLine",
-			v-show="item.display",
-			:style="{ left: item.position, top: item.origin, height: item.lineLength }")
-		span.ref-line.h-line.pos-a(
-			v-for="item in hLine",
-			v-show="item.display",
-			:style="{ top: item.position, left: item.origin, width: item.lineLength }")
 	d-guide
 	// 右键菜单
 	right-menu(ref="rightMenu", @deactivateWidget="deactivateWidget")
@@ -68,7 +57,7 @@
 <script>
 import rightMenu from '../right-menu/index'
 import rulerCanvas from '../d-ruler/index.vue'
-import dr from '../../components/d-draggable-resizable'
+import dr from '../../components/d-dr'
 import parts from '../d-widget-part/index'
 import widgetOperation from './widget-operation'
 import dRightManage from '../d-right-manage'
@@ -99,26 +88,9 @@ export default {
 			platform: platform.state,
 			scene: scene.state,
 			isDragIn: false,
-			vLine: [],
-			hLine: [],
 		}
 	},
 	methods: {
-		getRefLineParams(params, item) {
-			const { vLine, hLine } = params
-			this.vLine = vLine.map(child => {
-				child.w = item.config.layout.size.width
-				child.h = item.config.layout.size.height
-				if (child.display) console.log(child)
-				return child
-			})
-			this.hLine = hLine.map(child => {
-				child.w = item.config.layout.size.width
-				child.h = item.config.layout.size.height
-				if (child.display) console.log(child)
-				return child
-			})
-		},
 		handleFullscreenChange() {
 			this.platform.fullscreen = !this.platform.fullscreen
 		},
@@ -137,7 +109,7 @@ export default {
 				this.handleWidgetDrop(e, widgetConfig)
 			}
 		},
-		onDragstop(left, top) {
+		onDragStop(left, top) {
 			this.platform.widgetAdded[
 				this.platform.chooseWidgetId
 			].config.layout.position.left = left
@@ -145,7 +117,7 @@ export default {
 				this.platform.chooseWidgetId
 			].config.layout.position.top = top
 		},
-		onResizing(left, top, width, height) {
+		onResizeStop(left, top, width, height) {
 			this.platform.widgetAdded[
 				this.platform.chooseWidgetId
 			].config.layout.size.width = width

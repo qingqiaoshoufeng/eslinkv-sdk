@@ -1,6 +1,7 @@
 @import '../../scss/conf';
 .dr {
-	border: none;
+	top: 0;
+	left: 0;
 
 	&::after {
 		position: absolute;
