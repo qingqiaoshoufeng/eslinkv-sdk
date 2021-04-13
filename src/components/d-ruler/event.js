@@ -18,10 +18,10 @@ export default {
 	watch: {
 		'platform.panelConfig.size': {
 			deep: true,
-			handler(val) {
+			handler() {
 				this.resetZoom()
-			}
-		}
+			},
+		},
 	},
 	methods: {
 		/**
@@ -53,7 +53,10 @@ export default {
 			) {
 				e.preventDefault()
 			}
-			if (e.keyCode === 32) this.contentMove = true
+			if (e.keyCode === 32) {
+				this.contentMove = true
+				platform.actions.unChooseWidget()
+			}
 		},
 		stopContentMove() {
 			this.contentMove = false
@@ -104,15 +107,14 @@ export default {
 			e.preventDefault()
 			e.stopPropagation()
 		},
-		handleWheel (e) {
+		handleWheel(e) {
 			if (e.ctrlKey) {
-				e.preventDefault()
 				e.stopPropagation()
 				this.handleWheelZoom(e)
 				return false
 			}
 		},
-		handleDragContentWheel (e) {
+		handleDragContentWheel(e) {
 			if (!e.ctrlKey) {
 				e.preventDefault()
 				e.stopPropagation()
@@ -135,7 +137,8 @@ export default {
 			const platformWidth = this.platform.panelConfig.size.width
 			const platformHeight = this.platform.panelConfig.size.height
 			this.platform.ruler.zoom =
-				~~((rulerOffsetWidth / platformWidth) * 100) / 100 || this.platform.ruler.zoomStep
+				~~((rulerOffsetWidth / platformWidth) * 100) / 100 ||
+				this.platform.ruler.zoomStep
 			const deltaX = (rulerOffsetWidth - platformWidth) * 0.5
 			const deltaY = (rulerOffsetHeight - platformHeight) * 0.5
 			this.platform.ruler.contentX = Math.ceil(deltaX)
@@ -145,16 +148,18 @@ export default {
 	mounted() {
 		const id = this.platform.ruler.dragId
 		const dragContent = document.getElementById(id)
-		document.addEventListener('mousemove', this.setMove)
-		document.addEventListener('mouseup', this.stopMove)
-		document.addEventListener('keyup', this.stopContentMove)
-		document.addEventListener('keydown', this.startContentMove)
+		document.documentElement.addEventListener('mousemove', this.setMove)
+		document.documentElement.addEventListener('mouseup', this.stopMove)
+		document.documentElement.addEventListener('keyup', this.stopContentMove)
+		document.documentElement.addEventListener(
+			'keydown',
+			this.startContentMove,
+		)
 		window.addEventListener('resize', this.windowResize)
-		document.getElementById('app').addEventListener('wheel', this.handleWheel)
+		document.documentElement.addEventListener('wheel', this.handleWheel)
 		dragContent.addEventListener('wheel', this.handleDragContentWheel)
-		dragContent.addEventListener('dblclick', this.resetZoom)
+		document.documentElement.addEventListener('dblclick', this.resetZoom)
 		requestAnimationFrame(this.windowResize)
-
 		setTimeout(() => {
 			this.resetZoom()
 		})
@@ -162,15 +167,24 @@ export default {
 	beforeDestroy() {
 		const id = this.platform.ruler.dragId
 		const dragContent = document.getElementById(id)
-		document.removeEventListener('mousemove', this.setMove)
-		document.removeEventListener('mouseup', this.stopMove)
-		document.removeEventListener('keyup', this.stopContentMove)
-		document.removeEventListener('keydown', this.startContentMove)
+		document.documentElement.removeEventListener('mousemove', this.setMove)
+		document.documentElement.removeEventListener('mouseup', this.stopMove)
+		document.documentElement.removeEventListener(
+			'keyup',
+			this.stopContentMove,
+		)
+		document.documentElement.removeEventListener(
+			'keydown',
+			this.startContentMove,
+		)
 		window.removeEventListener('resize', this.windowResize)
-		document.getElementById('app').removeEventListener('wheel', this.handleWheel)
+		document.documentElement.removeEventListener('wheel', this.handleWheel)
+		document.documentElement.removeEventListener('dblclick', this.resetZoom)
 		if (dragContent) {
-			dragContent.removeEventListener('dblclick', this.resetZoom)
-			dragContent.removeEventListener('wheel', this.handleDragContentWheel)
+			dragContent.removeEventListener(
+				'wheel',
+				this.handleDragContentWheel,
+			)
 		}
 	},
 }
