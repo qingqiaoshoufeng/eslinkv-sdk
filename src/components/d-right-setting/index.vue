@@ -5,14 +5,14 @@ div(v-if="platform.chooseWidgetState")
 	v-else)
 	.d-right-modal-name.fn-flex.flex-row
 		span(contenteditable="editName", @input="changeName") {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].config.widget.name : '' }}
-		i-icon(
+		i-icon.pointer(
 			type="md-checkmark",
 			slot="suffix",
 			@click="editName = false",
 			v-if="editName")
-		i-icon(type="ios-create-outline", @click="editName = true", v-if="!editName")
-		i-icon(type="md-eye", @click="handleHide", v-if="!editName")
-		i-icon(type="md-lock", @click="handleLock", v-if="!editName")
+		i-icon.pointer(type="ios-create-outline", @click="editName = true", v-if="!editName")
+		i-icon.pointer(type="md-eye", @click="handleHide", v-if="!editName")
+		i-icon.pointer(type="md-lock", @click="handleLock", v-if="!editName")
 	.d-right-modal-id
 		span ID: {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].id : '' }}
 	.d-right-modal-type

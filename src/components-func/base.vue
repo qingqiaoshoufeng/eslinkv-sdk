@@ -79,12 +79,11 @@
 				i-switch(
 					v-model="item.config.animation.transitionEnable",
 					:disabled="platform.chooseWidgetState")
-		.d-manage-modal-control
-			label 启用动画
+		.d-manage-modal-control(v-if="item.config.animation.transitionEnable")
+			label 动画形式
 			.d-manage-modal-control-right
 				i-select(
 					v-model="item.config.animation.enter",
-					v-if="item.config.animation.transitionEnable",
 					:disabled="platform.chooseWidgetState")
 					i-option(
 						:value="k.value",
@@ -118,7 +117,6 @@ export default class FuncBase extends func {
 		{ label: '渐隐渐显+滑动向下', value: 'fadeInDown' },
 		{ label: '渐隐渐显+滑动向左', value: 'fadeInLeft' },
 		{ label: '渐隐渐显+滑动向右', value: 'fadeInRight' },
-		{ label: '渐隐渐显+滑动向上', value: 'fadeInUp' },
 		{ label: '渐隐渐显+滑动向上', value: 'fadeInUp' },
 		{ label: '渐隐渐显+滑动向左上', value: 'fadeInTopLeft' },
 		{ label: '渐隐渐显+滑动向右上', value: 'fadeInTopRight' },

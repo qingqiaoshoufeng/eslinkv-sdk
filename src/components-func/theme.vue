@@ -6,11 +6,11 @@
 			i-color-picker(
 				:alpha="true",
 				size="small",
-				v-model="colorDisk[index]",
+				v-model="colorDiskArray[index]",
 				@on-change="val => colorDiskChange(val, index)",
-				v-for="(item, index) in item.config.config.colorTheme.colorDisk",
+				v-for="(item, index) in colorTheme.colorDisk",
 				:style="{ marginLeft: '10px', marginBottom: '10px' }")
-	.d-manage-modal-control(v-if="item && item.config.config.colorTheme")
+	.d-manage-modal-control
 		label
 		.d-manage-modal-control-right
 			i-button(@click="handleResetColor", type="primary") 一键恢复官方主题色盘
@@ -26,9 +26,17 @@ import { colorTheme } from '../../packages/index.js'
 export default class FuncAnimation extends func {
 	instance = instance.state
 	platform = platform.state
-	get colorDisk() {
+
+	get colorTheme() {
+		return this.item.config.config.colorTheme
+			? this.item.config.config.colorTheme
+			: colorTheme
+	}
+
+	get colorDiskArray() {
 		let obj = {}
-		this.item.config.config.colorTheme.colorDisk.map((item, index) => {
+		const theme = this.colorTheme
+		theme.colorDisk.map((item, index) => {
 			obj[index] = item
 		})
 		return obj
@@ -40,6 +48,12 @@ export default class FuncAnimation extends func {
 	}
 
 	colorDiskChange(val, index) {
+		if (!this.item.config.config.colorTheme) {
+			this.item.config.config.colorTheme = {}
+		}
+		if (!this.item.config.config.colorTheme.colorDisk) {
+			this.item.config.config.colorTheme.colorDisk = []
+		}
 		this.item.config.config.colorTheme.colorDisk[index] = val
 		this.handleSync()
 	}

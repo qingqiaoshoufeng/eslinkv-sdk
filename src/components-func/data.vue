@@ -67,50 +67,25 @@
 				@close="showDatabaseConfigModal = false",
 				@update="updateApiSystem",
 				@keyup.native.stop)
-	.d-manage-modal-control
-		label 请求参数
-			i-icon.full-icon(
-				type="ios-paper-outline",
-				@click="showFullParamsEditor = true",
-				title="全屏编辑")
-	.d-manage-modal-control
-		editor.d-manage-modal-control-editor(
-			v-model="item.config.api.params",
-			@init="editorInit",
-			lang="json",
-			theme="idle_fingers",
-			height="150")
-	.d-manage-modal-control
-		label 响应数据
-			i-icon.full-icon(
-				type="ios-paper-outline",
-				@click="showFullApiDataEditor = true",
-				title="全屏编辑")
-	.d-manage-modal-control
-		editor.d-manage-modal-control-editor(
-			v-model="apiData",
-			@init="editorInit",
-			lang="json",
-			theme="idle_fingers",
-			height="150")
-	.d-manage-modal-control
-		label 数据加工
-			i-icon.full-icon(
-				v-if="item.config.api.process.enable",
-				type="ios-paper-outline",
-				@click="showFullMethodBodyEditor = true",
-				title="全屏编辑")
-		.d-manage-modal-control-right
+	d-code(
+		label="请求参数",
+		lang="json",
+		:code="item.config.api.params",
+		@update:code="value => (item.config.api.params = value)")
+	d-code(
+		label="响应数据",
+		lang="json",
+		:code="apiData",
+		@update:code="value => (apiData = value)")
+	d-code(
+		label="数据加工",
+		:code="item.config.api.process.methodBody",
+		:show="item.config.api.process.enable",
+		@update:code="value => (item.config.api.process.methodBody = value)")
+		template(slot="right")
 			i-switch(
 				v-model="item.config.api.process.enable",
 				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control(v-if="item.config.api.process.enable")
-		editor.d-manage-modal-control-editor(
-			v-model="item.config.api.process.methodBody",
-			@init="editorInit",
-			lang="javascript",
-			theme="idle_fingers",
-			height="150")
 	.d-manage-modal-control
 		label 自动更新
 		.d-manage-modal-control-right
@@ -134,39 +109,16 @@
 	.d-manage-modal-control(v-if="item.config.api.bind.enable")
 		checkbox-group(v-model="item.config.api.bind.refIds")
 			checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
-	i-modal(v-model="showFullParamsEditor", :footer-hide="true", title="全屏模式")
-		editor.d-manage-modal-control-editor(
-			v-model="item.config.api.params",
-			@init="editorInit",
-			lang="json",
-			theme="idle_fingers",
-			height="600")
-	i-modal(v-model="showFullMethodBodyEditor", :footer-hide="true", title="全屏模式")
-		editor.d-manage-modal-control-editor(
-			v-model="item.config.api.process.methodBody",
-			@init="editorInit",
-			lang="javascript",
-			theme="idle_fingers",
-			height="600")
-	i-modal(v-model="showFullApiDataEditor", :footer-hide="true", title="全屏模式")
-		editor.d-manage-modal-control-editor(
-			v-model="apiData",
-			@init="editorInit",
-			lang="json",
-			theme="idle_fingers",
-			height="600")
 </template>
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
 import databaseConfig from '../components/data-warehouse/index.vue'
+import dCode from '../components/d-code/index.vue'
 import scene from '../store/scene.store'
 
-@Component({ components: { databaseConfig } })
+@Component({ components: { databaseConfig, dCode } })
 export default class FuncData extends func {
-	showFullApiDataEditor = false
-	showFullParamsEditor = false
-	showFullMethodBodyEditor = false
 	showDatabaseConfigModal = false
 
 	get apiType() {
@@ -253,10 +205,3 @@ export default class FuncData extends func {
 	}
 }
 </script>
-
-<style lang="scss" scoped>
-.full-icon {
-	padding-left: 6px;
-	cursor: pointer;
-}
-</style>

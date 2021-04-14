@@ -3,12 +3,12 @@
 	:style="{ width: `${platform.ruler.xRoomR1}px`, height: '100%', flex: 1 }")
 	.d-right-modal-name.fn-flex.flex-row
 		span(contenteditable="editName", @input="changeName") {{ platform.panelConfig.info.name }}
-		i-icon(
+		i-icon.pointer(
 			type="md-checkmark",
 			slot="suffix",
 			@click="editName = false",
 			v-if="editName")
-		i-icon(type="ios-create-outline", @click="editName = true", v-if="!editName")
+		i-icon.pointer(type="ios-create-outline", @click="editName = true", v-if="!editName")
 	.d-right-modal-id
 		span version: {{ platform.version }}
 	.d-right-modal-type

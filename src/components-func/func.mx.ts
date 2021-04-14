@@ -20,8 +20,6 @@ import platform from '../store/platform.store'
 import scene from '../store/scene.store'
 import dRightSwiper from '../components/d-right-swiper/index.vue'
 
-const editor = require('vue2-ace-editor')
-
 @Component({
 	components: {
 		dRightSwiper,
@@ -39,7 +37,6 @@ const editor = require('vue2-ace-editor')
 		'i-modal': Modal,
 		CheckboxGroup,
 		Checkbox,
-		editor,
 	},
 })
 export default class Func extends Vue {
@@ -72,16 +69,6 @@ export default class Func extends Vue {
 		if (!this.config.prop) return null
 		const props = this.config.prop.split('.')
 		return props.reverse()[0]
-	}
-
-	editorInit() {
-		require('brace/ext/language_tools')
-		require('brace/mode/html')
-		require('brace/mode/javascript')
-		require('brace/mode/less')
-		require('brace/mode/json')
-		require('brace/theme/idle_fingers')
-		require('brace/snippets/javascript')
 	}
 
 	getItemValue(keyString) {
