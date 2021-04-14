@@ -158,7 +158,7 @@ export default {
 		)
 		window.addEventListener('resize', this.windowResize)
 		document
-			.getElementById('app')
+			.getElementsByClassName('main-container')[0]
 			.addEventListener('wheel', this.handleWheel)
 		dragContent.addEventListener('wheel', this.handleDragContentWheel)
 		document.documentElement.addEventListener('dblclick', this.resetZoom)
@@ -182,7 +182,7 @@ export default {
 		)
 		window.removeEventListener('resize', this.windowResize)
 		document
-			.getElementById('app')
+			.getElementsByClassName('main-container')[0]
 			.removeEventListener('wheel', this.handleWheel)
 		if (dragContent) {
 			dragContent.removeEventListener(
