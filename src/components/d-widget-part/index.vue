@@ -171,5 +171,7 @@ export default {
 	color: rgb(0, 0, 0);
 	text-align: center;
 	backface-visibility: hidden;
+	top: 0;
+	left: 0;
 }
 </style>

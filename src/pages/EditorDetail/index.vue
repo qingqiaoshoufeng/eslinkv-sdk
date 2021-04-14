@@ -48,10 +48,9 @@ export default class detail extends Vue {
 	}
 
 	updateSize(val) {
-		const w = val.width.replace(/width:(.*)px/, '$1')
-		const h = val.height.replace(/height:(.*)px/, '$1')
+		const w = val.width.replace(/(.*)px/, '$1')
+		const h = val.height.replace(/(.*)px/, '$1')
 		const { clientWidth, clientHeight } = document.body
-
 		const layoutMode = getQueryString('layoutMode')
 		switch (layoutMode) {
 			case 'full-size':
