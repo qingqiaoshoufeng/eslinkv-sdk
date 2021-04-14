@@ -109,6 +109,7 @@ export default {
 		},
 		handleWheel(e) {
 			if (e.ctrlKey) {
+				e.preventDefault()
 				e.stopPropagation()
 				this.handleWheelZoom(e)
 				return false
