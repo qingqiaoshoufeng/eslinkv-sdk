@@ -76,15 +76,20 @@
 		.d-manage-modal-control
 			label 启用动画
 			.d-manage-modal-control-right
-				i-select(
-					v-model="item.config.animation.enter",
-					v-if="item.config.animation.transitionEnable",
-					:style="{ marginRight: '10px', width: '156px' }",
-					:disabled="platform.chooseWidgetState")
-					i-option(:value="k", v-for="k in animationEnterNames", :key="k") {{ k }}
 				i-switch(
 					v-model="item.config.animation.transitionEnable",
 					:disabled="platform.chooseWidgetState")
+		.d-manage-modal-control
+			label 启用动画
+			.d-manage-modal-control-right
+				i-select(
+					v-model="item.config.animation.enter",
+					v-if="item.config.animation.transitionEnable",
+					:disabled="platform.chooseWidgetState")
+					i-option(
+						:value="k.value",
+						v-for="k in animationEnterNames",
+						:key="k.value") {{ k.label }}
 		.d-manage-modal-control(v-if="item.config.animation.transitionEnable")
 			label 延时时长
 			.d-manage-modal-control-right
@@ -108,61 +113,20 @@ import { Component } from 'vue-property-decorator'
 
 @Component
 export default class FuncBase extends func {
-	animationEnterNames: string[] = [
-		'bounce',
-		'flash',
-		'pulse',
-		'rubberBand',
-		'shakeX',
-		'shakeY',
-		'headShake',
-		'swing',
-		'tada',
-		'wobble',
-		'jello',
-		'heartBeat',
-		'backInDown',
-		'backInLeft',
-		'backInRight',
-		'backInUp',
-		'bounceIn',
-		'bounceInDown',
-		'bounceInLeft',
-		'bounceInRight',
-		'bounceInUp',
-		'fadeIn',
-		'fadeInDown',
-		'fadeInDownBig',
-		'fadeInLeft',
-		'fadeInLeftBig',
-		'fadeInRight',
-		'fadeInRightBig',
-		'fadeInUp',
-		'fadeInUpBig',
-		'fadeInTopLeft',
-		'fadeInTopRight',
-		'fadeInBottomLeft',
-		'fadeInBottomRight',
-		'flipInX',
-		'flipInY',
-		'lightSpeedInRight',
-		'lightSpeedInLeft',
-		'rotateIn',
-		'rotateInDownLeft',
-		'rotateInDownRight',
-		'rotateInUpLeft',
-		'rotateInUpRight',
-		'jackInTheBox',
-		'rollIn',
-		'zoomIn',
-		'zoomInDown',
-		'zoomInLeft',
-		'zoomInRight',
-		'zoomInUp',
-		'slideInDown',
-		'slideInLeft',
-		'slideInRight',
-		'slideInUp',
+	animationEnterNames: any[] = [
+		{ label: '渐隐渐显', value: 'fadeIn' },
+		{ label: '渐隐渐显+滑动向下', value: 'fadeInDown' },
+		{ label: '渐隐渐显+滑动向左', value: 'fadeInLeft' },
+		{ label: '渐隐渐显+滑动向右', value: 'fadeInRight' },
+		{ label: '渐隐渐显+滑动向上', value: 'fadeInUp' },
+		{ label: '渐隐渐显+滑动向上', value: 'fadeInUp' },
+		{ label: '渐隐渐显+滑动向左上', value: 'fadeInTopLeft' },
+		{ label: '渐隐渐显+滑动向右上', value: 'fadeInTopRight' },
+		{ label: '渐隐渐显+滑动向左下', value: 'fadeInBottomLeft' },
+		{ label: '渐隐渐显+滑动向右下', value: 'fadeInBottomRight' },
+		{ label: '滑动向下', value: 'slideInDown' },
+		{ label: '滑动向左', value: 'slideInLeft' },
+		{ label: '滑动向上', value: 'slideInUp' },
 	]
 }
 </script>

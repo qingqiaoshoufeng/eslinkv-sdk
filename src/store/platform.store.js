@@ -120,14 +120,18 @@ const state = Vue.observable({
 	ruler: getInitRuler(),
 })
 const actions = {
-	zoomIn() {
+	zoomIn(step = 2) {
 		if (state.ruler.zoom < 4) {
-			state.ruler.zoom = +((state.ruler.zoom * 100 + 2) / 100).toFixed(2)
+			state.ruler.zoom = +((state.ruler.zoom * 100 + step) / 100).toFixed(
+				2,
+			)
 		}
 	},
-	zoomOut() {
+	zoomOut(step = 2) {
 		if (state.ruler.zoom > state.ruler.zoomStep) {
-			state.ruler.zoom = +((state.ruler.zoom * 100 - 2) / 100).toFixed(2)
+			state.ruler.zoom = +((state.ruler.zoom * 100 - step) / 100).toFixed(
+				2,
+			)
 		}
 	},
 	initPlatformConfig() {

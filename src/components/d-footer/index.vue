@@ -59,11 +59,11 @@ export default class DFooter extends Vue {
 	}
 
 	handleZoomIn() {
-		platform.actions.zoomIn()
+		platform.actions.zoomIn(10)
 	}
 
 	handleZoomOut() {
-		platform.actions.zoomOut()
+		platform.actions.zoomOut(10)
 	}
 }
 </script>

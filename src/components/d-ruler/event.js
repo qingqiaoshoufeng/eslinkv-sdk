@@ -156,7 +156,9 @@ export default {
 			this.startContentMove,
 		)
 		window.addEventListener('resize', this.windowResize)
-		document.documentElement.addEventListener('wheel', this.handleWheel)
+		document
+			.getElementById('app')
+			.addEventListener('wheel', this.handleWheel)
 		dragContent.addEventListener('wheel', this.handleDragContentWheel)
 		document.documentElement.addEventListener('dblclick', this.resetZoom)
 		requestAnimationFrame(this.windowResize)
@@ -178,8 +180,9 @@ export default {
 			this.startContentMove,
 		)
 		window.removeEventListener('resize', this.windowResize)
-		document.documentElement.removeEventListener('wheel', this.handleWheel)
-		document.documentElement.removeEventListener('dblclick', this.resetZoom)
+		document
+			.getElementById('app')
+			.removeEventListener('wheel', this.handleWheel)
 		if (dragContent) {
 			dragContent.removeEventListener(
 				'wheel',

@@ -1,4 +1,3 @@
-import styleParser from './style-parser'
 import scene from './src/store/scene.store'
 import fetch from './fetch.js'
 import dataProcess from './data-process.js'
@@ -126,7 +125,12 @@ const mx: any = {
 	computed: {
 		styles() {
 			const { layout } = this.config
-			return styleParser(layout)
+			return {
+				width: `${layout.size.width}${layout.size.unit}`,
+				height: `${layout.size.height}${layout.size.unit}`,
+				zIndex: `${layout.zIndex}`,
+				transform: `translate3d(${layout.position.left}${layout.position.unit}, ${layout.position.top}${layout.position.unit},0)`,
+			}
 		},
 		id() {
 			const now = +new Date()

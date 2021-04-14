@@ -10,7 +10,7 @@ component(
 	@query-failed="querying = true",
 	@config-reset="$emit('config-reset')",
 	v-on="$listeners",
-	:key="`${config.widget.id}${updateKey}`"
+	:key="`${config.widget.id}${updateKey}`",
 	ref="widgets")
 	slot
 </template>
@@ -81,25 +81,16 @@ export default {
 		handleAnimationEnd() {
 			this.replayAnimation = false
 		},
-		// type: 入场动画 or 出场动画
-		setAnimation(type) {
+		setAnimation() {
 			if (!this.animationEnabled || !this.animation) {
 				this.removeAnimation()
 				return
 			}
-			const { enter, leave, duration, delay } = this.animation
+			const { enter, duration, delay } = this.animation
 			let animationClass
-			const animationSource = type === 'enter' ? enter : leave
-			if (!Array.isArray(animationSource)) {
-				animationClass = `animate__${animationSource}`
-			} else {
-				animationClass = animationSource
-					.map(item => `animate__${item}`)
-					.join(' ')
-			}
+			animationClass = `animate__${enter}`
 			this.animationClass = `animate__animated ${animationClass}`
 			const timer = setTimeout(() => {
-				this.removeAnimation()
 				this.handleAnimationEnd()
 				clearTimeout(timer)
 			}, delay + duration + 300)
@@ -143,13 +134,13 @@ export default {
 			deep: true,
 		},
 		animationEnabled(value) {
-			value && this.setAnimation('enter')
+			value && this.setAnimation()
 		},
 		ready() {
-			this.setAnimation('enter')
+			this.setAnimation()
 		},
 		replayAnimation(value) {
-			value ? this.setAnimation('enter') : this.removeAnimation()
+			value ? this.setAnimation() : this.removeAnimation()
 		},
 	},
 	mounted() {
