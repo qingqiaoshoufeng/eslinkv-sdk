@@ -6,11 +6,11 @@
 		:style="{ backgroundColor: platform.panelConfig.background.color, backgroundRepeat: platform.panelConfig.background.repeat, backgroundSize: platform.panelConfig.background.size, backgroundPosition: platform.panelConfig.background.position, backgroundImage: `url(${platform.panelConfig.background.url})` }")
 		.mobile-wrap(:style="{ height: mobileWrapHeight + 'px' }", v-if="isMobile")
 			d-view(
-				@mounted="updateKanboardSize",
+				@mounted="updateSize",
 				ref="previewContainer",
 				:style="viewStyle")
 		d-view(
-			@mounted="updateKanboardSize",
+			@mounted="updateSize",
 			ref="previewContainer",
 			v-else,
 			:style="viewStyle")
@@ -47,10 +47,9 @@ export default class detail extends Vue {
 		return `transform: scale(${scale}) translate3d(0, 0, 0); overflow: hidden;`
 	}
 
-	updateKanboardSize(val) {
-		const arr = val.split(';')
-		const w = arr[0].replace(/width:(.*)px/, '$1')
-		const h = arr[1].replace(/height:(.*)px/, '$1')
+	updateSize(val) {
+		const w = val.width.replace(/width:(.*)px/, '$1')
+		const h = val.height.replace(/height:(.*)px/, '$1')
 		const { clientWidth, clientHeight } = document.body
 
 		const layoutMode = getQueryString('layoutMode')

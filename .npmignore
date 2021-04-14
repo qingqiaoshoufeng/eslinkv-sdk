@@ -17,7 +17,6 @@ data-process.js
 fetch.js
 js-sandbox.js
 mixins.ts
-style-parser.js
 tsconfig.json
 vue.config.js
 .idea/

@@ -13,7 +13,6 @@
 </template>
 <script lang="ts">
 import parts from '../d-widget-part/index.vue'
-import styleParser from '../../../style-parser.js'
 import loadMask from '../load-mask/index.vue'
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
@@ -33,7 +32,12 @@ export default class DView extends Vue {
 	scene = scene.state
 
 	canvasStyle() {
-		const val = styleParser(this.platform.panelConfig)
+		const val = {
+			width: `${this.platform.panelConfig.size.width}${this.platform.panelConfig.size.unit}`,
+			height: `${this.platform.panelConfig.size.height}${this.platform.panelConfig.size.unit}`,
+			'background-color': this.platform.panelConfig.background.color,
+			'background-image': `url(${this.platform.panelConfig.background.url})`,
+		}
 		if (val) {
 			this.$emit('mounted', val)
 		}

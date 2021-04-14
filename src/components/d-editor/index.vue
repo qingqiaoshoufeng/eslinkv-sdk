@@ -66,7 +66,6 @@ import dGuide from '../d-guide'
 import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
-import styleParser from '../../../style-parser'
 
 export default {
 	name: 'd-editor',
@@ -132,7 +131,12 @@ export default {
 	},
 	computed: {
 		canvasStyle() {
-			return styleParser(this.platform.panelConfig)
+			return {
+				width: `${this.platform.panelConfig.size.width}${this.platform.panelConfig.size.unit}`,
+				height: `${this.platform.panelConfig.size.height}${this.platform.panelConfig.size.unit}`,
+				'background-color': this.platform.panelConfig.background.color,
+				'background-image': `url(${this.platform.panelConfig.background.url})`,
+			}
 		},
 		canvasSize() {
 			const { width, height } = this.platform.panelConfig.size
