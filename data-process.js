@@ -74,7 +74,9 @@ export default {
 			return data
 		},
 		parseQueryResult(response, { path, process }) {
-			if (response.code !== 200 && response.returnCode !== '0000') return
+			if (response.code !== 200 && response.data.returnCode !== '0000') {
+				return 
+			}
 			response = this.usePath(path, response)
 			response = this.useProcess(process, response)
 			this.data = response
