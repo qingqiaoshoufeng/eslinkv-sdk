@@ -7,7 +7,7 @@
 	y-line(:clientY="clientY", ref="yline")
 	.d-ruler-content#ruler-content(
 		ref="rulerContent",
-		:class="{ drag: contentMove }",
+		:class="{ drag: platform.ruler.contentMove }",
 		@click="deactivateWidget",
 		@mousedown="handleContentMoveStart",
 		@mousemove.prevent)

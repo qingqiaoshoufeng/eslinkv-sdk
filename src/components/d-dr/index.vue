@@ -22,6 +22,7 @@
 </template>
 <script>
 import { matchesSelectorToParentElements, addEvent, removeEvent } from './dom'
+import platform from '../../store/platform.store'
 
 const events = {
 	mouse: {
@@ -309,7 +310,7 @@ export default {
 		},
 		// 元素按下
 		elementDown(e) {
-			if (!this.enabled) return
+			if (!this.enabled || platform.state.ruler.contentMove) return
 			const target = e.target || e.srcElement
 
 			if (this.$el.contains(target)) {

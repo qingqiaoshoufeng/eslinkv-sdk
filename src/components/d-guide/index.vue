@@ -5,7 +5,7 @@
 			v-for="item in platform.ruler.guideLines",
 			:style="{ ...lineStyle(item) }",
 			:key="item.id",
-			:class="[`d-guide-line-${item.type}`, { 'no-pointer': contentMove || hideCursor }]",
+			:class="[`d-guide-line-${item.type}`, { 'no-pointer': platform.ruler.contentMove || hideCursor }]",
 			@mousedown.stop="e => handleGuideDrag(e, item)",
 			@mousemove="handleMousemove",
 			@contextmenu="openGuideMenu(item.id, $event)")
@@ -21,7 +21,6 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
 export default class Guide extends Vue {
-	@Prop() contentMove
 	showGuideMenu = false
 	menuLeft = 0
 	menuTop = 0

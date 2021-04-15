@@ -11,7 +11,6 @@ export default {
 			contentHeight: 0,
 			contentMoveStartX: 0, // 内容容器移动起始点水平时点值
 			contentMoveStartY: 0, // 内容容器移动起始点垂直时点值
-			contentMove: false, // 是否按下了 空格 键，启动内容区拖动
 			contentDrag: false, // 是否正在执行内容区拖动
 		}
 	},
@@ -28,7 +27,7 @@ export default {
 		 * @description 拖动开始时
 		 */
 		handleContentMoveStart(e) {
-			if (!this.contentMove) return
+			if (!this.platform.ruler.contentMove) return
 			this.contentMoveStartX = e.clientX
 			this.contentMoveStartY = e.clientY
 			this.contentDrag = true
@@ -54,11 +53,11 @@ export default {
 				e.preventDefault()
 			}
 			if (e.keyCode === 32) {
-				this.contentMove = true
+				this.platform.ruler.contentMove = true
 			}
 		},
 		stopContentMove() {
-			this.contentMove = false
+			this.platform.ruler.contentMove = false
 		},
 		windowResize() {
 			const id = this.platform.ruler.dragId
