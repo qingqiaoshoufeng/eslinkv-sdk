@@ -70,8 +70,8 @@
 	d-code(
 		label="请求参数",
 		lang="json",
-		:code="item.config.api.params",
-		@update:code="value => (item.config.api.params = value)")
+		:code="typeof item.config.api.params === 'string' ? item.config.api.params : JSON.stringify(item.config.api.params)",
+		@update:code="value => (item.config.api.params = JSON.parse(value))")
 	d-code(
 		label="响应数据",
 		lang="json",

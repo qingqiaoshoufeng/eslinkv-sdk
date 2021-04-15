@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-left-widgets.pos-a.fn-flex.flex-column.z-index-999(
+.d-left-widgets.pos-a.fn-flex.flex-column(
 	:style="{ width: `${platform.ruler.xRoomL1}px` }")
 	.d-left-modal-title.text-center
 		span 组件区

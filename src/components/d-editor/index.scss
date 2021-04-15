@@ -187,7 +187,12 @@
 			border: 1px solid $themeColor;
 		}
 	}
-
+	.ivu-checkbox {
+		margin-right: 4px;
+	}
+	.ivu-checkbox-wrapper {
+		color: #fafafa;
+	}
 	.ivu-input-disabled {
 		background-color: #181b24 !important;
 		&:hover {
