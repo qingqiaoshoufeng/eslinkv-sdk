@@ -19,7 +19,7 @@ export default {
 		'platform.panelConfig.size': {
 			deep: true,
 			handler() {
-				this.resetZoom()
+				platform.actions.resetZoom()
 			},
 		},
 	},
@@ -55,7 +55,6 @@ export default {
 			}
 			if (e.keyCode === 32) {
 				this.contentMove = true
-				platform.actions.unChooseWidget()
 			}
 		},
 		stopContentMove() {
@@ -127,24 +126,6 @@ export default {
 				this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
 			}
 		},
-		/**
-		 * @description 恢复默认缩放比例+居中
-		 */
-		resetZoom(e) {
-			e && e.stopPropagation()
-			const rulerOffsetWidth =
-				this.$refs.rulerContent.offsetWidth - this.platform.ruler.size
-			const rulerOffsetHeight = this.$refs.rulerContent.offsetHeight
-			const platformWidth = this.platform.panelConfig.size.width
-			const platformHeight = this.platform.panelConfig.size.height
-			this.platform.ruler.zoom =
-				~~((rulerOffsetWidth / platformWidth) * 100) / 100 ||
-				this.platform.ruler.zoomStep
-			const deltaX = (rulerOffsetWidth - platformWidth) * 0.5
-			const deltaY = (rulerOffsetHeight - platformHeight) * 0.5
-			this.platform.ruler.contentX = Math.ceil(deltaX)
-			this.platform.ruler.contentY = Math.ceil(deltaY)
-		},
 	},
 	mounted() {
 		const id = this.platform.ruler.dragId
@@ -161,10 +142,9 @@ export default {
 			.getElementsByClassName('main-container')[0]
 			.addEventListener('wheel', this.handleWheel)
 		dragContent.addEventListener('wheel', this.handleDragContentWheel)
-		document.documentElement.addEventListener('dblclick', this.resetZoom)
 		requestAnimationFrame(this.windowResize)
 		setTimeout(() => {
-			this.resetZoom()
+			platform.actions.resetZoom()
 		})
 	},
 	beforeDestroy() {
@@ -180,7 +160,6 @@ export default {
 			'keydown',
 			this.startContentMove,
 		)
-		window.removeEventListener('resize', this.windowResize)
 		document
 			.getElementsByClassName('main-container')[0]
 			.removeEventListener('wheel', this.handleWheel)

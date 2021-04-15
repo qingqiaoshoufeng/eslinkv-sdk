@@ -19,10 +19,12 @@
 								:src="child.value")
 	.d-footer-bar.fn-flex(:style="{ marginLeft: 'auto' }")
 		label {{ zoom }}
-	.d-footer-bar.fn-flex
+	.d-footer-bar.fn-flex(title="缩小")
 		d-svg.pointer(icon-class="zoomOut", @click="handleZoomOut")
-	.d-footer-bar.fn-flex
+	.d-footer-bar.fn-flex(title="放大")
 		d-svg.pointer(icon-class="zoomIn", @click="handleZoomIn")
+	.d-footer-bar.fn-flex(title="最佳比例")
+		d-svg.pointer(icon-class="smile", @click="handleResetZoom")
 	.d-footer-bar.fn-flex(:style="{ marginRight: '0' }")
 		i-icon.pointer(
 			:type="platform.fullscreen ? 'md-contract' : 'md-expand'",
@@ -56,6 +58,10 @@ export default class DFooter extends Vue {
 		} else {
 			document.body.requestFullscreen()
 		}
+	}
+
+	handleResetZoom() {
+		platform.actions.resetZoom()
 	}
 
 	handleZoomIn() {

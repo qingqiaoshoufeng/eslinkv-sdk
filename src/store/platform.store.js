@@ -120,6 +120,23 @@ const state = Vue.observable({
 	ruler: getInitRuler(),
 })
 const actions = {
+	/**
+	 * @description 恢复默认缩放比例+居中
+	 */
+	resetZoom() {
+		const rulerContent = document.getElementById('ruler-content')
+		const rulerOffsetWidth = rulerContent.offsetWidth - state.ruler.size
+		const rulerOffsetHeight = rulerContent.offsetHeight
+		const platformWidth = state.panelConfig.size.width
+		const platformHeight = state.panelConfig.size.height
+		state.ruler.zoom =
+			~~((rulerOffsetWidth / platformWidth) * 100) / 100 ||
+			state.ruler.zoomStep
+		const deltaX = (rulerOffsetWidth - platformWidth) * 0.5
+		const deltaY = (rulerOffsetHeight - platformHeight) * 0.5
+		state.ruler.contentX = Math.ceil(deltaX)
+		state.ruler.contentY = Math.ceil(deltaY)
+	},
 	zoomIn(step = 2) {
 		if (state.ruler.zoom < 4) {
 			state.ruler.zoom = +((state.ruler.zoom * 100 + step) / 100).toFixed(

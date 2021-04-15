@@ -5,7 +5,7 @@
 		@click="platform.ruler.guideVisible = !platform.ruler.guideVisible")
 	x-line(:clientX="clientX", ref="xline")
 	y-line(:clientY="clientY", ref="yline")
-	.d-ruler-content(
+	.d-ruler-content#ruler-content(
 		ref="rulerContent",
 		:class="{ drag: contentMove }",
 		@click="deactivateWidget",
