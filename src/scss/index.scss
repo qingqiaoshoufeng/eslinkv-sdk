@@ -208,6 +208,106 @@ body {
 }
 .ivu-modal-body {
 	color: #fff;
+	.ivu-form-item-label {
+		color: #fff;
+	}
+	.ivu-select-not-found {
+		padding: 4px 0;
+	}
+
+	.ivu-input-number {
+		border: none;
+		border-radius: 2px;
+	}
+
+	.ivu-select-dropdown {
+		padding: 0;
+		margin: 0;
+		background-color: #2d2f38;
+		border-radius: 2px;
+
+		li {
+			&:hover,
+			&.ivu-select-item-focus {
+				color: $themeColor;
+				background-color: #22242b;
+			}
+		}
+	}
+
+	.ivu-input-number-handler-wrap {
+		background-color: #181b24;
+	}
+
+	.ivu-select-placeholder {
+		color: #fafafa;
+	}
+
+	.ivu-input,
+	.ivu-select-selection,
+	.ivu-input-number-input {
+		color: #fafafa;
+		background-color: #181b24;
+		border: 1px solid #393b4a;
+		border-radius: 2px;
+
+		&:focus {
+			border: 1px solid $themeColor;
+		}
+	}
+
+	.ivu-input-disabled {
+		background-color: #181b24 !important;
+		&:hover {
+			border: 1px solid $themeColor !important;
+		}
+	}
+
+	.ivu-color-picker {
+		display: block;
+		cursor: pointer;
+		.ivu-icon {
+			display: none;
+		}
+		.ivu-input-icon-normal + .ivu-input {
+			padding-right: 7px;
+		}
+	}
+
+	.ivu-input-number {
+		display: block;
+	}
+
+	.ivu-radio-group-button {
+		display: block;
+	}
+	&::-webkit-scrollbar {
+		width: 4px;
+		height: 1px;
+		transition: all 0.3s;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: rgba(83, 83, 83, 0);
+		border-radius: 10px;
+		transition: all 0.3s;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: rgba(237, 237, 237, 0);
+		border-radius: 10px;
+		transition: all 0.3s;
+	}
+
+	&:hover {
+		&::-webkit-scrollbar-thumb {
+			background: rgba(83, 83, 83, 1);
+		}
+
+		&::-webkit-scrollbar-track {
+			background: rgba(237, 237, 237, 1);
+		}
+	}
 }
 .ivu-select-dropdown {
 	overflow-y: auto;
