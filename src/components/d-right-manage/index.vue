@@ -2,7 +2,7 @@
 .d-right-modal-box.z-index-999.fn-flex.flex-column(
 	:style="{ width: `${platform.ruler.xRoomR1}px`, height: '100%', flex: 1 }")
 	.d-right-modal-name.fn-flex.flex-row
-		span(contenteditable="editName", @input="changeName") {{ platform.panelConfig.info.name }}
+		span(:contenteditable="editName", @input="changeName") {{ staticName }}
 		i-icon.pointer(
 			type="md-checkmark",
 			slot="suffix",
@@ -29,8 +29,9 @@ import { Icon, Input } from 'view-design'
 	},
 })
 export default class DRightManage extends Vue {
-	editName: boolean = false
+	editName = false
 	platform = platform.state
+	staticName = platform.state.panelConfig.info.name
 
 	changeName(e) {
 		this.platform.panelConfig.info.name = e.target.innerText
