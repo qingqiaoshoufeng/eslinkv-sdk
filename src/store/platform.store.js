@@ -40,10 +40,6 @@ function getInitRuler() {
 		size: 18, // 标尺高度，容差
 		zoom: 1,
 		zoomStep: 0.02,
-		contentLayout: {
-			top: 0,
-			left: 0, // 刻度修正，根据 contentLayout 参数确定 0 刻度位置
-		},
 		dragFlag: '', // 拖动开始标记，可能值x(从水平标尺开始拖动),y(从垂直标尺开始拖动)
 	}
 }
@@ -108,14 +104,6 @@ const state = Vue.observable({
 			],
 		},
 		{ name: '垂直移动画布', key: [{ value: mouseWheelImg, type: 'img' }] },
-		{
-			name: '居中画布',
-			key: [
-				{ value: mouseLeftImg, type: 'img' },
-				{ type: '+' },
-				{ value: mouseLeftImg, type: 'img' },
-			],
-		},
 	],
 	autoAlignGuide: true, // 自动贴靠参考线
 	ruler: getInitRuler(),

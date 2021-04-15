@@ -4,13 +4,16 @@ div(v-if="platform.chooseWidgetState")
 	:style="{ width: `${platform.ruler.xRoomR1}px` }",
 	v-else)
 	.d-right-modal-name.fn-flex.flex-row
-		span(contenteditable="editName", @input="changeName") {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].config.widget.name : '' }}
+		span(contenteditable="editName", @input="changeName") {{ staticName }}
 		i-icon.pointer(
 			type="md-checkmark",
 			slot="suffix",
 			@click="editName = false",
 			v-if="editName")
-		i-icon.pointer(type="ios-create-outline", @click="editName = true", v-if="!editName")
+		i-icon.pointer(
+			type="ios-create-outline",
+			@click="editName = true",
+			v-if="!editName")
 		i-icon.pointer(type="md-eye", @click="handleHide", v-if="!editName")
 		i-icon.pointer(type="md-lock", @click="handleLock", v-if="!editName")
 	.d-right-modal-id
@@ -46,6 +49,7 @@ export default class DRightSetting extends Vue {
 	tabIndex = 0
 	editName = false
 	platform = platform.state
+	staticName = ''
 	title = ['基础', '数据', '主题', '自定义']
 	chooseList: any = [
 		{
@@ -66,9 +70,19 @@ export default class DRightSetting extends Vue {
 		},
 	]
 
-	@Watch('platform.chooseWidgetState')
+	@Watch('platform.chooseWidgetId', { deep: true })
 	onChooseWidgetId() {
-		this.tabIndex = 0
+		this.staticName = this.platform.chooseWidgetId
+			? this.platform.widgetAdded[this.platform.chooseWidgetId].config
+					.widget.name
+			: ''
+	}
+
+	mounted() {
+		this.staticName = this.platform.chooseWidgetId
+			? this.platform.widgetAdded[this.platform.chooseWidgetId].config
+					.widget.name
+			: ''
 	}
 
 	@Watch('platform.chooseWidgetCustomConfig', { deep: true })
