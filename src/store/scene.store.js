@@ -128,14 +128,15 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 					<div id="${id}" class="scene-temporary-wrapper" style="${canvasStyle}">
 						<parts
 						readonly
+						:market="item.market"
 						:ref="item.id"
 						:config="item.value"
 						:type="item.type"
 						v-for="item in array"
-						:key="item.id"></parts>
+						:key="item.id"/>
 					</div></div>`,
 				provide() {
-					return { kanboard: _self, kanboardEditor: _self }
+					return { kanboardEditor: _self }
 				},
 				data() {
 					return {
