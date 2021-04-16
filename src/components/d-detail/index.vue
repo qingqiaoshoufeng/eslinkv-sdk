@@ -23,7 +23,7 @@
 				:size="18",
 				:class="{ active: right1 }")
 	.d-detail-middle.fn-flex
-		span.d-detail-title {{ platform.panelConfig.info ? platform.panelConfig.info.name : '' }}
+		span.d-detail-title {{ platform.screenName }}
 	ul.d-detail-right.fn-flex
 		li.fn-flex.flex-column.pointer(@click="preview", v-if="!isNew")
 			i-icon(type="ios-desktop-outline", :size="24")
@@ -223,10 +223,9 @@ export default class DDetail extends mixins(
 	platFormData() {
 		const defaultConfig = commonConfigValue() // 读取默认配置
 		const panelConfig = this.platform.panelConfig
-		const {
-			size,
-			info: { name },
-		} = panelConfig
+		delete panelConfig.info
+		delete panelConfig.id
+		const { size } = panelConfig
 		delete size.preset
 		if (
 			size.range &&
@@ -258,7 +257,7 @@ export default class DDetail extends mixins(
 
 		const guides = this.platform.ruler.guideLines
 		return {
-			screenName: name,
+			screenName: this.platform.screenName,
 			screenConfig: {
 				kanboard: panelConfig, // 看板画布配置
 				widgets, // 小工具配置

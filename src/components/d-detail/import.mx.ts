@@ -17,7 +17,7 @@ export default {
 					screenConfig.widgets.forEach(v => {
 						setDefault(v.value)
 					})
-					this.renderByDetail({ name: screenName, screenConfig })
+					this.renderByDetail({ screenName, screenConfig })
 					this.importModal = false
 					this.loading = false
 				} catch (e) {

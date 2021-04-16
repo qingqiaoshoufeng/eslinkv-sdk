@@ -14,6 +14,7 @@ export default {
 			if (res.screenConfig.scene) {
 				scene.actions.initScene(res.screenConfig)
 			}
+			this.platform.screenName = res.screenName
 			this.refillConfig(res.screenConfig)
 		},
 		refillConfig(res) {

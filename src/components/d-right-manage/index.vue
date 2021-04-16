@@ -2,13 +2,16 @@
 .d-right-modal-box.z-index-999.fn-flex.flex-column(
 	:style="{ width: `${platform.ruler.xRoomR1}px`, height: '100%', flex: 1 }")
 	.d-right-modal-name.fn-flex.flex-row
-		span(:contenteditable="editName", @input="changeName") {{ staticName }}
+		span#platform-name(:contenteditable="editName") {{ staticName }}
 		i-icon.pointer(
 			type="md-checkmark",
 			slot="suffix",
-			@click="editName = false",
+			@click="changeName",
 			v-if="editName")
-		i-icon.pointer(type="ios-create-outline", @click="editName = true", v-if="!editName")
+		i-icon.pointer(
+			type="ios-create-outline",
+			@click="editName = true",
+			v-if="!editName")
 	.d-right-modal-id
 		span version: {{ platform.version }}
 	.d-right-modal-type
@@ -31,10 +34,24 @@ import { Icon, Input } from 'view-design'
 export default class DRightManage extends Vue {
 	editName = false
 	platform = platform.state
-	staticName = platform.state.panelConfig.info.name
 
-	changeName(e) {
-		this.platform.panelConfig.info.name = e.target.innerText
+	get staticName() {
+		return this.platform.screenName
+	}
+
+	changeName() {
+		const id = this.$route.params.id
+		const screenName = document.getElementById('platform-name').innerText
+		this.editName = false
+		this.platform.screenName = screenName
+		this.$api.screen
+			.update({
+				screenId: id,
+				screenName,
+			})
+			.then(() => {
+				this.$Message.success('修改成功')
+			})
 	}
 }
 </script>

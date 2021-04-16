@@ -47,11 +47,6 @@ function getInitRuler() {
 function getInitPanelConfig() {
 	return {
 		// 看板配置
-		id: null,
-		info: {
-			id: '',
-			name: '未命名',
-		},
 		size: {
 			width: 1920,
 			height: 1080,
@@ -70,6 +65,7 @@ const state = Vue.observable({
 	version: '1.0.3',
 	widgetAdded: {},
 	screenAvatar: '',
+	screenName: '未命名',
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
 	chooseWidgetId: null, // 选中项id
 	chooseWidgetState: true, // 是否可编辑
