@@ -51,7 +51,7 @@ export default {
 				this.deadline = req.screenShareTime
 			}
 			await this.$api.screenShare.screenShareUpdate(req)
-			this.shareUrl = 'http://localhost:3001/shareScreen/' + this.$route.params.id
+			this.shareUrl = `${location.origin}/shareScreen/${this.$route.params.id}`
 		},
 	},
 	async created() {
