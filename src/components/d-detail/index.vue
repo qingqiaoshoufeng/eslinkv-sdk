@@ -56,6 +56,9 @@
 		p(:style="{ marginBottom: '10px' }") 快生成链接，分享给你的好友吧
 		.fn-flex.flex-row(:style="{ marginBottom: '10px' }")
 			label.ivu-btn.d-detail-share-button(
+				:class="{ 'ivu-btn-primary': shareType === 'ALL' }",
+				@click="shareType = 'ALL'") 不限制
+			label.ivu-btn.d-detail-share-button(
 				:class="{ 'ivu-btn-primary': shareType === 'PASSWORD' }",
 				@click="shareType = 'PASSWORD'") 加密分享
 			label.ivu-btn.d-detail-share-button(
@@ -76,8 +79,9 @@
 				type="primary",
 				@click="shareSubmit",
 				:style="{ marginLeft: '10px' }") 生成
+		.deadline(v-if="shareType === 'TIME'") 到期时间：{{ deadline }}
 		.fn-flex.flex-row
-		i-input(search, readonly, enter-button="复制", @on-search="handleCopy")
+			i-input(search, readonly, enter-button="复制", @on-search="handleCopy" v-model="shareUrl")
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
@@ -298,10 +302,6 @@ export default class DDetail extends mixins(
 	}
 }
 
-.d-detail-left {
-	align-items: center;
-}
-
 .d-detail-right {
 	height: 100%;
 
@@ -362,5 +362,9 @@ export default class DDetail extends mixins(
 .d-detail-left {
 	align-items: center;
 	height: 100%;
+}
+
+.deadline {
+	margin-bottom: 10px;
 }
 </style>
