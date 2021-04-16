@@ -37,8 +37,9 @@
 					:z="item.config.layout.zIndex",
 					:snap="platform.autoAlignGuide",
 					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
-					snap-to-target="d-guide-line",
+					snap-to-target="d-editor-line",
 					@resizestop="onResizeStop",
+					@refLineParams="params => getRefLineParams(params, item)",
 					@dragstop="onDragStop",
 					@activated="handleActivated(item)",
 					@deactivated="handleDeactivated(item)",
@@ -49,6 +50,19 @@
 						:config="item.config",
 						:market="item.market",
 						@widget-config-update="data => handleWidgetConfig(data, item)")
+			.d-editor-line(data-top="0px", :style="{ top: 0, height: 0 }")
+			.d-editor-line(
+				:data-top="`${platform.panelConfig.size.height}${platform.panelConfig.size.unit}`",
+				:style="{ top: `${platform.panelConfig.size.height}${platform.panelConfig.size.unit}`, height: 0 }")
+			// 参考线
+			span.ref-line.v-line.pos-a(
+				v-for="item in vLine",
+				v-show="item.display",
+				:style="{ left: item.position, top: item.origin, height: item.lineLength }")
+			span.ref-line.h-line.pos-a(
+				v-for="item in hLine",
+				v-show="item.display",
+				:style="{ top: item.position, left: item.origin, width: item.lineLength }")
 	d-guide
 	// 右键菜单
 	right-menu(ref="rightMenu", @deactivateWidget="deactivateWidget")
@@ -87,9 +101,24 @@ export default {
 			platform: platform.state,
 			scene: scene.state,
 			isDragIn: false,
+			vLine: [],
+			hLine: [],
 		}
 	},
 	methods: {
+		getRefLineParams(params, item) {
+			const { vLine, hLine } = params
+			this.vLine = vLine.map(child => {
+				child.w = item.config.layout.size.width
+				child.h = item.config.layout.size.height
+				return child
+			})
+			this.hLine = hLine.map(child => {
+				child.w = item.config.layout.size.width
+				child.h = item.config.layout.size.height
+				return child
+			})
+		},
 		handleFullscreenChange() {
 			this.platform.fullscreen = !this.platform.fullscreen
 		},
@@ -183,7 +212,7 @@ export default {
 <style lang="scss" scoped>
 @import 'src/scss/conf';
 .ref-line {
-	background-color: $lineColor;
+	background-color: var(--lineColor);
 }
 .v-line {
 	width: 1px;

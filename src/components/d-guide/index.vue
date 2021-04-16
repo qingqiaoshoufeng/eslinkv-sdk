@@ -1,15 +1,16 @@
 <template lang="pug">
 .d-guide
 	.d-guide-wrapper.pos-a(:style="guideStyle")
-		.d-guide-line.z-index-9.pos-a(
+		.d-guide-line.z-index-9.pos-a.d-editor-line(
 			v-for="item in platform.ruler.guideLines",
 			:style="{ ...lineStyle(item) }",
-			:key="item.id",
+			:data-top="item.site",
+			:key="item.site",
 			:class="[`d-guide-line-${item.type}`, { 'no-pointer': platform.ruler.contentMove || hideCursor }]",
 			@mousedown.stop="e => handleGuideDrag(e, item)",
 			@mousemove="handleMousemove",
 			@contextmenu="openGuideMenu(item.id, $event)")
-			.num.pos-a {{ item.title }}
+			.num.pos-a {{ item.site }}px
 	ul.d-guide-right-menu(
 		v-show="showGuideMenu",
 		:style="`left: ${menuLeft}px; top:${menuTop - 10}px`")
