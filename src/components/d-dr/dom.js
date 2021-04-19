@@ -1,28 +1,3 @@
-import { isFunction } from './fns'
-
-//将选择器与父元素匹配
-export function matchesSelectorToParentElements(el, selector, baseNode) {
-	let node = el
-
-	const matchesSelectorFunc = [
-		'matches',
-		'webkitMatchesSelector',
-		'mozMatchesSelector',
-		'msMatchesSelector',
-		'oMatchesSelector',
-	].find(func => isFunction(node[func]))
-
-	if (!isFunction(node[matchesSelectorFunc])) return false
-
-	do {
-		if (node[matchesSelectorFunc](selector)) return true
-		if (node === baseNode) return false
-		node = node.parentNode
-	} while (node)
-
-	return false
-}
-
 // 添加事件
 export function addEvent(el, event, handler) {
 	if (!el) {

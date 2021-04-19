@@ -251,7 +251,7 @@ export default class DLeftScene extends Vue {
 		}
 
 		&.active {
-			color: #fff;
+			color: var(--white);
 			background-color: $themeColor;
 			border-color: $themeColor;
 		}

@@ -138,7 +138,7 @@ export default class rightMenu extends Vue {
 	font-size: 12px;
 	text-align: left;
 	pointer-events: none;
-	background-color: #fff;
+	background-color: var(--white);
 	filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.15));
 	border-radius: 5px;
 	opacity: 0;
@@ -150,7 +150,7 @@ export default class rightMenu extends Vue {
 		left: calc(100% + 5px);
 		padding: 5px 0;
 		pointer-events: none;
-		background-color: #fff;
+		background-color: var(--white);
 		filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.15));
 		border-radius: 5px;
 		opacity: 0;
@@ -162,7 +162,7 @@ export default class rightMenu extends Vue {
 			top: 5px;
 			left: -7px;
 			font-size: 14px;
-			color: #fff;
+			color: var(--white);
 			content: '\23F4';
 		}
 	}

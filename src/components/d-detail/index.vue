@@ -295,7 +295,7 @@ export default class DDetail extends mixins(
 		}
 
 		&.active {
-			color: #fff;
+			color: var(--white);
 			background-color: $themeColor;
 			border: 1px solid $themeColor;
 		}
@@ -309,10 +309,10 @@ export default class DDetail extends mixins(
 		justify-content: center;
 		height: 100%;
 		padding: 0 15px;
-		color: #fff;
+		color: var(--white);
 
 		&:hover {
-			background-color: rgba(255, 255, 255, 0.1);
+			background-color: var(--white_01);
 		}
 	}
 }
@@ -321,14 +321,14 @@ export default class DDetail extends mixins(
 	align-items: center;
 	height: 100%;
 	padding: 0 15px;
-	color: #fff;
+	color: var(--white);
 
 	> i {
 		line-height: 60px;
 	}
 
 	&:hover {
-		background-color: rgba(255, 255, 255, 0.1);
+		background-color: var(--white_01);
 	}
 }
 
@@ -356,7 +356,7 @@ export default class DDetail extends mixins(
 
 .d-detail-title {
 	font-size: 15px;
-	color: #fff;
+	color: var(--white);
 }
 
 .d-detail-left {

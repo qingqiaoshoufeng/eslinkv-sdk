@@ -69,7 +69,7 @@ export default class DRuler extends mixins(eventHandlers) {
 	width: 18px;
 	height: 18px;
 	line-height: 18px;
-	color: #fff;
+	color: var(--white);
 	background-color: #111;
 }
 

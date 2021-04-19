@@ -93,7 +93,7 @@ export default class DFooter extends Vue {
 	justify-content: center;
 	height: 100%;
 	margin-right: 15px;
-	color: $white_08;
+	color: var(--white_08);
 	border-radius: 2px;
 	opacity: 0.5;
 	transition: all 0.3s;
@@ -126,7 +126,7 @@ export default class DFooter extends Vue {
 		opacity: 0;
 		transition: all 0.3s;
 		transform: translate3d(0, -20px, 0);
-		color: #fff;
+		color: var(--white_06);
 		li {
 			align-items: center;
 			padding: 4px 0;
@@ -169,7 +169,7 @@ export default class DFooter extends Vue {
 	}
 
 	&:hover {
-		color: $white;
+		color: var(--white);
 	}
 }
 </style>

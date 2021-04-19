@@ -1,14 +1,14 @@
 <template lang="pug">
 .dr.pos-a(
 	:style="style",
-	:class="[{ [classNameActive]: enabled, [classNameDragging]: dragging, [classNameResizing]: resizing, [classNameDraggable]: draggable, [classNameResizable]: resizable }, className]",
+	:class="[{ [classNameActive]: enabled, ['dr-dragging']: dragging, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
 	@click="elementEnable",
 	@mousedown="elementDown",
 	@touchstart="elementTouchDown")
 	div(
 		v-for="handle in actualHandles",
 		:key="handle",
-		:class="[classNameHandle, classNameHandle + '-' + handle]",
+		:class="['dr-handle', `dr-handle-${handle}`]",
 		:style="{ display: enabled && !dragging ? 'block' : 'none' }",
 		@mousedown.stop.prevent="handleDown(handle, $event)",
 		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
@@ -19,12 +19,17 @@
 		.dr-line-left.pos-a
 		.dr-line-right.pos-a
 	.dr-tip-top.pos-a(
-		:style="{ top: `-${top}px`, height: `${top}px`, width: '1px', backgroundColor: '#ddd' }")
-	.dr-tip-left.pos-a(v-if="dragging")
+		v-if="tipShow",
+		:style="{ top: `-${top}px`, height: `${top}px` }")
+		span.pos-a {{ top }}
+	.dr-tip-left.pos-a(
+		v-if="tipShow",
+		:style="{ left: `-${left}px`, width: `${left}px` }")
+		span.pos-a {{ left }}
 	slot
 </template>
 <script>
-import { matchesSelectorToParentElements, addEvent, removeEvent } from './dom'
+import { addEvent, removeEvent } from './dom'
 import platform from '../../store/platform.store'
 
 const events = {
@@ -46,45 +51,9 @@ export default {
 	replace: true,
 	name: 'd-dr',
 	props: {
-		className: {
-			type: String,
-			default: '',
-		},
-		classNameDraggable: {
-			type: String,
-			default: 'dr-draggable',
-		},
-		classNameResizable: {
-			type: String,
-			default: 'dr-resizable',
-		},
-		classNameDragging: {
-			type: String,
-			default: 'dr-dragging',
-		},
-		classNameResizing: {
-			type: String,
-			default: 'dr-resizing',
-		},
 		classNameActive: {
 			type: String,
 			default: 'dr-active',
-		},
-		classNameHandle: {
-			type: String,
-			default: 'dr-handle',
-		},
-		disableUserSelect: {
-			type: Boolean,
-			default: true,
-		},
-		enableNativeDrag: {
-			type: Boolean,
-			default: false,
-		},
-		preventDeactivation: {
-			type: Boolean,
-			default: false,
 		},
 		active: {
 			type: Boolean,
@@ -113,26 +82,6 @@ export default {
 			default: 200,
 			validator: val => val > 0,
 		},
-		minWidth: {
-			type: Number,
-			default: 0,
-			validator: val => val >= 0,
-		},
-		minHeight: {
-			type: Number,
-			default: 0,
-			validator: val => val >= 0,
-		},
-		maxWidth: {
-			type: Number,
-			default: null,
-			validator: val => val >= 0,
-		},
-		maxHeight: {
-			type: Number,
-			default: null,
-			validator: val => val >= 0,
-		},
 		x: {
 			type: Number,
 			default: 0,
@@ -148,31 +97,6 @@ export default {
 			default: 'auto',
 			validator: val =>
 				typeof val === 'string' ? val === 'auto' : val >= 0,
-		},
-		handles: {
-			type: Array,
-			default: () => ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'],
-			validator: val => {
-				const s = new Set([
-					'tl',
-					'tm',
-					'tr',
-					'mr',
-					'br',
-					'bm',
-					'bl',
-					'ml',
-				])
-				return new Set(val.filter(h => s.has(h))).size === val.length
-			},
-		},
-		dragHandle: {
-			type: String,
-			default: null,
-		},
-		dragCancel: {
-			type: String,
-			default: null,
 		},
 		axis: {
 			type: String,
@@ -192,14 +116,6 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		// 当调用对齐时，用来设置组件与组件之间的对齐距离，以像素为单位
-		snapTolerance: {
-			type: Number,
-			default: 5,
-			validator: function (val) {
-				return typeof val === 'number'
-			},
-		},
 		snapToTarget: {
 			type: String,
 			default: null,
@@ -213,6 +129,7 @@ export default {
 
 	data() {
 		return {
+			snapTolerance: 5, // 当调用对齐时，用来设置组件与组件之间的对齐距离，以像素为单位
 			platform: platform.state,
 			rawWidth: this.w,
 			rawHeight: this.h,
@@ -225,40 +142,20 @@ export default {
 			right: null,
 			bottom: null,
 			aspectFactor: this.w / this.h,
-			minW: this.minWidth,
-			minH: this.minHeight,
-			maxW: this.maxWidth,
-			maxH: this.maxHeight,
 			handle: null,
 			enabled: this.active,
 			resizing: false,
 			dragging: false,
-			zIndex: this.z,
 			brotherNodes: null,
 		}
 	},
-
 	created() {
-		// eslint-disable-next-line 无效的prop：minWidth不能大于maxWidth
-		if (this.maxWidth && this.minWidth > this.maxWidth)
-			console.warn(
-				'[Vdr warn]: Invalid prop: minWidth cannot be greater than maxWidth',
-			)
-		// eslint-disable-next-line 无效prop：minHeight不能大于maxHeight'
-		if (this.maxWidth && this.minHeight > this.maxHeight)
-			console.warn(
-				'[Vdr warn]: Invalid prop: minHeight cannot be greater than maxHeight',
-			)
-
 		this.resetBoundsAndMouseState()
 	},
 	mounted() {
-		if (!this.enableNativeDrag) {
-			this.$el.ondragstart = () => false
-		}
+		this.$el.ondragstart = () => false
 		this.rawRight = -this.rawWidth - this.rawLeft
 		this.rawBottom = -this.rawHeight - this.rawTop
-
 		addEvent(document.documentElement, 'mousedown', this.deselect)
 		addEvent(
 			document.documentElement,
@@ -294,7 +191,6 @@ export default {
 		// 元素触摸按下
 		elementTouchDown(e) {
 			eventsFor = events.touch
-
 			this.elementDown(e)
 		},
 		elementEnable(e) {
@@ -313,23 +209,6 @@ export default {
 
 			if (this.$el.contains(target)) {
 				if (this.onDragStart && this.onDragStart(e) === false) {
-					return
-				}
-
-				if (
-					(this.dragHandle &&
-						!matchesSelectorToParentElements(
-							target,
-							this.dragHandle,
-							this.$el,
-						)) ||
-					(this.dragCancel &&
-						matchesSelectorToParentElements(
-							target,
-							this.dragCancel,
-							this.$el,
-						))
-				) {
 					return
 				}
 
@@ -375,20 +254,17 @@ export default {
 			const regex = new RegExp(this.className + '-([trmbl]{2})', '')
 
 			if (!this.$el.contains(target) && !regex.test(target.className)) {
-				if (this.enabled && !this.preventDeactivation) {
+				if (this.enabled) {
 					this.enabled = false
-
 					this.$emit('deactivated')
 					this.$emit('update:active', false)
 				}
-
 				removeEvent(
 					document.documentElement,
 					eventsFor.move,
 					this.handleMove,
 				)
 			}
-
 			this.resetBoundsAndMouseState()
 		},
 		// 控制柄触摸按下
@@ -402,9 +278,7 @@ export default {
 			if (this.onResizeStart && this.onResizeStart(handle, e) === false) {
 				return
 			}
-
 			if (e.stopPropagation) e.stopPropagation()
-
 			// Here we avoid a dangerous recursion by faking
 			// corner handles as middle handles
 			if (this.lockAspectRatio && !handle.includes('m')) {
@@ -412,9 +286,7 @@ export default {
 			} else {
 				this.handle = handle
 			}
-
 			this.resizing = true
-
 			this.mouseClickPosition.mouseX = e.touches
 				? e.touches[0].pageX
 				: e.pageX
@@ -442,7 +314,6 @@ export default {
 		elementMove(e) {
 			const axis = this.axis
 			const mouseClickPosition = this.mouseClickPosition
-
 			const tmpDeltaX =
 				axis && axis !== 'y'
 					? mouseClickPosition.mouseX -
@@ -453,7 +324,6 @@ export default {
 					? mouseClickPosition.mouseY -
 					  (e.touches ? e.touches[0].pageY : e.pageY)
 					: 0
-
 			const deltaX = Math.round(tmpDeltaX / this.scaleRatio)
 			const deltaY = Math.round(tmpDeltaY / this.scaleRatio)
 			this.rawTop = mouseClickPosition.top - deltaY
@@ -554,10 +424,8 @@ export default {
 				for (let i in refLine) {
 					refLine[i] = JSON.parse(JSON.stringify(temArr))
 				}
-
 				// 获取当前父节点下所有子节点
 				const nodes = this.brotherNodes
-
 				let tem = {
 					value: { x: [[], [], []], y: [[], [], []] },
 					display: [],
@@ -584,11 +452,13 @@ export default {
 						}
 						const l = item.offsetLeft // 对齐目标的left
 						const r = l + w // 对齐目标right
-
-						// 参考线取 data-top 值
-						const t = Number(
-							item.getAttribute('data-top').replace('px', ''),
-						) // 对齐目标的top
+						const t = item.getAttribute('data-top')
+							? Number(
+									item
+										.getAttribute('data-top')
+										.replace('px', ''),
+							  )
+							: item.offsetTop // 参考线取 data-top 值 普通取top值
 						const b = t + h // 对齐目标的bottom
 						const hc =
 							Math.abs(activeTop + height / 2 - (t + h / 2)) <=
@@ -710,7 +580,7 @@ export default {
 						}
 					}
 				}
-				// this.$emit('refLineParams', refLine)
+				this.$emit('refLineParams', refLine)
 			}
 		},
 		calcLineValues(arr) {
@@ -720,18 +590,27 @@ export default {
 		},
 	},
 	computed: {
+		tipShow() {
+			return (
+				this.dragging &&
+				this.top > 0 &&
+				this.left > 0 &&
+				this.top < this.platform.panelConfig.size.height &&
+				this.left < this.platform.panelConfig.size.width
+			)
+		},
 		style() {
 			return {
 				transform: `translate3d(${this.left}px, ${this.top}px,0)`,
 				width: this.width + 'px',
 				height: this.height + 'px',
-				zIndex: this.zIndex,
+				zIndex: this.z,
 			}
 		},
 		// 控制柄显示与否
 		actualHandles() {
 			if (!this.resizable) return []
-			return this.handles
+			return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']
 		},
 		width() {
 			return -this.left - this.right
@@ -760,11 +639,6 @@ export default {
 				this.$emit('activated')
 			} else {
 				this.$emit('deactivated')
-			}
-		},
-		z(val) {
-			if (val >= 0 || val === 'auto') {
-				this.zIndex = val
 			}
 		},
 		rawLeft(newLeft) {
@@ -835,22 +709,6 @@ export default {
 			} else {
 				this.aspectFactor = undefined
 			}
-		},
-		minWidth(val) {
-			if (val > 0 && val <= this.width) {
-				this.minW = val
-			}
-		},
-		minHeight(val) {
-			if (val > 0 && val <= this.height) {
-				this.minH = val
-			}
-		},
-		maxWidth(val) {
-			this.maxW = val
-		},
-		maxHeight(val) {
-			this.maxH = val
 		},
 		w() {
 			if (this.resizing || this.dragging) {

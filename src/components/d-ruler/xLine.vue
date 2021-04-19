@@ -196,7 +196,7 @@ canvas {
 	width: 0;
 	height: 9999px;
 	pointer-events: none;
-	border-left: 1px dashed $lineColor;
+	border-left: 1px dashed var(--lineRed);
 
 	.num {
 		position: absolute;
@@ -205,8 +205,8 @@ canvas {
 		padding: 4px;
 		font-size: 12px;
 		line-height: 12px;
-		color: #fff;
-		background: $lineColor;
+		color: var(--white);
+		background: var(--lineRed);
 	}
 }
 </style>

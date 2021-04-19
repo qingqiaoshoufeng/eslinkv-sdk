@@ -75,7 +75,24 @@
 		}
 	}
 }
-
+.dr-tip-top {
+	border-left: 1px dashed var(--white_04);
+	span {
+		bottom: 30px;
+		right: 5px;
+		font-size: 14px;
+		color: var(--white_04);
+	}
+}
+.dr-tip-left {
+	border-top: 1px dashed var(--white_04);
+	span {
+		right: 30px;
+		bottom: 5px;
+		font-size: 14px;
+		color: var(--white_04);
+	}
+}
 .dr-line {
 	height: 100%;
 	width: 100%;
@@ -118,7 +135,7 @@
 	border-radius: 4px;
 	box-sizing: border-box;
 	position: absolute;
-	background: #ffffff;
+	background: var(--white);
 }
 
 .dr-handle-ml {

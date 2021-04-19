@@ -29,14 +29,13 @@
 					:draggable="widgetEditable(item)",
 					:resizable="widgetEditable(item)",
 					:active="item.id === platform.chooseWidgetId && widgetEditable(item)",
-					:prevent-deactivation="true",
 					:w="item.config.layout.size.width",
 					:h="item.config.layout.size.height",
 					:x="item.config.layout.position.left",
 					:y="item.config.layout.position.top",
 					:z="item.config.layout.zIndex",
 					:snap="platform.autoAlignGuide",
-					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, preview: false, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
+					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 					snap-to-target="d-editor-line",
 					@resizestop="onResizeStop",
 					@refLineParams="params => getRefLineParams(params, item)",
@@ -51,6 +50,7 @@
 						:market="item.market",
 						@widget-config-update="data => handleWidgetConfig(data, item)")
 			.d-editor-line(data-top="0px", :style="{ top: 0, height: 0 }")
+			.d-editor-line(data-left="0px", :style="{ top: 0, right: 0 }")
 			.d-editor-line(
 				:data-top="`${platform.panelConfig.size.height}${platform.panelConfig.size.unit}`",
 				:style="{ top: `${platform.panelConfig.size.height}${platform.panelConfig.size.unit}`, height: 0 }")
@@ -212,7 +212,7 @@ export default {
 <style lang="scss" scoped>
 @import 'src/scss/conf';
 .ref-line {
-	background-color: var(--lineColor);
+	background-color: var(--lineRed);
 }
 .v-line {
 	width: 1px;
@@ -356,7 +356,7 @@ export default {
 		&::before {
 			display: block;
 			content: '';
-			background-color: #fff;
+			background-color: var(--white);
 			border-radius: 1px;
 			opacity: 0.4;
 			transition: opacity 0.2s;
