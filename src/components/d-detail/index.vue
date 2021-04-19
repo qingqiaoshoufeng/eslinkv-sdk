@@ -81,7 +81,12 @@
 				:style="{ marginLeft: '10px' }") 生成
 		.deadline(v-if="shareType === 'TIME'") 到期时间：{{ deadline }}
 		.fn-flex.flex-row
-			i-input(search, readonly, enter-button="复制", @on-search="handleCopy" v-model="shareUrl")
+			i-input(
+				search,
+				readonly,
+				enter-button="复制",
+				@on-search="handleCopy",
+				v-model="shareUrl")
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
