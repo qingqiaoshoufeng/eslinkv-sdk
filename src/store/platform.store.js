@@ -137,6 +137,8 @@ const actions = {
 		}
 	},
 	initPlatformConfig() {
+		state.screenName = '未命名'
+		state.screenAvatar = ''
 		state.ruler = getInitRuler()
 		state.panelConfig = getInitPanelConfig()
 		state.widgetAdded = {}
