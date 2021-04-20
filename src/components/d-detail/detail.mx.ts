@@ -44,7 +44,7 @@ export default {
 				if (needMarketLoad[`${item.type}${item.version}`]) return
 				needMarketLoad[`${item.type}${item.version}`] = true
 				p.push(
-					new Promise(resolve => {
+					new Promise((resolve, reject) => {
 						this.$api.marketComponent
 							.use({
 								componentEnTitle: item.type,
@@ -54,6 +54,9 @@ export default {
 								const script = document.createElement('script')
 								script.onload = () => {
 									resolve(1)
+								}
+								script.onerror = () => {
+									reject(1)
 								}
 								script.src = res.componentJsUrl
 								document.head.appendChild(script)
@@ -68,6 +71,7 @@ export default {
 				})
 				.catch(() => {
 					this.loading = false
+					this.$Message.error('组件初始化加载失败')
 				})
 		},
 	},
