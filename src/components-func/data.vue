@@ -115,18 +115,18 @@
 		.d-manage-modal-control
 			label 场景事件
 			.d-manage-modal-control-right
-				template(v-for="(k, i) in item.config.event")
-					i-select(
-						v-model="k.type",
-						:disabled="platform.chooseWidgetState",
-						:style="{ marginRight: '10px', width: '100px' }")
-						i-option(value="openScene") 打开场景
-						i-option(value="closeScene") 关闭场景
-						i-option(value="changeScene") 切换场景
-					i-input(
-						v-model="k.id",
-						:style="{ width: '100px' }",
-						:disabled="platform.chooseWidgetState")
+				i-select(
+					v-model="item.config.event.scene.type",
+					:disabled="platform.chooseWidgetState",
+					:style="{ marginRight: '10px', width: '100px' }")
+					i-option(value="openScene") 打开场景
+					i-option(value="closeScene") 关闭场景
+					i-option(value="changeScene") 切换场景
+				i-input(
+					v-model="item.config.event.scene.id",
+					placeholder="场景id",
+					:style="{ width: '100px' }",
+					:disabled="platform.chooseWidgetState")
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -208,7 +208,7 @@ export default class FuncData extends func {
 			})
 		return list
 	}
-
+	
 	updateApiSystem(value) {
 		Object.assign(this.item.config.api.system.params, value)
 		this.showDatabaseConfigModal = false

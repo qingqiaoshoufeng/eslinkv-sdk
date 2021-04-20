@@ -42,21 +42,28 @@ const mx: any = {
 	},
 	methods: {
 		__handleClick__ (val) {
-			if (this.config.event && this.config.event.length > 0) {
-				if (val) scene.state.transferData = val
-				this.config.event.forEach(v => {
-					switch (v.type) {
-						case 'openScene':
-							scene.actions.createSceneInstance(v.id)
-							break
-						case 'closeScene':
-							scene.actions.destroyScene(v.id)
-							break
-						case 'changeScene':
-							scene.actions.setSceneIndex(v.id)
-							break
-					}
-				})
+			if (val) scene.state.transferData = val
+			const sceneId = this.config.event.scene.id
+			switch (this.config.event.scene.type) {
+				case 'openScene':
+					scene.actions.createSceneInstance(sceneId)
+					break
+				case 'closeScene':
+					scene.actions.destroyScene(sceneId)
+					break
+				case 'changeScene':
+					scene.actions.setSceneIndex(sceneId)
+					break
+				default:
+			}
+			switch (this.config.event.component.type) {
+				case 'update':
+					const coms = Object.values(platform.state.widgetAdded).filter(v => this.config.event.component.ids.includes(v.id))
+					coms.forEach(v => {
+						instance.actions.updateComponent(v.id, val)
+					})
+					break
+				default:
 			}
 		},
 		/**
