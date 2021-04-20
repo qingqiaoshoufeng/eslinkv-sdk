@@ -28,7 +28,8 @@ import { Icon } from 'view-design'
 export default class DRightSwiper extends Vue {
 	@Prop() title: string
 	@Prop() icon: []
-	active = false
+	@Prop({ default: false }) show: boolean
+	active = this.show
 	handleIconClick(value) {
 		this.$emit('icon-click', value)
 	}

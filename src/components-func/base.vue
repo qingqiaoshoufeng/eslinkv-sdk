@@ -7,7 +7,7 @@
 				i-option(:value="0") 主场景
 				i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 				i-option(:value="-1") 回收站
-	d-right-swiper(title="基础属性")
+	d-right-swiper(title="基础属性" :show="true")
 		.d-manage-modal-control
 			label 位置
 			.d-manage-modal-control-right

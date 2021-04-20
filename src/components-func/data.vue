@@ -1,114 +1,116 @@
 <template lang="pug">
 .d-manage-modal-control-data
-	.d-manage-modal-control
-		label 请求方式
-		.d-manage-modal-control-right
-			i-select(
-				v-model="apiType",
-				:disabled="platform.chooseWidgetState",
-				:style="{ width: apiType === '数仓平台' ? '122px' : '208px' }")
-				i-option(value="无") 无
-				i-option(value="自定义URL") 自定义URL
-				i-option(value="数仓平台") 数仓平台
-			i-button.setting-btn(
-				@click="openSystemConfig",
-				type="primary",
-				icon="md-settings",
-				:style="{ marginLeft: '10px' }",
-				v-if="apiType === '数仓平台'",
-				:disabled="platform.chooseWidgetState || !item.config.api.system.enable") 配置
-	.d-manage-modal-control(v-if="apiType === '自定义URL'")
-		label 接口地址
-		.d-manage-modal-control-right
-			i-input(
-				v-model="item.config.api.url",
-				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control(v-if="apiType === '自定义URL'")
-		label
-		.d-manage-modal-control-right
-			i-select(
-				v-model="item.config.api.method",
-				:disabled="platform.chooseWidgetState",
-				:style="{ marginRight: '10px', width: '100px' }")
-				i-option(value="GET") GET
-				i-option(value="POST") POST
-				i-option(value="PUT") PUT
-				i-option(value="DELETE") DELETE
-				i-option(value="PATCH") PATCH
-			i-input(
-				v-model="item.config.api.path",
-				:style="{ width: '100px' }",
-				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control(v-if="item.config.api.system.enable")
-		label 接口地址
-		.d-manage-modal-control-right
-			i-input(
-				v-model="item.config.api.system.interface",
-				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control(v-if="item.config.api.system.enable")
-		label
-		.d-manage-modal-control-right
-			i-select(
-				v-model="item.config.api.system.method",
-				:disabled="platform.chooseWidgetState",
-				:style="{ marginRight: '10px', width: '100px' }")
-				i-option(value="GET") GET
-				i-option(value="POST") POST
-				i-option(value="PUT") PUT
-				i-option(value="DELETE") DELETE
-				i-option(value="PATCH") PATCH
-			i-input(
-				v-model="item.config.api.system.path",
-				:style="{ width: '100px' }",
-				:disabled="platform.chooseWidgetState")
-			database-config(
-				ref="dataBaseConfig",
-				:showModal="showDatabaseConfigModal",
-				@close="showDatabaseConfigModal = false",
-				@update="updateApiSystem",
-				@keyup.native.stop)
-	d-code(
-		label="请求参数",
-		lang="json",
-		:code="typeof item.config.api.params === 'string' ? item.config.api.params : JSON.stringify(item.config.api.params)",
-		@update:code="value => (item.config.api.params = JSON.parse(value))")
-	d-code(
-		label="响应数据",
-		lang="json",
-		:code="apiData",
-		@update:code="value => (apiData = value)")
-	d-code(
-		label="数据加工",
-		:code="item.config.api.process.methodBody",
-		:show="item.config.api.process.enable",
-		@update:code="value => (item.config.api.process.methodBody = value)")
-		template(slot="right")
-			i-switch(
-				v-model="item.config.api.process.enable",
-				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control
-		label 自动更新
-		.d-manage-modal-control-right
-			i-input-number(
-				:min="1",
-				:step="1",
-				:formatter="value => `${value} ms`",
-				v-model="item.config.api.autoFetch.duration",
-				:style="{ marginRight: '10px' }",
-				v-if="item.config.api.autoFetch.enable",
-				:disabled="platform.chooseWidgetState")
-			i-switch(
-				v-model="item.config.api.autoFetch.enable",
-				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control
-		label 组件关联
-		.d-manage-modal-control-right
-			i-switch(
-				v-model="item.config.api.bind.enable",
-				:disabled="platform.chooseWidgetState")
-	.d-manage-modal-control(v-if="item.config.api.bind.enable")
-		checkbox-group(v-model="item.config.api.bind.refIds")
-			checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
+	d-right-swiper(title="数据请求" :show="true")
+		.d-manage-modal-control
+			label 请求方式
+			.d-manage-modal-control-right
+				i-select(
+					v-model="apiType",
+					:disabled="platform.chooseWidgetState",
+					:style="{ width: apiType === '数仓平台' ? '122px' : '208px' }")
+					i-option(value="无") 无
+					i-option(value="自定义URL") 自定义URL
+					i-option(value="数仓平台") 数仓平台
+				i-button.setting-btn(
+					@click="openSystemConfig",
+					type="primary",
+					icon="md-settings",
+					:style="{ marginLeft: '10px' }",
+					v-if="apiType === '数仓平台'",
+					:disabled="platform.chooseWidgetState || !item.config.api.system.enable") 配置
+		.d-manage-modal-control(v-if="apiType === '自定义URL'")
+			label 接口地址
+			.d-manage-modal-control-right
+				i-input(
+					v-model="item.config.api.url",
+					:disabled="platform.chooseWidgetState")
+		.d-manage-modal-control(v-if="apiType === '自定义URL'")
+			label
+			.d-manage-modal-control-right
+				i-select(
+					v-model="item.config.api.method",
+					:disabled="platform.chooseWidgetState",
+					:style="{ marginRight: '10px', width: '100px' }")
+					i-option(value="GET") GET
+					i-option(value="POST") POST
+					i-option(value="PUT") PUT
+					i-option(value="DELETE") DELETE
+					i-option(value="PATCH") PATCH
+				i-input(
+					v-model="item.config.api.path",
+					:style="{ width: '100px' }",
+					:disabled="platform.chooseWidgetState")
+		.d-manage-modal-control(v-if="item.config.api.system.enable")
+			label 接口地址
+			.d-manage-modal-control-right
+				i-input(
+					v-model="item.config.api.system.interface",
+					:disabled="platform.chooseWidgetState")
+		.d-manage-modal-control(v-if="item.config.api.system.enable")
+			label
+			.d-manage-modal-control-right
+				i-select(
+					v-model="item.config.api.system.method",
+					:disabled="platform.chooseWidgetState",
+					:style="{ marginRight: '10px', width: '100px' }")
+					i-option(value="GET") GET
+					i-option(value="POST") POST
+					i-option(value="PUT") PUT
+					i-option(value="DELETE") DELETE
+					i-option(value="PATCH") PATCH
+				i-input(
+					v-model="item.config.api.system.path",
+					:style="{ width: '100px' }",
+					:disabled="platform.chooseWidgetState")
+				database-config(
+					ref="dataBaseConfig",
+					:showModal="showDatabaseConfigModal",
+					@close="showDatabaseConfigModal = false",
+					@update="updateApiSystem",
+					@keyup.native.stop)
+		d-code(
+			label="请求参数",
+			lang="json",
+			:code="typeof item.config.api.params === 'string' ? item.config.api.params : JSON.stringify(item.config.api.params)",
+			@update:code="value => (item.config.api.params = JSON.parse(value))")
+		d-code(
+			label="响应数据",
+			lang="json",
+			:code="apiData",
+			@update:code="value => (apiData = value)")
+	d-right-swiper(title="数据处理")
+		d-code(
+			label="数据加工",
+			:code="item.config.api.process.methodBody",
+			:show="item.config.api.process.enable",
+			@update:code="value => (item.config.api.process.methodBody = value)")
+			template(slot="right")
+				i-switch(
+					v-model="item.config.api.process.enable",
+					:disabled="platform.chooseWidgetState")
+		.d-manage-modal-control
+			label 自动更新
+			.d-manage-modal-control-right
+				i-input-number(
+					:min="1",
+					:step="1",
+					:formatter="value => `${value} ms`",
+					v-model="item.config.api.autoFetch.duration",
+					:style="{ marginRight: '10px' }",
+					v-if="item.config.api.autoFetch.enable",
+					:disabled="platform.chooseWidgetState")
+				i-switch(
+					v-model="item.config.api.autoFetch.enable",
+					:disabled="platform.chooseWidgetState")
+		.d-manage-modal-control
+			label 组件关联
+			.d-manage-modal-control-right
+				i-switch(
+					v-model="item.config.api.bind.enable",
+					:disabled="platform.chooseWidgetState")
+		.d-manage-modal-control(v-if="item.config.api.bind.enable")
+			checkbox-group(v-model="item.config.api.bind.refIds")
+				checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
 </template>
 <script lang="ts">
 import func from './func.mx'

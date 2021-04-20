@@ -1,8 +1,6 @@
 <template lang="pug">
-div(v-if="platform.chooseWidgetState")
 .d-right-modal-box.z-index-999(
-	:style="{ width: `${platform.ruler.xRoomR1}px` }",
-	v-else)
+	:style="{ width: `${platform.ruler.xRoomR1}px` }")
 	.d-right-modal-name.fn-flex.flex-row
 		span(contenteditable="editName", @input="changeName") {{ staticName }}
 		i-icon.pointer(
@@ -50,7 +48,7 @@ export default class DRightSetting extends Vue {
 	editName = false
 	platform = platform.state
 	staticName = ''
-	title = ['基础', '数据', '主题', '自定义']
+	title = ['基础', '交互', '主题', '自定义']
 	chooseList: any = [
 		{
 			key: [{ type: 'base' }],
