@@ -74,8 +74,6 @@ export default class DFooter extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../../src/scss/conf';
-
 .d-footer {
 	height: 32px;
 	padding: 0 15px;

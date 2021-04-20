@@ -67,7 +67,7 @@ import importMx from './import.mx'
 import exportMx from './export.mx'
 import detailMx from './detail.mx'
 import saveMx from './save.mx'
-import dShareDialog from  '../d-share-dialog/index.vue'
+import dShareDialog from '../d-share-dialog/index.vue'
 
 @Component({
 	components: {
@@ -230,15 +230,12 @@ export default class DDetail extends mixins(
 				}
 			},
 		)
-
-		const guides = this.platform.ruler.guideLines
 		return {
 			screenName: this.platform.screenName,
 			screenConfig: {
 				kanboard: panelConfig, // 看板画布配置
 				widgets, // 小工具配置
 				scene: this.scene.obj, // 场景
-				guides, // 参考线
 			},
 		}
 	}
@@ -249,8 +246,6 @@ export default class DDetail extends mixins(
 }
 </script>
 <style lang="scss" scoped>
-@import '../../scss/conf';
-
 .d-detail-left-icon-box {
 	margin-left: 20px;
 
@@ -268,8 +263,8 @@ export default class DDetail extends mixins(
 
 		&.active {
 			color: var(--white);
-			background-color: $themeColor;
-			border: 1px solid $themeColor;
+			background-color: var(--themeColor);
+			border: 1px solid var(--themeColor);
 		}
 	}
 }

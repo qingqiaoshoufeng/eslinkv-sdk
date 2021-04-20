@@ -56,7 +56,6 @@ export default class DDcode extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../scss/conf';
 .full-icon {
 	padding-left: 6px;
 	cursor: pointer;
@@ -109,7 +108,7 @@ export default class DDcode extends Vue {
 		}
 
 		.ace_string {
-			color: $themeColor !important;
+			color: var(--themeColor) !important;
 		}
 
 		.ace_variable {

@@ -203,7 +203,6 @@ export default class DLeftScene extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../scss/conf';
 .d-left-scene-bottom {
 	width: 100%;
 	.d-left-scene-bottom-btn {
@@ -252,12 +251,12 @@ export default class DLeftScene extends Vue {
 
 		&.active {
 			color: var(--white);
-			background-color: $themeColor;
-			border-color: $themeColor;
+			background-color: var(--themeColor);
+			border-color: var(--themeColor);
 		}
 
 		&:hover {
-			border-color: $themeColor;
+			border-color: var(--themeColor);
 		}
 	}
 }
@@ -285,7 +284,7 @@ export default class DLeftScene extends Vue {
 			font-size: 14px;
 
 			&:hover {
-				color: $themeColor;
+				color: var(--themeColor);
 			}
 		}
 	}

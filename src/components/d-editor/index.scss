@@ -1,5 +1,3 @@
-@import '../../../src/scss/conf';
-
 .d-left-scene {
 	.ivu-input,
 	.ivu-select-selection,
@@ -10,7 +8,7 @@
 		border-radius: 2px;
 
 		&:focus {
-			border: 1px solid $themeColor;
+			border: 1px solid var(--themeColor);
 		}
 	}
 	.ivu-select-dropdown {
@@ -22,7 +20,7 @@
 		li {
 			&:hover,
 			&.ivu-select-item-focus {
-				color: $themeColor;
+				color: var(--themeColor);
 				background-color: #22242b;
 			}
 		}
@@ -52,7 +50,7 @@
 				width: 100%;
 				height: 2px;
 				content: '';
-				background-color: $themeColor;
+				background-color: var(--themeColor);
 			}
 
 			background-color: #22242b;
@@ -161,7 +159,7 @@
 		li {
 			&:hover,
 			&.ivu-select-item-focus {
-				color: $themeColor;
+				color: var(--themeColor);
 				background-color: #22242b;
 			}
 		}
@@ -184,7 +182,7 @@
 		border-radius: 2px;
 
 		&:focus {
-			border: 1px solid $themeColor;
+			border: 1px solid var(--themeColor);
 		}
 	}
 	.ivu-checkbox {
@@ -196,7 +194,7 @@
 	.ivu-input-disabled {
 		background-color: #181b24 !important;
 		&:hover {
-			border: 1px solid $themeColor !important;
+			border: 1px solid var(--themeColor) !important;
 		}
 	}
 

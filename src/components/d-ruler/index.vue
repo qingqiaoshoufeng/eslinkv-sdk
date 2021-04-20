@@ -61,8 +61,6 @@ export default class DRuler extends mixins(eventHandlers) {
 </script>
 
 <style lang="scss">
-@import 'src/scss/conf';
-
 .d-ruler-guide-visible {
 	position: absolute;
 	left: 0;

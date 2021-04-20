@@ -193,7 +193,7 @@ body {
 	}
 	&:hover {
 		.ivu-icon {
-			color: $themeColor;
+			color: var(--themeColor);
 		}
 	}
 }
@@ -229,7 +229,7 @@ body {
 		li {
 			&:hover,
 			&.ivu-select-item-focus {
-				color: $themeColor;
+				color: var(--themeColor);
 				background-color: #22242b;
 			}
 		}
@@ -252,14 +252,14 @@ body {
 		border-radius: 2px;
 
 		&:focus {
-			border: 1px solid $themeColor;
+			border: 1px solid var(--themeColor);
 		}
 	}
 
 	.ivu-input-disabled {
 		background-color: #181b24 !important;
 		&:hover {
-			border: 1px solid $themeColor !important;
+			border: 1px solid var(--themeColor) !important;
 		}
 	}
 

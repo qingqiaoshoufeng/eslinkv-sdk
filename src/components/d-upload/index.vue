@@ -63,8 +63,6 @@ export default class DUpload extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import 'src/scss/conf';
-
 .d-upload-download-icon {
 	top: 10px;
 	right: 30px;
@@ -93,10 +91,10 @@ export default class DUpload extends Vue {
 	border: 1px solid #393b4a;
 
 	&:hover {
-		border: 1px solid $themeColor;
+		border: 1px solid var(--themeColor);
 
 		.d-upload-text {
-			color: $themeColor;
+			color: var(--themeColor);
 		}
 	}
 

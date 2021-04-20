@@ -185,8 +185,6 @@ export default class YLine extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import 'src/scss/conf';
-
 canvas {
 	left: 0;
 }

@@ -19,13 +19,12 @@ export default {
 		},
 		refillConfig(res) {
 			this.loading = true
-			const { widgets, kanboard, guides } = res,
+			const { widgets, kanboard } = res,
 				marketComponents = [],
 				obj = {},
 				p = [],
 				needMarketLoad = {}
 			this.platform.panelConfig = kanboard
-			this.platform.ruler.guideLines = guides
 			widgets.forEach(item => {
 				obj[item.id] = {
 					id: item.id,

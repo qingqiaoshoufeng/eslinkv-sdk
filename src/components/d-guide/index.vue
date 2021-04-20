@@ -70,6 +70,7 @@ export default class Guide extends Vue {
 	handleDestroy(id) {
 		const index = this.platform.ruler.guideLines.findIndex(v => v.id === id)
 		this.platform.ruler.guideLines.splice(index, 1)
+		this.updateHandle()
 	}
 
 	/**
@@ -133,6 +134,14 @@ export default class Guide extends Vue {
 		}
 	}
 
+	updateHandle() {
+		const id = this.$route.params.id
+		this.$api.screenShare.screenShareUpdate({
+			screenId: id,
+			screenGuide: this.platform.ruler.guideLines,
+		})
+	}
+
 	clearGuides() {
 		this.$Modal.confirm({
 			title: '确定是否清空参考线？',
@@ -140,11 +149,7 @@ export default class Guide extends Vue {
 			cancelText: '取消',
 			onOk: () => {
 				this.platform.ruler.guideLines = []
-				const id = this.$route.params.id
-				this.$api.screenShare.screenShareUpdate({
-					screenId: id,
-					screenGuide: this.platform.ruler.guideLines,
-				})
+				this.updateHandle()
 			},
 		})
 	}
@@ -161,8 +166,6 @@ export default class Guide extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import 'src/scss/conf';
-
 .d-guide-wrapper {
 	top: 18px;
 	left: 18px;

@@ -60,7 +60,7 @@ import platform from '../../store/platform.store'
 export default class DShareDialog extends mixins(shareMx) {
 	@Prop(Boolean) value!: boolean
 	@Prop(String) sid?: string
-	@Prop({default: false, type: Boolean}) autoInit?: boolean
+	@Prop({ default: false, type: Boolean }) autoInit?: boolean
 
 	screenId = ''
 	modalShow = false

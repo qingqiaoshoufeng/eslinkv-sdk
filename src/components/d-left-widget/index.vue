@@ -88,8 +88,6 @@ export default class DLeftWidget extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import 'src/scss/conf';
-
 .d-left-widgets-list {
 	flex-wrap: wrap;
 	justify-content: space-between;
@@ -130,7 +128,7 @@ export default class DLeftWidget extends Vue {
 		color: rgb(188, 201, 212);
 
 		&.active {
-			color: $themeColor;
+			color: var(--themeColor);
 			background-color: #191c21;
 
 			&::before {
@@ -140,7 +138,7 @@ export default class DLeftWidget extends Vue {
 				width: 2px;
 				height: 100%;
 				content: '';
-				background-color: $themeColor;
+				background-color: var(--themeColor);
 			}
 		}
 	}

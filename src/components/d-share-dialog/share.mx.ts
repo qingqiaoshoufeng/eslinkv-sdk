@@ -1,4 +1,5 @@
 import { copyText } from '../../utils/index'
+import platform from '../../store/platform.store.js'
 
 function fixZero(n) {
 	if (n > 9) {
@@ -21,6 +22,7 @@ function formatTime(time) {
 export default {
 	data() {
 		return {
+			platform: platform.state,
 			deadline: '',
 			shareModal: false,
 			shareType: 'ALL',
@@ -30,14 +32,14 @@ export default {
 		}
 	},
 	methods: {
-		keypressForTime (event) {
-			const keyCode = event.keyCode;
+		keypressForTime(event) {
+			const keyCode = event.keyCode
 			event.returnValue = keyCode >= 48 && keyCode <= 57
 		},
 		handleCopy() {
 			copyText(this.shareUrl)
 		},
-		async closeShare () {
+		async closeShare() {
 			await this.$api.screenShare.screenShareUpdate({
 				screenId: this.screenId,
 				screenShareType: 'NO',
@@ -70,6 +72,7 @@ export default {
 			})
 			this.shareType = res.screenShareType
 			this.sharePassword = res.screenSharePassword || this.sharePassword
+			this.platform.ruler.guideLines = res.screenGuide
 			if (res.screenShareTime) {
 				this.shareTime = (
 					(new Date(res.screenShareTime).getTime() -
@@ -81,11 +84,11 @@ export default {
 			if (res.screenShareType !== 'NO') {
 				this.shareUrl = `${location.origin}/shareScreen/${this.screenId}?layoutMode=${this.platform.panelConfig.size.layoutMode}`
 			}
-		}
+		},
 	},
 	created() {
 		if (this.autoInit) {
 			this.init()
 		}
-	}
+	},
 }

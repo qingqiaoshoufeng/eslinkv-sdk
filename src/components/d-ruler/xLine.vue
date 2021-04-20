@@ -182,8 +182,6 @@ export default class XLine extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import 'src/scss/conf';
-
 canvas {
 	left: 0;
 	height: 100%;
