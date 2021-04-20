@@ -40,7 +40,7 @@
 		//li.fn-flex.flex-column.pointer(@click="handleSave('TEMPLATE')" v-if="screenType==='CUSTOM'")
 		//  i-icon(type="ios-cloud-circle-outline" :size="24")
 		//  span 模板
-		li.fn-flex.flex-column.pointer(@click="handleShare", v-if="!isNew")
+		li.fn-flex.flex-column.pointer(@click="shareModal = true", v-if="!isNew")
 			i-icon(type="ios-paper-plane-outline", :size="24")
 			span 分享
 	load-mask(:show="loading") {{ loadingMsg }}
@@ -52,43 +52,7 @@
 					type="file",
 					accept="application/json",
 					@change="handleFile")
-	i-modal(v-model="shareModal", :footer-hide="true")
-		p(:style="{ marginBottom: '10px' }") 快生成链接，分享给你的好友吧
-		.fn-flex.flex-row(:style="{ marginBottom: '10px' }")
-			label.ivu-btn.d-detail-share-button(
-				:class="{ 'ivu-btn-primary': shareType === 'ALL' }",
-				@click="shareType = 'ALL'") 不限制
-			label.ivu-btn.d-detail-share-button(
-				:class="{ 'ivu-btn-primary': shareType === 'PASSWORD' }",
-				@click="shareType = 'PASSWORD'") 加密分享
-			label.ivu-btn.d-detail-share-button(
-				:class="{ 'ivu-btn-primary': shareType === 'TIME' }",
-				@click="shareType = 'TIME'") 时效分享
-		.fn-flex.flex-row(:style="{ marginBottom: '10px' }")
-			i-input(
-				v-show="shareType === 'PASSWORD'",
-				:style="{ width: '150px' }",
-				v-model="sharePassword")
-				span(slot="prepend") 密钥
-			i-input(
-				v-show="shareType === 'TIME'",
-				:style="{ width: '150px' }",
-				@on-keypress="keypressForTime"
-				type="number"
-				v-model="shareTime")
-				span(slot="append") 小时
-			i-button(
-				type="primary",
-				@click="shareSubmit",
-				:style="{ marginLeft: '10px' }") 生成
-		.deadline(v-if="shareType === 'TIME'") 到期时间：{{ deadline }}
-		.fn-flex.flex-row
-			i-input(
-				search,
-				readonly,
-				enter-button="复制",
-				@on-search="handleCopy",
-				v-model="shareUrl")
+	dShareDialog(v-model="shareModal")
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
@@ -103,13 +67,14 @@ import importMx from './import.mx'
 import exportMx from './export.mx'
 import detailMx from './detail.mx'
 import saveMx from './save.mx'
-import shareMx from './share.mx'
+import dShareDialog from  '../d-share-dialog/index.vue'
 
 @Component({
 	components: {
 		'i-icon': Icon,
 		'i-button': Button,
 		loadMask,
+		dShareDialog,
 		'i-modal': Modal,
 		'i-form': Form,
 		'i-form-item': FormItem,
@@ -122,7 +87,6 @@ export default class DDetail extends mixins(
 	detailMx,
 	saveMx,
 	importMx,
-	shareMx,
 ) {
 	@Prop(Boolean) kanboardEdited: boolean
 	@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
@@ -130,6 +94,7 @@ export default class DDetail extends mixins(
 	platform = platform.state
 	scene = scene.state
 	loadingMsg = 'loading…'
+	shareModal = false
 	loading = false
 	isNew = true
 	screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
@@ -337,11 +302,6 @@ export default class DDetail extends mixins(
 	&:hover {
 		background-color: var(--white_01);
 	}
-}
-
-.d-detail-share-button {
-	line-height: 32px;
-	border-radius: 0;
 }
 
 .d-detail-import-button {

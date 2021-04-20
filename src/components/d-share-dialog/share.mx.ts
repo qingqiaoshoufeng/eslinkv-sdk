@@ -34,15 +34,12 @@ export default {
 			const keyCode = event.keyCode;
 			event.returnValue = keyCode >= 48 && keyCode <= 57
 		},
-		handleShare() {
-			this.shareModal = true
-		},
 		handleCopy() {
 			copyText(this.shareUrl)
 		},
 		async shareSubmit() {
 			const req: any = {
-				screenId: this.$route.params.id,
+				screenId: this.screenId,
 				screenShareType: this.shareType,
 			}
 			if (this.shareType === 'PASSWORD') {
@@ -57,13 +54,12 @@ export default {
 				this.deadline = req.screenShareTime
 			}
 			await this.$api.screenShare.screenShareUpdate(req)
-			this.shareUrl = `${location.origin}/shareScreen/${this.$route.params.id}?layoutMode=${this.platform.panelConfig.size.layoutMode}`
+			this.shareUrl = `${location.origin}/shareScreen/${this.screenId}?layoutMode=${this.platform.panelConfig.size.layoutMode}`
 		},
-	},
-	async created() {
-		if (this.show) {
+		async init() {
+			this.screenId = this.sid || this.$route.params.id
 			const res = await this.$api.screenShare.screenShareDetail({
-				screenId: this.$route.params.id,
+				screenId: this.screenId,
 			})
 			this.shareType = res.screenShareType
 			this.sharePassword = res.screenSharePassword || this.sharePassword
@@ -76,5 +72,5 @@ export default {
 				this.deadline = formatTime(res.screenShareTime)
 			}
 		}
-	},
+	}
 }

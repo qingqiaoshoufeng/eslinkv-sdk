@@ -10,6 +10,7 @@ import dRightManage from '../src/components/d-right-manage/index.vue'
 import dRightSetting from '../src/components/d-right-setting/index.vue'
 import dDetail from '../src/components/d-detail/index.vue'
 import dFooter from '../src/components/d-footer/index.vue'
+import dShareDialog from '../src/components/d-share-dialog/index.vue'
 import scene from '../src/store/scene.store'
 import instance from '../src/store/instance.store'
 import custom from '../src/store/custom.store'
@@ -44,6 +45,7 @@ const eslinkV = {
 	commonConfigValue,
 	market,
 	dEditor,
+	dShareDialog,
 	dScreen,
 	dLeftWidget,
 	dLeftScene,
@@ -78,6 +80,7 @@ export {
 	dLeftScene,
 	dRightSetting,
 	dRightManage,
+	dShareDialog,
 	dDetail,
 	dFooter,
 	dView,
