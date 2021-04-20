@@ -71,6 +71,7 @@ export default class DShareDialog extends mixins(shareMx) {
 	onValueChange(val) {
 		this.modalShow = val
 		if (val && this.isInit && !this.autoInit) {
+			// @ts-ignore
 			this.init()
 			this.isInit = false
 		}

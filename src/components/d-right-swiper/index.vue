@@ -29,6 +29,8 @@ export default class DRightSwiper extends Vue {
 	@Prop() title: string
 	@Prop() icon: []
 	@Prop({ default: false }) show: boolean
+
+	// @ts-ignore
 	active = this.show
 	handleIconClick(value) {
 		this.$emit('icon-click', value)
