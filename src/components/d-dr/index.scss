@@ -1,4 +1,3 @@
-@import '../../scss/conf';
 .dr {
 	top: 0;
 	left: 0;
@@ -38,7 +37,7 @@
 		.dr-line-bottom,
 		.dr-line-left,
 		.dr-line-right {
-			background-color: $themeColor_08;
+			background-color: var(--themeColor_08);
 		}
 	}
 
@@ -47,7 +46,7 @@
 		.dr-line-bottom,
 		.dr-line-left,
 		.dr-line-right {
-			background-color: $themeColor_04;
+			background-color: var(--themeColor_04);
 		}
 		&::after {
 			opacity: 1;

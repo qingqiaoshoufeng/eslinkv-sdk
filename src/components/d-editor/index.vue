@@ -36,7 +36,7 @@
 					:z="item.config.layout.zIndex",
 					:snap="platform.autoAlignGuide",
 					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
-					snap-to-target="d-editor-line",
+					:snap-to-target="['.d-editor-line', '.dr-unactive']",
 					@resizestop="onResizeStop",
 					@refLineParams="params => getRefLineParams(params, item)",
 					@dragstop="onDragStop",
@@ -49,11 +49,18 @@
 						:config="item.config",
 						:market="item.market",
 						@widget-config-update="data => handleWidgetConfig(data, item)")
-			.d-editor-line(data-top="0px", :style="{ top: 0, height: 0 }")
-			.d-editor-line(data-left="0px", :style="{ top: 0, right: 0 }")
+			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(
 				:data-top="`${platform.panelConfig.size.height}${platform.panelConfig.size.unit}`",
-				:style="{ top: `${platform.panelConfig.size.height}${platform.panelConfig.size.unit}`, height: 0 }")
+				data-left="0px")
+			.d-editor-line(
+				data-top="0px",
+				:style="{ width: 0, height: `${platform.panelConfig.size.height}${platform.panelConfig.size.unit}` }",
+				:data-left="`${platform.panelConfig.size.width}${platform.panelConfig.size.unit}`")
+			.d-editor-line(
+				data-top="0px",
+				data-left="0px",
+				:style="{ height: `${platform.panelConfig.size.height}${platform.panelConfig.size.unit}`, width: 0 }")
 			// 参考线
 			span.ref-line.v-line.pos-a(
 				v-for="item in vLine",
