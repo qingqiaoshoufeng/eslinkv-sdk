@@ -1,7 +1,5 @@
 <template lang="pug">
-.widget-part(
-	:style="styles",
-	:data-top="`${config.layout.position.top}${config.layout.position.unit}`")
+.widget-part(:style="styles")
 	.fn-flex.flex-row.h-title-1
 		.h-title-1-icon
 		h2 {{ data && data.title }}

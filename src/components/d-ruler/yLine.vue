@@ -58,8 +58,17 @@ export default class YLine extends Vue {
 		} else {
 			platform.actions.guideAdd(this.site)
 		}
+		this.updateHandle()
 		this.platform.ruler.guideDrag = false
 		this.platform.ruler.dragGuideId = ''
+	}
+
+	updateHandle() {
+		const id = this.$route.params.id
+		this.$api.screenShare.screenShareUpdate({
+			screenId: id,
+			screenGuide: this.platform.ruler.guideLines,
+		})
 	}
 
 	mouseup() {
@@ -68,6 +77,7 @@ export default class YLine extends Vue {
 			this.platform.ruler.guideDrag = false
 			this.platform.ruler.dragGuideId = ''
 		}
+		this.updateHandle()
 	}
 
 	translateAnimation(num) {

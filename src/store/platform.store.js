@@ -167,7 +167,6 @@ const actions = {
 		line.push({
 			id: `${type}_${state.ruler.guideLines.length}`,
 			type,
-			title: `${site}px`,
 			site,
 		})
 		state.ruler.guideLines = line

@@ -18,7 +18,7 @@
 </template>
 <script>
 import platform from '../../store/platform.store'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class Guide extends Vue {
@@ -140,6 +140,11 @@ export default class Guide extends Vue {
 			cancelText: '取消',
 			onOk: () => {
 				this.platform.ruler.guideLines = []
+				const id = this.$route.params.id
+				this.$api.screenShare.screenShareUpdate({
+					screenId: id,
+					screenGuide: this.platform.ruler.guideLines,
+				})
 			},
 		})
 	}

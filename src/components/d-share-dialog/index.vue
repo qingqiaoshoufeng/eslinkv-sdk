@@ -20,8 +20,8 @@ i-modal.check-modal(v-model="modalShow", :footer-hide="true")
 		i-input(
 			v-show="shareType === 'TIME'",
 			:style="{ width: '150px' }",
-			@on-keypress="keypressForTime"
-			type="number"
+			@on-keypress="keypressForTime",
+			type="number",
 			v-model="shareTime")
 			span(slot="append") 小时
 		i-button(
@@ -37,12 +37,11 @@ i-modal.check-modal(v-model="modalShow", :footer-hide="true")
 			@on-search="handleCopy",
 			v-model="shareUrl")
 </template>
-
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import {Modal, Button, Input} from 'view-design'
+import { Modal, Button, Input } from 'view-design'
 import shareMx from './share.mx'
-import {mixins} from "vue-class-component";
+import { mixins } from 'vue-class-component'
 import platform from '../../store/platform.store'
 
 @Component({
@@ -78,7 +77,6 @@ export default class DShareDialog extends mixins(shareMx) {
 }
 </script>
 <style lang="scss" scoped>
-
 .d-detail-share-button {
 	line-height: 32px;
 	border-radius: 0;
