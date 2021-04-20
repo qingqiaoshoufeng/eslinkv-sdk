@@ -52,7 +52,7 @@
 					type="file",
 					accept="application/json",
 					@change="handleFile")
-	dShareDialog(v-model="shareModal")
+	dShareDialog(v-model="shareModal" :autoInit="true")
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
