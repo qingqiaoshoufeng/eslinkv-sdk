@@ -421,7 +421,6 @@ export default {
 			}
 			// 获取当前父节点下所有子节点
 			const nodes = this.brotherNodes
-			console.log(nodes)
 			let tem = {
 				value: { x: [[], [], []], y: [[], [], []] },
 				display: [],

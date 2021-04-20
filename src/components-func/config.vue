@@ -50,7 +50,7 @@
 	.d-manage-modal-control
 		label 移动看板
 		.d-manage-modal-control-right
-			i-switch(v-model="platform.panelConfig.size.isMobileKanboard")
+			i-switch(v-model="platform.panelConfig.size.isMobile")
 	.d-manage-modal-control
 		label 适配模式
 		.d-manage-modal-control-right
@@ -69,12 +69,19 @@
 		label
 		.d-manage-modal-control-right
 			i-button(@click="screenAvatar", type="primary") 截屏
+	.d-manage-modal-control
+		label 首场景
+		.d-manage-modal-control-right
+			i-select(v-model="platform.panelConfig.mainScene", filterable)
+				i-option(:value="0") 主场景
+				i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 </template>
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
 import html2canvas from 'html2canvas'
 import platform from '../store/platform.store.js'
+import scene from '../store/scene.store.js'
 import dUpload from '../components/d-upload/index.vue'
 
 @Component({
@@ -84,6 +91,7 @@ import dUpload from '../components/d-upload/index.vue'
 })
 export default class FuncConfig extends func {
 	platform = platform.state
+	scene = scene.state
 	backGroundFormData = {
 		library: 'componentBackGround',
 	}

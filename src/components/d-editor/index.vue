@@ -158,7 +158,7 @@ export default {
 			this.platform.widgetAdded[
 				this.platform.chooseWidgetId
 			].config.layout.size.height = height
-		}
+		},
 	},
 	computed: {
 		canvasStyle() {
@@ -175,7 +175,7 @@ export default {
 		},
 		showParts() {
 			return item => {
-				if (item.scene === 0 && this.scene.showMainScene) {
+				if (item.scene === 0) {
 					return true
 				}
 				if (item.scene === this.scene.index) {

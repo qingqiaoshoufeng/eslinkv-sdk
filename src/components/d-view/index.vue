@@ -45,7 +45,7 @@ export default class DView extends Vue {
 	}
 
 	showParts(item) {
-		if (item.scene === 0 && this.scene.showMainScene) {
+		if (item.scene === 0) {
 			return true
 		} else if (item.scene === this.scene.index) {
 			return true

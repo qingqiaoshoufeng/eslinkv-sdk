@@ -51,15 +51,47 @@ function getInitPanelConfig() {
 			width: 1920,
 			height: 1080,
 			unit: 'px',
-			isMobileKanboard: false,
+			isMobile: false,
 			layoutMode: 'full-height',
 		},
 		background: {
 			url: '',
 			color: 'rgba(24, 27, 36,1)',
 		},
+		mainScene: 0, // 设置进入场景
+		socket: false,
+		socketUrl: '',
 	}
 }
+
+const hotKeys = [
+	{
+		name: '清除全部参考线',
+		key: [
+			{ value: alt, type: 'text' },
+			{ type: '+' },
+			{ value: 'C', type: 'text' },
+		],
+	},
+	{
+		name: '缩放画布',
+		key: [
+			{ value: ctrl, type: 'text' },
+			{ type: '+' },
+			{ value: mouseWheelImg, type: 'img' },
+		],
+	},
+	{ name: '移动画布', key: [{ value: space, type: 'text' }] },
+	{
+		name: '水平移动画布',
+		key: [
+			{ value: shift, type: 'text' },
+			{ type: '+' },
+			{ value: mouseWheelImg, type: 'img' },
+		],
+	},
+	{ name: '垂直移动画布', key: [{ value: mouseWheelImg, type: 'img' }] },
+]
 
 const state = Vue.observable({
 	version: '1.0.3',
@@ -72,39 +104,16 @@ const state = Vue.observable({
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏
-	hotKeys: [
-		// 热键
-		{
-			name: '清除全部参考线',
-			key: [
-				{ value: alt, type: 'text' },
-				{ type: '+' },
-				{ value: 'C', type: 'text' },
-			],
-		},
-		{
-			name: '缩放画布',
-			key: [
-				{ value: ctrl, type: 'text' },
-				{ type: '+' },
-				{ value: mouseWheelImg, type: 'img' },
-			],
-		},
-		{ name: '移动画布', key: [{ value: space, type: 'text' }] },
-		{
-			name: '水平移动画布',
-			key: [
-				{ value: shift, type: 'text' },
-				{ type: '+' },
-				{ value: mouseWheelImg, type: 'img' },
-			],
-		},
-		{ name: '垂直移动画布', key: [{ value: mouseWheelImg, type: 'img' }] },
-	],
+	hotKeys,
 	autoAlignGuide: true, // 自动贴靠参考线
 	ruler: getInitRuler(),
 })
 const actions = {
+	changeMainScene(value) {
+		if (value !== state.panelConfig.mainScene) {
+			state.panelConfig.mainScene = value
+		}
+	},
 	/**
 	 * @description 恢复默认缩放比例+居中
 	 */

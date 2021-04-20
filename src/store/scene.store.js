@@ -14,15 +14,9 @@ const state = Vue.observable({
 	obj: {},
 	status: 'inEdit', // inEdit  在编辑器中  inPreview 在预览中
 	sceneObj: {},
-	showMainScene: true, // 是否显示主场景
 	showAnimationStyle: 'zoom', // 实例化场景，动画
 })
 const actions = {
-	changeShowMainScene(value) {
-		if (value !== state.showMainScene) {
-			state.showMainScene = value
-		}
-	},
 	setStatus(status) {
 		state.status = status
 	},
