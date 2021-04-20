@@ -37,6 +37,13 @@ export default {
 		handleCopy() {
 			copyText(this.shareUrl)
 		},
+		async closeShare () {
+			await this.$api.screenShare.screenShareUpdate({
+				screenId: this.screenId,
+				screenShareType: 'NO',
+			})
+			this.shareUrl = ''
+		},
 		async shareSubmit() {
 			const req: any = {
 				screenId: this.screenId,
@@ -71,6 +78,14 @@ export default {
 				).toFixed(2)
 				this.deadline = formatTime(res.screenShareTime)
 			}
+			if (res.screenShareType !== 'NO') {
+				this.shareUrl = `${location.origin}/shareScreen/${this.screenId}?layoutMode=${this.platform.panelConfig.size.layoutMode}`
+			}
+		}
+	},
+	created() {
+		if (this.autoInit) {
+			this.init()
 		}
 	}
 }

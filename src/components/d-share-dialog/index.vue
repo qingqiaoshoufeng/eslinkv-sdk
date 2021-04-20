@@ -28,6 +28,11 @@ i-modal.check-modal(v-model="modalShow", :footer-hide="true")
 			type="primary",
 			@click="shareSubmit",
 			:style="{ marginLeft: '10px' }") 生成
+		i-button(
+			type="warning",
+			v-if="shareUrl",
+			@click="closeShare",
+			:style="{ marginLeft: '10px' }") 关闭分享
 	.deadline(v-if="shareType === 'TIME'") 到期时间：{{ deadline }}
 	.fn-flex.flex-row
 		i-input(
@@ -55,6 +60,7 @@ import platform from '../../store/platform.store'
 export default class DShareDialog extends mixins(shareMx) {
 	@Prop(Boolean) value!: boolean
 	@Prop(String) sid?: string
+	@Prop({default: false, type: Boolean}) autoInit?: boolean
 
 	screenId = ''
 	modalShow = false
@@ -64,7 +70,7 @@ export default class DShareDialog extends mixins(shareMx) {
 	@Watch('value')
 	onValueChange(val) {
 		this.modalShow = val
-		if (val && this.isInit) {
+		if (val && this.isInit && !this.autoInit) {
 			this.init()
 			this.isInit = false
 		}
