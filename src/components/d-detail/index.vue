@@ -73,6 +73,8 @@
 			i-input(
 				v-show="shareType === 'TIME'",
 				:style="{ width: '150px' }",
+				@on-keypress="keypressForTime"
+				type="number"
 				v-model="shareTime")
 				span(slot="append") 小时
 			i-button(

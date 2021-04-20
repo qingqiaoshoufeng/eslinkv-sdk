@@ -30,6 +30,10 @@ export default {
 		}
 	},
 	methods: {
+		keypressForTime (event) {
+			const keyCode = event.keyCode;
+			event.returnValue = keyCode >= 48 && keyCode <= 57
+		},
 		handleShare() {
 			this.shareModal = true
 		},
