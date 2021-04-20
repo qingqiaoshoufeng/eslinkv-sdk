@@ -110,6 +110,7 @@ class Mixins extends Vue {
 	deactivateWidget() {
 		this.$nextTick(() => {
 			platform.actions.unChooseWidget()
+			this.$refs.rightMenu && (this.$refs.rightMenu as any).$el.classList.remove('active')
 		})
 	}
 

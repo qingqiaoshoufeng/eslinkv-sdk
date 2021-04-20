@@ -45,6 +45,7 @@ export default {
 				screenShareType: 'NO',
 			})
 			this.shareUrl = ''
+			this.shareType = 'NO'
 		},
 		async shareSubmit() {
 			const req: any = {

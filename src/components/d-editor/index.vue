@@ -5,7 +5,6 @@
 	ref="canvas-wrapper",
 	:class="{ fullscreen: platform.fullscreen }",
 	:style="{ width: `calc(100% - ${platform.ruler.xRoomL1 + platform.ruler.xRoomL2 + platform.ruler.xRoomR1}px)`, marginLeft: `${platform.ruler.xRoomL1 + platform.ruler.xRoomL2}px` }",
-	@click="hideSubPanels",
 	@select.prevent.stop,
 	@contextmenu.stop.prevent)
 	// 标尺容器
@@ -159,11 +158,7 @@ export default {
 			this.platform.widgetAdded[
 				this.platform.chooseWidgetId
 			].config.layout.size.height = height
-		},
-		hideSubPanels() {
-			this.$refs.rightMenu &&
-				this.$refs.rightMenu.$el.classList.remove('active')
-		},
+		}
 	},
 	computed: {
 		canvasStyle() {
@@ -196,11 +191,6 @@ export default {
 			'fullscreenchange',
 			this.handleFullscreenChange,
 		)
-	},
-	watch: {
-		isDragIn(value) {
-			if (value) this.hideSubPanels()
-		},
 	},
 	mounted() {
 		document.addEventListener(
