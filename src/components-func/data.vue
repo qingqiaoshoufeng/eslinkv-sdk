@@ -111,6 +111,22 @@
 		.d-manage-modal-control(v-if="item.config.api.bind.enable")
 			checkbox-group(v-model="item.config.api.bind.refIds")
 				checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
+	d-right-swiper(title="事件")
+		.d-manage-modal-control
+			label 场景事件
+			.d-manage-modal-control-right
+				template(v-for="(k, i) in item.config.event")
+					i-select(
+						v-model="k.type",
+						:disabled="platform.chooseWidgetState",
+						:style="{ marginRight: '10px', width: '100px' }")
+						i-option(value="openScene") 打开场景
+						i-option(value="closeScene") 关闭场景
+						i-option(value="changeScene") 切换场景
+					i-input(
+						v-model="k.id",
+						:style="{ width: '100px' }",
+						:disabled="platform.chooseWidgetState")
 </template>
 <script lang="ts">
 import func from './func.mx'

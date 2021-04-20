@@ -2,7 +2,7 @@
 .widget-part(:style="styles")
 	.fn-flex.flex-row.h-title-1
 		.h-title-1-icon
-		h2 {{ data && data.title }}
+		h2(@click="__handleClick__") {{ data && data.title }}
 </template>
 <script lang="ts">
 import widgetMixin from '../../../../mixins'

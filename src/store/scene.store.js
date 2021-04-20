@@ -12,6 +12,7 @@ const state = Vue.observable({
 	index: 0,
 	list: [],
 	obj: {},
+	transferData: null, // 场景交互时传递的数据
 	status: 'inEdit', // inEdit  在编辑器中  inPreview 在预览中
 	sceneObj: {},
 	showAnimationStyle: 'zoom', // 实例化场景，动画

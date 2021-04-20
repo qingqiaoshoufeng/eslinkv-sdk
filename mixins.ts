@@ -41,6 +41,24 @@ const mx: any = {
 		this.animateActiveIndex = -1
 	},
 	methods: {
+		__handleClick__ (val) {
+			if (this.config.event && this.config.event.length > 0) {
+				if (val) scene.state.transferData = val
+				this.config.event.forEach(v => {
+					switch (v.type) {
+						case 'openScene':
+							scene.actions.createSceneInstance(v.id)
+							break
+						case 'closeScene':
+							scene.actions.destroyScene(v.id)
+							break
+						case 'changeScene':
+							scene.actions.setSceneIndex(v.id)
+							break
+					}
+				})
+			}
+		},
 		/**
 		 * @description 组件间联动，被关联组件收动添加 updateComponent 方法
 		 */

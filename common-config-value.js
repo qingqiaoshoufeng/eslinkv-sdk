@@ -71,6 +71,7 @@ const commonConfigValue = useColorTheme =>
 			delay: 0,
 			duration: 600,
 		},
+		event: []
 	})
 
 export default commonConfigValue
