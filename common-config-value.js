@@ -73,14 +73,14 @@ const commonConfigValue = useColorTheme =>
 		},
 		event: {
 			scene: {
-				id: 'kgzflec9ar',
-				type: 'openScene'
+				id: '',
+				type: '',
 			},
 			component: {
-				ids: ['uc2t857zyxk'],
-				type: 'update'
-			}
-		}
+				ids: [],
+				type: '',
+			},
+		},
 	})
 
 export default commonConfigValue

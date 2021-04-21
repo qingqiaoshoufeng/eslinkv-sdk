@@ -59,8 +59,6 @@ function getInitPanelConfig() {
 			color: 'rgba(24, 27, 36,1)',
 		},
 		mainScene: 0, // 设置进入场景
-		socket: false,
-		socketUrl: '',
 	}
 }
 

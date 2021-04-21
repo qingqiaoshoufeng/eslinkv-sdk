@@ -25,7 +25,7 @@ export default {
 			platform: platform.state,
 			deadline: '',
 			shareModal: false,
-			shareType: 'ALL',
+			shareType: 'NO',
 			shareUrl: '',
 			shareTime: 1,
 			sharePassword: Math.random().toString(36).replace('0.', ''),
@@ -47,10 +47,11 @@ export default {
 			this.shareUrl = ''
 			this.shareType = 'NO'
 		},
-		async shareSubmit() {
+		async shareSubmit(shareType) {
+			this.shareType = shareType
 			const req: any = {
 				screenId: this.screenId,
-				screenShareType: this.shareType,
+				screenShareType: shareType,
 			}
 			if (this.shareType === 'PASSWORD') {
 				req.screenSharePassword = this.sharePassword

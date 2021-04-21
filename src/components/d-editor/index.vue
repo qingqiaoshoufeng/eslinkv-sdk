@@ -207,7 +207,6 @@ export default {
 @import 'index.scss';
 </style>
 <style lang="scss" scoped>
-@import 'src/scss/conf';
 .ref-line {
 	background-color: var(--lineRed);
 }

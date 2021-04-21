@@ -1,12 +1,11 @@
 <template lang="pug">
 .d-manage-modal-control-data
-	d-right-swiper(title="数据请求" :show="true")
+	d-right-swiper(title="数据请求", :show="true")
 		.d-manage-modal-control
 			label 请求方式
 			.d-manage-modal-control-right
 				i-select(
 					v-model="apiType",
-					:disabled="platform.chooseWidgetState",
 					:style="{ width: apiType === '数仓平台' ? '122px' : '208px' }")
 					i-option(value="无") 无
 					i-option(value="自定义URL") 自定义URL
@@ -17,51 +16,39 @@
 					icon="md-settings",
 					:style="{ marginLeft: '10px' }",
 					v-if="apiType === '数仓平台'",
-					:disabled="platform.chooseWidgetState || !item.config.api.system.enable") 配置
+					:disabled="!item.config.api.system.enable") 配置
 		.d-manage-modal-control(v-if="apiType === '自定义URL'")
 			label 接口地址
 			.d-manage-modal-control-right
-				i-input(
-					v-model="item.config.api.url",
-					:disabled="platform.chooseWidgetState")
+				i-input(v-model="item.config.api.url")
 		.d-manage-modal-control(v-if="apiType === '自定义URL'")
 			label
 			.d-manage-modal-control-right
 				i-select(
 					v-model="item.config.api.method",
-					:disabled="platform.chooseWidgetState",
 					:style="{ marginRight: '10px', width: '100px' }")
 					i-option(value="GET") GET
 					i-option(value="POST") POST
 					i-option(value="PUT") PUT
 					i-option(value="DELETE") DELETE
 					i-option(value="PATCH") PATCH
-				i-input(
-					v-model="item.config.api.path",
-					:style="{ width: '100px' }",
-					:disabled="platform.chooseWidgetState")
+				i-input(v-model="item.config.api.path", :style="{ width: '100px' }")
 		.d-manage-modal-control(v-if="item.config.api.system.enable")
 			label 接口地址
 			.d-manage-modal-control-right
-				i-input(
-					v-model="item.config.api.system.interface",
-					:disabled="platform.chooseWidgetState")
+				i-input(v-model="item.config.api.system.interface")
 		.d-manage-modal-control(v-if="item.config.api.system.enable")
 			label
 			.d-manage-modal-control-right
 				i-select(
 					v-model="item.config.api.system.method",
-					:disabled="platform.chooseWidgetState",
 					:style="{ marginRight: '10px', width: '100px' }")
 					i-option(value="GET") GET
 					i-option(value="POST") POST
 					i-option(value="PUT") PUT
 					i-option(value="DELETE") DELETE
 					i-option(value="PATCH") PATCH
-				i-input(
-					v-model="item.config.api.system.path",
-					:style="{ width: '100px' }",
-					:disabled="platform.chooseWidgetState")
+				i-input(v-model="item.config.api.system.path", :style="{ width: '100px' }")
 				database-config(
 					ref="dataBaseConfig",
 					:showModal="showDatabaseConfigModal",
@@ -85,9 +72,7 @@
 			:show="item.config.api.process.enable",
 			@update:code="value => (item.config.api.process.methodBody = value)")
 			template(slot="right")
-				i-switch(
-					v-model="item.config.api.process.enable",
-					:disabled="platform.chooseWidgetState")
+				i-switch(v-model="item.config.api.process.enable")
 		.d-manage-modal-control
 			label 自动更新
 			.d-manage-modal-control-right
@@ -97,17 +82,12 @@
 					:formatter="value => `${value} ms`",
 					v-model="item.config.api.autoFetch.duration",
 					:style="{ marginRight: '10px' }",
-					v-if="item.config.api.autoFetch.enable",
-					:disabled="platform.chooseWidgetState")
-				i-switch(
-					v-model="item.config.api.autoFetch.enable",
-					:disabled="platform.chooseWidgetState")
+					v-if="item.config.api.autoFetch.enable")
+				i-switch(v-model="item.config.api.autoFetch.enable")
 		.d-manage-modal-control
 			label 组件关联
 			.d-manage-modal-control-right
-				i-switch(
-					v-model="item.config.api.bind.enable",
-					:disabled="platform.chooseWidgetState")
+				i-switch(v-model="item.config.api.bind.enable")
 		.d-manage-modal-control(v-if="item.config.api.bind.enable")
 			checkbox-group(v-model="item.config.api.bind.refIds")
 				checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
@@ -116,33 +96,36 @@
 			label 场景事件
 			.d-manage-modal-control-right
 				i-select(
+					clearable,
 					v-model="item.config.event.scene.type",
-					:disabled="platform.chooseWidgetState",
 					:style="{ marginRight: '10px', width: '100px' }")
 					i-option(value="openScene") 打开场景
 					i-option(value="closeScene") 关闭场景
 					i-option(value="changeScene") 切换场景
-				i-input(
+				i-select(
 					v-model="item.config.event.scene.id",
-					placeholder="场景id",
-					:style="{ width: '100px' }",
-					:disabled="platform.chooseWidgetState")
+					filterable,
+					:style="{ width: '100px' }")
+					i-option(:value="0") 主场景
+					i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 		.d-manage-modal-control
 			label 组件事件
 			.d-manage-modal-control-right
 				i-select(
+					clearable,
 					v-model="item.config.event.component.type",
-					:disabled="platform.chooseWidgetState",
 					:style="{ marginRight: '10px', width: '100px' }")
 					i-option(value="update") 更新组件
 				i-select(
 					v-model="item.config.event.component.ids",
-					:disabled="platform.chooseWidgetState",
-					placeholder="组件id",
+					placeholder="选择组件",
 					multiple,
 					filterable,
 					:style="{ width: '100px' }")
-					i-option(:value="k" :key="i" v-for="(k, i) in Object.keys(platform.widgetAdded)") {{ k }}
+					i-option(
+						:value="k",
+						:key="i",
+						v-for="(k, i) in Object.keys(platform.widgetAdded)") {{ platform.widgetAdded[k].config.widget.name }}
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -224,7 +207,7 @@ export default class FuncData extends func {
 			})
 		return list
 	}
-	
+
 	updateApiSystem(value) {
 		Object.assign(this.item.config.api.system.params, value)
 		this.showDatabaseConfigModal = false
