@@ -127,6 +127,22 @@
 					placeholder="场景id",
 					:style="{ width: '100px' }",
 					:disabled="platform.chooseWidgetState")
+		.d-manage-modal-control
+			label 组件事件
+			.d-manage-modal-control-right
+				i-select(
+					v-model="item.config.event.component.type",
+					:disabled="platform.chooseWidgetState",
+					:style="{ marginRight: '10px', width: '100px' }")
+					i-option(value="update") 更新组件
+				i-select(
+					v-model="item.config.event.component.ids",
+					:disabled="platform.chooseWidgetState",
+					placeholder="组件id",
+					multiple,
+					filterable,
+					:style="{ width: '100px' }")
+					i-option(:value="k" :key="i" v-for="(k, i) in Object.keys(platform.widgetAdded)") {{ k }}
 </template>
 <script lang="ts">
 import func from './func.mx'
