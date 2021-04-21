@@ -27,6 +27,7 @@
 					:scale-ratio="platform.ruler.zoom",
 					:draggable="widgetEditable(item)",
 					:resizable="widgetEditable(item)",
+					:scale="item.config.layout.scale",
 					:active="item.id === platform.chooseWidgetId && widgetEditable(item)",
 					:w="item.config.layout.size.width",
 					:h="item.config.layout.size.height",

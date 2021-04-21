@@ -7,7 +7,7 @@
 				i-option(:value="0") 主场景
 				i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 				i-option(:value="-1") 回收站
-	d-right-swiper(title="基础属性" :show="true")
+	d-right-swiper(title="基础属性", :show="true")
 		.d-manage-modal-control
 			label 位置
 			.d-manage-modal-control-right
@@ -72,6 +72,13 @@
 					i-option(value="em") em
 					i-option(value="vw") vw
 					i-option(value="vh") vh
+		.d-manage-modal-control
+			label 缩放比例
+			.d-manage-modal-control-right
+				i-input(
+					v-model="scale",
+					:disabled="platform.chooseWidgetState",
+					:style="{ width: '55px' }")
 	d-right-swiper(title="载入动画")
 		.d-manage-modal-control
 			label 启用动画
@@ -126,5 +133,25 @@ export default class FuncBase extends func {
 		{ label: '滑动向左', value: 'slideInLeft' },
 		{ label: '滑动向上', value: 'slideInUp' },
 	]
+
+	get scale() {
+		return `${Math.round(this.item.config.layout.scale * 100)}%`
+	}
+
+	set scale(val) {
+		if (!isNaN(val)) {
+			this.item.config.layout.scale = val
+		} else {
+			const back = this.item.config.layout.scale
+			if (val.indexOf('%') !== -1) {
+				let v = val.replace('%', '') / 100
+				if (!isNaN(v)) {
+					this.item.config.layout.scale = v
+				} else {
+					this.item.config.layout.scale = back
+				}
+			}
+		}
+	}
 }
 </script>

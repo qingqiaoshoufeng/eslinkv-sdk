@@ -120,6 +120,10 @@ export default {
 				return []
 			},
 		},
+		scale: {
+			type: [Number, String],
+			default: 1,
+		},
 		// 缩放比例
 		scaleRatio: {
 			type: [Number, String],
@@ -567,7 +571,7 @@ export default {
 		},
 		style() {
 			return {
-				transform: `translate3d(${this.left}px, ${this.top}px,0)`,
+				transform: `translate3d(${this.left}px, ${this.top}px,0) scale(${this.scale})`,
 				width: this.width + 'px',
 				height: this.height + 'px',
 				zIndex: this.z,

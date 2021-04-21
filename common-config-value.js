@@ -23,6 +23,7 @@ const commonConfigValue = useColorTheme =>
 				top: 0,
 			},
 			zIndex: 10,
+			scale: 1,
 		},
 		config: useColorTheme ? { colorTheme } : {},
 		api: {

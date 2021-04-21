@@ -41,7 +41,7 @@ const mx: any = {
 		this.animateActiveIndex = -1
 	},
 	methods: {
-		__handleClick__ (val) {
+		__handleClick__(val) {
 			if (val) scene.state.transferData = val
 			const sceneId = this.config.event.scene.id
 			switch (this.config.event.scene.type) {
@@ -58,7 +58,11 @@ const mx: any = {
 			}
 			switch (this.config.event.component.type) {
 				case 'update':
-					const coms = Object.values(platform.state.widgetAdded).filter(v => this.config.event.component.ids.includes(v.id))
+					const coms = Object.values(
+						platform.state.widgetAdded,
+					).filter(v =>
+						this.config.event.component.ids.includes(v.id),
+					)
 					coms.forEach(v => {
 						instance.actions.updateComponent(v.id, val)
 					})
@@ -154,7 +158,7 @@ const mx: any = {
 				width: `${layout.size.width}${layout.size.unit}`,
 				height: `${layout.size.height}${layout.size.unit}`,
 				zIndex: `${layout.zIndex}`,
-				transform: `translate3d(${layout.position.left}${layout.position.unit}, ${layout.position.top}${layout.position.unit},0)`,
+				transform: `translate3d(${layout.position.left}${layout.position.unit}, ${layout.position.top}${layout.position.unit},0) scale(${layout.scale})`,
 			}
 		},
 		id() {
