@@ -158,7 +158,11 @@ const mx: any = {
 				width: `${layout.size.width}${layout.size.unit}`,
 				height: `${layout.size.height}${layout.size.unit}`,
 				zIndex: `${layout.zIndex}`,
-				transform: `translate3d(${layout.position.left}${layout.position.unit}, ${layout.position.top}${layout.position.unit},0) scale(${layout.scale})`,
+				transform: `translate3d(${layout.position.left}${
+					layout.position.unit
+				}, ${layout.position.top}${layout.position.unit},0) ${
+					layout.scale ? 'scale(' + layout.scale + ')' : ''
+				}`,
 			}
 		},
 		id() {
