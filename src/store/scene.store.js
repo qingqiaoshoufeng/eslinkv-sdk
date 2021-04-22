@@ -6,6 +6,7 @@ import { uuid } from '../utils'
 import parts from '../components/d-widget-part/index'
 import Vue from 'vue'
 import instance from './instance.store'
+import platform from './platform.store'
 import { store } from './index'
 
 const state = Vue.observable({
@@ -111,6 +112,17 @@ const actions = {
 		pointerEvents = 'auto',
 	) {
 		if (state.status === 'inPreview') {
+			const widgets = Object.values(platform.state.widgetAdded)
+			state.sceneObj[id].list = []
+			widgets.forEach(item => {
+				if (item.scene === id) {
+					state.sceneObj[id].list.push({
+						...item,
+						value: item.config
+					})
+				}
+			})
+			
 			const kanban = document.getElementById('kanban')
 			const transform = kanban.style.transform
 			const canvasStyle = `position: relative;transition: all .3s;flex-shrink: 0;flex-grow: 0;transform:scale(0);width:${kanban.clientWidth}px;height:${kanban.clientHeight}px;overflow: hidden;background-color:transparent;z-index: 99999;`
@@ -128,7 +140,7 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 						:config="item.value"
 						:type="item.type"
 						v-for="item in array"
-						:key="item.id"/>
+						:key="item.id + new Date().getTime()"/>
 					</div></div>`,
 				provide() {
 					return { kanboardEditor: _self }
