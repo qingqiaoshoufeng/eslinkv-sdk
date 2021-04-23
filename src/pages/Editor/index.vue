@@ -6,7 +6,6 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import dScreen from '../../components/d-screen/index.vue'
-import market from '../../plugins/market'
 import dDetail from '../../components/d-detail/index.vue'
 
 @Component({
@@ -15,11 +14,7 @@ import dDetail from '../../components/d-detail/index.vue'
 		dDetail,
 	},
 })
-export default class editor extends Vue {
-	mounted() {
-		market()
-	}
-}
+export default class editor extends Vue {}
 </script>
 <style lang="scss">
 .home-container {

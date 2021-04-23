@@ -1,4 +1,4 @@
-import { colorTheme } from './packages'
+import { colorTheme } from './packages/config.default.js'
 
 const commonConfigValue = useColorTheme =>
 	Object.freeze({

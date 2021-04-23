@@ -18,10 +18,15 @@
 </template>
 <script>
 import platform from '../../store/platform.store'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
+import { mixins } from 'vue-class-component'
+import dev from './dev'
+import prod from './prod'
 
 @Component
-export default class Guide extends Vue {
+export default class Guide extends mixins(
+	process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? dev : prod,
+) {
 	showGuideMenu = false
 	menuLeft = 0
 	menuTop = 0
@@ -132,14 +137,6 @@ export default class Guide extends Vue {
 				if (e.altKey) this.clearGuides()
 				break
 		}
-	}
-
-	updateHandle() {
-		const id = this.$route.params.id
-		this.$api.screenShare.screenShareUpdate({
-			screenId: id,
-			screenGuide: this.platform.ruler.guideLines,
-		})
 	}
 
 	clearGuides() {

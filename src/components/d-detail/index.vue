@@ -1,8 +1,6 @@
 <template lang="pug">
 .d-detail.fn-flex(v-if="show")
 	.d-detail-left.fn-flex
-		.d-detail-left-icon.fn-flex
-			i-icon.pointer(type="ios-arrow-dropleft", @click="exit", :size="24")
 		.d-detail-left-icon-box.fn-flex
 			i-icon.pointer(
 				title="组件",
@@ -34,15 +32,6 @@
 		li.fn-flex.flex-column.pointer(@click="importModal = true")
 			i-icon(type="ios-cloud-upload-outline", :size="24")
 			span 导入
-		li.fn-flex.flex-column.pointer(@click="handleSave('CUSTOM')")
-			i-icon(type="ios-cloud-done-outline", :size="24")
-			span 保存
-		//li.fn-flex.flex-column.pointer(@click="handleSave('TEMPLATE')" v-if="screenType==='CUSTOM'")
-		//  i-icon(type="ios-cloud-circle-outline" :size="24")
-		//  span 模板
-		li.fn-flex.flex-column.pointer(@click="shareModal = true", v-if="!isNew")
-			i-icon(type="ios-paper-plane-outline", :size="24")
-			span 分享
 	load-mask(:show="loading") {{ loadingMsg }}
 	i-modal(v-model="importModal")
 		i-form
@@ -52,7 +41,6 @@
 					type="file",
 					accept="application/json",
 					@change="handleFile")
-	dShareDialog(v-model="shareModal" :autoInit="!isNew")
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
@@ -66,15 +54,12 @@ import loadMask from '../load-mask/index.vue'
 import importMx from './import.mx'
 import exportMx from './export.mx'
 import detailMx from './detail.mx'
-import saveMx from './save.mx'
-import dShareDialog from '../d-share-dialog/index.vue'
 
 @Component({
 	components: {
 		'i-icon': Icon,
 		'i-button': Button,
 		loadMask,
-		dShareDialog,
 		'i-modal': Modal,
 		'i-form': Form,
 		'i-form-item': FormItem,
@@ -85,10 +70,8 @@ export default class DDetail extends mixins(
 	// @ts-ignore
 	exportMx,
 	detailMx,
-	saveMx,
 	importMx,
 ) {
-	@Prop(Boolean) kanboardEdited: boolean
 	@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
 
 	platform = platform.state
@@ -142,20 +125,6 @@ export default class DDetail extends mixins(
 		window.open(
 			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.platform.panelConfig.size.layoutMode}`,
 		)
-	}
-
-	exit() {
-		if (this.kanboardEdited) {
-			this.$Modal.confirm({
-				title: '提示',
-				content: '看板已编辑，关闭窗口将丢失未保存的数据，确认关闭吗？',
-				onOk: () => {
-					this.$router.replace({ name: 'big-data-list' })
-				},
-			})
-			return
-		}
-		this.$router.go(-1)
 	}
 
 	getAttr(o, str) {

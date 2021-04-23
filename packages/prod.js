@@ -8,9 +8,7 @@ import dScreen from '../src/components/d-screen/index.vue'
 import dLeftScene from '../src/components/d-left-scene/index.vue'
 import dRightManage from '../src/components/d-right-manage/index.vue'
 import dRightSetting from '../src/components/d-right-setting/index.vue'
-import dDetail from '../src/components/d-detail/index.vue'
 import dFooter from '../src/components/d-footer/index.vue'
-import dShareDialog from '../src/components/d-share-dialog/index.vue'
 import scene from '../src/store/scene.store'
 import instance from '../src/store/instance.store'
 import custom from '../src/store/custom.store'
@@ -19,20 +17,9 @@ import dView from '../src/components/d-view/index.vue'
 import loadMask from '../src/components/load-mask/index.vue'
 import '../src/plugins'
 import market from '../src/plugins/market.ts'
-import './other.js'
+import './plugin.js'
+import { colorTheme } from './config.default'
 
-const colorTheme = {
-	colorDisk: [
-		'#00DDFF',
-		'#0B88FF',
-		'#624BEB',
-		'#FA71CB',
-		'#FFDC45',
-		'#E5615B',
-		'#00FFCF',
-		'#FF9F61',
-	],
-}
 const eslinkV = {
 	widgetMixin,
 	platform,
@@ -45,13 +32,11 @@ const eslinkV = {
 	commonConfigValue,
 	market,
 	dEditor,
-	dShareDialog,
 	dScreen,
 	dLeftWidget,
 	dLeftScene,
 	dRightSetting,
 	dRightManage,
-	dDetail,
 	dFooter,
 	dView,
 	loadMask,
@@ -80,8 +65,6 @@ export {
 	dLeftScene,
 	dRightSetting,
 	dRightManage,
-	dShareDialog,
-	dDetail,
 	dFooter,
 	dView,
 	loadMask,

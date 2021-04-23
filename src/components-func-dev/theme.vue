@@ -20,7 +20,7 @@ import func from './func.mx'
 import { Component } from 'vue-property-decorator'
 import instance from '../store/instance.store'
 import platform from '../store/platform.store'
-import { colorTheme } from '../../packages/index.js'
+import { colorTheme } from '../../packages/config.default.js'
 
 @Component
 export default class FuncAnimation extends func {

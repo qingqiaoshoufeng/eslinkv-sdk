@@ -20,38 +20,30 @@
 	config
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
+import { mixins } from 'vue-class-component'
 import platform from '../../store/platform.store'
-import config from '../../components-func/config.vue'
+import configProd from '../../components-func-prod/config.vue'
+import configDev from '../../components-func-dev/config.vue'
 import { Icon, Input } from 'view-design'
+import dev from './dev'
+import prod from './prod'
 @Component({
 	components: {
-		config,
+		config:
+			process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? configDev : configProd,
 		'i-icon': Icon,
 		'i-input': Input,
 	},
 })
-export default class DRightManage extends Vue {
+export default class DRightManage extends mixins(
+	process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? dev : prod,
+) {
 	editName = false
 	platform = platform.state
 
 	get staticName() {
 		return this.platform.screenName
-	}
-
-	changeName() {
-		const id = this.$route.params.id
-		const screenName = document.getElementById('platform-name').innerText
-		this.editName = false
-		this.platform.screenName = screenName
-		this.$api.screen
-			.update({
-				screenId: id,
-				screenName,
-			})
-			.then(() => {
-				this.$Message.success('修改成功')
-			})
 	}
 }
 </script>

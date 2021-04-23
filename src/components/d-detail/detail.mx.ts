@@ -2,7 +2,6 @@ import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 import { getQueryString } from '../../utils/index'
 
-// todo 加载动画 下面注释部分
 export default {
 	data() {
 		return {
@@ -75,7 +74,6 @@ export default {
 				})
 		},
 	},
-
 	mounted() {
 		const templateId = this.$route.query.templateId
 		const id = this.$route.params.id || templateId

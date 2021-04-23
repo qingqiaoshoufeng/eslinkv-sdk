@@ -3,7 +3,7 @@ import App from './App.vue'
 import { Message, Modal } from 'view-design'
 import router from './router'
 import '@babel/polyfill'
-import '../packages/other.js'
+import '../packages/plugin.js'
 import './components-business'
 
 Vue.prototype.$Message = Message

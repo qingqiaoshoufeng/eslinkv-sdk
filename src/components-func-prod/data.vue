@@ -84,6 +84,7 @@
 					:style="{ marginRight: '10px' }",
 					v-if="item.config.api.autoFetch.enable")
 				i-switch(v-model="item.config.api.autoFetch.enable")
+	d-right-swiper(title="事件")
 		.d-manage-modal-control
 			label 组件关联
 			.d-manage-modal-control-right
@@ -91,7 +92,6 @@
 		.d-manage-modal-control(v-if="item.config.api.bind.enable")
 			checkbox-group(v-model="item.config.api.bind.refIds")
 				checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
-	d-right-swiper(title="事件")
 		.d-manage-modal-control
 			label 场景事件
 			.d-manage-modal-control-right

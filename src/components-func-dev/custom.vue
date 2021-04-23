@@ -1,0 +1,30 @@
+<template lang="pug">
+.d-manage-modal-control-base
+	.d-manage-modal-control
+		label 自动贴靠参考线
+		.d-manage-modal-control-right
+			i-switch(v-model="platform.autoAlignGuide")
+	.d-manage-modal-control
+		label
+		.d-manage-modal-control-right
+			i-button(icon="md-sync", @click="handleSync", type="primary") 强制刷新当前组件
+</template>
+<script lang="ts">
+import func from './func.mx'
+import { Component } from 'vue-property-decorator'
+import instance from '../store/instance.store'
+import platform from '../store/platform.store'
+
+@Component
+export default class FuncCustom extends func {
+	instance = instance.state
+	platform = platform.state
+	versionList = []
+
+	handleSync() {
+		this.instance.kanboard.$refs[
+			`widget_${this.platform.chooseWidgetId}`
+		][0].$children[0].updateKey++
+	}
+}
+</script>

@@ -3,9 +3,10 @@
 	"version": "1.0.48",
 	"main": "lib/eslinkv-sdk.umd.min.js",
 	"scripts": {
-		"serve": "vue-cli-service serve",
+		"serve": "vue-cli-service --mode local serve",
 		"update": "auto-vers -t",
-		"lib": "vue-cli-service build --mode npm --target lib --dest lib packages/index.js",
+		"lib-dev": "vue-cli-service build --mode sdkdev --target lib --dest lib packages/dev.js",
+		"lib-prod": "vue-cli-service build --mode sdkprod --target lib --dest lib packages/prod.js",
 		"commit": "git add .&&git cz"
 	},
 	"dependencies": {

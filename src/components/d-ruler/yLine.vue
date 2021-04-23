@@ -11,15 +11,20 @@
 		.num {{ site }}
 </template>
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
+import { mixins } from 'vue-class-component'
+import dev from './dev'
+import prod from './prod'
 
 let i = 0
 let loadImg = false
 const bgImg = new Image()
 
 @Component
-export default class YLine extends Vue {
+export default class YLine extends mixins(
+	process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? dev : prod,
+) {
 	@Prop() clientY
 	platform = platform.state
 	showHelp = false
@@ -61,14 +66,6 @@ export default class YLine extends Vue {
 		this.updateHandle()
 		this.platform.ruler.guideDrag = false
 		this.platform.ruler.dragGuideId = ''
-	}
-
-	updateHandle() {
-		const id = this.$route.params.id
-		this.$api.screenShare.screenShareUpdate({
-			screenId: id,
-			screenGuide: this.platform.ruler.guideLines,
-		})
 	}
 
 	mouseup() {

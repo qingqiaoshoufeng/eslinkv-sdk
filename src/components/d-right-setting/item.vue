@@ -15,7 +15,9 @@ export default class DManageItem extends Vue {
 
 	created() {
 		const components = require.context(
-			'../../components-func',
+			`../../components-func-${
+				process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? 'dev' : 'prod'
+			}`,
 			true,
 			/\.(vue)$/,
 		)
