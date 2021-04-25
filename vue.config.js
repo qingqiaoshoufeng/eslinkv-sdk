@@ -24,17 +24,28 @@ module.exports = {
 		proxy: {
 			'^/node': {
 				// target: 'http://127.0.0.1:7001',
-				target: 'http://eslinkv.eslink.cc',
+				// target: 'http://eslinkv.eslink.cc',
+				target: 'http://192.168.1.44:2000',
 				// target: 'http://10.30.3.156:7001',
 				changeOrigin: true,
 				// pathRewrite: {
 				// 	'^/node': '/',
 				// },
 			},
+			'^/server': {
+				// target: 'http://192.168.1.33:9082',
+				// target: 'http://10.20.10.154:3000',
+				target: 'http://192.168.1.44:2000',
+				changeOrigin: true,
+				// pathRewrite: {
+				// 	'^/server': '/',
+				// },
+			},
 			'^/cdn': {
 				// target: 'http://127.0.0.1:7001',
 				// target: 'http://eslinkv.eslink.cc',
-				target: 'http://10.30.3.156:7001',
+				// target: 'http://10.30.3.156:7001',
+				target: 'http://192.168.1.44:2000',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/cdn': '/',

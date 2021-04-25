@@ -21,6 +21,7 @@ const mx: any = {
 	},
 	data() {
 		return {
+			platform: platform.state,
 			configValue: null,
 			ready: false,
 			data: null,
@@ -76,18 +77,10 @@ const mx: any = {
 		emitComponentUpdate(data) {
 			if (this.configValue) {
 				this.configValue.api.bind.refIds.forEach(ref => {
-					let dom
-					if (this.kanboardEditor.$refs[ref]) {
-						dom = this.kanboardEditor.$refs[ref][0].$refs.widgets
-					} else if (instance.actions.createKanboard?.$refs[ref]) {
-						dom =
-							instance.actions.createKanboard.$refs[ref][0].$refs
-								.widgets
+					this.platform.widgetAdded[ref].config.api.params = {
+						...this.platform.widgetAdded[ref].config.api.params,
+						...data,
 					}
-					if (!dom) return
-					if (typeof dom.updateComponent === 'function')
-						dom.updateComponent(data)
-					dom.updateAjax(data)
 				})
 			}
 		},
