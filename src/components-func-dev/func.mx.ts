@@ -43,7 +43,8 @@ export default class Func extends Vue {
 	platform = platform.state
 	scene = scene.state
 	@Prop() config
-	@Prop() parent // group时会有
+	@Prop() parentProp // group时会有
+	@Prop() parentIndex // group时会有
 
 	get item() {
 		if (this.platform.widgetAdded[this.platform.chooseWidgetId]) {
@@ -52,22 +53,34 @@ export default class Func extends Vue {
 			return null
 		}
 	}
+	
+	get fixedConfig () {
+		if (this.parentProp) {
+			return {
+				...this.config,
+				prop: `config.config.${this.parentProp}.${this.config.prop}`
+			}
+		} else {
+			return this.config
+		}
+	}
 
 	get obj() {
-		if (!this.config.prop) return null
+		if (!this.fixedConfig.prop) return null
 		let res = this.item
-		const props = this.config.prop.split('.')
+		const props = this.fixedConfig.prop.split('.')
 		props.length = props.length - 1
 		props.forEach(v => {
 			res = res[v]
 		})
-		return res
+		return this.parentProp ? res[this.parentIndex] : res
 	}
 
 	// config.api.data，返回‘data‘
 	get inputKey() {
-		if (!this.config.prop) return null
-		const props = this.config.prop.split('.')
+		if (this.parentProp) return this.config.prop
+		if (!this.fixedConfig.prop) return null
+		const props = this.fixedConfig.prop.split('.')
 		return props.reverse()[0]
 	}
 

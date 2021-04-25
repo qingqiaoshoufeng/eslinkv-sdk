@@ -1,26 +1,21 @@
 export const customConfig = [
 	{
-		prop: 'background',
+		prop: 'title',
+		label: '标题',
+		type: 'func-input',
+	},
+	{
+		prop: 'backgrounds',
 		label: '组',
 		type: 'func-group',
 		children: [
 			{
-				prop: 'title',
-				label: '标题',
-				type: 'func-input',
-			},
-			{
 				prop: 'background',
 				label: '动画',
-				type: 'func-webm',
+				type: 'func-upload',
 			},
 		],
-	},
-	{
-		prop: 'abc',
-		label: '背景图片',
-		type: 'func-background',
-	},
+	}
 ]
 export const value = {
 	api: {
@@ -36,13 +31,12 @@ export const value = {
 		},
 	},
 	config: {
-		background: [
+		title: 'aaa',
+		backgrounds: [
 			{
 				background: '/static/icons/s-progress1-1.svg',
 				title: '开户(户)',
 			},
-		],
-		colorTheme: {},
-		abc: '/static/icons/s-progress1-1.svg',
+		]
 	},
 }

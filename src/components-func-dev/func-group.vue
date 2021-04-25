@@ -10,7 +10,8 @@
 			:config="k",
 			v-for="(k, i) in config.children",
 			:key="i",
-			:parent="v")
+			:parentProp="inputKey"
+			:parentIndex="n")
 </template>
 <script lang="ts">
 import func from './func.mx'

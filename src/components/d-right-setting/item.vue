@@ -2,7 +2,8 @@
 component(
 	:is="currentComponent[config.type]",
 	:config="config",
-	:parent="parent")
+  :parentProp="parentProp"
+  :parentIndex="parentIndex")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
@@ -10,7 +11,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 @Component
 export default class DManageItem extends Vue {
 	@Prop({ type: Object }) config: any
-	@Prop({ type: Object }) parent: any
+	@Prop() parentProp: any
+	@Prop() parentIndex: any
 	currentComponent: any = {}
 
 	created() {

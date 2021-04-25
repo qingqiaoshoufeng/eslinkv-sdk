@@ -140,7 +140,7 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 						:config="item.value"
 						:type="item.type"
 						v-for="item in array"
-						:key="item.id + new Date().getTime()"/>
+						:key="item.id"/>
 					</div></div>`,
 				provide() {
 					return { kanboardEditor: _self }
