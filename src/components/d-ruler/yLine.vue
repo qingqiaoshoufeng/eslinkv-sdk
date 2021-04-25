@@ -23,6 +23,7 @@ const bgImg = new Image()
 
 @Component
 export default class YLine extends mixins(
+	// @ts-ignore
 	process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? dev : prod,
 ) {
 	@Prop() clientY
@@ -63,6 +64,7 @@ export default class YLine extends mixins(
 		} else {
 			platform.actions.guideAdd(this.site)
 		}
+		// @ts-ignore
 		this.updateHandle()
 		this.platform.ruler.guideDrag = false
 		this.platform.ruler.dragGuideId = ''
@@ -74,6 +76,7 @@ export default class YLine extends mixins(
 			this.platform.ruler.guideDrag = false
 			this.platform.ruler.dragGuideId = ''
 		}
+		// @ts-ignore
 		this.updateHandle()
 	}
 

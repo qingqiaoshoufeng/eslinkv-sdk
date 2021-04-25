@@ -37,6 +37,7 @@ import prod from './prod'
 	},
 })
 export default class DRightManage extends mixins(
+	// @ts-ignore
 	process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? dev : prod,
 ) {
 	editName = false

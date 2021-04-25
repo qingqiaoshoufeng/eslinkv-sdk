@@ -60,10 +60,10 @@ const mx: any = {
 				case 'update':
 					const coms = Object.values(
 						platform.state.widgetAdded,
-					).filter(v =>
+					).filter((v: any) =>
 						this.config.event.component.ids.includes(v.id),
 					)
-					coms.forEach(v => {
+					coms.forEach((v: any) => {
 						instance.actions.updateComponent(v.id, val)
 					})
 					break

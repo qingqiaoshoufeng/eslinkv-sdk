@@ -138,7 +138,7 @@ export default class FuncBase extends func {
 		return `${Math.round(this.item.config.layout.scale * 100)}%`
 	}
 
-	set scale(val) {
+	set scale(val: any) {
 		if (!isNaN(val)) {
 			this.item.config.layout.scale = val
 		} else {

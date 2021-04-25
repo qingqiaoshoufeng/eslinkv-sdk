@@ -6,7 +6,11 @@
 		"serve": "vue-cli-service --mode local serve",
 		"update": "auto-vers -t",
 		"lib-dev": "vue-cli-service build --mode sdkdev --target lib --dest lib packages/dev.js",
-		"lib-prod": "vue-cli-service build --mode sdkprod --target lib --dest lib packages/prod.js",
+		"lib-prod-m": "vue-cli-service build --mode sdkprod --target lib --dest lib packages/prod-m.js --name eslinkv.m --no-clean",
+		"lib-prod-s": "vue-cli-service build --mode sdkprod --target lib --dest lib packages/prod-s.js --name eslinkv.s --no-clean",
+		"lib-prod-v": "vue-cli-service build --mode sdkprod --target lib --dest lib packages/prod-v.js --name eslinkv.v --no-clean",
+		"lib-prod-c": "vue-cli-service build --mode sdkprod --target lib --dest lib packages/prod-c.js --name eslinkv.c --no-clean",
+		"lib-prod": "npm run lib-prod-v && npm run lib-prod-m && npm run lib-prod-s && npm run lib-prod-c",
 		"commit": "git add .&&git cz"
 	},
 	"dependencies": {
