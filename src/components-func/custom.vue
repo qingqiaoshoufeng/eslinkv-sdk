@@ -1,5 +1,20 @@
 <template lang="pug">
 .d-manage-modal-control-base
+	// IFTRUE_PROD
+	.d-manage-modal-control
+		label 组件市场
+		.d-manage-modal-control-right
+			i-select(
+				v-model="item.config.widget.componentVersion",
+				v-if="item.market",
+				:style="{ marginRight: '10px', width: '156px' }",
+				:disabled="platform.chooseWidgetState")
+				i-option(
+					:value="item.componentVersion",
+					v-for="(item, i) in versionList",
+					:key="i") {{ item.componentVersion }}
+			i-switch(v-model="item.market")
+	// FITRUE_PROD
 	.d-manage-modal-control
 		label 自动贴靠参考线
 		.d-manage-modal-control-right
@@ -26,5 +41,20 @@ export default class FuncCustom extends func {
 			`widget_${this.platform.chooseWidgetId}`
 		][0].$children[0].updateKey++
 	}
+
+	// IFTRUE_PROD
+	async getVersionList() {
+		const res = await this.$api.marketComponent.getVersionList({
+			componentEnTitle: this.item.type,
+		})
+		this.versionList = res
+	}
+
+	created() {
+		if (this.item.market) {
+			this.getVersionList()
+		}
+	}
+	// FITRUE_PROD
 }
 </script>

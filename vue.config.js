@@ -95,6 +95,21 @@ module.exports = {
 			.use('iview')
 			.loader('iview-loader')
 			.options({ prefix: false })
+		config.module
+			.rule("vue")
+			.use("js-conditional-compile-loader")
+			.loader("./packages/conditionalLoader")
+			.options({})
+		config.module
+			.rule("js")
+			.use("js-conditional-compile-loader")
+			.loader("./packages/conditionalLoader")
+			.options({})
+		config.module
+			.rule("ts")
+			.use("js-conditional-compile-loader")
+			.loader("./packages/conditionalLoader")
+			.options({})
 		config.resolve.alias.set('@lib', path.resolve(__dirname, './lib'))
 		config.module
 			.rule('view-design')

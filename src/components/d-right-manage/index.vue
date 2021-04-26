@@ -23,15 +23,13 @@
 import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
 import platform from '../../store/platform.store'
-import configProd from '../../components-func-prod/config.vue'
-import configDev from '../../components-func-dev/config.vue'
+import configProd from '../../components-func/config.vue'
 import { Icon, Input } from 'view-design'
 import dev from './dev'
 import prod from './prod'
 @Component({
 	components: {
-		config:
-			process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? configDev : configProd,
+		config: configProd,
 		'i-icon': Icon,
 		'i-input': Input,
 	},

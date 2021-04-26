@@ -1,6 +1,7 @@
 <template lang="pug">
 .d-manage-modal-control-data
 	d-right-swiper(title="数据请求", :show="true")
+		// IFTRUE_PROD
 		.d-manage-modal-control
 			label 请求方式
 			.d-manage-modal-control-right
@@ -60,11 +61,13 @@
 			lang="json",
 			:code="typeof item.config.api.params === 'string' ? item.config.api.params : JSON.stringify(item.config.api.params)",
 			@update:code="value => (item.config.api.params = JSON.parse(value))")
+		// FITRUE_PROD
 		d-code(
 			label="响应数据",
 			lang="json",
 			:code="apiData",
 			@update:code="value => (apiData = value)")
+	// IFTRUE_PROD
 	d-right-swiper(title="数据处理")
 		d-code(
 			label="数据加工",
@@ -84,6 +87,7 @@
 					:style="{ marginRight: '10px' }",
 					v-if="item.config.api.autoFetch.enable")
 				i-switch(v-model="item.config.api.autoFetch.enable")
+	// FITRUE_PROD
 	d-right-swiper(title="事件")
 		.d-manage-modal-control
 			label 组件关联
@@ -136,6 +140,7 @@ import scene from '../store/scene.store'
 
 @Component({ components: { databaseConfig, dCode } })
 export default class FuncData extends func {
+	// IFTRUE_PROD
 	showDatabaseConfigModal = false
 
 	get apiType() {
@@ -160,6 +165,7 @@ export default class FuncData extends func {
 			this.item.config.api.system.enable = false
 		}
 	}
+	// FITRUE_PROD
 
 	get apiData() {
 		const req = this.getItemValue('config.api.data')
@@ -208,6 +214,7 @@ export default class FuncData extends func {
 		return list
 	}
 
+	// IFTRUE_PROD
 	updateApiSystem(value) {
 		Object.assign(this.item.config.api.system.params, value)
 		this.showDatabaseConfigModal = false
@@ -220,5 +227,6 @@ export default class FuncData extends func {
 		// @ts-ignore
 		this.$refs.dataBaseConfig.setQueryCond(value.api.system.params)
 	}
+	// FITRUE_PROD
 }
 </script>

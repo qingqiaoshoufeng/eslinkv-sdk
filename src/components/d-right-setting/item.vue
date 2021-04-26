@@ -16,13 +16,7 @@ export default class DManageItem extends Vue {
 	currentComponent: any = {}
 
 	created() {
-		const components = require.context(
-			`../../components-func-${
-				process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? 'dev' : 'prod'
-			}`,
-			true,
-			/\.(vue)$/,
-		)
+		const components = require.context(`../../components-func`, true, /\.(vue)$/)
 		components.keys().forEach(child => {
 			const name = child.split('/')[1].replace('.vue', '')
 			this.currentComponent[name] = components(child).default
