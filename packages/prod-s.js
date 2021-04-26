@@ -1,11 +1,15 @@
-import { configMerge } from '../src/utils'
-import commonConfigValue from '../common-config-value.js'
-import { colorTheme } from './config.default'
+import platform from '../src/store/platform.store.js'
+import scene from '../src/store/scene.store'
+import instance from '../src/store/instance.store'
+import custom from '../src/store/custom.store'
+import event from '../src/store/event.store.js'
 
 const eslinkV = {
-	colorTheme,
-	configMerge,
-	commonConfigValue,
+	platform,
+	scene,
+	instance,
+	custom,
+	event,
 }
 if (window !== undefined) {
 	if (!window.eslinkV) {
@@ -14,5 +18,5 @@ if (window !== undefined) {
 	window.eslinkV = { ...window.eslinkV, ...eslinkV }
 }
 
-export { colorTheme, configMerge, commonConfigValue }
+export { platform, scene, instance, custom, event }
 export default eslinkV
