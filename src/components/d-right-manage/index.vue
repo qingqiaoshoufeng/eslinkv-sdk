@@ -10,7 +10,7 @@
 			v-if="editName")
 		i-icon.pointer(
 			type="ios-create-outline",
-			@click="editName = true",
+			@click="editNameHandle",
 			v-if="!editName")
 	.d-right-modal-id
 		span version: {{ platform.version }}
@@ -37,6 +37,13 @@ export default class DRightManage extends Vue {
 
 	get staticName() {
 		return this.platform.screenName
+	}
+
+	editNameHandle() {
+		this.editName = true
+		setTimeout(() => {
+			document.getElementById('platform-name').focus()
+		}, 0)
 	}
 
 	changeName() {

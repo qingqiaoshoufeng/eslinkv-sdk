@@ -1,46 +1,20 @@
 import { uuid } from '../../utils/index'
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 
 @Component
 class Mixins extends Vue {
 	currentWidgetType = null
-	rightMenuBindWidgetId = null
-	widgetMovingTimer = null
-	widgetActivating = false
-	widgetMoving = false
-	currentWidgetValue = null
 	platform = platform.state
 	scene = scene.state
-	configPanelValueUpdateTimer = null
-
-	updateConfigPanelValue(id, oldId) {
-		const update = () => {
-			const configPanel = this.$refs.configPanel
-			if (oldId) {
-				configPanel && (configPanel as any).reset()
-				this.$nextTick(() => {
-					this.currentWidgetValue = this.platform.widgetAdded[
-						id
-					].config
-				})
-			} else {
-				this.currentWidgetValue = this.platform.widgetAdded[id].config
-			}
-			this.configPanelValueUpdateTimer = null
-		}
-		this.configPanelValueUpdateTimer &&
-			clearTimeout(this.configPanelValueUpdateTimer)
-		this.configPanelValueUpdateTimer = setTimeout(update, 380)
-	}
 
 	handleWidgetConfig({ value = {} }) {
 		this.updateWidget(value)
 	}
 
 	updateWidget(value) {
-		if (this.widgetMoving || !value || !value.widget) return
+		if (!value || !value.widget) return
 		const id = value.widget.id
 		const currentWidget = this.platform.widgetAdded[id]
 		if (!id || !currentWidget) return
@@ -85,70 +59,20 @@ class Mixins extends Vue {
 	handleActivated(obj) {
 		const { config, id, type } = obj
 		if (!this.widgetEditable(obj)) {
-			return this.deactivateWidget()
+			return
 		}
 		platform.actions.chooseWidget(id)
 		platform.actions.setChooseWidgetCustomConfig(config.customConfig)
-		if (this.widgetActivating) return
-		this.widgetActivating = true
 		this.currentWidgetType = type
 		this.platform.chooseWidgetId = id
-		setTimeout(() => {
-			this.widgetActivating = false
-		}, 300)
 	}
 
-	handleDeactivated(item) {
-		if (!this.widgetEditable(item)) {
-			platform.actions.unChooseWidget()
-		}
-	}
-
-	/**
-	 * @description 刷新以取消选定状态
-	 */
-	deactivateWidget() {
-		this.$nextTick(() => {
-			platform.actions.unChooseWidget()
-			this.$refs.rightMenu && (this.$refs.rightMenu as any).$el.classList.remove('active')
-		})
-	}
-
-	markWidgetMoving() {
-		if (this.widgetMovingTimer) clearTimeout(this.widgetMovingTimer)
-		this.widgetMoving = true
-		this.widgetMovingTimer = setTimeout(() => {
-			this.widgetMoving = false
-			this.updateWidget(this.currentWidgetValue)
-			this.widgetMovingTimer = null
-		}, 50)
+	handleDeactivated() {
+		platform.actions.unChooseWidget()
 	}
 
 	widgetEditable({ config }) {
 		return !config.widget.locked && !config.widget.hide
-	}
-
-	@Watch('platform.chooseWidgetId')
-	onActivatedWidgetIdChange(id, oldId) {
-		if (!id) return
-
-		if (
-			(this.currentWidgetValue &&
-				id === this.currentWidgetValue.widget.id) ||
-			!id
-		)
-			return
-		this.updateConfigPanelValue(id, oldId)
-	}
-
-	@Watch('currentWidgetValue.layout', { deep: true })
-	onCurrentWidgetValueLayoutChange() {
-		this.markWidgetMoving()
-	}
-
-	@Watch('currentWidgetValue', { deep: true })
-	onCurrentWidgetValueChange(value) {
-		value && this.updateWidget(value)
 	}
 }
 

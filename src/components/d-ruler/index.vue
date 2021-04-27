@@ -5,10 +5,10 @@
 		@click="platform.ruler.guideVisible = !platform.ruler.guideVisible")
 	x-line(:clientX="clientX", ref="xline")
 	y-line(:clientY="clientY", ref="yline")
-	.d-ruler-content#ruler-content(
+	#ruler-content.d-ruler-content(
 		ref="rulerContent",
+		@mousedown.self="hideRightMenu",
 		:class="{ drag: platform.ruler.contentMove }",
-		@click="deactivateWidget",
 		@mousedown="handleContentMoveStart",
 		@mousemove.prevent)
 		.content-body.pos-a(:id="platform.ruler.dragId", :style="contentStyle")
@@ -54,7 +54,7 @@ export default class DRuler extends mixins(eventHandlers) {
 		} px;height:${(this as any).contentHeight + 18 * 2} px;`
 	}
 
-	deactivateWidget() {
+	hideRightMenu() {
 		platform.actions.unChooseWidget()
 	}
 }

@@ -16,8 +16,8 @@
 			@dragleave.self="isDragIn = false",
 			@drop="drop",
 			@click.stop,
-			@dragover.prevent,
-			@mousedown.self="deactivateWidget(platform.chooseWidgetId)")
+			@mousedown.self="hideRightMenu",
+			@dragover.prevent)
 			// 小工具清单
 			template(v-for="item in platform.widgetAdded")
 				dr(
@@ -72,7 +72,7 @@
 				:style="{ top: item.position, left: item.origin, width: item.lineLength }")
 	d-guide
 	// 右键菜单
-	right-menu(ref="rightMenu", @deactivateWidget="deactivateWidget")
+	right-menu
 	d-footer
 </template>
 <script>
@@ -87,7 +87,6 @@ import dGuide from '../d-guide'
 import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
-
 export default {
 	name: 'd-editor',
 	mixins: [widgetOperation],
@@ -129,10 +128,14 @@ export default {
 		handleFullscreenChange() {
 			this.platform.fullscreen = !this.platform.fullscreen
 		},
+		hideRightMenu() {
+			platform.actions.unChooseWidget()
+		},
 		showRightMenu(e, item) {
 			e.preventDefault()
+			if (item.config.widget.locked) return
 			this.handleActivated(this.platform.widgetAdded[item.id])
-			const rightMenu = this.$refs.rightMenu.$el
+			const rightMenu = document.getElementById('right-menu')
 			rightMenu.classList.add('active')
 			rightMenu.style.left = e.clientX + 'px'
 			rightMenu.style.top = e.clientY + 'px'
@@ -252,8 +255,6 @@ export default {
 	}
 }
 
-.canvas-config-wrapper,
-.grid-config-panel-wrapper,
 .config-panel-wrapper {
 	position: fixed;
 	top: 0;
@@ -340,200 +341,7 @@ export default {
 	}
 }
 
-.config-panel-wrapper {
-	padding-right: 5px;
-	padding-bottom: 5px;
-
-	.resize-handle {
-		position: absolute;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		&::before {
-			display: block;
-			content: '';
-			background-color: var(--white);
-			border-radius: 1px;
-			opacity: 0.4;
-			transition: opacity 0.2s;
-		}
-
-		&.vertical {
-			bottom: -3px;
-			left: 0;
-			width: 100%;
-			height: 8px;
-			cursor: ns-resize;
-
-			&::before {
-				width: 64px;
-				height: 2px;
-			}
-		}
-
-		&.horizontal {
-			right: -3px;
-			bottom: 0;
-			width: 8px;
-			height: calc(100% - 25px);
-			cursor: ew-resize;
-
-			&::before {
-				width: 2px;
-				height: 64px;
-			}
-		}
-
-		&:hover::before {
-			opacity: 0.7;
-			transition: opacity 0.2s 0.2s;
-		}
-	}
-
-	.config-value-updating {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-		background-color: #f2f2f2;
-
-		.dot {
-			width: 8px;
-			height: 8px;
-			background-color: rgba(0, 0, 0, 0.1);
-			box-shadow: -16px 0 0 0 rgba(0, 0, 0, 0.15),
-				16px 0 0 0 rgba(0, 0, 0, 0.15), -32px 0 0 0 rgba(0, 0, 0, 0.1),
-				32px 0 0 0 rgba(0, 0, 0, 0.1);
-		}
-	}
-}
-
-.canvas-config-wrapper {
-	pointer-events: none;
-	opacity: 0;
-	transition: transform 0.5s cubic-bezier(0.5, 0, 0.5, 1),
-		opacity 0.5s cubic-bezier(0.5, 0, 0.5, 1);
-	transform: translate3d(-50%, 0, 0);
-
-	&.active {
-		pointer-events: auto;
-		opacity: 1;
-		transform: translate3d(-50%, 10px, 0);
-	}
-
-	.panel-body {
-		width: 100%;
-		height: 100%;
-		padding: 5px;
-		overflow: hidden;
-		background: #f2f2f2;
-		border-radius: 0 0 3px 3px;
-	}
-
-	.canvas-config-panel {
-		width: 100% !important;
-		height: 100% !important;
-		padding: 5px;
-		overflow: hidden;
-		overflow-y: auto;
-	}
-
-	&::after {
-		position: absolute;
-		top: 100%;
-		right: 0;
-		left: 0;
-		width: 36px;
-		height: 16px;
-		margin: auto;
-		font-size: 48px;
-		line-height: 48px;
-		color: #2d8cf0;
-		text-align: center;
-		pointer-events: none;
-		content: '';
-		filter: drop-shadow(#2d8cf094 0 4px 4px);
-	}
-
-	&::v-deep {
-		.background-picker {
-			height: 138px !important;
-		}
-	}
-}
-
-.grid-config-panel-wrapper {
-	.top-toolbar {
-		justify-content: center;
-	}
-
-	& > .config-panel {
-		overflow-x: hidden;
-	}
-}
-
-.widget-processing {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 100;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 15px;
-	color: white;
-	white-space: nowrap;
-	background-color: gray;
-}
-
 .no-pointer {
 	pointer-events: none;
-}
-
-.refill-mask {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 4;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	pointer-events: none;
-	background-color: rgba(0, 0, 0, 0.4);
-	opacity: 0;
-	transition: 0.2s;
-
-	&.active {
-		pointer-events: auto;
-		opacity: 1;
-
-		& ~ div {
-			filter: blur(7px);
-		}
-	}
-
-	.mask-content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		width: 400px;
-
-		.mask-title {
-			font-size: 1.3em;
-			line-height: 3;
-			color: white;
-		}
-	}
-
-	&::v-deep {
-		.ivu-progress-inner {
-			background-color: #717171;
-		}
-	}
 }
 </style>

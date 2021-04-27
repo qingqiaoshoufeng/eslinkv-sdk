@@ -1,5 +1,5 @@
 <template lang="pug">
-.right-menu.pos-f(ref="rightMenu", @contextmenu.stop.prevent @click="close")
+.right-menu.pos-f#right-menu(ref="rightMenu", @contextmenu.stop.prevent @click="close")
 	ul.list
 		li(@click="handleZIndexTop")
 			i-icon(type="md-arrow-round-up")
@@ -37,10 +37,10 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
+import instance from '../../store/instance.store'
 import copy from 'fast-copy'
 import { uuid } from '../../utils/index'
 import { Icon } from 'view-design'
-import instance from '../../store/instance.store'
 
 @Component({
 	components: {
@@ -49,17 +49,21 @@ import instance from '../../store/instance.store'
 })
 export default class rightMenu extends Vue {
 	platform = platform.state
+	instance = instance.state
 	isLock = false
 	zIndex = 10
 	minZIndex = 0
 	maxZIndex = 0
 
-	close () {
+	close() {
 		this.$refs.rightMenu.classList.remove('active')
 	}
 
 	handleSync() {
-		instance.state.kanboard.$refs[`widget_${this.platform.chooseWidgetId}`][0].$children[0].updateKey++
+		this.instance.kanboard.$refs[
+			`widget_${this.platform.chooseWidgetId}`
+		][0].$children[0].updateKey++
+		this.handleUnActive()
 	}
 
 	handleZIndex(num) {
@@ -68,6 +72,7 @@ export default class rightMenu extends Vue {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.layout.zIndex = this.zIndex
+		this.handleUnActive()
 	}
 
 	handleZIndexTop() {
@@ -75,6 +80,7 @@ export default class rightMenu extends Vue {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.layout.zIndex = this.maxZIndex
+		this.handleUnActive()
 	}
 
 	handleZIndexBottom() {
@@ -82,13 +88,14 @@ export default class rightMenu extends Vue {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.layout.zIndex = this.minZIndex
+		this.handleUnActive()
 	}
 
 	hideWidget() {
 		const widget = this.platform.widgetAdded[this.platform.chooseWidgetId]
 			.config.widget
 		widget.hide = !widget.hide
-		this.$emit('deactivateWidget', this.platform.chooseWidgetId)
+		this.handleUnActive()
 	}
 
 	deleteWidget() {
@@ -97,8 +104,8 @@ export default class rightMenu extends Vue {
 			content: '是否删除当前组件？',
 			onOk: () => {
 				const id = this.platform.chooseWidgetId
-				platform.actions.unChooseWidget()
 				this.$delete(this.platform.widgetAdded, id)
+				this.handleUnActive()
 			},
 		})
 	}
@@ -127,6 +134,7 @@ export default class rightMenu extends Vue {
 			widget.config,
 			widget.scene,
 		)
+		this.handleUnActive()
 	}
 
 	handleUnActive() {

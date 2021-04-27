@@ -181,6 +181,7 @@ const actions = {
 	unChooseWidget() {
 		state.chooseWidgetState = true
 		state.chooseWidgetId = null
+		document.getElementById('right-menu').classList.remove('active')
 	},
 	chooseWidget(id) {
 		state.chooseWidgetId = id
