@@ -16,7 +16,6 @@ const state = Vue.observable({
 	transferData: null, // 场景交互时传递的数据
 	status: 'inEdit', // inEdit  在编辑器中  inPreview 在预览中
 	sceneObj: {},
-	showAnimationStyle: 'zoom', // 实例化场景，动画
 })
 const actions = {
 	setStatus(status) {
@@ -74,23 +73,10 @@ const actions = {
 		state.obj[name] = { name: `场景${name}` }
 		state.index = name
 	},
-	destroyScene(index) {
+	destroyScene(index, showAnimationStyle) {
 		if (state.status === 'inPreview') {
-			const showAnimationStyle = state.showAnimationStyle
-			switch (showAnimationStyle) {
-				case 'fadeIn':
-					document.getElementById(index).style.opacity = '0'
-					break
-				case 'zoomIn':
-					document.getElementById(index).style.transform = 'scale(0)'
-					break
-				case 'slideUp':
-					document.getElementById(index).style.bottom = '-80%'
-					break
-				case 'slideRight':
-					document.getElementById(index).style.right = '-80%'
-					break
-			}
+			document.getElementById(index).classList.remove(state.showAnimationStyle)
+			document.getElementById(index).classList.add(showAnimationStyle)
 			const event = new CustomEvent('DestroyScene', { detail: { index } })
 			document.dispatchEvent(event)
 			setTimeout(() => {
@@ -132,7 +118,7 @@ const actions = {
 			const Comp = Vue.extend({
 				template: `<div class="scene-temporary-container fn-flex"
 style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;bottom:0;z-index: 99999;justify-content: center;align-items: center;">
-					<div id="${id}" class="scene-temporary-wrapper" style="${canvasStyle}">
+					<div id="${id}" class="scene-temporary-wrapper animated" style="${canvasStyle}">
 						<parts
 						readonly
 						:market="item.market"
@@ -160,35 +146,10 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 			document
 				.getElementsByClassName('detail-container')[0]
 				.appendChild(comp.$el)
-			switch (showAnimationStyle) {
-				case 'zoomIn':
-					setTimeout(() => {
-						document.getElementById(id).style.transform = transform
-					}, 300)
-					break
-				case 'slideRight':
-					document.getElementById(id).style.transform = transform
-					document.getElementById(id).style.right = '-80%'
-					setTimeout(() => {
-						document.getElementById(id).style.right = '0'
-					}, 300)
-					break
-				case 'slideUp':
-					document.getElementById(id).style.transform = transform
-					document.getElementById(id).style.bottom = '-80%'
-					setTimeout(() => {
-						document.getElementById(id).style.bottom = '0'
-					}, 300)
-					break
-				case 'fadeIn':
-				default:
-					document.getElementById(id).style.transform = `${transform}`
-					document.getElementById(id).style.opacity = '0'
-					setTimeout(() => {
-						document.getElementById(id).style.opacity = '1'
-					}, 300)
-					break
-			}
+			document
+				.getElementsByClassName('scene-temporary-container')[0]
+				.style.transform = transform
+			document.getElementById(id).classList.add(showAnimationStyle)
 		}
 	},
 }

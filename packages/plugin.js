@@ -5,6 +5,7 @@ import '../src/scss/conf.scss'
 import '../src/scss/reset.scss'
 import '../src/scss/index.scss'
 import '../src/scss/animate.min.scss'
+import '../src/scss/animate-widget.min.scss'
 import '../src/scss/font.scss'
 
 import Vue from 'vue'

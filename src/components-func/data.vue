@@ -117,6 +117,15 @@
 					i-option(:value="0") 主场景
 					i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 		.d-manage-modal-control
+			label 场景动画
+			.d-manage-modal-control-right
+				i-select(
+					clearable,
+					filterable,
+					v-model="item.config.event.scene.animate",
+					:style="{ width: '100px' }")
+					i-option(:value="k" v-for="(k, i) in animates" :key="i") {{ k }}
+		.d-manage-modal-control
 			label 组件事件
 			.d-manage-modal-control-right
 				i-select(
@@ -141,9 +150,11 @@ import { Component } from 'vue-property-decorator'
 import databaseConfig from '../components/data-warehouse/index.vue'
 import dCode from '../components/d-code/index.vue'
 import scene from '../store/scene.store'
+import { animates } from './config.js'
 
 @Component({ components: { databaseConfig, dCode } })
 export default class FuncData extends func {
+	animates = animates
 	// START_PROD
 	showDatabaseConfigModal = false
 

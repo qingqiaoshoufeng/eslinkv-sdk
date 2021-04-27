@@ -76,6 +76,7 @@ const commonConfigValue = useColorTheme =>
 			scene: {
 				id: '',
 				type: '',
+                animate: '',
 			},
 			component: {
 				ids: [],

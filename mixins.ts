@@ -46,12 +46,13 @@ const mx: any = {
 		__handleClick__(val) {
 			if (val) scene.state.transferData = val
 			const sceneId = this.config.event.scene.id
+			const animate = this.config.event.scene.animate
 			switch (this.config.event.scene.type) {
 				case 'openScene':
-					scene.actions.createSceneInstance(sceneId)
+					scene.actions.createSceneInstance(sceneId, animate)
 					break
 				case 'closeScene':
-					scene.actions.destroyScene(sceneId)
+					scene.actions.destroyScene(sceneId, animate)
 					break
 				case 'changeScene':
 					scene.actions.setSceneIndex(sceneId)
