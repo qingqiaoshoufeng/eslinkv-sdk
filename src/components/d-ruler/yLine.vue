@@ -11,21 +11,15 @@
 		.num {{ site }}
 </template>
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
-import { mixins } from 'vue-class-component'
-import dev from './dev'
-import prod from './prod'
 
 let i = 0
 let loadImg = false
 const bgImg = new Image()
 
 @Component
-export default class YLine extends mixins(
-	// @ts-ignore
-	process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? dev : prod,
-) {
+export default class YLine extends Vue {
 	@Prop() clientY
 	platform = platform.state
 	showHelp = false
@@ -78,6 +72,18 @@ export default class YLine extends mixins(
 		}
 		// @ts-ignore
 		this.updateHandle()
+	}
+
+	updateHandle() {
+		// START_PROD
+		const id = this.$route.params.id
+		if (id) {
+			this.$api.screenShare.screenShareUpdate({
+				screenId: id,
+				screenGuide: this.platform.ruler.guideLines,
+			})
+		}
+		// END_PROD
 	}
 
 	translateAnimation(num) {

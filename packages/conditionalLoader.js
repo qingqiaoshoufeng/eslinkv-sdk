@@ -1,28 +1,27 @@
-var loaderUtils = require('loader-utils');
+const loaderUtils = require('loader-utils')
 
-var REG = /\/(?:\*|\/)\s*IF(DEBUG|TRUE_\w+)(?:\s*\*\/)?([\s\S]+?)(?:\/(?:\*|\/)\s*)?FI\1(\s*\*\/)?/g;
+const REG = /\/(?:\*|\/)\s*START_(DEV|PROD)(?:\s*\*\/)?([\s\S]+?)(?:\/(?:\*|\/)\s*)?END_\1(\s*\*\/)?/g
 
 const replaceMatched = function (js, options) {
 	return js.replace(REG, (match, $1, $2) => {
-		var isKeep;
-		if ($1 === 'DEBUG') {
+		let isKeep
+		if ($1 === 'DEV') {
 			isKeep = options.DEBUG
 		} else {
-			var varName = $1.slice(5)
+			const varName = $1.slice(5)
 			isKeep = options[varName]
 		}
 		return isKeep ? $2 : ''
-	});
+	})
 }
 
-
 module.exports = function (source) {
-	var options = loaderUtils.getOptions(this) || {}
-	if (!('DEBUG' in options)) {
-		options.DEBUG = process.env.NODE_ENV === 'development'
+	const options = loaderUtils.getOptions(this) || {}
+	if (!('DEV' in options)) {
+		options.DEBUG = process.env.VUE_APP_ESLINKV_MODE === 'DEV'
 	}
 	if (!('PROD' in options)) {
-		options.PROD = process.env.NODE_ENV === 'production'
+		options.PROD = process.env.VUE_APP_ESLINKV_MODE === 'PROD'
 	}
 	return replaceMatched(source, options)
-};
+}

@@ -18,15 +18,10 @@
 </template>
 <script>
 import platform from '../../store/platform.store'
-import { Component } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
-import dev from './dev'
-import prod from './prod'
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class Guide extends mixins(
-	process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? dev : prod,
-) {
+export default class Guide extends Vue {
 	showGuideMenu = false
 	menuLeft = 0
 	menuTop = 0
@@ -70,6 +65,18 @@ export default class Guide extends mixins(
 		this.platform.ruler.guideDrag = true
 		this.platform.ruler.dragFlag = type
 		this.platform.ruler.dragGuideId = id
+	}
+
+	updateHandle() {
+		// START_PROD
+		const id = this.$route.params.id
+		if (id) {
+			this.$api.screenShare.screenShareUpdate({
+				screenId: id,
+				screenGuide: this.platform.ruler.guideLines,
+			})
+		}
+		// END_PROD
 	}
 
 	handleDestroy(id) {

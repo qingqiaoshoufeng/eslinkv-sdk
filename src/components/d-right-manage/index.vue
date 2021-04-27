@@ -20,13 +20,10 @@
 	config
 </template>
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
+import { Component, Vue } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import configProd from '../../components-func/config.vue'
 import { Icon, Input } from 'view-design'
-import dev from './dev'
-import prod from './prod'
 @Component({
 	components: {
 		config: configProd,
@@ -34,15 +31,29 @@ import prod from './prod'
 		'i-input': Input,
 	},
 })
-export default class DRightManage extends mixins(
-	// @ts-ignore
-	process.env.VUE_APP_ESLINKV_MODE === 'DEV' ? dev : prod,
-) {
+export default class DRightManage extends Vue {
 	editName = false
 	platform = platform.state
 
 	get staticName() {
 		return this.platform.screenName
+	}
+
+	changeName() {
+		const id = this.$route.params.id
+		const screenName = document.getElementById('platform-name').innerText
+		this.editName = false
+		this.platform.screenName = screenName
+		// START_PROD
+		this.$api.screen
+			.update({
+				screenId: id,
+				screenName,
+			})
+			.then(() => {
+				this.$Message.success('修改成功')
+			})
+		// END_PROD
 	}
 }
 </script>

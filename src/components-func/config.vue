@@ -58,7 +58,7 @@
 				i-option(value="full-size") 充满页面
 				i-option(value="full-width") 100%宽度
 				i-option(value="full-height") 100%高度
-	// IFTRUE_PROD
+	// START_PROD
 	.d-manage-modal-control
 		label 封面
 		.d-manage-modal-control-right
@@ -70,7 +70,7 @@
 		label
 		.d-manage-modal-control-right
 			i-button(@click="screenAvatar", type="primary") 截屏
-	// FITRUE_PROD
+	// END_PROD
 	.d-manage-modal-control
 		label 首场景
 		.d-manage-modal-control-right
@@ -81,9 +81,9 @@
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
-// IFTRUE_PROD
+// START_PROD
 import html2canvas from 'html2canvas'
-// FITRUE_PROD
+// END_PROD
 import platform from '../store/platform.store.js'
 import scene from '../store/scene.store.js'
 import dUpload from '../components/d-upload/index.vue'
@@ -99,13 +99,13 @@ export default class FuncConfig extends func {
 	backGroundFormData = {
 		library: 'componentBackGround',
 	}
-	
-	// IFTRUE_PROD
+
+	// START_PROD
 	screenAvatarFormData = {
 		library: 'screenAvatar',
 	}
-	// FITRUE_PROD
-	
+	// END_PROD
+
 	get size() {
 		const width = this.platform.panelConfig.size.width
 		const height = this.platform.panelConfig.size.height
@@ -125,8 +125,8 @@ export default class FuncConfig extends func {
 			this.platform.panelConfig.size.height = +height
 		}
 	}
-	
-	// IFTRUE_PROD
+
+	// START_PROD
 	handleScreenAvatar(res) {
 		const {
 			params: { id },
@@ -228,6 +228,6 @@ export default class FuncConfig extends func {
 			})
 		})
 	}
-	// FITRUE_PROD
+	// END_PROD
 }
 </script>

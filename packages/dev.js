@@ -12,7 +12,6 @@ import dView from '../src/components/d-view/index.vue'
 import loadMask from '../src/components/load-mask/index.vue'
 import commonConfigValue from '../common-config-value.js'
 import { configMerge } from '../src/utils'
-import '../src/plugins'
 import './plugin.js'
 import { colorTheme } from './config.default'
 

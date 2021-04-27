@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-manage-modal-control-base
-	// IFTRUE_PROD
+	// START_PROD
 	.d-manage-modal-control
 		label 组件市场
 		.d-manage-modal-control-right
@@ -14,7 +14,7 @@
 					v-for="(item, i) in versionList",
 					:key="i") {{ item.componentVersion }}
 			i-switch(v-model="item.market")
-	// FITRUE_PROD
+	// END_PROD
 	.d-manage-modal-control
 		label 自动贴靠参考线
 		.d-manage-modal-control-right
@@ -42,7 +42,7 @@ export default class FuncCustom extends func {
 		][0].$children[0].updateKey++
 	}
 
-	// IFTRUE_PROD
+	// START_PROD
 	async getVersionList() {
 		const res = await this.$api.marketComponent.getVersionList({
 			componentEnTitle: this.item.type,
@@ -55,6 +55,6 @@ export default class FuncCustom extends func {
 			this.getVersionList()
 		}
 	}
-	// FITRUE_PROD
+	// END_PROD
 }
 </script>

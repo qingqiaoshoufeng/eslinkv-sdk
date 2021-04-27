@@ -1,5 +1,4 @@
 import widgetMixin from '../mixins'
-import '../src/plugins'
 import './plugin.js'
 
 const eslinkV = {

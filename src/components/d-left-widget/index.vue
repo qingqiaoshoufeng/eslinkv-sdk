@@ -142,6 +142,9 @@ export default class DLeftWidget extends Vue {
 			}
 		}
 	}
+	p {
+		user-select: none;
+	}
 }
 
 .d-left-widgets-right {
@@ -171,6 +174,7 @@ export default class DLeftWidget extends Vue {
 	label {
 		line-height: 40px;
 		color: rgb(188, 201, 212);
+		user-select: none;
 	}
 }
 </style>
