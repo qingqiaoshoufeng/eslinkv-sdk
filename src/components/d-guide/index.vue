@@ -4,7 +4,8 @@
 		.d-guide-line.z-index-9.pos-a.d-editor-line(
 			v-for="item in platform.ruler.guideLines",
 			:style="{ ...lineStyle(item) }",
-			:data-top="item.site",
+			:data-top="item.type === 'v' ? 0 : item.site",
+			:data-left="item.type === 'v' ? item.site : 0",
 			:key="item.site",
 			:class="[`d-guide-line-${item.type}`, { 'no-pointer': platform.ruler.contentMove || hideCursor }]",
 			@mousedown.stop="e => handleGuideDrag(e, item)",

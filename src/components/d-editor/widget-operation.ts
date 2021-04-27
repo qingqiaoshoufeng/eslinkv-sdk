@@ -67,10 +67,6 @@ class Mixins extends Vue {
 		this.platform.chooseWidgetId = id
 	}
 
-	handleDeactivated() {
-		platform.actions.unChooseWidget()
-	}
-
 	widgetEditable({ config }) {
 		return !config.widget.locked && !config.widget.hide
 	}

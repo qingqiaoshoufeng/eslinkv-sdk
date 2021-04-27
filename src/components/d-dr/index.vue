@@ -160,24 +160,12 @@ export default {
 		this.$el.ondragstart = () => false
 		this.rawRight = -this.rawWidth - this.rawLeft
 		this.rawBottom = -this.rawHeight - this.rawTop
-		addEvent(document.documentElement, 'mousedown', this.deselect)
-		addEvent(
-			document.documentElement,
-			'touchend touchcancel',
-			this.deselect,
-		)
 	},
 	beforeDestroy() {
-		removeEvent(document.documentElement, 'mousedown', this.deselect)
 		removeEvent(document.documentElement, 'touchstart', this.handleUp)
 		removeEvent(document.documentElement, 'mousemove', this.move)
 		removeEvent(document.documentElement, 'touchmove', this.move)
 		removeEvent(document.documentElement, 'mouseup', this.handleUp)
-		removeEvent(
-			document.documentElement,
-			'touchend touchcancel',
-			this.deselect,
-		)
 	},
 
 	methods: {
@@ -247,25 +235,6 @@ export default {
 					this.handleUp,
 				)
 			}
-		},
-		// 取消
-		deselect(e) {
-			const target = e.target || e.srcElement
-			const regex = new RegExp(this.className + '-([trmbl]{2})', '')
-
-			if (!this.$el.contains(target) && !regex.test(target.className)) {
-				if (this.enabled) {
-					this.enabled = false
-					this.$emit('deactivated')
-					this.$emit('update:active', false)
-				}
-				removeEvent(
-					document.documentElement,
-					eventsFor.move,
-					this.handleMove,
-				)
-			}
-			this.resetBoundsAndMouseState()
 		},
 		// 控制柄触摸按下
 		handleTouchDown(handle, e) {

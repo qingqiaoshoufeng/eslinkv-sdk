@@ -41,7 +41,6 @@
 					@refLineParams="params => getRefLineParams(params, item)",
 					@dragstop="onDragStop",
 					@activated="handleActivated(item)",
-					@deactivated="handleDeactivated(item)",
 					@contextmenu.native="showRightMenu($event, item)")
 					parts(
 						:ref="item.id",

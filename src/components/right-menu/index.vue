@@ -1,5 +1,7 @@
 <template lang="pug">
-.right-menu.pos-f#right-menu(ref="rightMenu", @contextmenu.stop.prevent @click="close")
+#right-menu.right-menu.pos-f(
+	ref="rightMenu",
+	@contextmenu.stop.prevent)
 	ul.list
 		li(@click="handleZIndexTop")
 			i-icon(type="md-arrow-round-up")
@@ -55,10 +57,6 @@ export default class rightMenu extends Vue {
 	minZIndex = 0
 	maxZIndex = 0
 
-	close() {
-		this.$refs.rightMenu.classList.remove('active')
-	}
-
 	handleSync() {
 		this.instance.kanboard.$refs[
 			`widget_${this.platform.chooseWidgetId}`
@@ -105,6 +103,9 @@ export default class rightMenu extends Vue {
 			onOk: () => {
 				const id = this.platform.chooseWidgetId
 				this.$delete(this.platform.widgetAdded, id)
+				this.handleUnActive()
+			},
+			onCancel: () => {
 				this.handleUnActive()
 			},
 		})
