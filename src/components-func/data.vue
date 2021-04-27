@@ -92,10 +92,14 @@
 		.d-manage-modal-control
 			label 组件关联
 			.d-manage-modal-control-right
-				i-switch(v-model="item.config.api.bind.enable")
-		.d-manage-modal-control(v-if="item.config.api.bind.enable")
-			checkbox-group(v-model="item.config.api.bind.refIds")
-				checkbox(:label="k.id", v-for="(k, i) in relateList", :key="i") {{ k.name }}
+				i-switch(v-model="item.config.api.bind.enable" style="margin-right: 10px")
+				i-select(
+					v-if="item.config.api.bind.enable"
+					v-model="item.config.api.bind.refIds",
+					filterable,
+					multiple,
+					:style="{ width: '100px' }")
+					i-option(:value="item.id", v-for="(item, key) in relateList", :key="key") {{ item.id }}
 		.d-manage-modal-control
 			label 场景事件
 			.d-manage-modal-control-right
