@@ -13,6 +13,7 @@ const state = Vue.observable({
 	index: 0,
 	list: [],
 	obj: {},
+	showAnimationStyle: '',
 	transferData: null, // 场景交互时传递的数据
 	status: 'inEdit', // inEdit  在编辑器中  inPreview 在预览中
 	sceneObj: {},
@@ -73,7 +74,7 @@ const actions = {
 		state.obj[name] = { name: `场景${name}` }
 		state.index = name
 	},
-	destroyScene(index, showAnimationStyle) {
+	destroyScene(index, showAnimationStyle = 'fadeOut') {
 		if (state.status === 'inPreview') {
 			document.getElementById(index).classList.remove(state.showAnimationStyle)
 			document.getElementById(index).classList.add(showAnimationStyle)
@@ -83,7 +84,7 @@ const actions = {
 				document.getElementById(index).parentNode.remove()
 				instance.actions.setInstance('createKanboard', null) // 初始化实例场景
 				instance.actions.setInstance('createComp', null) // 初始化实例场景
-				state.showAnimationStyle = 'fadeIn' // 初始化实例场景
+				state.showAnimationStyle = '' // 初始化实例场景
 			}, 300)
 		}
 	},
@@ -111,7 +112,7 @@ const actions = {
 
 			const kanban = document.getElementById('kanban')
 			const transform = kanban.style.transform
-			const canvasStyle = `position: relative;transition: all .3s;flex-shrink: 0;flex-grow: 0;transform:scale(0);width:${kanban.clientWidth}px;height:${kanban.clientHeight}px;overflow: hidden;background-color:transparent;z-index: 99999;`
+			const canvasStyle = `position: relative;transition: all .3s;flex-shrink: 0;flex-grow: 0;width:${kanban.clientWidth}px;height:${kanban.clientHeight}px;overflow: hidden;background-color:transparent;z-index: 99999;`
 			const array = state.sceneObj[id].list
 			const _self = instance.state.kanboard
 			state.showAnimationStyle = showAnimationStyle
@@ -146,9 +147,7 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 			document
 				.getElementsByClassName('detail-container')[0]
 				.appendChild(comp.$el)
-			document
-				.getElementsByClassName('scene-temporary-container')[0]
-				.style.transform = transform
+			document.getElementById(id).parentNode.style.transform = transform
 			document.getElementById(id).classList.add(showAnimationStyle)
 		}
 	},
