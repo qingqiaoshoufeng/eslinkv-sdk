@@ -8,11 +8,15 @@ import { store } from './index'
 const state = Vue.observable({
 	func: {},
 	contentMove: false, // 是否按下了 空格 键，启动内容区拖动
+	contentDrag: false, // 是否按下了 空格 键，之后按下了左键
 	guideDrag: false, // 点击拖拽参考线
-	componentDrag: false, // 组件拖拽
+	componentMove: false, // 组件点击开始拖拽
+	componentDrag: false, // 组件拖拽中
 	kuangMove: false, // 框选
 	startX: 0,
 	startY: 0,
+	clientX: 0,
+	clientY: 0,
 })
 const actions = {
 	setEvent(key, func) {

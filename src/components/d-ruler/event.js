@@ -13,9 +13,6 @@ export default {
 			ruler: ruler.state,
 			contentWidth: 0,
 			contentHeight: 0,
-			contentMoveStartX: 0, // 内容容器移动起始点水平时点值
-			contentMoveStartY: 0, // 内容容器移动起始点垂直时点值
-			contentDrag: false, // 是否正在执行内容区拖动
 		}
 	},
 	watch: {
@@ -27,71 +24,11 @@ export default {
 		},
 	},
 	methods: {
-		/**
-		 * @description 拖动开始时
-		 */
-		handleContentMoveStart(e) {
-			if (!this.event.contentMove) return
-			this.contentMoveStartX = e.clientX
-			this.contentMoveStartY = e.clientY
-			this.contentDrag = true
-		},
-		/**
-		 * @description 拖动停止时
-		 */
-		handleContentMoveEnd() {
-			if (!this.contentDrag) return
-			this.contentDrag = false
-			this.contentMoveStartX = this.contentMoveStartY = 0
-		},
-		startContentMove(e) {
-			if (
-				(e.ctrlKey === true || e.metaKey === true) &&
-				(e.which === 189 ||
-					e.which === 187 ||
-					e.which === 173 ||
-					e.which === 61 ||
-					e.which === 107 ||
-					e.which === 109)
-			) {
-				e.preventDefault()
-			}
-			if (e.keyCode === 32) {
-				this.event.contentMove = true
-			}
-		},
-		stopContentMove() {
-			this.event.contentMove = false
-		},
 		windowResize() {
 			const id = this.ruler.dragId
 			const dragContent = document.getElementById(id)
 			this.contentWidth = dragContent.firstChild.scrollWidth
 			this.contentHeight = dragContent.firstChild.scrollHeight
-		},
-		setMove: throttle(50, false, function (e) {
-			const { clientX, clientY } = e
-			this.clientX = clientX
-			this.clientY = clientY
-			if (this.contentDrag) {
-				if (!this.contentMoveStartX) {
-					this.contentMoveStartX = clientX
-					this.contentMoveStartY = clientY
-				}
-				this.ruler.contentScrollLeft = Math.ceil(
-					clientX - this.contentMoveStartX,
-				)
-				this.ruler.contentScrollTop = Math.ceil(
-					clientY - this.contentMoveStartY,
-				)
-				this.contentMoveStartX = clientX
-				this.contentMoveStartY = clientY
-			}
-		}),
-		stopMove(e) {
-			if (this.contentDrag) {
-				this.handleContentMoveEnd(e)
-			}
 		},
 		/**
 		 * @description 设置缩放比例
@@ -104,10 +41,6 @@ export default {
 			} else {
 				ruler.actions.zoomOut()
 			}
-		},
-		handleWheelWindow(e) {
-			e.preventDefault()
-			e.stopPropagation()
 		},
 		handleWheel(e) {
 			if (e.ctrlKey) {
@@ -133,13 +66,6 @@ export default {
 	mounted() {
 		const id = this.ruler.dragId
 		const dragContent = document.getElementById(id)
-		document.documentElement.addEventListener('mousemove', this.setMove)
-		document.documentElement.addEventListener('mouseup', this.stopMove)
-		document.documentElement.addEventListener('keyup', this.stopContentMove)
-		document.documentElement.addEventListener(
-			'keydown',
-			this.startContentMove,
-		)
 		window.addEventListener('resize', this.windowResize)
 		document
 			.getElementById('d-screen')
@@ -153,16 +79,6 @@ export default {
 	beforeDestroy() {
 		const id = this.ruler.dragId
 		const dragContent = document.getElementById(id)
-		document.documentElement.removeEventListener('mousemove', this.setMove)
-		document.documentElement.removeEventListener('mouseup', this.stopMove)
-		document.documentElement.removeEventListener(
-			'keyup',
-			this.stopContentMove,
-		)
-		document.documentElement.removeEventListener(
-			'keydown',
-			this.startContentMove,
-		)
 		document
 			.getElementById('d-screen')
 			.removeEventListener('wheel', this.handleWheel)

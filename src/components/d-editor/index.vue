@@ -5,7 +5,6 @@
 	ref="canvas-wrapper",
 	:class="{ fullscreen: platform.fullscreen }",
 	:style="{ width: `calc(100% - ${ruler.xRoomL1 + ruler.xRoomL2 + ruler.xRoomR1}px)`, marginLeft: `${ruler.xRoomL1 + ruler.xRoomL2}px` }",
-	@select.prevent.stop,
 	@contextmenu.stop.prevent)
 	// 标尺容器
 	ruler-canvas(ref="rulerCanvas")
@@ -16,8 +15,6 @@
 			@dragleave.self="isDragIn = false",
 			@drop="drop",
 			@click.stop,
-			@mousedown.self="dEditorMouseDown",
-			@mousemove.self="dEditorMouseMove",
 			@dragover.prevent)
 			// 小工具清单
 			template(v-for="item in platform.widgetAdded")
@@ -74,7 +71,6 @@
 	// 右键菜单
 	right-menu
 	d-footer
-	d-kuang
 </template>
 <script>
 import rightMenu from '../right-menu/index'
@@ -83,14 +79,13 @@ import dr from '../../components/d-dr'
 import parts from '../d-widget-part/index'
 import widgetOperation from './widget-operation'
 import dRightManage from '../d-right-manage'
-import dKuang from '../d-kuang'
 import dFooter from '../d-footer'
 import dGuide from '../d-guide'
 import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
 import ruler from '../../store/ruler.store'
-import { dEditorMouseDown, dEditorMouseMove } from '../../events'
+
 export default {
 	name: 'd-editor',
 	mixins: [widgetOperation],
@@ -99,7 +94,6 @@ export default {
 		rulerCanvas,
 		dFooter,
 		dGuide,
-		dKuang,
 		dr,
 		dRightManage,
 		rightMenu,
@@ -109,8 +103,6 @@ export default {
 	},
 	data() {
 		return {
-			dEditorMouseDown,
-			dEditorMouseMove,
 			platform: platform.state,
 			scene: scene.state,
 			ruler: ruler.state,

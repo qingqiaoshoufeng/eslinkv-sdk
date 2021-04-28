@@ -7,10 +7,9 @@
 	y-line(:clientY="clientY", ref="yline")
 	#ruler-content.d-ruler-content(
 		ref="rulerContent",
-		@mousedown.self="hideRightMenu",
-		:class="{ drag: event.contentMove }",
-		@mousedown="handleContentMoveStart",
-		@mousemove.prevent)
+		@mousedown="rulerContentMouseDown",
+		@mousemove="rulerContentMouseMove",
+		:class="{ drag: event.contentMove }")
 		.content-body.pos-a(:id="ruler.dragId", :style="contentStyle")
 			slot
 </template>
@@ -24,7 +23,7 @@ import ruler from '../../store/ruler.store'
 import { mixins } from 'vue-class-component'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Icon } from 'view-design'
-
+import { rulerContentMouseDown, rulerContentMouseMove } from '../../events'
 @Component({
 	components: {
 		xLine,
@@ -39,6 +38,8 @@ export default class DRuler extends mixins(eventHandlers) {
 	platform = platform.state
 	event = event.state
 	ruler = ruler.state
+	rulerContentMouseDown = rulerContentMouseDown
+	rulerContentMouseMove = rulerContentMouseMove
 
 	@Watch('ruler.contentScrollLeft')
 	contentXChange() {
@@ -56,10 +57,6 @@ export default class DRuler extends mixins(eventHandlers) {
 		}px, 0) scale(${this.ruler.zoom});width:${
 			(this as any).contentWidth + 18 * 2
 		} px;height:${(this as any).contentHeight + 18 * 2} px;`
-	}
-
-	hideRightMenu() {
-		platform.actions.unChooseWidget()
 	}
 }
 </script>
