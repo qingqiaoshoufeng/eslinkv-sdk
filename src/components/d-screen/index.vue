@@ -1,7 +1,7 @@
 <template lang="pug">
-.d-screen#d-screen(:style="{ height: `calc(100% - ${platform.ruler.yRoom}px)` }")
+.d-screen#d-screen(:style="{ height: `calc(100% - ${ruler.yRoom}px)` }")
 	.d-editor-box.pos-r.fn-flex
-		d-left-widget
+		d-left-component
 		d-left-scene
 		d-editor(ref="kanboardEditor")
 		d-right-manage(v-if="platform.chooseWidgetState")
@@ -10,7 +10,8 @@
 <script lang="ts">
 import { Vue, Component, Provide } from 'vue-property-decorator'
 import platform from '../../store/platform.store.js'
-import dLeftWidget from '../d-left-widget/index.vue'
+import ruler from '../../store/ruler.store.js'
+import dLeftComponent from '../d-left-component/index.vue'
 import dLeftScene from '../d-left-scene/index.vue'
 import dEditor from '../d-editor/index.vue'
 import dRightManage from '../d-right-manage/index.vue'
@@ -18,7 +19,7 @@ import dRightSetting from '../d-right-setting/index.vue'
 
 @Component({
 	components: {
-		dLeftWidget,
+		dLeftComponent,
 		dLeftScene,
 		dRightManage,
 		dRightSetting,
@@ -27,6 +28,7 @@ import dRightSetting from '../d-right-setting/index.vue'
 })
 export default class dScreen extends Vue {
 	platform = platform.state
+	ruler = ruler.state
 	@Provide('kanboardEditor') kanboardEditor = this.$refs.kanboardEditor
 }
 </script>

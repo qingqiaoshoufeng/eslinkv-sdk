@@ -5,42 +5,6 @@ import Vue from 'vue'
 import { store } from './index'
 
 const isMac = /macintosh|mac os x/i.test(navigator.userAgent)
-const alt = isMac ? '⌥' : 'Alt'
-const ctrl = isMac ? '⌃' : 'Ctrl'
-const shift = 'Shift'
-const space = '空格'
-const command = '⌘'
-const mouseWheelImg =
-	'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ3ICg0NTM5NikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+aWNfbW91c2U8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZGVmcz48L2RlZnM+CiAgICA8ZyBpZD0i55S75p2/IiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iQXJ0Ym9hcmQtMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTIwMi4wMDAwMDAsIC0zNi4wMDAwMDApIj4KICAgICAgICAgICAgPGcgaWQ9Ikdyb3VwLTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMi4wMDAwMDAsIDM2LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPGcgaWQ9ImljL21vdXNlL2dyZXk2MDAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuNTAwMDAwLCAwLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJpY19tb3VzZV8yNHB4Ij4KICAgICAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjAgMCAxNSAwIDE1IDE2IDAgMTYiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTguMTI1LDAuNzEzMzMzMzMzIEw4LjEyNSw2IEwxMi41LDYgQzEyLjUsMy4yOCAxMC41OTM3NSwxLjA0IDguMTI1LDAuNzEzMzMzMzMzIFogTTIuNSwxMCBDMi41LDEyLjk0NjY2NjcgNC43Mzc1LDE1LjMzMzMzMzMgNy41LDE1LjMzMzMzMzMgQzEwLjI2MjUsMTUuMzMzMzMzMyAxMi41LDEyLjk0NjY2NjcgMTIuNSwxMCBMMTIuNSw3LjMzMzMzMzMzIEwyLjUsNy4zMzMzMzMzMyBMMi41LDEwIFogTTYuODc1LDAuNzEzMzMzMzMzIEM0LjQwNjI1LDEuMDQgMi41LDMuMjggMi41LDYgTDYuODc1LDYgTDYuODc1LDAuNzEzMzMzMzMzIFoiIGlkPSJTaGFwZSIgZmlsbD0iIzhDOTA5NyIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS0yIiBzdHJva2U9IiNGRkZGRkYiIGZpbGw9IiNGRkE5MDAiIHg9IjYuNSIgeT0iMiIgd2lkdGg9IjMiIGhlaWdodD0iNyIgcng9IjEuNSI+PC9yZWN0PgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4='
-const mouseLeftImg =
-	'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTVweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTUgMTYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ3ICg0NTM5NikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+aWNfbW91c2VfbGVmdDwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSLnlLvmnb8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZC0zIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNTYuMDAwMDAwLCAtNDIuMDAwMDAwKSI+CiAgICAgICAgICAgIDxnIGlkPSJpY19tb3VzZV9sZWZ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ni4wMDAwMDAsIDQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjAgMCAxNSAwIDE1IDE2IDAgMTYiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik04LjEyNSwwLjcxMzMzMzMzMyBMOC4xMjUsNiBMMTIuNSw2IEMxMi41LDMuMjggMTAuNTkzNzUsMS4wNCA4LjEyNSwwLjcxMzMzMzMzMyBaIE0yLjUsMTAgQzIuNSwxMi45NDY2NjY3IDQuNzM3NSwxNS4zMzMzMzMzIDcuNSwxNS4zMzMzMzMzIEMxMC4yNjI1LDE1LjMzMzMzMzMgMTIuNSwxMi45NDY2NjY3IDEyLjUsMTAgTDEyLjUsNy4zMzMzMzMzMyBMMi41LDcuMzMzMzMzMzMgTDIuNSwxMCBaIiBpZD0iU2hhcGUiIGZpbGw9IiM5RkEyQTgiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTYuODc1LDAuNzEzMzMzMzMzIEM0LjQwNjI1LDEuMDQgMi41LDMuMjggMi41LDYgTDYuODc1LDYgTDYuODc1LDAuNzEzMzMzMzMzIFoiIGlkPSJQYXRoIiBmaWxsPSIjRkZBOTAwIj48L3BhdGg+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=='
-const mouseRightImg =
-	'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTVweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTUgMTYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQ3ICg0NTM5NikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+aWNfbW91c2VfbGVmdDwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSLnlLvmnb8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZC0zIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNTYuMDAwMDAwLCAtNDIuMDAwMDAwKSI+CiAgICAgICAgICAgIDxnIGlkPSJpY19tb3VzZV9sZWZ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ni4wMDAwMDAsIDQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjAgMCAxNSAwIDE1IDE2IDAgMTYiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik04LjEyNSwwLjcxMzMzMzMzMyBMOC4xMjUsNiBMMTIuNSw2IEMxMi41LDMuMjggMTAuNTkzNzUsMS4wNCA4LjEyNSwwLjcxMzMzMzMzMyBaIE0yLjUsMTAgQzIuNSwxMi45NDY2NjY3IDQuNzM3NSwxNS4zMzMzMzMzIDcuNSwxNS4zMzMzMzMzIEMxMC4yNjI1LDE1LjMzMzMzMzMgMTIuNSwxMi45NDY2NjY3IDEyLjUsMTAgTDEyLjUsNy4zMzMzMzMzMyBMMi41LDcuMzMzMzMzMzMgTDIuNSwxMCBaIiBpZD0iU2hhcGUiIGZpbGw9IiM5RkEyQTgiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTYuODc1LDAuNzEzMzMzMzMzIEM0LjQwNjI1LDEuMDQgMi41LDMuMjggMi41LDYgTDYuODc1LDYgTDYuODc1LDAuNzEzMzMzMzMzIFoiIGlkPSJQYXRoIiBmaWxsPSIjRkZBOTAwIj48L3BhdGg+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=='
-
-function getInitRuler() {
-	return {
-		dragId: `drag-content-${+new Date()}`,
-		origin: '',
-		xRoomL1: 238,
-		xRoomL2: 238,
-		xRoomR1: 350,
-		yRoom: 60,
-		guideLines: [], // 参考线
-		guideStartX: 0, // 参考线开始移动的位置
-		guideStartY: 0, // 参考线开始移动的位置
-		guideVisible: true, // 参考线可见
-		contentX: 0, // 当前位置x
-		contentY: 0, // 当前位置y
-		contentScrollLeft: 0, // 滚动距离
-		contentScrollTop: 0, // 滚动距离
-		dragGuideId: '', // 被移动线的ID
-		stepLength: 50, // 标尺步长
-		size: 18, // 标尺高度，容差
-		zoom: 1,
-		zoomStep: 0.02,
-		dragFlag: '', // 拖动开始标记，可能值x(从水平标尺开始拖动),y(从垂直标尺开始拖动)
-	}
-}
 
 function getInitPanelConfig() {
 	return {
@@ -60,35 +24,6 @@ function getInitPanelConfig() {
 	}
 }
 
-const hotKeys = [
-	{
-		name: '清除全部参考线',
-		key: [
-			{ value: alt, type: 'text' },
-			{ type: '+' },
-			{ value: 'C', type: 'text' },
-		],
-	},
-	{
-		name: '缩放画布',
-		key: [
-			{ value: ctrl, type: 'text' },
-			{ type: '+' },
-			{ value: mouseWheelImg, type: 'img' },
-		],
-	},
-	{ name: '移动画布', key: [{ value: space, type: 'text' }] },
-	{
-		name: '水平移动画布',
-		key: [
-			{ value: shift, type: 'text' },
-			{ type: '+' },
-			{ value: mouseWheelImg, type: 'img' },
-		],
-	},
-	{ name: '垂直移动画布', key: [{ value: mouseWheelImg, type: 'img' }] },
-]
-
 const state = Vue.observable({
 	version: '1.0.3',
 	widgetAdded: {},
@@ -100,81 +35,14 @@ const state = Vue.observable({
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏
-	hotKeys,
 	autoAlignGuide: true, // 自动贴靠参考线
-	ruler: getInitRuler(),
 })
 const actions = {
-	changeMainScene(value) {
-		if (value !== state.panelConfig.mainScene) {
-			state.panelConfig.mainScene = value
-		}
-	},
-	/**
-	 * @description 恢复默认缩放比例+居中
-	 */
-	resetZoom() {
-		const rulerContent = document.getElementById('ruler-content')
-		const rulerOffsetWidth = rulerContent.offsetWidth - state.ruler.size
-		const rulerOffsetHeight = rulerContent.offsetHeight
-		const platformWidth = state.panelConfig.size.width
-		const platformHeight = state.panelConfig.size.height
-		state.ruler.zoom =
-			~~((rulerOffsetWidth / platformWidth) * 100) / 100 ||
-			state.ruler.zoomStep
-		const deltaX = (rulerOffsetWidth - platformWidth) * 0.5
-		const deltaY = (rulerOffsetHeight - platformHeight) * 0.5
-		state.ruler.contentX = Math.ceil(deltaX)
-		state.ruler.contentY = Math.ceil(deltaY)
-	},
-	zoomIn(step = 2) {
-		if (state.ruler.zoom < 4) {
-			state.ruler.zoom = +((state.ruler.zoom * 100 + step) / 100).toFixed(
-				2,
-			)
-		}
-	},
-	zoomOut(step = 2) {
-		if (state.ruler.zoom > state.ruler.zoomStep) {
-			state.ruler.zoom = +((state.ruler.zoom * 100 - step) / 100).toFixed(
-				2,
-			)
-		}
-	},
 	initPlatformConfig() {
 		state.screenName = '未命名'
 		state.screenAvatar = ''
-		state.ruler = getInitRuler()
 		state.panelConfig = getInitPanelConfig()
 		state.widgetAdded = {}
-	},
-	deleteCurrentGuideLine() {
-		const guideIndex = state.ruler.guideLines.findIndex(
-			guide => guide.id === state.ruler.dragGuideId,
-		)
-		state.ruler.guideLines.splice(guideIndex, 1)
-		state.ruler.dragGuideId = ''
-	},
-	changeGuideLine(site) {
-		const guideIndex = state.ruler.guideLines.findIndex(
-			guide => guide.id === state.ruler.dragGuideId,
-		)
-		state.ruler.guideLines[guideIndex].site = site
-	},
-	guideAdd(site) {
-		const line = state.ruler.guideLines
-		const type = (state.ruler.dragFlag =
-			state.ruler.dragFlag === 'x'
-				? 'v'
-				: state.ruler.dragFlag === 'y'
-				? 'h'
-				: state.ruler.dragFlag)
-		line.push({
-			id: `${type}_${state.ruler.guideLines.length}`,
-			type,
-			site,
-		})
-		state.ruler.guideLines = line
 	},
 	unChooseWidget() {
 		state.chooseWidgetState = true

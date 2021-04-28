@@ -2,7 +2,7 @@
 .d-guide
 	.d-guide-wrapper.pos-a(:style="guideStyle")
 		.d-guide-line.z-index-9.pos-a.d-editor-line(
-			v-for="item in platform.ruler.guideLines",
+			v-for="item in ruler.guideLines",
 			:style="{ ...lineStyle(item) }",
 			:data-top="item.type === 'v' ? 0 : item.site",
 			:data-left="item.type === 'v' ? item.site : 0",
@@ -20,6 +20,7 @@
 <script>
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
+import ruler from '../../store/ruler.store'
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
@@ -30,10 +31,11 @@ export default class Guide extends Vue {
 	removeId = null
 	platform = platform.state
 	event = event.state
+	ruler = ruler.state
 	hideCursor = false
 
 	handleMousemove(e) {
-		this.hideCursor = e.offsetX + e.offsetY > this.platform.ruler.size
+		this.hideCursor = e.offsetX + e.offsetY > this.ruler.size
 	}
 
 	/**
@@ -44,14 +46,14 @@ export default class Guide extends Vue {
 	get guideStyle() {
 		return {
 			left: `${
-				this.platform.ruler.guideStartX < 0
+				this.ruler.guideStartX < 0
 					? 0
-					: this.platform.ruler.guideStartX + this.platform.ruler.size
+					: this.ruler.guideStartX + this.ruler.size
 			}px`,
 			top: `${
-				this.platform.ruler.guideStartY < 0
+				this.ruler.guideStartY < 0
 					? 0
-					: this.platform.ruler.guideStartY + this.platform.ruler.size
+					: this.ruler.guideStartY + this.ruler.size
 			}px`,
 		}
 	}
@@ -59,15 +61,14 @@ export default class Guide extends Vue {
 	// 水平线/垂直线 处按下鼠标
 	handleGuideDrag(e, item) {
 		if (e.which !== 1) return
-		if (e.offsetX + e.offsetY > this.platform.ruler.size) return
+		if (e.offsetX + e.offsetY > this.ruler.size) return
 		const { clientX, clientY } = e
 		const { type, id } = item
-		this.platform.ruler.guideDragStartX = clientX
-		this.platform.ruler.guideDragStartY =
-			clientY - this.platform.ruler.yRoom
+		this.ruler.guideDragStartX = clientX
+		this.ruler.guideDragStartY = clientY - this.ruler.yRoom
 		this.event.guideDrag = true
-		this.platform.ruler.dragFlag = type
-		this.platform.ruler.dragGuideId = id
+		this.ruler.dragFlag = type
+		this.ruler.dragGuideId = id
 	}
 
 	updateHandle() {
@@ -76,15 +77,15 @@ export default class Guide extends Vue {
 		if (id) {
 			this.$api.screenShare.screenShareUpdate({
 				screenId: id,
-				screenGuide: this.platform.ruler.guideLines,
+				screenGuide: this.ruler.guideLines,
 			})
 		}
 		// END_PROD
 	}
 
 	handleDestroy(id) {
-		const index = this.platform.ruler.guideLines.findIndex(v => v.id === id)
-		this.platform.ruler.guideLines.splice(index, 1)
+		const index = this.ruler.guideLines.findIndex(v => v.id === id)
+		this.ruler.guideLines.splice(index, 1)
 		this.updateHandle()
 	}
 
@@ -99,30 +100,30 @@ export default class Guide extends Vue {
 		const style = {}
 		if (type === 'h') {
 			style.top = `${
-				this.platform.ruler.guideStartY < 0
-					? site * this.platform.ruler.zoom +
-					  this.platform.ruler.guideStartY +
-					  this.platform.ruler.size
-					: site * this.platform.ruler.zoom
+				this.ruler.guideStartY < 0
+					? site * this.ruler.zoom +
+					  this.ruler.guideStartY +
+					  this.ruler.size
+					: site * this.ruler.zoom
 			}px`
 			style.left = `-${
-				this.platform.ruler.guideStartX < 0
+				this.ruler.guideStartX < 0
 					? 0
-					: this.platform.ruler.guideStartX + this.platform.ruler.size
+					: this.ruler.guideStartX + this.ruler.size
 			}px`
 		}
 		if (type === 'v') {
 			style.left = `${
-				this.platform.ruler.guideStartX < 0
-					? site * this.platform.ruler.zoom +
-					  this.platform.ruler.guideStartX +
-					  this.platform.ruler.size
-					: site * this.platform.ruler.zoom
+				this.ruler.guideStartX < 0
+					? site * this.ruler.zoom +
+					  this.ruler.guideStartX +
+					  this.ruler.size
+					: site * this.ruler.zoom
 			}px`
 			style.top = `-${
-				this.platform.ruler.guideStartY < 0
+				this.ruler.guideStartY < 0
 					? 0
-					: this.platform.ruler.guideStartY + this.platform.ruler.size
+					: this.ruler.guideStartY + this.ruler.size
 			}px`
 		}
 		return style
@@ -155,7 +156,7 @@ export default class Guide extends Vue {
 			okText: '确定',
 			cancelText: '取消',
 			onOk: () => {
-				this.platform.ruler.guideLines = []
+				this.ruler.guideLines = []
 				this.updateHandle()
 			},
 		})

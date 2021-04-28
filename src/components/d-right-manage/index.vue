@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999.fn-flex.flex-column(
-	:style="{ width: `${platform.ruler.xRoomR1}px`, height: '100%', flex: 1 }")
+	:style="{ width: `${ruler.xRoomR1}px`, height: '100%', flex: 1 }")
 	.d-right-modal-name.fn-flex.flex-row
 		span#platform-name(:contenteditable="editName") {{ staticName }}
 		i-icon.pointer(
@@ -22,6 +22,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
+import ruler from '../../store/ruler.store'
 import configProd from '../../components-func/config.vue'
 import { Icon, Input } from 'view-design'
 @Component({
@@ -34,6 +35,7 @@ import { Icon, Input } from 'view-design'
 export default class DRightManage extends Vue {
 	editName = false
 	platform = platform.state
+	ruler = ruler.state
 
 	get staticName() {
 		return this.platform.screenName

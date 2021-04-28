@@ -1,7 +1,6 @@
 <template lang="pug">
 .detail-container
 	.preview-wrapper.fit-mode(
-		ref="kanboardWrapper",
 		:class="{ mobile: isMobile }",
 		:style="{ backgroundColor: platform.panelConfig.background.color, backgroundRepeat: platform.panelConfig.background.repeat, backgroundSize: platform.panelConfig.background.size, backgroundPosition: platform.panelConfig.background.position, backgroundImage: `url(${platform.panelConfig.background.url})` }")
 		.mobile-wrap(:style="{ height: mobileWrapHeight + 'px' }", v-if="isMobile")

@@ -1,8 +1,8 @@
 <template lang="pug">
 .d-ruler-wrapper.pos-r
 	i-icon.pos-a.d-ruler-guide-visible.pointer.z-index-999.text-center(
-		:type="platform.ruler.guideVisible ? 'ios-eye-off-outline' : 'ios-eye-outline'",
-		@click="platform.ruler.guideVisible = !platform.ruler.guideVisible")
+		:type="ruler.guideVisible ? 'ios-eye-off-outline' : 'ios-eye-outline'",
+		@click="ruler.guideVisible = !ruler.guideVisible")
 	x-line(:clientX="clientX", ref="xline")
 	y-line(:clientY="clientY", ref="yline")
 	#ruler-content.d-ruler-content(
@@ -11,7 +11,7 @@
 		:class="{ drag: event.contentMove }",
 		@mousedown="handleContentMoveStart",
 		@mousemove.prevent)
-		.content-body.pos-a(:id="platform.ruler.dragId", :style="contentStyle")
+		.content-body.pos-a(:id="ruler.dragId", :style="contentStyle")
 			slot
 </template>
 <script lang="ts">
@@ -20,6 +20,7 @@ import yLine from './yLine.vue'
 import eventHandlers from './event'
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
+import ruler from '../../store/ruler.store'
 import { mixins } from 'vue-class-component'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Icon } from 'view-design'
@@ -37,21 +38,22 @@ export default class DRuler extends mixins(eventHandlers) {
 
 	platform = platform.state
 	event = event.state
+	ruler = ruler.state
 
-	@Watch('platform.ruler.contentScrollLeft')
+	@Watch('ruler.contentScrollLeft')
 	contentXChange() {
-		this.platform.ruler.contentX += this.platform.ruler.contentScrollLeft
+		this.ruler.contentX += this.ruler.contentScrollLeft
 	}
 
-	@Watch('platform.ruler.contentScrollTop')
+	@Watch('ruler.contentScrollTop')
 	contentYChange() {
-		this.platform.ruler.contentY += this.platform.ruler.contentScrollTop
+		this.ruler.contentY += this.ruler.contentScrollTop
 	}
 
 	get contentStyle() {
-		return `transform:translate3d(${this.platform.ruler.contentX}px, ${
-			this.platform.ruler.contentY
-		}px, 0) scale(${this.platform.ruler.zoom});width:${
+		return `transform:translate3d(${this.ruler.contentX}px, ${
+			this.ruler.contentY
+		}px, 0) scale(${this.ruler.zoom});width:${
 			(this as any).contentWidth + 18 * 2
 		} px;height:${(this as any).contentHeight + 18 * 2} px;`
 	}

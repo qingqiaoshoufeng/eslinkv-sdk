@@ -8,7 +8,6 @@ import event from '../../store/event.store.js'
 export default class DKuang extends Vue {
 	startX = 0 // 用来存放鼠标点击初始位置
 	startY = 0
-	mouseOn = false // 是否开启框选功能
 	platform = platform.state
 	event = event.state
 
@@ -18,7 +17,7 @@ export default class DKuang extends Vue {
 		if (e.buttons !== 1 || e.which !== 1) return
 		if (this.event.contentMove) return
 		if (this.event.componentDrag) return
-		this.mouseOn = true
+		this.event.kuangMove = true
 		this.startX = e.clientX
 		this.startY = e.clientY
 		// 创建一个框选元素
@@ -35,7 +34,7 @@ export default class DKuang extends Vue {
 
 	mousemoveHandle(e) {
 		// 如果并非框选开启，退出
-		if (!this.mouseOn) return
+		if (!this.event.kuangMove) return
 		e.stopPropagation()
 		// 处理鼠标移动
 		const _x = e.clientX
@@ -50,11 +49,11 @@ export default class DKuang extends Vue {
 		// 如果需要更直观一点的话，我们还可以在这里进行对框选元素覆盖到的元素进行修改被框选样式的修改。
 	}
 
-	mouseupHandle(e) {
+	mouseupHandle() {
 		const selDiv = document.getElementById('d-kuang')
 		// 恢复参数
 		selDiv.style.display = 'none'
-		this.mouseOn = false
+		this.event.kuangMove = false
 	}
 
 	mounted() {

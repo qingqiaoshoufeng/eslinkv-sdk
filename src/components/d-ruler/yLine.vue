@@ -6,7 +6,7 @@
 	@mouseup.stop="mouseup")
 	canvas#ruler-v.pos-a(width="18", height="9999")
 	.d-ruler-mouse-y.pos-a(
-		:style="`transform: translateY(${clientY - platform.ruler.size - platform.ruler.yRoom}px)`",
+		:style="`transform: translateY(${clientY - ruler.size - ruler.yRoom}px)`",
 		v-if="showHelp")
 		.num {{ site }}
 </template>
@@ -14,6 +14,7 @@
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
+import ruler from '../../store/ruler.store'
 
 let i = 0
 let loadImg = false
@@ -24,6 +25,7 @@ export default class YLine extends Vue {
 	@Prop() clientY
 	platform = platform.state
 	event = event.state
+	ruler = ruler.state
 	showHelp = false
 	canvas = null
 	context = null
@@ -31,19 +33,19 @@ export default class YLine extends Vue {
 	get site() {
 		return ~~(
 			(this.clientY -
-				this.platform.ruler.size -
-				this.platform.ruler.yRoom -
-				this.platform.ruler.guideStartY) /
-			this.platform.ruler.zoom
+				this.ruler.size -
+				this.ruler.yRoom -
+				this.ruler.guideStartY) /
+			this.ruler.zoom
 		)
 	}
 
-	@Watch('platform.ruler.zoom')
+	@Watch('ruler.zoom')
 	zoomChange() {
 		this.init()
 	}
 
-	@Watch('platform.ruler.contentY')
+	@Watch('ruler.contentY')
 	contentXChange() {
 		this.init()
 	}
@@ -54,23 +56,23 @@ export default class YLine extends Vue {
 	}
 
 	mousedownStop() {
-		this.platform.ruler.dragFlag = 'y'
-		if (this.platform.ruler.dragGuideId) {
-			platform.actions.changeGuideLine(this.site)
+		this.ruler.dragFlag = 'y'
+		if (this.ruler.dragGuideId) {
+			ruler.actions.changeGuideLine(this.site)
 		} else {
-			platform.actions.guideAdd(this.site)
+			ruler.actions.guideAdd(this.site)
 		}
 		// @ts-ignore
 		this.updateHandle()
 		this.event.guideDrag = false
-		this.platform.ruler.dragGuideId = ''
+		this.ruler.dragGuideId = ''
 	}
 
 	mouseup() {
 		if (this.event.guideDrag) {
-			platform.actions.changeGuideLine(this.site)
+			ruler.actions.changeGuideLine(this.site)
 			this.event.guideDrag = false
-			this.platform.ruler.dragGuideId = ''
+			this.ruler.dragGuideId = ''
 		}
 		// @ts-ignore
 		this.updateHandle()
@@ -82,7 +84,7 @@ export default class YLine extends Vue {
 		if (id) {
 			this.$api.screenShare.screenShareUpdate({
 				screenId: id,
-				screenGuide: this.platform.ruler.guideLines,
+				screenGuide: this.ruler.guideLines,
 			})
 		}
 		// END_PROD
@@ -128,9 +130,9 @@ export default class YLine extends Vue {
 			this.context.drawImage(bgImg, 0, x)
 			this.context.translate(10, x)
 			this.context.rotate(-Math.PI / 2)
-			const num = ~~(x / this.platform.ruler.zoom)
+			const num = ~~(x / this.ruler.zoom)
 			this.context.fillText(num, -num.toString().length * 8, 0)
-			x = x + this.platform.ruler.stepLength
+			x = x + this.ruler.stepLength
 			this.context.restore()
 		}
 
@@ -138,11 +140,11 @@ export default class YLine extends Vue {
 			let xe = 0
 			while (xe < t.f) {
 				this.context.save()
-				xe = xe + this.platform.ruler.stepLength
+				xe = xe + this.ruler.stepLength
 				this.context.drawImage(bgImg, 0, -xe)
 				this.context.translate(10, -xe + 28)
 				this.context.rotate(-Math.PI / 2)
-				this.context.fillText(~~-(xe / this.platform.ruler.zoom), 2, 0)
+				this.context.fillText(~~-(xe / this.ruler.zoom), 2, 0)
 				this.context.restore()
 			}
 		}
@@ -158,17 +160,15 @@ export default class YLine extends Vue {
 	init() {
 		this.context.translate(
 			0,
-			(this.platform.panelConfig.size.height *
-				(1 - this.platform.ruler.zoom)) /
+			(this.platform.panelConfig.size.height * (1 - this.ruler.zoom)) /
 				2 +
-				this.platform.ruler.contentY -
-				this.platform.ruler.guideStartY,
+				this.ruler.contentY -
+				this.ruler.guideStartY,
 		)
-		this.platform.ruler.guideStartY =
-			(this.platform.panelConfig.size.height *
-				(1 - this.platform.ruler.zoom)) /
+		this.ruler.guideStartY =
+			(this.platform.panelConfig.size.height * (1 - this.ruler.zoom)) /
 				2 +
-			this.platform.ruler.contentY
+			this.ruler.contentY
 		if (loadImg) {
 			this.initDraw()
 		} else {

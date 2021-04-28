@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-left-scene.pos-a.fn-flex.flex-column(
-	:style="{ width: `${platform.ruler.xRoomL2}px`, left: `${platform.ruler.xRoomL1}px` }")
+	:style="{ width: `${ruler.xRoomL2}px`, left: `${ruler.xRoomL1}px` }")
 	.d-left-modal-title.text-center
 		span 场景
 	header.fn-flex.flex-row
@@ -83,6 +83,7 @@ import {
 } from 'view-design'
 import scene from '../../store/scene.store'
 import platform from '../../store/platform.store'
+import ruler from '../../store/ruler.store'
 import { copyText } from '../../utils/index'
 
 @Component({
@@ -100,6 +101,7 @@ import { copyText } from '../../utils/index'
 })
 export default class DLeftScene extends Vue {
 	scene: any = scene.state
+	ruler: any = ruler.state
 	platform: any = platform.state
 	editScene = false
 	copyModel = false

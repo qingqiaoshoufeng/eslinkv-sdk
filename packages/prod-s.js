@@ -3,6 +3,7 @@ import scene from '../src/store/scene.store'
 import instance from '../src/store/instance.store'
 import custom from '../src/store/custom.store'
 import event from '../src/store/event.store.js'
+import ruler from '../src/store/ruler.store.js'
 
 const eslinkV = {
 	platform,
@@ -10,6 +11,7 @@ const eslinkV = {
 	instance,
 	custom,
 	event,
+	ruler,
 }
 if (window !== undefined) {
 	if (!window.eslinkV) {
@@ -18,5 +20,5 @@ if (window !== undefined) {
 	window.eslinkV = { ...window.eslinkV, ...eslinkV }
 }
 
-export { platform, scene, instance, custom, event }
+export { platform, scene, instance, custom, event, ruler }
 export default eslinkV

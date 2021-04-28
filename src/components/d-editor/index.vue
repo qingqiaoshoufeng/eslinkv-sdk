@@ -4,7 +4,7 @@
 .d-editor.pos-r#d-editor(
 	ref="canvas-wrapper",
 	:class="{ fullscreen: platform.fullscreen }",
-	:style="{ width: `calc(100% - ${platform.ruler.xRoomL1 + platform.ruler.xRoomL2 + platform.ruler.xRoomR1}px)`, marginLeft: `${platform.ruler.xRoomL1 + platform.ruler.xRoomL2}px` }",
+	:style="{ width: `calc(100% - ${ruler.xRoomL1 + ruler.xRoomL2 + ruler.xRoomR1}px)`, marginLeft: `${ruler.xRoomL1 + ruler.xRoomL2}px` }",
 	@select.prevent.stop,
 	@contextmenu.stop.prevent)
 	// 标尺容器
@@ -24,7 +24,7 @@
 					v-if="showParts(item)",
 					:key="item.id",
 					:ref="`widget_${item.id}`",
-					:scale-ratio="platform.ruler.zoom",
+					:scale-ratio="ruler.zoom",
 					:draggable="widgetEditable(item)",
 					:resizable="widgetEditable(item)",
 					:scale="item.config.layout.scale",
@@ -88,6 +88,7 @@ import dGuide from '../d-guide'
 import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
+import ruler from '../../store/ruler.store'
 export default {
 	name: 'd-editor',
 	mixins: [widgetOperation],
@@ -108,6 +109,7 @@ export default {
 		return {
 			platform: platform.state,
 			scene: scene.state,
+			ruler: ruler.state,
 			isDragIn: false,
 			vLine: [],
 			hLine: [],

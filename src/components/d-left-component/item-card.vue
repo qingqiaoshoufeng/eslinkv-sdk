@@ -1,6 +1,6 @@
 <template lang="pug">
 .widget-item-wrapper.pos-r
-	.fn-flex.flex-column.d-widget-list-card(
+	.fn-flex.flex-column.d-widget-list-card.pointer(
 		draggable="true",
 		@dragstart="dragstart($event)")
 		h2.ellipsis {{ componentTitle }}

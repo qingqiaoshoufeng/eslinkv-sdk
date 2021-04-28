@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999(
-	:style="{ width: `${platform.ruler.xRoomR1}px` }")
+	:style="{ width: `${ruler.xRoomR1}px` }")
 	.d-right-modal-name.fn-flex.flex-row
 		span(contenteditable="editName", @input="changeName") {{ staticName }}
 		i-icon.pointer(
@@ -35,6 +35,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import itemList from './item-list.vue'
 import platform from '../../store/platform.store'
+import ruler from '../../store/ruler.store'
 import { Icon, Input } from 'view-design'
 @Component({
 	components: {
@@ -47,6 +48,7 @@ export default class DRightSetting extends Vue {
 	tabIndex = 0
 	editName = false
 	platform = platform.state
+	ruler = ruler.state
 	staticName = ''
 	title = ['基础', '交互', '主题', '自定义']
 	chooseList: any = [

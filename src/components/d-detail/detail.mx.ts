@@ -18,12 +18,12 @@ export default {
 		},
 		refillConfig(res) {
 			this.loading = true
-			const { widgets, kanboard } = res,
+			const { widgets, kanboard, panelConfig } = res,
 				marketComponents = [],
 				obj = {},
 				p = [],
 				needMarketLoad = {}
-			this.platform.panelConfig = kanboard
+			this.platform.panelConfig = kanboard ? kanboard : panelConfig
 			widgets.forEach(item => {
 				obj[item.id] = {
 					id: item.id,

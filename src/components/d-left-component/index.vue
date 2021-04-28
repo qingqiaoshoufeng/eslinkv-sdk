@@ -1,10 +1,10 @@
 <template lang="pug">
-.d-left-widgets.pos-a.fn-flex.flex-column(
-	:style="{ width: `${platform.ruler.xRoomL1}px` }")
+.d-left-component.pos-a.fn-flex.flex-column(
+	:style="{ width: `${ruler.xRoomL1}px` }")
 	.d-left-modal-title.text-center
 		span 组件区
 	.fn-flex.flex-row(:style="{ flex: 1, height: 'calc(100% - 40px)' }")
-		ul.d-left-widgets-left
+		ul.d-left-component-left
 			li.fn-flex.pos-r.pointer(
 				v-for="item in custom.widgets",
 				:key="item.componentTypeId",
@@ -12,15 +12,15 @@
 				:title="item.componentTypeName",
 				:class="{ active: leftIndex === item.componentTypeId }")
 				p.ellipsis {{ item.componentTypeName }}
-		ul.d-left-widgets-right.d-scrollbar(v-if="leftIndex")
-			li(
+		ul.d-left-component-right.d-scrollbar(v-if="leftIndex")
+			li.pointer(
 				v-for="item in custom.widgets[leftIndex].children",
 				:class="{ active: openList[item.componentTypeId] }")
 				i-icon(
 					type="ios-arrow-down",
 					@click="handleCheckType(item.componentTypeId, item.market)")
-				label(@click="handleCheckType(item.componentTypeId, item.market)") {{ item.componentTypeName }}
-				.d-left-widgets-list.fn-flex(
+				label.pointer(@click="handleCheckType(item.componentTypeId, item.market)") {{ item.componentTypeName }}
+				.d-left-component-list.fn-flex(
 					v-if="list[item.componentTypeId] && openList[item.componentTypeId]")
 					item-card(
 						v-for="widget in list[item.componentTypeId]",
@@ -31,13 +31,14 @@
 						:componentId="widget.componentId",
 						:componentAvatar="widget.componentAvatar",
 						:componentTitle="widget.componentTitle")
-		.d-left-widgets-empty.fn-flex(v-else) 快来选择你心仪的组件了
+		.d-left-component-empty.fn-flex(v-else) 快来选择你心仪的组件了
 </template>
 <script lang="ts">
 import parts from '../d-widget-part/index.vue'
 import { Icon } from 'view-design'
 import custom from '../../store/custom.store'
 import platform from '../../store/platform.store'
+import ruler from '../../store/ruler.store'
 import itemCard from './item-card.vue'
 import { Component, Vue } from 'vue-property-decorator'
 
@@ -51,6 +52,7 @@ import { Component, Vue } from 'vue-property-decorator'
 export default class DLeftWidget extends Vue {
 	custom = custom.state
 	platform = platform.state
+	ruler = ruler.state
 	leftIndex = null
 	rightIndex = null
 	list = {}
@@ -88,7 +90,7 @@ export default class DLeftWidget extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.d-left-widgets-list {
+.d-left-component-list {
 	flex-wrap: wrap;
 	justify-content: space-between;
 	width: 100%;
@@ -96,7 +98,7 @@ export default class DLeftWidget extends Vue {
 	background: #0a0b0d;
 }
 
-.d-left-widgets-empty {
+.d-left-component-empty {
 	align-items: center;
 	justify-content: center;
 	width: 100%;
@@ -106,7 +108,7 @@ export default class DLeftWidget extends Vue {
 	height: 100px;
 }
 
-.d-left-widgets {
+.d-left-component {
 	top: 0;
 	left: 0;
 	height: 100%;
@@ -116,7 +118,7 @@ export default class DLeftWidget extends Vue {
 	transition: width 0.3s;
 }
 
-.d-left-widgets-left {
+.d-left-component-left {
 	background-color: #22242b;
 
 	li {
@@ -147,7 +149,7 @@ export default class DLeftWidget extends Vue {
 	}
 }
 
-.d-left-widgets-right {
+.d-left-component-right {
 	width: 100%;
 
 	li {

@@ -48,6 +48,7 @@ import { Icon, Button, Modal, Form, FormItem, Input } from 'view-design'
 import copy from 'fast-copy'
 import { mixins } from 'vue-class-component'
 import platform from '../../store/platform.store'
+import ruler from '../../store/ruler.store'
 import scene from '../../store/scene.store'
 import commonConfigValue from '../../../common-config-value'
 import loadMask from '../load-mask/index.vue'
@@ -75,6 +76,7 @@ export default class DDetail extends mixins(
 	@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
 
 	platform = platform.state
+	ruler = ruler.state
 	scene = scene.state
 	loadingMsg = 'loading…'
 	shareModal = false
@@ -91,33 +93,33 @@ export default class DDetail extends mixins(
 	handleLeft1() {
 		this.left1 = !this.left1
 		if (this.left1) {
-			this.platform.ruler.xRoomL1 = this.xRoomL1
+			this.ruler.xRoomL1 = this.xRoomL1
 			this.xRoomL1 = 0
 		} else {
-			this.xRoomL1 = this.platform.ruler.xRoomL1
-			this.platform.ruler.xRoomL1 = 0
+			this.xRoomL1 = this.ruler.xRoomL1
+			this.ruler.xRoomL1 = 0
 		}
 	}
 
 	handleRight1() {
 		this.right1 = !this.right1
 		if (this.right1) {
-			this.platform.ruler.xRoomR1 = this.xRoomR1
+			this.ruler.xRoomR1 = this.xRoomR1
 			this.xRoomR1 = 0
 		} else {
-			this.xRoomR1 = this.platform.ruler.xRoomR1
-			this.platform.ruler.xRoomR1 = 0
+			this.xRoomR1 = this.ruler.xRoomR1
+			this.ruler.xRoomR1 = 0
 		}
 	}
 
 	handleLeft2() {
 		this.left2 = !this.left2
 		if (this.left2) {
-			this.platform.ruler.xRoomL2 = this.xRoomL2
+			this.ruler.xRoomL2 = this.xRoomL2
 			this.xRoomL2 = 0
 		} else {
-			this.xRoomL2 = this.platform.ruler.xRoomL2
-			this.platform.ruler.xRoomL2 = 0
+			this.xRoomL2 = this.ruler.xRoomL2
+			this.ruler.xRoomL2 = 0
 		}
 	}
 
@@ -202,7 +204,7 @@ export default class DDetail extends mixins(
 		return {
 			screenName: this.platform.screenName,
 			screenConfig: {
-				kanboard: panelConfig, // 看板画布配置
+				panelConfig, // 看板画布配置
 				widgets, // 小工具配置
 				scene: this.scene.obj, // 场景
 			},

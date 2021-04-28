@@ -1,5 +1,6 @@
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
+import ruler from '../../store/ruler.store'
 import { throttle } from 'throttle-debounce'
 
 export default {
@@ -9,6 +10,7 @@ export default {
 			clientY: 0,
 			platform: platform.state,
 			event: event.state,
+			ruler: ruler.state,
 			contentWidth: 0,
 			contentHeight: 0,
 			contentMoveStartX: 0, // 内容容器移动起始点水平时点值
@@ -20,7 +22,7 @@ export default {
 		'platform.panelConfig.size': {
 			deep: true,
 			handler() {
-				platform.actions.resetZoom()
+				ruler.actions.resetZoom()
 			},
 		},
 	},
@@ -62,7 +64,7 @@ export default {
 			this.event.contentMove = false
 		},
 		windowResize() {
-			const id = this.platform.ruler.dragId
+			const id = this.ruler.dragId
 			const dragContent = document.getElementById(id)
 			this.contentWidth = dragContent.firstChild.scrollWidth
 			this.contentHeight = dragContent.firstChild.scrollHeight
@@ -76,10 +78,10 @@ export default {
 					this.contentMoveStartX = clientX
 					this.contentMoveStartY = clientY
 				}
-				this.platform.ruler.contentScrollLeft = Math.ceil(
+				this.ruler.contentScrollLeft = Math.ceil(
 					clientX - this.contentMoveStartX,
 				)
-				this.platform.ruler.contentScrollTop = Math.ceil(
+				this.ruler.contentScrollTop = Math.ceil(
 					clientY - this.contentMoveStartY,
 				)
 				this.contentMoveStartX = clientX
@@ -98,9 +100,9 @@ export default {
 		 */
 		handleWheelZoom(e) {
 			if (e.wheelDelta > 0) {
-				platform.actions.zoomIn()
+				ruler.actions.zoomIn()
 			} else {
-				platform.actions.zoomOut()
+				ruler.actions.zoomOut()
 			}
 		},
 		handleWheelWindow(e) {
@@ -121,15 +123,15 @@ export default {
 				e.stopPropagation()
 
 				if (e.shiftKey) {
-					this.platform.ruler.contentX += e.wheelDelta > 0 ? 10 : -10
+					this.ruler.contentX += e.wheelDelta > 0 ? 10 : -10
 					return false
 				}
-				this.platform.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
+				this.ruler.contentY += e.wheelDelta > 0 ? 10 : -10
 			}
 		},
 	},
 	mounted() {
-		const id = this.platform.ruler.dragId
+		const id = this.ruler.dragId
 		const dragContent = document.getElementById(id)
 		document.documentElement.addEventListener('mousemove', this.setMove)
 		document.documentElement.addEventListener('mouseup', this.stopMove)
@@ -145,11 +147,11 @@ export default {
 		dragContent.addEventListener('wheel', this.handleDragContentWheel)
 		requestAnimationFrame(this.windowResize)
 		setTimeout(() => {
-			platform.actions.resetZoom()
+			ruler.actions.resetZoom()
 		})
 	},
 	beforeDestroy() {
-		const id = this.platform.ruler.dragId
+		const id = this.ruler.dragId
 		const dragContent = document.getElementById(id)
 		document.documentElement.removeEventListener('mousemove', this.setMove)
 		document.documentElement.removeEventListener('mouseup', this.stopMove)

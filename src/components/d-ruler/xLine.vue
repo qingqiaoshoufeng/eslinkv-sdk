@@ -6,7 +6,7 @@
 	@mouseup.stop="mouseup")
 	canvas#ruler-x.pos-a(width="9999", height="18")
 	.d-ruler-mouse-x.pos-a(
-		:style="`transform: translateX(${clientX - platform.ruler.size - platform.ruler.xRoomL1 - platform.ruler.xRoomL2}px)`",
+		:style="`transform: translateX(${clientX - ruler.size - ruler.xRoomL1 - ruler.xRoomL2}px)`",
 		v-if="showHelp")
 		.num {{ site }}
 </template>
@@ -14,6 +14,7 @@
 import { Component, Watch, Prop, Vue } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
+import ruler from '../../store/ruler.store'
 
 let i = 0
 let loadImg = false
@@ -24,6 +25,7 @@ export default class XLine extends Vue {
 	@Prop() clientX
 	platform = platform.state
 	event = event.state
+	ruler = ruler.state
 	showHelp = false
 	canvas: null
 	context = null
@@ -31,47 +33,47 @@ export default class XLine extends Vue {
 	get site() {
 		return ~~(
 			(this.clientX -
-				this.platform.ruler.size -
-				this.platform.ruler.xRoomL1 -
-				this.platform.ruler.xRoomL2 -
-				this.platform.ruler.guideStartX) /
-			this.platform.ruler.zoom
+				this.ruler.size -
+				this.ruler.xRoomL1 -
+				this.ruler.xRoomL2 -
+				this.ruler.guideStartX) /
+			this.ruler.zoom
 		)
 	}
 
-	@Watch('platform.ruler.zoom')
+	@Watch('ruler.zoom')
 	zoomChange() {
 		this.init()
 	}
 
-	@Watch('platform.ruler.contentX')
+	@Watch('ruler.contentX')
 	contentXChange() {
 		this.init()
 	}
 
-	@Watch('platform.panelConfig.size.width')
+	@Watch('panelConfig.size.width')
 	widthChange() {
 		this.init()
 	}
 
 	mousedownStop() {
-		this.platform.ruler.dragFlag = 'x'
-		if (this.platform.ruler.dragGuideId) {
-			platform.actions.changeGuideLine(this.site)
+		this.ruler.dragFlag = 'x'
+		if (this.ruler.dragGuideId) {
+			ruler.actions.changeGuideLine(this.site)
 		} else {
-			platform.actions.guideAdd(this.site)
+			ruler.actions.guideAdd(this.site)
 		}
 		// @ts-ignore
 		this.updateHandle()
 		this.event.guideDrag = false
-		this.platform.ruler.dragGuideId = ''
+		this.ruler.dragGuideId = ''
 	}
 
 	mouseup() {
 		if (this.event.guideDrag) {
-			platform.actions.changeGuideLine(this.site)
+			ruler.actions.changeGuideLine(this.site)
 			this.event.guideDrag = false
-			this.platform.ruler.dragGuideId = ''
+			this.ruler.dragGuideId = ''
 		}
 		// @ts-ignore
 		this.updateHandle()
@@ -83,7 +85,7 @@ export default class XLine extends Vue {
 		if (id) {
 			this.$api.screenShare.screenShareUpdate({
 				screenId: id,
-				screenGuide: this.platform.ruler.guideLines,
+				screenGuide: this.ruler.guideLines,
 			})
 		}
 		// END_PROD
@@ -127,17 +129,17 @@ export default class XLine extends Vue {
 		// @ts-ignore
 		while (x < this.canvas.width - t.e) {
 			this.context.drawImage(bgImg, x, 0)
-			this.context.fillText(~~(x / this.platform.ruler.zoom), x + 4, 10)
-			x = x + this.platform.ruler.stepLength
+			this.context.fillText(~~(x / this.ruler.zoom), x + 4, 10)
+			x = x + this.ruler.stepLength
 		}
 
 		if (t.e > 0) {
 			let xe = 0
 			while (xe < t.e) {
-				xe = xe + this.platform.ruler.stepLength
+				xe = xe + this.ruler.stepLength
 				this.context.drawImage(bgImg, -xe, 0)
 				this.context.fillText(
-					xe === 0 ? '0' : -~~(xe / this.platform.ruler.zoom),
+					xe === 0 ? '0' : -~~(xe / this.ruler.zoom),
 					-xe + 2,
 					10,
 				)
@@ -154,18 +156,14 @@ export default class XLine extends Vue {
 	 */
 	init() {
 		this.context.translate(
-			(this.platform.panelConfig.size.width *
-				(1 - this.platform.ruler.zoom)) /
-				2 +
-				this.platform.ruler.contentX -
-				this.platform.ruler.guideStartX,
+			(this.platform.panelConfig.size.width * (1 - this.ruler.zoom)) / 2 +
+				this.ruler.contentX -
+				this.ruler.guideStartX,
 			0,
 		)
-		this.platform.ruler.guideStartX =
-			(this.platform.panelConfig.size.width *
-				(1 - this.platform.ruler.zoom)) /
-				2 +
-			this.platform.ruler.contentX
+		this.ruler.guideStartX =
+			(this.platform.panelConfig.size.width * (1 - this.ruler.zoom)) / 2 +
+			this.ruler.contentX
 		if (loadImg) {
 			this.initDraw()
 		} else {
