@@ -90,7 +90,7 @@ export default class detail extends Vue {
 		height: 0;
 	}
 
-	#kanban {
+	#screen {
 		position: relative;
 		flex-grow: 0;
 		flex-shrink: 0;
@@ -106,7 +106,7 @@ export default class detail extends Vue {
 		align-items: unset;
 		overflow: auto;
 
-		#kanban {
+		#screen {
 			transform-origin: 0 0;
 		}
 	}

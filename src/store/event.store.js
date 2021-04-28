@@ -11,6 +11,8 @@ const state = Vue.observable({
 	guideDrag: false, // 点击拖拽参考线
 	componentDrag: false, // 组件拖拽
 	kuangMove: false, // 框选
+	startX: 0,
+	startY: 0,
 })
 const actions = {
 	setEvent(key, func) {

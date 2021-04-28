@@ -143,7 +143,7 @@ export default class FuncConfig extends func {
 		} = this.$route
 		if (id) {
 			const screenAvatar = await this.capture({
-				selector: '#kanban',
+				selector: '#screen',
 			}).catch(e => {
 				console.warn(e)
 				this.$Message.error('截屏创建失败')

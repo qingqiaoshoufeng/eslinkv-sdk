@@ -1,5 +1,5 @@
 <template lang="pug">
-#kanban.canvas-wrapper(ref="canvas-wrapper", :style="canvasStyle()")
+#screen.canvas-wrapper(ref="canvas-wrapper", :style="canvasStyle()")
 	template(v-for="item in platform.widgetAdded")
 		parts(
 			v-if="showParts(item)",

@@ -1,7 +1,7 @@
 <template lang="pug">
 // 操作区
 // todo css 改造 适配组件嵌入式，非全屏
-.d-editor.pos-r#d-editor(
+#d-editor.d-editor.pos-r(
 	ref="canvas-wrapper",
 	:class="{ fullscreen: platform.fullscreen }",
 	:style="{ width: `calc(100% - ${ruler.xRoomL1 + ruler.xRoomL2 + ruler.xRoomR1}px)`, marginLeft: `${ruler.xRoomL1 + ruler.xRoomL2}px` }",
@@ -10,13 +10,14 @@
 	// 标尺容器
 	ruler-canvas(ref="rulerCanvas")
 		// 大屏
-		#kanban.canvas-wrapper.pos-r(
+		#screen.canvas-wrapper.pos-r(
 			:style="canvasStyle",
 			@dragenter="isDragIn = true",
 			@dragleave.self="isDragIn = false",
 			@drop="drop",
 			@click.stop,
-			@mousedown.self="hideRightMenu",
+			@mousedown.self="dEditorMouseDown",
+			@mousemove.self="dEditorMouseMove",
 			@dragover.prevent)
 			// 小工具清单
 			template(v-for="item in platform.widgetAdded")
@@ -89,6 +90,7 @@ import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
 import ruler from '../../store/ruler.store'
+import { dEditorMouseDown, dEditorMouseMove } from '../../events'
 export default {
 	name: 'd-editor',
 	mixins: [widgetOperation],
@@ -107,6 +109,8 @@ export default {
 	},
 	data() {
 		return {
+			dEditorMouseDown,
+			dEditorMouseMove,
 			platform: platform.state,
 			scene: scene.state,
 			ruler: ruler.state,
@@ -131,9 +135,6 @@ export default {
 		},
 		handleFullscreenChange() {
 			this.platform.fullscreen = !this.platform.fullscreen
-		},
-		hideRightMenu() {
-			platform.actions.unChooseWidget()
 		},
 		showRightMenu(e, item) {
 			e.preventDefault()
@@ -249,7 +250,7 @@ export default {
 	}
 }
 
-#kanban {
+#screen {
 	box-shadow: rgba(0, 0, 0, 0.5) 0 0 30px 0;
 	transition: background-image 0.5s;
 

@@ -42,7 +42,7 @@ export default class dScreen extends Vue {
 	width: 100%;
 }
 
-#kanban:-webkit-full-screen {
+#screen:-webkit-full-screen {
 	width: 100%;
 	height: 100%;
 }
