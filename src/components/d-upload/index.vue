@@ -2,17 +2,25 @@
 .d-upload
 	.d-upload-img.pos-r
 		img(:src="value", v-if="value && type === 'img'")
-		video(:src="value", v-if="value && type === 'video'", loop, autoplay)
+		video(ref="video" :src="value", v-if="value && type === 'video'", loop)
 		.progress(v-if="isShowProgress")
 			i-progress(:percent="percent" text-inside :stroke-width="16" status="active")
 		i-upload.pointer.pos-a(
 			:action="action",
 			:data="data",
+			:accept="accept",
 			:on-progress="handleProgress",
 			:show-upload-list="false",
 			:before-upload="handleBeforeUpload",
 			:on-success="handleSuccess")
 			.d-upload-text(v-if="!value && !isShowProgress") 点击上传
+		i-icon.d-upload-play-icon.pos-a.pointer(
+			v-if="value && type === 'video'",
+			title="播放",
+			:type="isPlaying ? 'md-pause' : 'md-play'",
+			color="#fff",
+			size="14",
+			@click="handlePlayVideo")
 		i-icon.d-upload-download-icon.pos-a.pointer(
 			v-if="value",
 			title="下载",
@@ -42,11 +50,13 @@ import { Upload, Icon, Progress } from 'view-design'
 export default class DUpload extends Vue {
 	@Prop({ default: `${baseURL}/upload/file` }) action
 	@Prop() data
+	@Prop() accept
 	@Prop({ default: 'img' }) type
 	@Prop() value
 
 	percent = 0
 	isShowProgress = false
+	isPlaying = false
 
 	handleDown() {
 		const a = document.createElement('a')
@@ -62,12 +72,12 @@ export default class DUpload extends Vue {
 
 	handleSuccess(res) {
 		this.isShowProgress = false
+		this.isPlaying = false
 		this.$emit('input', res.result.url)
 		this.$emit('success', res)
 	}
 	
 	handleProgress (event, file, fileList) {
-		console.log(event, file, fileList)
 		this.percent = event.percent
 	}
 
@@ -76,12 +86,19 @@ export default class DUpload extends Vue {
 			if (file.size > 1024 * 1024) {
 				this.$Message.error('图片大小不能超过1M')
 				return false
-			} else if (['image/jpg', 'image/png', 'image/gif'].includes(file.type)) {
-				this.$Message.error('图片仅支持jpg，png，gif')
 			}
 		}
 		this.isShowProgress = true
 		return true
+	}
+
+	handlePlayVideo () {
+		if (this.isPlaying) {
+			this.$refs.video.pause()
+		} else {
+			this.$refs.video.play()
+		}
+		this.isPlaying = !this.isPlaying
 	}
 }
 </script>
@@ -94,6 +111,11 @@ export default class DUpload extends Vue {
 .d-upload-remove-icon {
 	top: 10px;
 	right: 10px;
+}
+
+.d-upload-play-icon {
+	top: 10px;
+	right: 50px;
 }
 
 .d-upload-img {

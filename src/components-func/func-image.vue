@@ -5,7 +5,7 @@
 		tooltip(content="支持jpg，png，gif" placement="top-start")
 			i-icon(type="ios-help-circle-outline" size="16")
 	.d-manage-modal-control-right
-		d-upload(v-model="obj[inputKey]", :data="formData")
+		d-upload(v-model="obj[inputKey]", :data="formData" accept="image/*")
 </template>
 <script lang="ts">
 import func from './func.mx'
