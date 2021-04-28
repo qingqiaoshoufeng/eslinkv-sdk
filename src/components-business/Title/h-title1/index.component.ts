@@ -12,7 +12,7 @@ export const customConfig = [
 			{
 				prop: 'background',
 				label: '动画',
-				type: 'func-upload',
+				type: 'func-image',
 			},
 		],
 	}
