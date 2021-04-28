@@ -1,7 +1,7 @@
 <template lang="pug">
 // 操作区
 // todo css 改造 适配组件嵌入式，非全屏
-.center.pos-r(
+.d-editor.pos-r#d-editor(
 	ref="canvas-wrapper",
 	:class="{ fullscreen: platform.fullscreen }",
 	:style="{ width: `calc(100% - ${platform.ruler.xRoomL1 + platform.ruler.xRoomL2 + platform.ruler.xRoomR1}px)`, marginLeft: `${platform.ruler.xRoomL1 + platform.ruler.xRoomL2}px` }",
@@ -73,6 +73,7 @@
 	// 右键菜单
 	right-menu
 	d-footer
+	d-kuang
 </template>
 <script>
 import rightMenu from '../right-menu/index'
@@ -81,6 +82,7 @@ import dr from '../../components/d-dr'
 import parts from '../d-widget-part/index'
 import widgetOperation from './widget-operation'
 import dRightManage from '../d-right-manage'
+import dKuang from '../d-kuang'
 import dFooter from '../d-footer'
 import dGuide from '../d-guide'
 import platform from '../../store/platform.store'
@@ -94,6 +96,7 @@ export default {
 		rulerCanvas,
 		dFooter,
 		dGuide,
+		dKuang,
 		dr,
 		dRightManage,
 		rightMenu,
@@ -221,7 +224,7 @@ export default {
 	width: 100%;
 	height: 1px;
 }
-.center {
+.d-editor {
 	background-color: #313239;
 	transition: all 0.3s;
 

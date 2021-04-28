@@ -1,5 +1,5 @@
 <template lang="pug">
-.main-container(:style="{ height: `calc(100% - ${platform.ruler.yRoom}px)` }")
+.d-screen#d-screen(:style="{ height: `calc(100% - ${platform.ruler.yRoom}px)` }")
 	.d-editor-box.pos-r.fn-flex
 		d-left-widget
 		d-left-scene
@@ -36,7 +36,7 @@ export default class dScreen extends Vue {
 	height: 100%;
 }
 
-.main-container {
+.d-screen {
 	width: 100%;
 }
 

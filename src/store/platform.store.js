@@ -33,8 +33,6 @@ function getInitRuler() {
 		contentY: 0, // 当前位置y
 		contentScrollLeft: 0, // 滚动距离
 		contentScrollTop: 0, // 滚动距离
-		contentMove: false, // 是否按下了 空格 键，启动内容区拖动
-		guideDrag: false, // 点击拖拽参考线
 		dragGuideId: '', // 被移动线的ID
 		stepLength: 50, // 标尺步长
 		size: 18, // 标尺高度，容差

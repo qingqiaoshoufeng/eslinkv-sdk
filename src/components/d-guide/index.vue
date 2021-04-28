@@ -7,7 +7,7 @@
 			:data-top="item.type === 'v' ? 0 : item.site",
 			:data-left="item.type === 'v' ? item.site : 0",
 			:key="item.site",
-			:class="[`d-guide-line-${item.type}`, { 'no-pointer': platform.ruler.contentMove || hideCursor }]",
+			:class="[`d-guide-line-${item.type}`, { 'no-pointer': event.contentMove || hideCursor }]",
 			@mousedown.stop="e => handleGuideDrag(e, item)",
 			@mousemove="handleMousemove",
 			@contextmenu="openGuideMenu(item.id, $event)")
@@ -19,6 +19,7 @@
 </template>
 <script>
 import platform from '../../store/platform.store'
+import event from '../../store/event.store'
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
@@ -28,6 +29,7 @@ export default class Guide extends Vue {
 	menuTop = 0
 	removeId = null
 	platform = platform.state
+	event = event.state
 	hideCursor = false
 
 	handleMousemove(e) {
@@ -63,7 +65,7 @@ export default class Guide extends Vue {
 		this.platform.ruler.guideDragStartX = clientX
 		this.platform.ruler.guideDragStartY =
 			clientY - this.platform.ruler.yRoom
-		this.platform.ruler.guideDrag = true
+		this.event.guideDrag = true
 		this.platform.ruler.dragFlag = type
 		this.platform.ruler.dragGuideId = id
 	}

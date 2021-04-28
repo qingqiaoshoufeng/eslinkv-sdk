@@ -3,7 +3,7 @@
 	:style="style",
 	:data-top="`${this.top}px`",
 	:data-left="`${this.left}px`",
-	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: dragging, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
+	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: event.componentDrag, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
 	@click="elementEnable",
 	@mousedown="elementDown",
 	@touchstart="elementTouchDown")
@@ -11,7 +11,7 @@
 		v-for="handle in actualHandles",
 		:key="handle",
 		:class="['dr-handle', `dr-handle-${handle}`]",
-		:style="{ display: enabled && !dragging ? 'block' : 'none' }",
+		:style="{ display: enabled && !event.componentDrag ? 'block' : 'none' }",
 		@mousedown.stop.prevent="handleDown(handle, $event)",
 		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
 		slot(:name="handle")
@@ -33,6 +33,7 @@
 <script>
 import { addEvent, removeEvent } from './dom'
 import platform from '../../store/platform.store'
+import event from '../../store/event.store'
 
 const events = {
 	mouse: {
@@ -135,6 +136,7 @@ export default {
 		return {
 			snapTolerance: 5, // 当调用对齐时，用来设置组件与组件之间的对齐距离，以像素为单位
 			platform: platform.state,
+			event: event.state,
 			rawWidth: this.w,
 			rawHeight: this.h,
 			rawLeft: this.x,
@@ -149,7 +151,6 @@ export default {
 			handle: null,
 			enabled: this.active,
 			resizing: false,
-			dragging: false,
 			brotherNodes: [],
 		}
 	},
@@ -196,7 +197,7 @@ export default {
 		},
 		// 元素按下
 		elementDown(e) {
-			if (!this.enabled || platform.state.ruler.contentMove) return
+			if (!this.enabled || this.event.contentMove) return
 			const target = e.target || e.srcElement
 
 			if (this.$el.contains(target)) {
@@ -205,7 +206,7 @@ export default {
 				}
 
 				if (this.draggable) {
-					this.dragging = true
+					this.event.componentDrag = true
 				}
 
 				if (this.snapToTarget) {
@@ -271,7 +272,7 @@ export default {
 		},
 		// 移动
 		move(e) {
-			if (this.dragging) {
+			if (this.event.componentDrag) {
 				this.elementMove(e)
 				return
 			}
@@ -361,8 +362,8 @@ export default {
 					this.height,
 				)
 			}
-			if (this.dragging) {
-				this.dragging = false
+			if (this.event.componentDrag) {
+				this.event.componentDrag = false
 				this.$emit('refLineParams', refLine)
 				this.$emit('dragstop', this.left, this.top)
 			}
@@ -531,7 +532,7 @@ export default {
 	computed: {
 		tipShow() {
 			return (
-				this.dragging &&
+				this.event.componentDrag &&
 				this.top > 0 &&
 				this.left > 0 &&
 				this.top < this.platform.panelConfig.size.height &&
@@ -625,7 +626,7 @@ export default {
 			this.bottom = newBottom
 		},
 		x() {
-			if (this.resizing || this.dragging) {
+			if (this.resizing || this.event.componentDrag) {
 				return
 			}
 			const delta = this.x - this.left
@@ -633,7 +634,7 @@ export default {
 			this.rawRight = this.right - delta
 		},
 		y() {
-			if (this.resizing || this.dragging) {
+			if (this.resizing || this.event.componentDrag) {
 				return
 			}
 			const delta = this.y - this.top
@@ -648,14 +649,14 @@ export default {
 			}
 		},
 		w() {
-			if (this.resizing || this.dragging) {
+			if (this.resizing || this.event.componentDrag) {
 				return
 			}
 			const delta = this.width - this.w
 			this.rawRight = this.right + delta
 		},
 		h() {
-			if (this.resizing || this.dragging) {
+			if (this.resizing || this.event.componentDrag) {
 				return
 			}
 			const delta = this.height - this.h

@@ -1,4 +1,5 @@
 import platform from '../../store/platform.store'
+import event from '../../store/event.store'
 import { throttle } from 'throttle-debounce'
 
 export default {
@@ -7,6 +8,7 @@ export default {
 			clientX: 0, // 当前鼠标位置，用于标尺上的红线
 			clientY: 0,
 			platform: platform.state,
+			event: event.state,
 			contentWidth: 0,
 			contentHeight: 0,
 			contentMoveStartX: 0, // 内容容器移动起始点水平时点值
@@ -27,7 +29,7 @@ export default {
 		 * @description 拖动开始时
 		 */
 		handleContentMoveStart(e) {
-			if (!this.platform.ruler.contentMove) return
+			if (!this.event.contentMove) return
 			this.contentMoveStartX = e.clientX
 			this.contentMoveStartY = e.clientY
 			this.contentDrag = true
@@ -53,11 +55,11 @@ export default {
 				e.preventDefault()
 			}
 			if (e.keyCode === 32) {
-				this.platform.ruler.contentMove = true
+				this.event.contentMove = true
 			}
 		},
 		stopContentMove() {
-			this.platform.ruler.contentMove = false
+			this.event.contentMove = false
 		},
 		windowResize() {
 			const id = this.platform.ruler.dragId
@@ -138,7 +140,7 @@ export default {
 		)
 		window.addEventListener('resize', this.windowResize)
 		document
-			.getElementsByClassName('main-container')[0]
+			.getElementById('d-screen')
 			.addEventListener('wheel', this.handleWheel)
 		dragContent.addEventListener('wheel', this.handleDragContentWheel)
 		requestAnimationFrame(this.windowResize)
@@ -160,7 +162,7 @@ export default {
 			this.startContentMove,
 		)
 		document
-			.getElementsByClassName('main-container')[0]
+			.getElementById('d-screen')
 			.removeEventListener('wheel', this.handleWheel)
 		if (dragContent) {
 			dragContent.removeEventListener(

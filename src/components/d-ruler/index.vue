@@ -8,7 +8,7 @@
 	#ruler-content.d-ruler-content(
 		ref="rulerContent",
 		@mousedown.self="hideRightMenu",
-		:class="{ drag: platform.ruler.contentMove }",
+		:class="{ drag: event.contentMove }",
 		@mousedown="handleContentMoveStart",
 		@mousemove.prevent)
 		.content-body.pos-a(:id="platform.ruler.dragId", :style="contentStyle")
@@ -19,6 +19,7 @@ import xLine from './xLine.vue'
 import yLine from './yLine.vue'
 import eventHandlers from './event'
 import platform from '../../store/platform.store'
+import event from '../../store/event.store'
 import { mixins } from 'vue-class-component'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Icon } from 'view-design'
@@ -35,6 +36,7 @@ export default class DRuler extends mixins(eventHandlers) {
 	@Prop({ default: false }) parent
 
 	platform = platform.state
+	event = event.state
 
 	@Watch('platform.ruler.contentScrollLeft')
 	contentXChange() {

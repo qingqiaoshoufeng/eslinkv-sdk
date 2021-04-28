@@ -13,6 +13,7 @@
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
+import event from '../../store/event.store'
 
 let i = 0
 let loadImg = false
@@ -22,6 +23,7 @@ const bgImg = new Image()
 export default class XLine extends Vue {
 	@Prop() clientX
 	platform = platform.state
+	event = event.state
 	showHelp = false
 	canvas: null
 	context = null
@@ -61,14 +63,14 @@ export default class XLine extends Vue {
 		}
 		// @ts-ignore
 		this.updateHandle()
-		this.platform.ruler.guideDrag = false
+		this.event.guideDrag = false
 		this.platform.ruler.dragGuideId = ''
 	}
 
 	mouseup() {
-		if (this.platform.ruler.guideDrag) {
+		if (this.event.guideDrag) {
 			platform.actions.changeGuideLine(this.site)
-			this.platform.ruler.guideDrag = false
+			this.event.guideDrag = false
 			this.platform.ruler.dragGuideId = ''
 		}
 		// @ts-ignore
