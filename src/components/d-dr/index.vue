@@ -3,6 +3,7 @@
 	:style="style",
 	:data-top="`${this.top}px`",
 	:data-left="`${this.left}px`",
+	:data-id="id",
 	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: event.componentDrag, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
 	@click="elementEnable",
 	@mousedown="elementDown",
@@ -54,6 +55,10 @@ export default {
 	replace: true,
 	name: 'd-dr',
 	props: {
+		id: {
+			type: String,
+			default: '',
+		},
 		active: {
 			type: Boolean,
 			default: false,

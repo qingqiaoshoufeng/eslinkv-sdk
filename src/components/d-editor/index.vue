@@ -22,6 +22,7 @@
 					v-if="showParts(item)",
 					:key="item.id",
 					:ref="`widget_${item.id}`",
+					:id="item.id",
 					:scale-ratio="ruler.zoom",
 					:draggable="widgetEditable(item)",
 					:resizable="widgetEditable(item)",
