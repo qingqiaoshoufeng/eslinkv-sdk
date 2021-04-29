@@ -34,7 +34,7 @@
 import { addEvent, removeEvent } from './dom'
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
-import { drMouseDown } from '../../events'
+import { dDrMouseDown } from '@/events'
 const events = {
 	mouse: {
 		start: 'mousedown',
@@ -199,7 +199,7 @@ export default {
 		elementDown(e) {
 			if (!this.enabled || this.event.contentMove) return
 			const target = e.target || e.srcElement
-			drMouseDown(e)
+			dDrMouseDown(e)
 			if (this.$el.contains(target)) {
 				if (this.onDragStart && this.onDragStart(e) === false) {
 					return

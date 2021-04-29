@@ -157,10 +157,6 @@ export default {
 				this.ready = true
 			}
 		}
-		this.$el.addEventListener('animationend', this.handleAnimationEnd)
-	},
-	beforeDestroy() {
-		this.$el.removeEventListener('animationend', this.handleAnimationEnd)
 	},
 }
 </script>

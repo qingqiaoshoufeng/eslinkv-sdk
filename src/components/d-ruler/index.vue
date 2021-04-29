@@ -3,11 +3,12 @@
 	i-icon.pos-a.d-ruler-guide-visible.pointer.z-index-999.text-center(
 		:type="ruler.guideVisible ? 'ios-eye-off-outline' : 'ios-eye-outline'",
 		@click="ruler.guideVisible = !ruler.guideVisible")
-	x-line(:clientX="clientX", ref="xline")
-	y-line(:clientY="clientY", ref="yline")
+	x-line(ref="xline")
+	y-line(ref="yline")
 	#ruler-content.d-ruler-content(
 		ref="rulerContent",
 		@mousedown="rulerContentMouseDown",
+		@wheel="rulerContentWheel",
 		@mousemove="rulerContentMouseMove",
 		:class="{ drag: event.contentMove }")
 		.content-body.pos-a(:id="ruler.dragId", :style="contentStyle")
@@ -16,14 +17,16 @@
 <script lang="ts">
 import xLine from './xLine.vue'
 import yLine from './yLine.vue'
-import eventHandlers from './event'
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import ruler from '../../store/ruler.store'
-import { mixins } from 'vue-class-component'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
 import { Icon } from 'view-design'
-import { rulerContentMouseDown, rulerContentMouseMove } from '../../events'
+import {
+	rulerContentMouseDown,
+	rulerContentMouseMove,
+	rulerContentWheel,
+} from '@/events'
 @Component({
 	components: {
 		xLine,
@@ -31,19 +34,27 @@ import { rulerContentMouseDown, rulerContentMouseMove } from '../../events'
 		'i-icon': Icon,
 	},
 })
-export default class DRuler extends mixins(eventHandlers) {
+export default class DRuler extends Vue {
 	@Prop({ default: false }) isScaleRevise
 	@Prop({ default: false }) parent
 
 	platform = platform.state
 	event = event.state
 	ruler = ruler.state
+	contentWidth = 0
+	contentHeight = 0
 	rulerContentMouseDown = rulerContentMouseDown
 	rulerContentMouseMove = rulerContentMouseMove
+	rulerContentWheel = rulerContentWheel
 
 	@Watch('ruler.contentScrollLeft')
 	contentXChange() {
 		this.ruler.contentX += this.ruler.contentScrollLeft
+	}
+
+	@Watch('platform.panelConfig.size', { deep: true })
+	panelConfigSizeChange() {
+		ruler.actions.resetZoom()
 	}
 
 	@Watch('ruler.contentScrollTop')
@@ -57,6 +68,20 @@ export default class DRuler extends mixins(eventHandlers) {
 		}px, 0) scale(${this.ruler.zoom});width:${
 			(this as any).contentWidth + 18 * 2
 		} px;height:${(this as any).contentHeight + 18 * 2} px;`
+	}
+
+	windowResize() {
+		const id = this.ruler.dragId
+		const dragContent = document.getElementById(id)
+		this.contentWidth = dragContent.firstChild.scrollWidth
+		this.contentHeight = dragContent.firstChild.scrollHeight
+	}
+
+	mounted() {
+		window.addEventListener('resize', this.windowResize)
+		setTimeout(() => {
+			ruler.actions.resetZoom()
+		})
 	}
 }
 </script>

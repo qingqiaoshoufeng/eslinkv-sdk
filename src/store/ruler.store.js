@@ -4,6 +4,7 @@
 import Vue from 'vue'
 import { store } from './index'
 import platform from './platform.store'
+import event from './event.store'
 
 const state = Vue.observable({
 	dragId: `drag-content-${+new Date()}`,
@@ -25,7 +26,6 @@ const state = Vue.observable({
 	size: 18, // 标尺高度，容差
 	zoom: 1,
 	zoomStep: 0.02,
-	dragFlag: '', // 拖动开始标记，可能值x(从水平标尺开始拖动),y(从垂直标尺开始拖动)
 })
 const actions = {
 	/**
@@ -54,20 +54,34 @@ const actions = {
 			state.zoom = +((state.zoom * 100 - step) / 100).toFixed(2)
 		}
 	},
-	changeGuideLine(site) {
+	changeGuideLine(type) {
+		const site = actions.site(type)
 		const guideIndex = state.guideLines.findIndex(
 			guide => guide.id === state.dragGuideId,
 		)
 		state.guideLines[guideIndex].site = site
 	},
-	guideAdd(site) {
+	site(type) {
+		if (type === 'h')
+			return ~~(
+				(event.state.clientY -
+					state.size -
+					state.yRoom -
+					state.guideStartY) /
+				state.zoom
+			)
+		return ~~(
+			(event.state.clientX -
+				state.size -
+				state.xRoomL1 -
+				state.xRoomL2 -
+				state.guideStartX) /
+			state.zoom
+		)
+	},
+	guideAdd(type) {
+		const site = actions.site(type)
 		const line = state.guideLines
-		const type = (state.dragFlag =
-			state.dragFlag === 'x'
-				? 'v'
-				: state.dragFlag === 'y'
-				? 'h'
-				: state.dragFlag)
 		line.push({
 			id: `${type}_${state.guideLines.length}`,
 			type,

@@ -7,9 +7,8 @@
 			:data-top="item.type === 'v' ? 0 : item.site",
 			:data-left="item.type === 'v' ? item.site : 0",
 			:key="item.site",
-			:class="[`d-guide-line-${item.type}`, { 'no-pointer': event.contentMove || hideCursor }]",
-			@mousedown.stop="e => handleGuideDrag(e, item)",
-			@mousemove="handleMousemove",
+			:class="[`d-guide-line-${item.type}`]",
+			@mousedown="rulerGuideMouseDown($event, item)",
 			@contextmenu="openGuideMenu(item.id, $event)")
 			.num.pos-a {{ item.site }}px
 	ul.d-guide-right-menu(
@@ -22,7 +21,7 @@ import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import ruler from '../../store/ruler.store'
 import { Component, Vue } from 'vue-property-decorator'
-
+import { rulerGuideMouseDown } from '@/events'
 @Component
 export default class Guide extends Vue {
 	showGuideMenu = false
@@ -32,11 +31,7 @@ export default class Guide extends Vue {
 	platform = platform.state
 	event = event.state
 	ruler = ruler.state
-	hideCursor = false
-
-	handleMousemove(e) {
-		this.hideCursor = e.offsetX + e.offsetY > this.ruler.size
-	}
+	rulerGuideMouseDown = rulerGuideMouseDown
 
 	/**
 	 * @description
@@ -56,19 +51,6 @@ export default class Guide extends Vue {
 					: this.ruler.guideStartY + this.ruler.size
 			}px`,
 		}
-	}
-
-	// 水平线/垂直线 处按下鼠标
-	handleGuideDrag(e, item) {
-		if (e.which !== 1) return
-		if (e.offsetX + e.offsetY > this.ruler.size) return
-		const { clientX, clientY } = e
-		const { type, id } = item
-		this.ruler.guideDragStartX = clientX
-		this.ruler.guideDragStartY = clientY - this.ruler.yRoom
-		this.event.guideDrag = true
-		this.ruler.dragFlag = type
-		this.ruler.dragGuideId = id
 	}
 
 	updateHandle() {
@@ -151,15 +133,16 @@ export default class Guide extends Vue {
 	}
 
 	clearGuides() {
-		this.$Modal.confirm({
-			title: '确定是否清空参考线？',
-			okText: '确定',
-			cancelText: '取消',
-			onOk: () => {
-				this.ruler.guideLines = []
-				this.updateHandle()
-			},
-		})
+		if (this.ruler.guideLines.length > 0)
+			this.$Modal.confirm({
+				title: '确定是否清空参考线？',
+				okText: '确定',
+				cancelText: '取消',
+				onOk: () => {
+					this.ruler.guideLines = []
+					this.updateHandle()
+				},
+			})
 	}
 
 	mounted() {

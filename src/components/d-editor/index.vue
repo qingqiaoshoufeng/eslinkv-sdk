@@ -125,9 +125,6 @@ export default {
 				return child
 			})
 		},
-		handleFullscreenChange() {
-			this.platform.fullscreen = !this.platform.fullscreen
-		},
 		showRightMenu(e, item) {
 			e.preventDefault()
 			if (item.config.widget.locked) return
@@ -188,16 +185,8 @@ export default {
 	},
 	beforeDestroy() {
 		this.platform.fullscreen = false
-		document.removeEventListener(
-			'fullscreenchange',
-			this.handleFullscreenChange,
-		)
 	},
 	mounted() {
-		document.addEventListener(
-			'fullscreenchange',
-			this.handleFullscreenChange,
-		)
 		platform.actions.initPlatformConfig()
 		instance.actions.setInstance('kanboard', this)
 		scene.actions.setStatus('inEdit')

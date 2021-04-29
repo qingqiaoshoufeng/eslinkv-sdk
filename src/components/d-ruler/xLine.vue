@@ -2,19 +2,20 @@
 .d-ruler-wrapper-x(
 	@mouseenter="showHelp = true",
 	@mouseleave="showHelp = false",
-	@mousedown.stop="mousedownStop",
-	@mouseup.stop="mouseup")
+	@mousedown="rulerLineMouseDown($event, 'v', $route.params.id)",
+	@mouseup="rulerLineMouseUp($event, 'v', $route.params.id)")
 	canvas#ruler-x.pos-a(width="9999", height="18")
 	.d-ruler-mouse-x.pos-a(
-		:style="`transform: translateX(${clientX - ruler.size - ruler.xRoomL1 - ruler.xRoomL2}px)`",
+		:style="`transform: translateX(${event.clientX - ruler.size - ruler.xRoomL1 - ruler.xRoomL2}px)`",
 		v-if="showHelp")
 		.num {{ site }}
 </template>
 <script lang="ts">
-import { Component, Watch, Prop, Vue } from 'vue-property-decorator'
+import { Component, Watch, Vue } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import ruler from '../../store/ruler.store'
+import { rulerLineMouseUp, rulerLineMouseDown } from '@/events'
 
 let i = 0
 let loadImg = false
@@ -22,23 +23,17 @@ const bgImg = new Image()
 
 @Component
 export default class XLine extends Vue {
-	@Prop() clientX
 	platform = platform.state
 	event = event.state
 	ruler = ruler.state
 	showHelp = false
 	canvas: null
 	context = null
+	rulerLineMouseDown = rulerLineMouseDown
+	rulerLineMouseUp = rulerLineMouseUp
 
 	get site() {
-		return ~~(
-			(this.clientX -
-				this.ruler.size -
-				this.ruler.xRoomL1 -
-				this.ruler.xRoomL2 -
-				this.ruler.guideStartX) /
-			this.ruler.zoom
-		)
+		return ruler.actions.site('v')
 	}
 
 	@Watch('ruler.zoom')
@@ -54,41 +49,6 @@ export default class XLine extends Vue {
 	@Watch('panelConfig.size.width')
 	widthChange() {
 		this.init()
-	}
-
-	mousedownStop() {
-		this.ruler.dragFlag = 'x'
-		if (this.ruler.dragGuideId) {
-			ruler.actions.changeGuideLine(this.site)
-		} else {
-			ruler.actions.guideAdd(this.site)
-		}
-		// @ts-ignore
-		this.updateHandle()
-		this.event.guideDrag = false
-		this.ruler.dragGuideId = ''
-	}
-
-	mouseup() {
-		if (this.event.guideDrag) {
-			ruler.actions.changeGuideLine(this.site)
-			this.event.guideDrag = false
-			this.ruler.dragGuideId = ''
-		}
-		// @ts-ignore
-		this.updateHandle()
-	}
-
-	updateHandle() {
-		// START_PROD
-		const id = this.$route.params.id
-		if (id) {
-			this.$api.screenShare.screenShareUpdate({
-				screenId: id,
-				screenGuide: this.ruler.guideLines,
-			})
-		}
-		// END_PROD
 	}
 
 	translateAnimation(num) {
