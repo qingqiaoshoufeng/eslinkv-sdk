@@ -37,18 +37,21 @@ const mouseup = () => {
 		let h = Number(kuang.style.height.replace('px', ''))
 		h = h / ruler.state.zoom
 		for (let i = 0; i < dr.length; i++) {
-			const transform = dr[i].style.transform.split(/\(|\)/)[1].split(',')
-			const left = Number(transform[0].replace('px', ''))
-			const top = Number(transform[1].replace('px', ''))
-			const width = dr[i].offsetWidth
-			const height = dr[i].offsetHeight
-			if (
-				l < left &&
-				left + width < l + w &&
-				t < top &&
-				top + height < t + h
-			) {
-				selectedEls.push(dr[i].getAttribute('data-id'))
+			const transform = dr[i].style.transform
+			if (transform) {
+				const tran = transform.split(/\(|\)/)[1].split(',')
+				const left = Number(tran[0].replace('px', ''))
+				const top = Number(tran[1].replace('px', ''))
+				const width = dr[i].offsetWidth
+				const height = dr[i].offsetHeight
+				if (
+					l < left &&
+					left + width < l + w &&
+					t < top &&
+					top + height < t + h
+				) {
+					selectedEls.push(dr[i].getAttribute('data-id'))
+				}
 			}
 		}
 		if (selectedEls.length === 1) {

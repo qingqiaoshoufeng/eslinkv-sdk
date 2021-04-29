@@ -51,10 +51,10 @@ export default class DRightSwiper extends Vue {
 			border-top: none;
 		}
 	}
-	&::v-deep + .d-manage-modal-control-base {
+	::v-deep + .d-manage-modal-control-base {
 		margin-top: 10px;
 	}
-	&::v-deep + .d-manage-modal-control {
+	::v-deep + .d-manage-modal-control {
 		margin-top: 10px;
 	}
 }

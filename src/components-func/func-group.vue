@@ -44,7 +44,7 @@ export default class FuncGroup extends func {
 </script>
 <style lang="scss" scoped>
 .func-group {
-	&::v-deep + .d-manage-modal-control {
+	::v-deep + .d-manage-modal-control {
 		margin-top: 10px;
 	}
 }

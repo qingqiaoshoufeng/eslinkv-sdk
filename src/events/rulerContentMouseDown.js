@@ -18,7 +18,11 @@ const rulerContentMouseDown = e => {
 	/**
 	 * @description 框选操作
 	 */
-	if (!event.state.contentMove && !event.state.componentDrag) {
+	if (
+		!event.state.contentMove &&
+		!event.state.componentDrag &&
+		!event.state.componentMove
+	) {
 		event.state.kuangMove = true
 		event.state.startX = e.clientX
 		event.state.startY = e.clientY

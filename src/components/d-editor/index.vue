@@ -260,7 +260,7 @@ export default {
 		opacity 0.2s cubic-bezier(0.5, 0, 0.5, 1);
 	transform: translate3d(0, 0, 0);
 
-	&::v-deep {
+	::v-deep {
 		& > .config-panel {
 			width: 100% !important;
 			height: 100% !important;

@@ -1,10 +1,10 @@
 <template lang="pug">
 .dr.pos-a(
 	:style="style",
+	:data-id="id",
 	:data-top="`${this.top}px`",
 	:data-left="`${this.left}px`",
-	:data-id="id",
-	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: event.componentDrag, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
+	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: dragging, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
 	@click="elementEnable",
 	@mousedown="elementDown",
 	@touchstart="elementTouchDown")
@@ -12,7 +12,7 @@
 		v-for="handle in actualHandles",
 		:key="handle",
 		:class="['dr-handle', `dr-handle-${handle}`]",
-		:style="{ display: enabled && !event.componentDrag ? 'block' : 'none' }",
+		:style="{ display: enabled && !dragging ? 'block' : 'none' }",
 		@mousedown.stop.prevent="handleDown(handle, $event)",
 		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
 		slot(:name="handle")
@@ -156,6 +156,7 @@ export default {
 			handle: null,
 			enabled: this.active,
 			resizing: false,
+			dragging: false,
 			brotherNodes: [],
 		}
 	},
@@ -166,12 +167,24 @@ export default {
 		this.$el.ondragstart = () => false
 		this.rawRight = -this.rawWidth - this.rawLeft
 		this.rawBottom = -this.rawHeight - this.rawTop
+		addEvent(document.documentElement, 'mousedown', this.deselect)
+		addEvent(
+			document.documentElement,
+			'touchend touchcancel',
+			this.deselect,
+		)
 	},
 	beforeDestroy() {
+		removeEvent(document.documentElement, 'mousedown', this.deselect)
 		removeEvent(document.documentElement, 'touchstart', this.handleUp)
 		removeEvent(document.documentElement, 'mousemove', this.move)
 		removeEvent(document.documentElement, 'touchmove', this.move)
 		removeEvent(document.documentElement, 'mouseup', this.handleUp)
+		removeEvent(
+			document.documentElement,
+			'touchend touchcancel',
+			this.deselect,
+		)
 	},
 
 	methods: {
@@ -202,16 +215,17 @@ export default {
 		},
 		// 元素按下
 		elementDown(e) {
-			if (!this.enabled || this.event.contentMove) return
+			if (!this.enabled || event.contentMove) return
 			const target = e.target || e.srcElement
-			dDrMouseDown(e)
+
 			if (this.$el.contains(target)) {
 				if (this.onDragStart && this.onDragStart(e) === false) {
 					return
 				}
 
 				if (this.draggable) {
-					this.event.componentDrag = true
+					dDrMouseDown(e)
+					this.dragging = true
 				}
 
 				if (this.snapToTarget) {
@@ -241,6 +255,25 @@ export default {
 					this.handleUp,
 				)
 			}
+		},
+		// 取消
+		deselect(e) {
+			const target = e.target || e.srcElement
+			const regex = new RegExp(this.className + '-([trmbl]{2})', '')
+
+			if (!this.$el.contains(target) && !regex.test(target.className)) {
+				if (this.enabled) {
+					this.enabled = false
+					this.$emit('deactivated')
+					this.$emit('update:active', false)
+				}
+				removeEvent(
+					document.documentElement,
+					eventsFor.move,
+					this.handleMove,
+				)
+			}
+			this.resetBoundsAndMouseState()
 		},
 		// 控制柄触摸按下
 		handleTouchDown(handle, e) {
@@ -277,7 +310,7 @@ export default {
 		},
 		// 移动
 		move(e) {
-			if (this.event.componentDrag) {
+			if (this.dragging) {
 				this.elementMove(e)
 				return
 			}
@@ -338,7 +371,7 @@ export default {
 			this.$emit('resizing', this.left, this.top, this.width, this.height)
 		},
 		// 从控制柄松开
-		async handleUp(e) {
+		async handleUp() {
 			this.handle = null
 			this.rawTop = this.top
 			this.rawBottom = this.bottom
@@ -367,8 +400,8 @@ export default {
 					this.height,
 				)
 			}
-			if (this.event.componentDrag) {
-				this.event.componentDrag = false
+			if (this.dragging) {
+				this.dragging = false
 				this.$emit('refLineParams', refLine)
 				this.$emit('dragstop', this.left, this.top)
 			}
@@ -537,7 +570,7 @@ export default {
 	computed: {
 		tipShow() {
 			return (
-				this.event.componentDrag &&
+				this.dragging &&
 				this.top > 0 &&
 				this.left > 0 &&
 				this.top < this.platform.panelConfig.size.height &&
@@ -631,7 +664,7 @@ export default {
 			this.bottom = newBottom
 		},
 		x() {
-			if (this.resizing || this.event.componentDrag) {
+			if (this.resizing || this.dragging) {
 				return
 			}
 			const delta = this.x - this.left
@@ -639,7 +672,7 @@ export default {
 			this.rawRight = this.right - delta
 		},
 		y() {
-			if (this.resizing || this.event.componentDrag) {
+			if (this.resizing || this.dragging) {
 				return
 			}
 			const delta = this.y - this.top
@@ -654,14 +687,14 @@ export default {
 			}
 		},
 		w() {
-			if (this.resizing || this.event.componentDrag) {
+			if (this.resizing || this.dragging) {
 				return
 			}
 			const delta = this.width - this.w
 			this.rawRight = this.right + delta
 		},
 		h() {
-			if (this.resizing || this.event.componentDrag) {
+			if (this.resizing || this.dragging) {
 				return
 			}
 			const delta = this.height - this.h

@@ -73,7 +73,7 @@ export default class DView extends Vue {
 		content: '';
 	}
 
-	&::v-deep {
+	::v-deep {
 		& > .widget-part {
 			position: absolute !important;
 		}

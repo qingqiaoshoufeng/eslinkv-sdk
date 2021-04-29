@@ -76,12 +76,12 @@ export default class DUpload extends Vue {
 		this.$emit('input', res.result.url)
 		this.$emit('success', res)
 	}
-	
-	handleProgress (event, file, fileList) {
+
+	handleProgress(event) {
 		this.percent = event.percent
 	}
 
-	handleBeforeUpload (file) {
+	handleBeforeUpload(file) {
 		if (this.type === 'img') {
 			if (file.size > 1024 * 1024) {
 				this.$Message.error('图片大小不能超过1M')
@@ -92,10 +92,12 @@ export default class DUpload extends Vue {
 		return true
 	}
 
-	handlePlayVideo () {
+	handlePlayVideo() {
 		if (this.isPlaying) {
+			// @ts-ignore
 			this.$refs.video.pause()
 		} else {
+			// @ts-ignore
 			this.$refs.video.play()
 		}
 		this.isPlaying = !this.isPlaying
@@ -143,7 +145,7 @@ export default class DUpload extends Vue {
 		}
 	}
 
-	&::v-deep {
+	::v-deep {
 		.ivu-upload-select {
 			display: flex;
 			display: -webkit-flex;
