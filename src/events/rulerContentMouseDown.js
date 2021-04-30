@@ -15,6 +15,8 @@ const rulerContentMouseDown = e => {
 	}
 	// 判断是否为鼠标左键被按下
 	if (e.buttons !== 1 || e.which !== 1) return
+	event.state.startX = e.clientX
+	event.state.startY = e.clientY
 	/**
 	 * @description 框选操作
 	 */
@@ -24,8 +26,6 @@ const rulerContentMouseDown = e => {
 		!event.state.componentMove
 	) {
 		event.state.kuangMove = true
-		event.state.startX = e.clientX
-		event.state.startY = e.clientY
 		let kuang = document.getElementById('d-kuang')
 		if (!kuang) {
 			kuang = document.createElement('div')
