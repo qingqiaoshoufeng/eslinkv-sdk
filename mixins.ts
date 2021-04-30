@@ -45,19 +45,21 @@ const mx: any = {
 	methods: {
 		__handleClick__(val) {
 			if (val) scene.state.transferData = val
-			const sceneId = this.config.event.scene.id
-			const animate = this.config.event.scene.animate
-			switch (this.config.event.scene.type) {
-				case 'openScene':
-					scene.actions.createSceneInstance(sceneId, animate)
-					break
-				case 'closeScene':
-					scene.actions.destroyScene(sceneId, animate)
-					break
-				case 'changeScene':
-					scene.actions.setSceneIndex(sceneId)
-					break
-				default:
+			for (const item of this.config.event.scene) {
+				const sceneId = item.id
+				const animate = item.animate
+				switch (item.type) {
+					case 'openScene':
+						scene.actions.createSceneInstance(sceneId, animate)
+						break
+					case 'closeScene':
+						scene.actions.destroyScene(sceneId, animate)
+						break
+					case 'changeScene':
+						scene.actions.setSceneIndex(sceneId)
+						break
+					default:
+				}
 			}
 			switch (this.config.event.component.type) {
 				case 'update':

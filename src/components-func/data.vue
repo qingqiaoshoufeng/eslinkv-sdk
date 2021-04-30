@@ -101,31 +101,6 @@
 					:style="{ width: '100px' }")
 					i-option(:value="item.id", v-for="(item, key) in relateList", :key="key") {{ item.id }}
 		.d-manage-modal-control
-			label 场景事件
-			.d-manage-modal-control-right
-				i-select(
-					clearable,
-					v-model="item.config.event.scene.type",
-					:style="{ marginRight: '10px', width: '100px' }")
-					i-option(value="openScene") 打开场景
-					i-option(value="closeScene") 关闭场景
-					i-option(value="changeScene") 切换场景
-				i-select(
-					v-model="item.config.event.scene.id",
-					filterable,
-					:style="{ width: '100px' }")
-					i-option(:value="0") 主场景
-					i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
-		.d-manage-modal-control
-			label 场景动画
-			.d-manage-modal-control-right
-				i-select(
-					clearable,
-					filterable,
-					v-model="item.config.event.scene.animate",
-					:style="{ width: '100px' }")
-					i-option(:value="k" v-for="(k, i) in animates" :key="i") {{ k }}
-		.d-manage-modal-control
 			label 组件事件
 			.d-manage-modal-control-right
 				i-select(
@@ -143,6 +118,34 @@
 						:value="k",
 						:key="i",
 						v-for="(k, i) in Object.keys(platform.widgetAdded)") {{ platform.widgetAdded[k].config.widget.name }}
+		.d-manage-modal-control(v-for="(m, n) in item.config.event.scene" :key="n" style="align-items: baseline;")
+			label 场景事件
+			.d-manage-modal-control-right(style="justify-content: space-between;")
+				i-select(
+					clearable,
+					v-model="m.type",
+					placeholder="事件类型",
+					:style="{ marginRight: '10px', width: '100px' }")
+					i-option(value="openScene") 打开场景
+					i-option(value="closeScene") 关闭场景
+					i-option(value="changeScene") 切换场景
+				i-select(
+					v-model="m.id",
+					filterable,
+					placeholder="目标场景",
+					:style="{ width: '100px' }")
+					i-option(:value="0") 主场景
+					i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
+				i-select(
+					clearable,
+					filterable,
+					placeholder="场景动画",
+					v-model="m.animate",
+					:style="{ width: '100px' }")
+					i-option(:value="k" v-for="(k, i) in animates" :key="i") {{ k }}
+				i-icon(type="ios-trash-outline" color="#fff" size="20" style="cursor: pointer;" @click="delSceneEvent(n)")
+		.add-scene
+			i-button(@click="addSceneEvent" type="primary") 添加场景事件
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -243,5 +246,24 @@ export default class FuncData extends func {
 		this.$refs.dataBaseConfig.setQueryCond(value.api.system.params)
 	}
 	// END_PROD
+
+	addSceneEvent () {
+		this.item.config.event.scene.push({
+			id: '',
+			type: '',
+			animate: '',
+		})
+	}
+
+	delSceneEvent (index) {
+		this.item.config.event.scene.splice(index, 1)
+	}
 }
 </script>
+<style lang="scss" scoped>
+.add-scene {
+	padding-right: 10px;
+	display: flex;
+	justify-content: flex-end;
+}
+</style>

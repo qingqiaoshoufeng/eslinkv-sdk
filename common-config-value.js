@@ -73,11 +73,13 @@ const commonConfigValue = useColorTheme =>
 			duration: 600,
 		},
 		event: {
-			scene: {
-				id: '',
-				type: '',
-                animate: '',
-			},
+			scene: [
+				// {
+				// 	id: '',
+				// 	type: '',
+				// 	animate: '',
+				// }
+			],
 			component: {
 				ids: [],
 				type: '',
