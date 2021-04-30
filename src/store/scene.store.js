@@ -42,7 +42,7 @@ const actions = {
 			})
 			state.list = arr.map(item => item.key)
 		}
-		const widgets = value.widgets
+		const widgets = Object.values(platform.state.widgetAdded)
 		const list = state.list
 		widgets.forEach(item => {
 			const index = list.indexOf(item.scene)
@@ -99,17 +99,6 @@ const actions = {
 		pointerEvents = 'auto',
 	) {
 		if (state.status === 'inPreview') {
-			const widgets = Object.values(platform.state.widgetAdded)
-			state.sceneObj[id].list = []
-			widgets.forEach(item => {
-				if (item.scene === id) {
-					state.sceneObj[id].list.push({
-						...item,
-						value: item.config,
-					})
-				}
-			})
-
 			const kanban = document.getElementById('kanban')
 			const transform = kanban.style.transform
 			const canvasStyle = `position: relative;transition: all .3s;flex-shrink: 0;flex-grow: 0;width:${kanban.clientWidth}px;height:${kanban.clientHeight}px;overflow: hidden;background-color:transparent;z-index: 99999;`
@@ -124,10 +113,10 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 						readonly
 						:market="item.market"
 						:ref="item.id"
-						:config="item.value"
+						:config="item.config"
 						:type="item.type"
 						v-for="item in array"
-						:key="item.id + new Date().getTime()"/>
+						:key="item.id"/>
 					</div></div>`,
 				provide() {
 					return { kanboardEditor: _self }

@@ -10,9 +10,6 @@ export default {
 	},
 	methods: {
 		renderByDetail(res) {
-			if (res.screenConfig.scene) {
-				scene.actions.initScene(res.screenConfig)
-			}
 			this.platform.screenName = res.screenName
 			this.refillConfig(res.screenConfig)
 		},
@@ -67,6 +64,9 @@ export default {
 				.then(() => {
 					this.loading = false
 					platform.actions.setWidgetsAdded(obj)
+					if (res.scene) {
+						scene.actions.initScene(res)
+					}
 				})
 				.catch(() => {
 					this.loading = false
