@@ -61,23 +61,29 @@ const actions = {
 		)
 		state.guideLines[guideIndex].site = site
 	},
-	site(type) {
-		if (type === 'h')
-			return ~~(
-				(event.state.clientY -
-					state.size -
-					state.yRoom -
-					state.guideStartY) /
-				state.zoom
-			)
+	getActualPointerX (num) {
 		return ~~(
-			(event.state.clientX -
+			(num -
 				state.size -
 				state.xRoomL1 -
 				state.xRoomL2 -
 				state.guideStartX) /
 			state.zoom
 		)
+	},
+	getActualPointerY (num) {
+		return ~~(
+			(num -
+				state.size -
+				state.yRoom -
+				state.guideStartY) /
+			state.zoom
+		)
+	},
+	site(type) {
+		if (type === 'h')
+			return actions.getActualPointerY(event.state.clientY)
+		return actions.getActualPointerX(event.state.clientX)
 	},
 	guideAdd(type) {
 		const site = actions.site(type)
