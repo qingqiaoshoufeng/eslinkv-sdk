@@ -1,6 +1,6 @@
 {
 	"name": "eslinkv-sdk",
-	"version": "1.0.59",
+	"version": "1.0.60",
 	"main": "lib/eslinkv-sdk.umd.min.js",
 	"scripts": {
 		"serve": "vue-cli-service --mode local serve",
@@ -11,6 +11,7 @@
 		"lib-prod-v": "vue-cli-service build --mode sdkprod --target lib --dest lib packages/prod-v.js --name eslinkv.v --no-clean",
 		"lib-prod-c": "vue-cli-service build --mode sdkprod --target lib --dest lib packages/prod-c.js --name eslinkv.c --no-clean",
 		"lib-prod": "npm run lib-prod-v && npm run lib-prod-m && npm run lib-prod-s && npm run lib-prod-c",
+		"stylelint": "stylelint 'src/**/*.{scss,vue}' --config '.stylelintrc.js' --fix",
 		"commit": "git add .&&git cz"
 	},
 	"dependencies": {
