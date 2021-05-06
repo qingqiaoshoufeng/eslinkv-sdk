@@ -71,10 +71,10 @@
 		.d-manage-modal-control-right
 			i-button(@click="screenAvatar", type="primary") 截屏
 	// END_PROD
-	.d-manage-modal-control
+	.d-manage-modal-control(v-if="scene.list.length > 0")
 		label 首场景
 		.d-manage-modal-control-right
-			i-select(v-model="platform.panelConfig.mainScene", filterable)
+			i-select(filterable, v-model="platform.panelConfig.mainScene")
 				i-option(:value="0") 主场景
 				i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 </template>

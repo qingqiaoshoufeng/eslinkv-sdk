@@ -123,7 +123,7 @@ const actions = {
 				}
 			})
 
-			const kanban = document.getElementById('kanban')
+			const kanban = document.getElementById('screen')
 			const transform = kanban.style.transform
 			const canvasStyle = `position: relative;transition: all .3s;flex-shrink: 0;flex-grow: 0;transform:scale(0);width:${kanban.clientWidth}px;height:${kanban.clientHeight}px;overflow: hidden;background-color:transparent;z-index: 99999;`
 			const array = state.sceneObj[id].list
