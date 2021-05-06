@@ -19,6 +19,7 @@ const mouseup = (e) => {
 		const startPointerY = ruler.actions.getActualPointerY(event.state.startY)
 		const endPointerX = ruler.actions.getActualPointerX(e.clientX)
 		const endPointerY = ruler.actions.getActualPointerY(e.clientY)
+		if (startPointerX === endPointerX || startPointerY === endPointerY) return
 		const minPointerX = Math.min(startPointerX, endPointerX)
 		const minPointerY = Math.min(startPointerY, endPointerY)
 		const maxPointerX = Math.max(startPointerX, endPointerX)
