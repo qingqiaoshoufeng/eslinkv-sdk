@@ -45,7 +45,7 @@ const mx: any = {
 	methods: {
 		__handleClick__(val) {
 			if (val) scene.state.transferData = val
-			for (const item of this.config.event.scene) {
+			for (const item of this.configValue.event.scene) {
 				const sceneId = item.id
 				const animate = item.animate
 				switch (item.type) {
@@ -61,12 +61,12 @@ const mx: any = {
 					default:
 				}
 			}
-			switch (this.config.event.component.type) {
+			switch (this.configValue.event.component.type) {
 				case 'update':
 					const coms = Object.values(
 						platform.state.widgetAdded,
 					).filter((v: any) =>
-						this.config.event.component.ids.includes(v.id),
+						this.configValue.event.component.ids.includes(v.id),
 					)
 					coms.forEach((v: any) => {
 						instance.actions.updateComponent(v.id, val)
@@ -151,11 +151,9 @@ const mx: any = {
 			if (this.config.widget) {
 				platform.actions.updateConfig(this.config.widget.id, res)
 			}
-			this.$nextTick(() => {
-				const payload = { value: { ...this.configValue } }
-				this.configReady = true
-				this.$emit('widget-config-update', payload)
-			})
+			const payload = { value: { ...this.configValue } }
+			this.configReady = true
+			this.$emit('widget-config-update', payload)
 			return res
 		},
 	},
