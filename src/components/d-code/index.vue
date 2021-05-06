@@ -13,6 +13,7 @@ div
 		editor.d-manage-modal-control-editor(
 			v-model="syncedCode",
 			@init="editorInit",
+			@on-foucs="console.log(1)",
 			:lang="lang",
 			:theme="theme",
 			height="200")
@@ -27,6 +28,7 @@ div
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator'
 import { Icon, Modal } from 'view-design'
+import event from '@/store/event.store'
 const editor = require('vue2-ace-editor')
 
 @Component({
@@ -38,12 +40,14 @@ const editor = require('vue2-ace-editor')
 })
 export default class DDcode extends Vue {
 	modal = false
+	event = event.state
 	@Prop({ default: '代码' }) label
 	@Prop({ default: 'javascript' }) lang
 	@Prop({ default: '全屏模式' }) title
 	@Prop({ default: 'idle_fingers' }) theme
 	@Prop({ default: true }) show
 	@PropSync('code') syncedCode
+
 	editorInit() {
 		require('brace/ext/language_tools')
 		require('brace/mode/html')
@@ -52,6 +56,19 @@ export default class DDcode extends Vue {
 		require('brace/mode/json')
 		require('brace/theme/idle_fingers')
 		require('brace/snippets/javascript')
+	}
+
+	mounted() {
+		const editor = document.getElementsByClassName('ace_text-input')
+		// @ts-ignore
+		editor.forEach(item => {
+			item.onfocus = () => {
+				this.event.inputFocus = true
+			}
+			item.onblur = () => {
+				this.event.inputFocus = true
+			}
+		})
 	}
 }
 </script>

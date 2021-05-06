@@ -13,6 +13,7 @@ const state = Vue.observable({
 	componentMove: false, // 组件点击开始拖拽
 	componentDrag: false, // 组件拖拽中
 	kuangMove: false, // 框选
+	inputFocus: false, // 输入框在输入中
 	startX: 0,
 	startY: 0,
 	clientX: 0,

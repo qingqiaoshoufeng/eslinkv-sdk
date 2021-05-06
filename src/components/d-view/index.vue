@@ -1,5 +1,5 @@
 <template lang="pug">
-#kanban.canvas-wrapper(ref="canvas-wrapper", :style="canvasStyle()")
+#screen.canvas-wrapper(ref="canvas-wrapper", :style="canvasStyle()")
 	template(v-for="item in platform.widgetAdded")
 		parts(
 			v-if="showParts(item)",
@@ -9,17 +9,15 @@
 			:ref="item.id",
 			:market="item.market",
 			:style="item.config.widget.hide ? 'display: none' : ''",
-			readonly
-		)
+			readonly)
 </template>
 <script lang="ts">
-import parts from "../d-widget-part/index.vue";
-import styleParser from "../../../style-parser.js";
-import loadMask from "../load-mask/index.vue";
-import platform from "../../store/platform.store";
-import scene from "../../store/scene.store";
-import instance from "../../store/instance.store";
-import { Component, Vue, Provide } from "vue-property-decorator";
+import parts from '../d-widget-part/index.vue'
+import loadMask from '../load-mask/index.vue'
+import platform from '../../store/platform.store'
+import scene from '../../store/scene.store'
+import instance from '../../store/instance.store'
+import { Component, Vue, Provide } from 'vue-property-decorator'
 
 @Component({
 	components: {
@@ -28,31 +26,36 @@ import { Component, Vue, Provide } from "vue-property-decorator";
 	},
 })
 export default class DView extends Vue {
-	@Provide("kanboardEditor") kanboardEditor = this;
+	@Provide('kanboardEditor') kanboardEditor = this
 
-	platform = platform.state;
-	scene = scene.state;
+	platform = platform.state
+	scene = scene.state
 
 	canvasStyle() {
-		const val = styleParser(this.platform.panelConfig);
-		if (val) {
-			this.$emit("mounted", val);
+		const val = {
+			width: `${this.platform.panelConfig.size.width}${this.platform.panelConfig.size.unit}`,
+			height: `${this.platform.panelConfig.size.height}${this.platform.panelConfig.size.unit}`,
+			'background-color': this.platform.panelConfig.background.color,
+			'background-image': `url(${this.platform.panelConfig.background.url})`,
 		}
-		return val;
+		if (val) {
+			this.$emit('mounted', val)
+		}
+		return val
 	}
 
 	showParts(item) {
-		if (item.scene === 0 && this.scene.showMainScene) {
-			return true;
+		if (item.scene === 0) {
+			return true
 		} else if (item.scene === this.scene.index) {
-			return true;
+			return true
 		}
-		return false;
+		return false
 	}
 
 	mounted() {
-		instance.actions.setInstance("kanboard", this);
-		scene.actions.setStatus("inPreview");
+		instance.actions.setInstance('kanboard', this)
+		scene.actions.setStatus('inPreview')
 	}
 }
 </script>
@@ -67,7 +70,7 @@ export default class DView extends Vue {
 .canvas-wrapper {
 	&::before {
 		display: flex;
-		content: "";
+		content: '';
 	}
 
 	::v-deep {

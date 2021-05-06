@@ -2,7 +2,7 @@
 .d-manage-modal-control
 	label {{ config.label }}
 	.d-manage-modal-control-right
-		i-input-number(v-model="obj[inputKey]")
+		i-input-number(v-model="obj[inputKey]" @on-focus="event.inputFocus=true" @on-blur="event.inputFocus=false")
 </template>
 <script lang="ts">
 import func from './func.mx'

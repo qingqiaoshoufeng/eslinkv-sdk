@@ -7,9 +7,15 @@
 		i-input(
 			:value="scene.obj[scene.index].name",
 			@on-change="handleSceneName",
+			@on-focus="event.inputFocus = true",
+			@on-blur="event.inputFocus = false",
 			v-if="editScene")
 			i-icon(type="md-checkmark", slot="suffix", @click="editScene = false")
-		i-select(v-model="scene.index", v-if="!editScene" filterable)
+		i-select(
+			v-model="scene.index",
+			v-if="!editScene",
+			filterable,
+			@on-query-change="handleFocusSceneName")
 			i-option(:value="0") 主场景
 			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
@@ -123,6 +129,10 @@ export default class DLeftScene extends Vue {
 
 	handleDownZIndex(id) {
 		this.platform.widgetAdded[id].config.layout.zIndex--
+	}
+
+	handleFocusSceneName() {
+		platform.actions.unChooseWidget()
 	}
 
 	handleSetScene(name) {

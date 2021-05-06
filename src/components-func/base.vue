@@ -36,12 +36,16 @@
 					:formatter="value => `X:${value}`",
 					:parser="value => value.replace('X:', '')",
 					:disabled="platform.chooseWidgetState",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",
 					:style="{ width: '100px', marginRight: '10px' }")
 				i-input-number(
 					v-model="item.config.layout.position.top",
 					:formatter="value => `Y:${value}`",
 					:parser="value => value.replace('Y:', '')",
 					:disabled="platform.chooseWidgetState",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",
 					:style="{ width: '100px' }")
 		.d-manage-modal-control
 			label 宽高
@@ -53,6 +57,8 @@
 					v-model="item.config.layout.size.width",
 					:disabled="platform.chooseWidgetState",
 					:parser="value => value.replace('W:', '')",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",
 					:style="{ marginRight: '10px', width: '67px' }")
 				i-input-number(
 					:min="1",
@@ -61,6 +67,8 @@
 					v-model="item.config.layout.size.height",
 					:disabled="platform.chooseWidgetState",
 					:parser="value => value.replace('H:', '')",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",
 					:style="{ marginRight: '10px', width: '67px' }")
 				i-select(
 					v-model="item.config.layout.size.unit",
@@ -77,6 +85,8 @@
 			.d-manage-modal-control-right
 				i-input(
 					v-model="scale",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",
 					:disabled="platform.chooseWidgetState",
 					:style="{ width: '55px' }")
 	d-right-swiper(title="载入动画")
@@ -102,6 +112,8 @@
 				i-input-number(
 					:formatter="value => `${value} ms`",
 					:parser="value => value.replace('ms', '')",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",
 					v-model="item.config.animation.delay",
 					:disabled="platform.chooseWidgetState")
 		.d-manage-modal-control(v-if="item.config.animation.transitionEnable")
@@ -110,6 +122,8 @@
 				i-input-number(
 					:formatter="value => `${value} ms`",
 					:parser="value => value.replace('ms', '')",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",
 					v-model="item.config.animation.duration",
 					:disabled="platform.chooseWidgetState")
 </template>

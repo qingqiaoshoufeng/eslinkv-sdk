@@ -17,6 +17,7 @@ import {
 } from 'view-design'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import platform from '../store/platform.store'
+import event from '../store/event.store'
 import scene from '../store/scene.store'
 import dRightSwiper from '../components/d-right-swiper/index.vue'
 
@@ -42,6 +43,7 @@ import dRightSwiper from '../components/d-right-swiper/index.vue'
 export default class Func extends Vue {
 	platform = platform.state
 	scene = scene.state
+	event = event.state
 	@Prop() config
 	@Prop() parentProp // group时会有
 	@Prop() parentIndex // group时会有
