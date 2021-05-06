@@ -1,26 +1,18 @@
 const path = require('path')
 const pkg = require('./package.json')
-const webpack = require('webpack')
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const isProduction = process.env.NODE_ENV === 'production'
 const needReport = false
 
-function resolve (dir) {
+function resolve(dir) {
 	return path.join(__dirname, dir)
 }
 module.exports = {
-	transpileDependencies: [
-		'@simonwep',
-		'vue-draggable-resizable-gorkys2',
-		'swiper',
-		'dom7'
-	],
+	transpileDependencies: ['@simonwep', 'swiper', 'dom7'],
 	assetsDir: './',
-	// assetsDir: 'static',
 	publicPath: isProduction ? `/${pkg.version}` : '/',
 	outputDir: `dist/${pkg.version}`,
 	indexPath: '../index.html',
-    filenameHashing: false,
+	filenameHashing: false,
 	productionSourceMap: false,
 	lintOnSave: false,
 	devServer: {
@@ -32,59 +24,92 @@ module.exports = {
 		proxy: {
 			'^/node': {
 				// target: 'http://127.0.0.1:7001',
-				target: 'http://10.30.3.156:7001',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/node': '/'
-				}
-			},
-			'^/cdn': {
-				target: 'http://127.0.0.1:7001',
+				// target: 'http://eslinkv.eslink.cc',
+				target: 'http://192.168.1.44:2000',
 				// target: 'http://10.30.3.156:7001',
 				changeOrigin: true,
+				// pathRewrite: {
+				// 	'^/node': '/',
+				// },
+			},
+			'^/server': {
+				// target: 'http://192.168.1.33:9082',
+				// target: 'http://10.20.10.154:3000',
+				target: 'http://192.168.1.44:2000',
+				changeOrigin: true,
+				// pathRewrite: {
+				// 	'^/server': '/',
+				// },
+			},
+			'^/cdn': {
+				// target: 'http://127.0.0.1:7001',
+				// target: 'http://eslinkv.eslink.cc',
+				// target: 'http://10.30.3.156:7001',
+				target: 'http://192.168.1.44:2000',
+				changeOrigin: true,
 				pathRewrite: {
-					'^/cdn': '/'
-				}
-			}
-		}
+					'^/cdn': '/',
+				},
+			},
+		},
 	},
 	css: {
-		extract: false,
+		extract: process.env.VUE_APP_BUILD_MODE === 'NPM',
 		sourceMap: false,
 	},
-	configureWebpack: (config) => {
-		if (isProduction) {
-			config.mode = 'production'
-			config.plugins.push(
-				new CompressionWebpackPlugin({
-					algorithm: 'gzip',
-					test: /.js|\.html|.json$|.css/,
-					threshold: 10240,
-					minRatio: 0.8
-				})
-			)
-		}
+	configureWebpack: config => {
 		config.resolve.extensions = ['.js', '.vue', '.json', '.ts', '.tsx']
-		config.externals = [
-			{
-				vue: 'Vue',
-				'vue-router': 'VueRouter',
-				'vue-class-component': 'VueClassComponent',
-				echarts: 'echarts'
-			}
-		]
-		config.plugins.push(
-			new webpack.DefinePlugin({
-				'process.env.staticVuePath': JSON.stringify(isProduction ? 'vue.min.js' : 'vue.js')
-			})
-		)
+		if (process.env.VUE_APP_BUILD_MODE === 'NPM') {
+			config.externals = [
+				{
+					vue: {
+						root: 'Vue',
+						commonjs: 'vue',
+						commonjs2: 'vue',
+						amd: 'vue',
+					},
+					'vue-router': 'VueRouter',
+					'vue-class-component': {
+						root: 'VueClassComponent',
+						commonjs: 'vue-class-component',
+						commonjs2: 'vue-class-component',
+						amd: 'vue-class-component',
+					},
+					echarts: 'echarts',
+				},
+			]
+		} else {
+			config.externals = [
+				{
+					vue: 'Vue',
+					'vue-router': 'VueRouter',
+					'vue-class-component': 'VueClassComponent',
+					echarts: 'echarts',
+				},
+			]
+		}
 	},
-	chainWebpack: (config) => {
+	chainWebpack: config => {
 		config.module
 			.rule('vue')
 			.use('iview')
 			.loader('iview-loader')
 			.options({ prefix: false })
+		config.module
+			.rule('vue')
+			.use('js-conditional-compile-loader')
+			.loader('./packages/conditionalLoader')
+			.options({})
+		config.module
+			.rule('js')
+			.use('js-conditional-compile-loader')
+			.loader('./packages/conditionalLoader')
+			.options({})
+		config.module
+			.rule('ts')
+			.use('js-conditional-compile-loader')
+			.loader('./packages/conditionalLoader')
+			.options({})
 		config.resolve.alias.set('@lib', path.resolve(__dirname, './lib'))
 		config.module
 			.rule('view-design')
@@ -92,10 +117,7 @@ module.exports = {
 			.use('babel')
 			.loader('babel-loader')
 			.end()
-		config.module
-			.rule('svg')
-			.exclude.add(resolve('src/icons'))
-			.end()
+		config.module.rule('svg').exclude.add(resolve('src/icons')).end()
 		config.module
 			.rule('icons')
 			.test(/\.svg$/)
@@ -104,7 +126,7 @@ module.exports = {
 			.use('svg-sprite-loader')
 			.loader('svg-sprite-loader')
 			.options({
-				symbolId: 'icon-[name]'
+				symbolId: 'icon-[name]',
 			})
 			.end()
 		if (isProduction) {
@@ -112,7 +134,7 @@ module.exports = {
 				config
 					.plugin('webpack-bundle-analyzer')
 					.use(
-						require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+						require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
 					)
 					.end()
 			}
@@ -120,5 +142,5 @@ module.exports = {
 		} else {
 			config.resolve.symlinks(true)
 		}
-	}
+	},
 }

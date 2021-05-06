@@ -7,15 +7,19 @@ import { store } from './index'
 
 const state = Vue.observable({
 	widgets: {},
-	components: {}
+	components: {},
+	avatar: {},
 })
 const actions = {
-	setCustomComponents (value) {
+	setCustomComponents(value) {
 		state.components = { ...state.components, ...value }
 	},
-	setCustomWidgets (value) {
-		state.widgets[`d-${+new Date()}`] = value
-	}
+	setCustomWidgets(value) {
+		state.widgets = { ...value, ...state.widgets }
+	},
+	setCustomAvatar(value) {
+		state.avatar = { ...value, ...state.avatar }
+	},
 }
 const custom = store('custom', state, actions)
 

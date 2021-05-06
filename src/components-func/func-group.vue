@@ -1,38 +1,51 @@
 <template lang="pug">
-	.d-manage-modal-control
-		i-collapse(simple)
-			i-panel {{config.label}}
-				.content(slot="content")
-					.wrap(v-for="(v, n) in obj[inputKey]" :key="n")
-						DManageItem(:config="k" v-for="(k, i) in config.children" :key="i" :parent="v")
-						i-button(type="warning" @click="remove(n)") 删除
-					i-button.add(type="primary" @click="add") 新增
+.func-group.fn-flex.flex-column
+	d-right-swiper(
+		:title="config.label",
+		:icon="icon",
+		@icon-click="value => handleClick(value, n)",
+		v-for="(v, n) in obj[inputKey]",
+		:key="n")
+		DManageItem(
+			:config="k",
+			v-for="(k, i) in config.children",
+			:key="i",
+			:parentProp="inputKey"
+			:parentIndex="n")
 </template>
 <script lang="ts">
-	import func from './func.mx'
-	import { Component } from 'vue-property-decorator'
-	import DManageItem from '../components/d-right-manage/item.vue'
-	import Style from './style.vue'
+import func from './func.mx'
+import { Component } from 'vue-property-decorator'
+import DManageItem from '../components/d-right-setting/item.vue'
 
-	@Component({ components: { Style, DManageItem } })
-	export default class FuncGroup extends func {
-		add () {
+@Component({ components: { DManageItem } })
+export default class FuncGroup extends func {
+	get icon() {
+		if (this.obj[this.inputKey].length > 1) {
+			return ['ios-add-circle-outline', 'ios-trash-outline']
+		} else {
+			return ['ios-add-circle-outline']
+		}
+	}
+
+	handleClick(value, index) {
+		if (value === 'ios-add-circle-outline') {
 			const child = {}
 			this.config.children.forEach(v => {
 				child[v.prop] = ''
 			})
 			this.obj[this.inputKey].push(child)
 		}
-
-		remove (n) {
-			this.obj[this.inputKey].splice(n, 1)
+		if (value === 'ios-trash-outline') {
+			this.obj[this.inputKey].splice(index, 1)
 		}
 	}
+}
 </script>
-<style scoped lang="scss">
-	.wrap {
-		padding: 10px;
-		margin-bottom: 10px;
-		border: 1px solid #ddd;
+<style lang="scss" scoped>
+.func-group {
+	::v-deep + .d-manage-modal-control {
+		margin-top: 10px;
 	}
+}
 </style>

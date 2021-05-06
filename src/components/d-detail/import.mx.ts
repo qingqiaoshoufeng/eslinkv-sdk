@@ -1,22 +1,28 @@
+import { setDefault } from '../../utils'
+
 export default {
-	data () {
+	data() {
 		return {
-			importModal: false
+			importModal: false,
 		}
 	},
 	methods: {
-		handleFile (e) {
+		handleFile(e) {
 			const file = e.target.files[0]
 			const reader = new FileReader()
 			reader.onload = e => {
 				try {
 					this.loading = true
-					const result = JSON.parse(e.target.result)
+					const result = JSON.parse((e as any).target.result)
 					const { screenConfig, screenName } = result
-					this.renderByDetail({ name: screenName, screenConfig })
+					screenConfig.widgets.forEach(v => {
+						setDefault(v.value)
+					})
+					this.renderByDetail({ screenName, screenConfig })
 					this.importModal = false
 					this.loading = false
 				} catch (e) {
+					console.error(e)
 					this.$Message.error('配置文件识别失败')
 				}
 			}
@@ -24,6 +30,6 @@ export default {
 				this.$Message.error('配置文件识别失败')
 			}
 			reader.readAsText(file)
-		}
-	}
+		},
+	},
 }

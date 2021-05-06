@@ -1,208 +1,136 @@
 <template lang="pug">
-	.vue-ruler-wrapper.pos-r
-		section(v-show="platform.ruler.rulerVisible"
-			:style="(contentMove || platform.ruler.zoom !== 1 || platform.ruler.lockGuides) && 'pointer-events: none'")
-			.ruler-wrapper.h(ref="horizontalRuler" @mousedown.stop="horizontalDragRuler")
-				x-line
-			.ruler-wrapper.v(ref="verticalRuler" @mousedown.stop="verticalDragRuler")
-				y-line
-			.mouse-position.x.pos-a(:style="`transform: translateX(${clientX}px)`")
-			.mouse-position.y.pos-a(:style="`transform: translateY(${clientY}px)`")
-		guides(
-			:vGuideTop="verticalDottedTop"
-			:hGuideLeft="horizontalDottedLeft"
-			:contentMove="contentMove"
-			:contentWidth="contentWidth"
-			:contentHeight="contentHeight")
-		.vue-ruler-content(:class="{ drag: contentMove }" @mousedown="handleContentMoveStart" @mousemove.prevent)
-			.content-body(:id="platform.ruler.dragId" :style="contentStyle")
-				slot
+.d-ruler-wrapper.pos-r
+	i-icon.pos-a.d-ruler-guide-visible.pointer.z-index-999.text-center(
+		:type="ruler.guideVisible ? 'ios-eye-off-outline' : 'ios-eye-outline'",
+		@click="ruler.guideVisible = !ruler.guideVisible")
+	x-line(ref="xline")
+	y-line(ref="yline")
+	#ruler-content.d-ruler-content(
+		ref="rulerContent",
+		@mousedown="rulerContentMouseDown",
+		@wheel="rulerContentWheel",
+		@mousemove="rulerContentMouseMove",
+		:class="{ drag: event.contentMove }")
+		.content-body.pos-a(:id="ruler.dragId", :style="contentStyle")
+			slot
 </template>
 <script lang="ts">
-	import guides from './guides.vue'
-	import xLine from './xLine.vue'
-	import yLine from './yLine.vue'
-	import eventHandlers from './event'
-	import guideDrag from './guide-drag'
-	import platform from '../../store/platform.store'
-	import { mixins } from 'vue-class-component'
-	import { Component, Prop, Watch } from 'vue-property-decorator'
+import xLine from './xLine.vue'
+import yLine from './yLine.vue'
+import platform from '../../store/platform.store'
+import event from '../../store/event.store'
+import ruler from '../../store/ruler.store'
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
+import { Icon } from 'view-design'
+import {
+	rulerContentMouseDown,
+	rulerContentMouseMove,
+	rulerContentWheel,
+} from '@/events'
+@Component({
+	components: {
+		xLine,
+		yLine,
+		'i-icon': Icon,
+	},
+})
+export default class DRuler extends Vue {
+	@Prop({ default: false }) isScaleRevise
+	@Prop({ default: false }) parent
 
-	@Component({
-		components: {
-			guides, xLine, yLine
-		}
-	})
-	export default class DRuler extends mixins(eventHandlers, guideDrag) {
-		@Prop({ default: false }) isScaleRevise
-		@Prop({ default: false }) parent
+	platform = platform.state
+	event = event.state
+	ruler = ruler.state
+	contentWidth = 0
+	contentHeight = 0
+	rulerContentMouseDown = rulerContentMouseDown
+	rulerContentMouseMove = rulerContentMouseMove
+	rulerContentWheel = rulerContentWheel
 
-		platform = platform.state
-		size = 18
-
-		@Watch('platform.ruler.contentScrollLeft')
-		contentXChange () {
-			this.platform.ruler.contentX += this.platform.ruler.contentScrollLeft
-		}
-
-		@Watch('platform.ruler.contentScrollTop')
-		contentYChange () {
-			this.platform.ruler.contentY += this.platform.ruler.contentScrollTop
-		}
-
-		get contentStyle () {
-			return `transform:translate3d(${this.platform.ruler.contentX}px, ${this.platform.ruler.contentY}px, 0) scale(${this.platform.ruler.zoom});width:${this.contentWidth + 18 * 2} px;height:${this.contentHeight + 18 * 2} px;`
-		}
+	@Watch('ruler.contentScrollLeft')
+	contentXChange() {
+		this.ruler.contentX += this.ruler.contentScrollLeft
 	}
+
+	@Watch('platform.panelConfig.size', { deep: true })
+	panelConfigSizeChange() {
+		ruler.actions.resetZoom()
+	}
+
+	@Watch('ruler.contentScrollTop')
+	contentYChange() {
+		this.ruler.contentY += this.ruler.contentScrollTop
+	}
+
+	get contentStyle() {
+		return `transform:translate3d(${this.ruler.contentX}px, ${
+			this.ruler.contentY
+		}px, 0) scale(${this.ruler.zoom});width:${
+			(this as any).contentWidth + 18 * 2
+		} px;height:${(this as any).contentHeight + 18 * 2} px;`
+	}
+
+	windowResize() {
+		const id = this.ruler.dragId
+		const dragContent = document.getElementById(id)
+		// @ts-ignore
+		this.contentWidth = dragContent.firstChild.scrollWidth
+		// @ts-ignore
+		this.contentHeight = dragContent.firstChild.scrollHeight
+	}
+
+	mounted() {
+		window.addEventListener('resize', this.windowResize)
+		setTimeout(() => {
+			ruler.actions.resetZoom()
+		})
+	}
+}
 </script>
 
 <style lang="scss">
-	.ruler-wrapper {
-		position: absolute;
-		z-index: 9;
-		box-shadow: #111 0 0 1px;
+.d-ruler-guide-visible {
+	position: absolute;
+	left: 0;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+	color: var(--white);
+	background-color: #111;
+}
 
-		&.h {
-			top: 0;
-			left: 18px;
-			width: calc(100% - 18px);
-			height: 18px;
-
-			&::before {
-				position: absolute;
-				left: -18px;
-				z-index: 1000;
-				width: 18px;
-				height: 18px;
-				font-weight: 900;
-				line-height: 18px;
-				color: #77ecff;
-				text-align: center;
-				content: 'D';
-				background-color: #111;
-			}
-		}
-
-		&.v {
-			top: 18px;
-			left: 0;
-			width: 18px;
-			height: calc(100% - 18px);
-		}
-
-		.vue-ruler-h,
-		.vue-ruler-v {
-			position: absolute;
-			top: 0;
-			left: 0;
-			z-index: 3;
-			overflow: hidden;
-			transition: transform 0.4s;
-		}
-
-		.vue-ruler-h {
-			left: 0;
-			height: 18px;
-			cursor: n-resize;
-			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAMAAAAuTX21AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACNJREFUeNpiYCAdMDKRCka1jGoBA2JZZGshiaCXFpIBQIABAAplBkCmQpujAAAAAElFTkSuQmCC) repeat-x;
-			opacity: 0.6;
-		}
-
-		.vue-ruler-v {
-			top: 0;
-			width: 18px;
-			cursor: w-resize;
-			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAyCAMAAABmvHtTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRFMzMzAAAA////BqjYlAAAACBJREFUeNpiYGBEBwwMTGiAakI0NX7U9aOuHyGuBwgwAH6bBkAR6jkzAAAAAElFTkSuQmCC) repeat-y;
-			opacity: 0.6;
-		}
-
-		.vue-ruler-v .n,
-		.vue-ruler-h .n {
-			position: absolute;
-			font: 10px/1 serif;
-			color: #333;
-			pointer-events: none;
-			cursor: default;
-		}
-
-		.vue-ruler-v .n {
-			left: -18px;
-			width: 50px;
-			margin-top: 17px;
-			text-align: right;
-			word-wrap: normal;
-			transform: rotate(-90deg);
-		}
-
-		.vue-ruler-h .n {
-			top: 1px;
-			pointer-events: none;
-		}
-	}
-
-	.mouse-position {
+.d-ruler {
+	&-wrapper {
 		top: 0;
 		left: 0;
-		z-index: 30;
-		pointer-events: none;
-
-		&.x {
-			width: 1px;
-			height: 18px;
-			background-color: red;
-		}
-
-		&.y {
-			width: 18px;
-			height: 1px;
-			background-color: red;
-		}
+		z-index: 1;
+		width: 100%;
+		height: calc(100% - 32px);
+		overflow: hidden;
+		user-select: none;
 	}
 
-	.vue-ruler {
-		&-wrapper {
-			top: 0;
-			left: 0;
-			z-index: 1;
-			width: 100%;
-			height: 100%;
-			overflow: hidden;
-			user-select: none;
+	&-content {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+
+		&.drag {
+			cursor: grab;
 		}
 
-		&-content {
-			position: absolute;
+		.content-body {
 			top: 0;
 			left: 0;
-			z-index: 1;
-			width: 100%;
-			height: 100%;
-			overflow: hidden;
-
-			&.drag {
-				cursor: grab;
-			}
-
-			.content-body {
-				position: absolute;
-				top: 0;
-				left: 0;
-				margin-top: 1px;
-				overflow: visible;
-				background-image: url(../../../src/assets/editor/transparent-bg.png);
-				background-clip: content-box;
-				background-size: 32px;
-				border: 18px transparent solid;
-				transition: all 0.3s;
-			}
-		}
-
-		&-content-mask {
-			position: absolute;
-			z-index: 4;
-			width: 100%;
-			height: 100%;
-			background: transparent;
+			margin-top: 1px;
+			overflow: visible;
+			border: 18px transparent solid;
+			transition: all 0.3s;
 		}
 	}
+}
 </style>

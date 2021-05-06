@@ -15,104 +15,110 @@
 			:model="selectObjModel"
 			ref="select"
 		></es-form-new>
-		<select-source @getSource="getSource" ref="selectSource" v-else></select-source>
+		<select-source
+			@getSource="getSource"
+			ref="selectSource"
+			v-else
+		></select-source>
 	</div>
 </template>
 <script>
-	import selectSource from './selectSource'
-	import { RadioGroup, Radio } from 'view-design'
-	import esFormNew from '../es-form-new'
+import selectSource from './selectSource'
+import { RadioGroup, Radio } from 'view-design'
+import esFormNew from '../es-form-new'
 
-	export default {
-		props: {
-			lastQuery: {
-				type: Object,
-				default: function () {
-					return {}
-				}
-			}
+export default {
+	props: {
+		lastQuery: {
+			type: Object,
+			default: function () {
+				return {}
+			},
 		},
-		data () {
-			return {
-				dataType: '0',
-				// 表单配置
-				selectObj: {
-					showMessage: true,
-					autocomplete: 'on',
-					columns: 1,
-					templetDetailList: [
-						{
-							type: 2,
-							name: '项目',
-							enName: 'projectId',
-							placeholder: '请选择',
-							addEdit: true,
-							modifyEdit: true,
-							colspan: 1,
-							dataSourceList: [],
-							required: true,
-							onOpenChange: (value) => {
-								if (value) {
-									this.selectObj.templetDetailList[0].dataSourceList = []
-									this.getProList()
-								}
+	},
+	data() {
+		return {
+			dataType: '0',
+			// 表单配置
+			selectObj: {
+				showMessage: true,
+				autocomplete: 'on',
+				columns: 1,
+				templetDetailList: [
+					{
+						type: 2,
+						name: '项目',
+						enName: 'projectId',
+						placeholder: '请选择',
+						addEdit: true,
+						modifyEdit: true,
+						colspan: 1,
+						dataSourceList: [],
+						required: true,
+						onOpenChange: value => {
+							if (value) {
+								this.selectObj.templetDetailList[0].dataSourceList = []
+								this.getProList()
 							}
 						},
-						{
-							type: 2,
-							name: '查询名称',
-							enName: 'dataAnalyseId',
-							placeholder: '请选择',
-							addEdit: true,
-							modifyEdit: true,
-							colspan: 1,
-							dataSourceList: [],
-							required: true,
-							onOpenChange: (value) => {
-								if (value) {
-									this.selectObj.templetDetailList[1].dataSourceList = []
-									this.getQueryName(this.selectObjModel.projectId)
-								}
+					},
+					{
+						type: 2,
+						name: '查询名称',
+						enName: 'dataAnalyseId',
+						placeholder: '请选择',
+						addEdit: true,
+						modifyEdit: true,
+						colspan: 1,
+						dataSourceList: [],
+						required: true,
+						onOpenChange: value => {
+							if (value) {
+								this.selectObj.templetDetailList[1].dataSourceList = []
+								this.getQueryName(this.selectObjModel.projectId)
 							}
-						}
-					]
-				},
-				chartType: 0,
-				selectObjModel: {
-					projectId: '',
-					dataAnalyseId: ''
-				}
-			}
-		},
-		components: { selectSource, RadioGroup, Radio, esFormNew },
-		methods: {
-			// 获取查询项目列表
-			getProList () {
-				this.$api.dataWarehouse.getProList().then((data) => {
-					const list = []
-					data.map((item) => {
-						list.push({
-							value: item.id.toString(),
-							label: item.name
-						})
-					})
-					this.selectObj.templetDetailList[0].dataSourceList = list
-				})
+						},
+					},
+				],
 			},
-			// 获取查询名称列表
-			getQueryName (projectId) {
-				if (!projectId) {
-					this.$Message.warning('请先选择项目')
-					return
-				}
-				this.selectObj.templetDetailList[1].dataSourceList = []
-				this.$api.dataWarehouse.getAnalyseList({ projectId: projectId }).then((data) => {
+			chartType: 0,
+			selectObjModel: {
+				projectId: '',
+				dataAnalyseId: '',
+			},
+		}
+	},
+	components: { selectSource, RadioGroup, Radio, esFormNew },
+	methods: {
+		// 获取查询项目列表
+		getProList() {
+			this.$api.dataWarehouse.getProList().then(data => {
+				const list = []
+				data.map(item => {
+					list.push({
+						value: item.id.toString(),
+						label: item.name,
+					})
+				})
+				this.selectObj.templetDetailList[0].dataSourceList = list
+			})
+		},
+		// 获取查询名称列表
+		getQueryName(projectId) {
+			if (!projectId) {
+				this.$Message.warning('请先选择项目')
+				return
+			}
+			this.selectObj.templetDetailList[1].dataSourceList = []
+			this.$api.dataWarehouse
+				.getAnalyseList({ projectId: projectId })
+				.then(data => {
 					const arr = []
 					if (data.length > 0) {
-						data.map((item) => {
+						data.map(item => {
 							arr.push({
 								value: item.id.toString(),
-								label: item.name
+								label: item.name,
 							})
 						})
 						this.selectObj.templetDetailList[1].dataSourceList = arr
@@ -120,55 +126,55 @@
 						this.$Message.info('该项目下无结果')
 					}
 				})
-			},
-			getSource (data) {
-				this.$emit('getQueryCond', data)
-			}
 		},
-		watch: {
-			'selectObjModel.projectId': {
-				handler (value) {
-					if (value) {
-						this.getQueryName(value)
-					}
+		getSource(data) {
+			this.$emit('getQueryCond', data)
+		},
+	},
+	watch: {
+		'selectObjModel.projectId': {
+			handler(value) {
+				if (value) {
+					this.getQueryName(value)
 				}
 			},
-			selectObjModel: {
-				deep: true,
-				handler (obj) {
-					this.$set(obj, 'dataType', 0)
-					this.$emit('getQueryCond', obj)
+		},
+		selectObjModel: {
+			deep: true,
+			handler(obj) {
+				this.$set(obj, 'dataType', 0)
+				this.$emit('getQueryCond', obj)
+			},
+		},
+		dataType: {
+			deep: true,
+			immediate: true,
+			handler(type) {
+				if (type === '0') {
+					const { projectId, dataAnalyseId } = this.lastQuery
+					this.getProList()
+					this.selectObjModel.projectId = projectId
+					this.selectObjModel.dataAnalyseId = dataAnalyseId
+				} else {
+					this.$nextTick(() => {
+						this.$refs.selectSource.reShow(this.lastQuery)
+					})
 				}
 			},
-			dataType: {
-				deep: true,
-				immediate: true,
-				handler (type) {
-					if (type === '0') {
-						const { projectId, dataAnalyseId } = this.lastQuery
-						this.getProList()
-						this.selectObjModel.projectId = projectId
-						this.selectObjModel.dataAnalyseId = dataAnalyseId
-					} else {
-						this.$nextTick(() => {
-							this.$refs.selectSource.reShow(this.lastQuery)
-						})
-					}
-				}
-			}
-		}
-	}
+		},
+	},
+}
 </script>
 <style lang="scss" scoped>
-	.source {
-		padding: 10px 0 10px 5px;
+.source {
+	padding: 10px 0 10px 5px;
 
-		label {
-			margin-right: 8px;
-		}
+	label {
+		margin-right: 8px;
 	}
+}
 
-	.select-query {
-		width: 100%;
-	}
+.select-query {
+	width: 100%;
+}
 </style>

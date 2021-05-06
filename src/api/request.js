@@ -5,7 +5,7 @@ const request = axios.create()
 export const requestNoBaseURL = axios.create()
 export const baseURL = '/node'
 export const headers = {
-	'Content-Type': 'application/json'
+	'Content-Type': 'application/json',
 }
 request.defaults.baseURL = baseURL
 request.defaults.timeout = 30000
@@ -16,7 +16,7 @@ request.interceptors.request.use(
 	},
 	function (error) {
 		return Promise.reject(error)
-	}
+	},
 )
 
 requestNoBaseURL.interceptors.request.use(
@@ -25,7 +25,7 @@ requestNoBaseURL.interceptors.request.use(
 	},
 	function (error) {
 		return Promise.reject(error)
-	}
+	},
 )
 
 /**
@@ -39,7 +39,7 @@ requestNoBaseURL.interceptors.request.use(
  */
 const errMessage = '网络异常，请重试'
 request.interceptors.response.use(
-	(response) => {
+	response => {
 		const { data } = response
 		if (data) {
 			if (data.success) {
@@ -64,11 +64,11 @@ request.interceptors.response.use(
 		Message.error(errMessage)
 		// eslint-disable-next-line prefer-promise-reject-errors
 		return Promise.reject(false)
-	}
+	},
 )
 
 requestNoBaseURL.interceptors.response.use(
-	(response) => {
+	response => {
 		const { data } = response
 		if (data) {
 			if (data.success) {
@@ -93,7 +93,7 @@ requestNoBaseURL.interceptors.response.use(
 		Message.error(errMessage)
 		// eslint-disable-next-line prefer-promise-reject-errors
 		return Promise.reject(false)
-	}
+	},
 )
 
 export default request

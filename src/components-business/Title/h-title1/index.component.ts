@@ -1,0 +1,42 @@
+export const customConfig = [
+	{
+		prop: 'title',
+		label: '标题',
+		type: 'func-input',
+	},
+	{
+		prop: 'backgrounds',
+		label: '组',
+		type: 'func-group',
+		children: [
+			{
+				prop: 'background',
+				label: '动画',
+				type: 'func-video',
+			},
+		],
+	},
+]
+export const value = {
+	api: {
+		data: JSON.stringify({ title: '标题' }),
+	},
+	layout: {
+		size: {
+			width: 480,
+			height: 43,
+		},
+		position: {
+			value: 'relative',
+		},
+	},
+	config: {
+		title: 'aaa',
+		backgrounds: [
+			{
+				background: '/static/icons/s-progress1-1.svg',
+				title: '开户(户)',
+			},
+		],
+	},
+}

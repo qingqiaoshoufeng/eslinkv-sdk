@@ -1,82 +1,90 @@
-const commonConfigValue = () => Object.freeze({
-	widget: {
-		name: '',
-		id: Date.now(),
-		remark: '',
-		componentVersion: '',
-		locked: false,
-		hide: false
-	},
-	layout: {
-		size: {
-			width: 300,
-			height: 200,
-			unit: 'px'
+import { colorTheme } from './packages/config.default.js'
+
+const commonConfigValue = useColorTheme =>
+	Object.freeze({
+		widget: {
+			name: '',
+			id: Date.now(),
+			remark: '',
+			componentVersion: '',
+			locked: false,
+			hide: false,
 		},
-		position: {
-			value: 'absolute',
-			unit: 'px',
-			left: 0,
-			top: 0,
-			right: 0,
-			bottom: 0
+		layout: {
+			size: {
+				width: 300,
+				height: 200,
+				unit: 'px',
+			},
+			position: {
+				value: 'absolute',
+				unit: 'px',
+				left: 0,
+				top: 0,
+			},
+			zIndex: 10,
+			scale: 1,
 		},
-		zIndex: 10
-	},
-	config: {},
-	api: {
-		url: '',
-		method: 'GET',
-		params: '',
-		path: 'data',
-		data: '',
-		autoFetch: {
-			enable: false,
-			duration: 5000
-		},
-		check: {
-			enable: true,
-			key: 'status',
-			value: 200,
-			type: 'Number'
-		},
-		system: {
-			enable: false,
-			interface: 'api/impalaByQueryId',
+		config: useColorTheme ? { colorTheme } : {},
+		api: {
+			url: '',
 			method: 'GET',
+			params: '',
 			path: 'data',
-			params: {
-				chartCondition: '',
-				analyseCondition: '',
-				chartQueryType: '',
-				dataAnalyseId: '',
-				databaseId: '',
-				databaseType: '',
-				databaseName: '',
-				dataSourceId: '',
-				dataType: '',
-				executeSql: '',
-				projectId: '',
-				tableId: '',
-				tableName: ''
-			}
+			data: '',
+			autoFetch: {
+				enable: false,
+				duration: 5000,
+			},
+			system: {
+				enable: false,
+				interface: 'api/impalaByQueryId',
+				method: 'GET',
+				path: 'data',
+				params: {
+					chartCondition: '',
+					analyseCondition: '',
+					chartQueryType: '',
+					dataAnalyseId: '',
+					databaseId: '',
+					databaseType: '',
+					databaseName: '',
+					dataSourceId: '',
+					dataType: '',
+					executeSql: '',
+					projectId: '',
+					tableId: '',
+					tableName: '',
+				},
+			},
+			process: {
+				enable: false,
+				methodBody: '',
+			},
+			bind: {
+				enable: false,
+				refIds: [],
+			},
 		},
-		process: {
-			enable: false,
-			methodBody: ''
+		animation: {
+			transitionEnable: true,
+			enter: 'fadeIn',
+			delay: 0,
+			duration: 600,
 		},
-		bind: {
-			enable: false,
-			refIds: []
-		}
-	},
-	animation: {
-		transitionEnable: true,
-		enter: 'fadeIn',
-		// leave: 'fadeOut',
-		delay: 0,
-		duration: 600
-	}
-})
+		event: {
+			scene: [
+				// {
+				// 	id: '',
+				// 	type: '',
+				// 	animate: '',
+				// }
+			],
+			component: {
+				ids: [],
+				type: '',
+			},
+		},
+	})
 
 export default commonConfigValue

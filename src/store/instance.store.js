@@ -9,10 +9,10 @@ import { store } from './index'
 const state = Vue.observable({
 	kanboard: null,
 	createKanboard: null,
-	createComp: null
+	createComp: null,
 })
 const actions = {
-	setInstance (key, value) {
+	setInstance(key, value) {
 		state[key] = value
 	},
 	updateComponent: (id, config) => {
@@ -24,15 +24,15 @@ const actions = {
 			widgetConfig.data = JSON.stringify(config.data)
 		}
 		if (config.url) {
-widgetConfig.url = config.url
-}
+			widgetConfig.url = config.url
+		}
 		if (config.path) {
-widgetConfig.path = config.path
-}
+			widgetConfig.path = config.path
+		}
 		if (config.method) {
-widgetConfig.method = config.method
-}
-	}
+			widgetConfig.method = config.method
+		}
+	},
 }
 const instance = store('instance', state, actions)
 

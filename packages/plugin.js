@@ -1,0 +1,58 @@
+import '../src/api'
+import '../src/icons'
+import 'view-design/dist/styles/iview.css'
+import '../src/scss/conf.scss'
+import '../src/scss/reset.scss'
+import '../src/scss/index.scss'
+import '../src/scss/animate.min.scss'
+import '../src/scss/animate-widget.min.scss'
+import '../src/scss/font.scss'
+import {
+	mouseup,
+	keydown,
+	mousemove,
+	keyup,
+	fullscreenchange,
+} from '../src/events/index.js'
+import Vue from 'vue'
+import Hljs from 'highlight.js'
+import 'highlight.js/styles/tomorrow-night.css'
+
+const Highlight = {
+	install: function (Vue) {
+		Vue.directive('highlight', {
+			deep: true,
+			inserted: function (el) {
+				const blocks = el.querySelectorAll('pre code')
+				for (let i = 0; i < blocks.length; i++) {
+					Hljs.highlightBlock(blocks[i])
+				}
+			},
+			componentUpdated: function (el) {
+				const blocks = el.querySelectorAll('pre code')
+				for (let i = 0; i < blocks.length; i++) {
+					Hljs.highlightBlock(blocks[i])
+				}
+			},
+		})
+	},
+}
+
+const toThousand = value => {
+	if (!value) {
+		if (typeof value === 'number') return 0
+		return ''
+	} else {
+		return Number(Math.ceil(value)).toLocaleString()
+	}
+}
+const filters = { toThousand }
+
+Vue.use(Highlight)
+Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
+
+document.documentElement.addEventListener('mouseup', mouseup)
+document.documentElement.addEventListener('keydown', keydown)
+document.documentElement.addEventListener('mousemove', mousemove)
+document.documentElement.addEventListener('keyup', keyup)
+document.addEventListener('fullscreenchange', fullscreenchange)

@@ -1,5 +1,0 @@
-import '../src/api'
-import '../src/icons'
-import 'view-design/dist/styles/iview.css'
-import '../src/scss/reset.scss'
-import '../src/scss/index.scss'

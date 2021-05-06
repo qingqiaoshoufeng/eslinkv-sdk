@@ -1,65 +1,47 @@
 import axios from 'axios'
-import jsonic from 'jsonic'
 
 const parseParams = (params = {}) => {
-    if (typeof params === 'string') {
-        try {
-            return jsonic(params.trim())
-        } catch (e) {
-        }
-    }
-    return params
+	if (typeof params === 'string' && params !== '') {
+		try {
+			return JSON.parse(params)
+		} catch (e) {
+			console.warn(e)
+		}
+	}
+	return params
 }
 
 const fetcher = axios.create({
-    withCredentials: false
+	withCredentials: false,
 })
 
 const filterFalsyKey = input => {
-    if (!input) return
-    const isArray = Array.isArray(input)
-    const output = !isArray ? {} : []
-    Object.keys(input).filter(key => {
-        const value = input[key]
-        return value !== undefined && value !== null && value !== ''
-    }).forEach(key => {
-        !isArray ? (output[key] = input[key]) : output.push(input[key])
-    })
-    return output
+	if (!input) return
+	const isArray = Array.isArray(input)
+	const output = !isArray ? {} : []
+	Object.keys(input)
+		.filter(key => {
+			const value = input[key]
+			return value !== undefined && value !== null && value !== ''
+		})
+		.forEach(key => {
+			!isArray ? (output[key] = input[key]) : output.push(input[key])
+		})
+	return output
 }
 
 export default {
-	data () {
+	data() {
 		return {
 			querying: false,
 			queryFailed: false,
 			queryTimer: null,
 			fetchTimer: null,
-			lastFetchDoneTime: null
+			lastFetchDoneTime: null,
 		}
 	},
 	methods: {
-		handleResponse (response, { path, check, process, url }) {
-			// if (response?.data?.returnCode !== '0000') return
-			if (check && check.enable) {
-				const { key = 'code', value = 0, type = 'Number' } = check
-				let checkValue = value
-				if (type === 'Number') checkValue = value - 0
-				// if (type === 'Boolean' && response[key] || response[key] === checkValue) {
-				this.parseQueryResult(response, { path, process })
-				// } else {
-				// 	console.warn(`${this.config.widget.name || this.$options.label}数据检查失败\n接口: ${url}\n规则：${JSON.stringify({
-				// 		key,
-				// 		value,
-				// 		type
-				// 	})}`)
-				// 	this.queryFailed = true
-				// }
-			} else {
-				this.parseQueryResult(response, { path, process })
-			}
-		},
-		outerQuery (api) {
+		outerQuery(api) {
 			const { url, method } = api
 			if (!url) return
 			this.querying = true
@@ -69,56 +51,58 @@ export default {
 			fetcher({
 				method,
 				url,
-				[method.toUpperCase() === 'GET' ? 'params' : 'data']: params
-			}).then(response => {
-				this.handleResponse(response, api)
-			}).catch(e => {
-				console.warn(`${this.$options.label}接口请求失败`, e)
-				this.queryFailed = true
-			}).finally(() => {
-				this.querying = false
-				this.lastFetchDoneTime = Date.now()
+				[method.toUpperCase() === 'GET' ? 'params' : 'data']: params,
 			})
+				.then(response => {
+					this.parseQueryResult(response, api)
+				})
+				.catch(e => {
+					console.warn(`${this.$options.label}接口请求失败`, e)
+					this.queryFailed = true
+				})
+				.finally(() => {
+					this.querying = false
+					this.lastFetchDoneTime = Date.now()
+				})
 		},
-		innerQuery (api) {
-			let { interface: innerUrl, params: conditions, path, check, method } = api.system
+		innerQuery(api) {
+			let {
+				interface: innerUrl,
+				params: conditions,
+				path = 'data',
+				method = 'POST',
+			} = api.system
 			if (!innerUrl) return
-
 			// 解析 params
 			let params = { ...parseParams(api.params) }
-
-            if (typeof params === 'object') {
-                Object.keys(params).forEach(key => {
-                    const value = params[key]
-                    params[key] = typeof value !== 'object' ? value : JSON.stringify(value)
-                })
-                Object.assign(params, filterFalsyKey(conditions))
-            } else {
-                params = filterFalsyKey(conditions)
-            }
-            if (!Object.keys(params).length) return
-
-            this.querying = true
-            this.queryFailed = false
-
-			if (!path) path = 'data'
-			if (!check) {
-check = {
-				enable: true,
-				key: 'responseCode',
-				value: '100000',
-				type: 'String'
+			if (typeof params === 'object') {
+				Object.keys(params).forEach(key => {
+					const value = params[key]
+					params[key] =
+						typeof value !== 'object'
+							? value
+							: JSON.stringify(value)
+				})
+				Object.assign(params, filterFalsyKey(conditions))
+			} else {
+				params = filterFalsyKey(conditions)
 			}
-}
-			if (!method) method = 'POST'
-			this.$api.dataWarehouse.databaseQuery(params, method, innerUrl).then(response => {
-				const process = api.process
-				this.handleResponse(response, { path, check, process, url: innerUrl })
-				this.querying = false
-				this.lastFetchDoneTime = Date.now()
-			})
+			if (!Object.keys(params).length) return
+			this.querying = true
+			this.queryFailed = false
+			this.$api.dataWarehouse
+				.databaseQuery(params, method, innerUrl)
+				.then(response => {
+					const process = api.process
+					this.parseQueryResult(response, {
+						path,
+						process,
+					})
+					this.querying = false
+					this.lastFetchDoneTime = Date.now()
+				})
 		},
-		dispatchQuery (api) {
+		dispatchQuery(api) {
 			const system = api.system
 			if (!system || !system.enable) {
 				// 调用外部接口
@@ -128,7 +112,7 @@ check = {
 			// 调用数仓接口
 			this.innerQuery(api)
 		},
-		handleApiChange () {
+		handleApiChange() {
 			const api = this.config.api
 			if (!api) return
 			if (this.queryTimer) clearTimeout(this.queryTimer)
@@ -137,7 +121,7 @@ check = {
 				this.queryTimer = null
 			}, 400)
 		},
-		startAutoFetch () {
+		startAutoFetch() {
 			this.stopAutoFetch()
 			if (this.queryTimer) {
 				this.fetchTimer = setTimeout(() => {
@@ -150,58 +134,59 @@ check = {
 			if (!this.lastFetchDoneTime) this.lastFetchDoneTime = Date.now()
 			this.fetchTimer = setInterval(() => {
 				if (this.querying) return
-				if (Date.now() - this.lastFetchDoneTime >= api.autoFetch.duration) this.dispatchQuery(api)
+				if (
+					Date.now() - this.lastFetchDoneTime >=
+					api.autoFetch.duration
+				)
+					this.dispatchQuery(api)
 			}, 100)
 		},
-		stopAutoFetch () {
+		stopAutoFetch() {
 			this.fetchTimer && clearInterval(this.fetchTimer)
-		}
+		},
 	},
 	computed: {
-		apiChangeWatcher () {
-			const { url, params, method, path, check = {}, process = {}, system = {} } = this.config.api || {}
-			const { enable: checkEnable, key, value, type } = check
+		apiChangeWatcher() {
+			const { url, params, method, path, process = {}, system = {} } =
+				this.config.api || {}
 			const { enable: processEnable, methodBody } = process
-			const { enable: systemEnable, interface: innerUrl, path: innerPath, check: innerCheck = {}, params: systemParams, method: innerMethod } = system
-			const { enable: innerCheckEnable, key: innerCheckKey, value: innerCheckValue, type: innerCheckType } = innerCheck
+			const {
+				enable: systemEnable,
+				interface: innerUrl,
+				path: innerPath,
+				params: systemParams,
+				method: innerMethod,
+			} = system
 			return {
 				url,
-params,
-method,
-path,
-				checkEnable,
-key,
-value,
-type,
+				params,
+				method,
+				path,
 				processEnable,
-methodBody,
+				methodBody,
 				systemEnable,
-innerUrl,
-systemParams,
+				innerUrl,
+				systemParams,
 				innerPath,
-innerMethod,
-innerCheckEnable,
-				innerCheckKey,
-innerCheckValue,
-innerCheckType
+				innerMethod,
 			}
 		},
-		autoFetchApi () {
+		autoFetchApi() {
 			const api = this.config.api
 			return api && api.autoFetch && api.autoFetch.enable
-		}
+		},
 	},
 	watch: {
-		querying (value) {
+		querying(value) {
 			this.$emit(value ? 'query-start' : 'query-end')
 		},
-		queryFailed (value) {
+		queryFailed(value) {
 			value && this.$emit('query-failed')
 		},
 		apiChangeWatcher: {
 			handler: 'handleApiChange',
 			immediate: true,
-			deep: true
+			deep: true,
 		},
 		autoFetchApi: {
 			handler: function (value) {
@@ -211,11 +196,11 @@ innerCheckType
 					this.stopAutoFetch()
 				}
 			},
-			immediate: true
-		}
+			immediate: true,
+		},
 	},
-	beforeDestroy () {
+	beforeDestroy() {
 		this.fetchTimer && clearTimeout(this.fetchTimer)
 		this.queryTimer && clearTimeout(this.queryTimer)
-	}
+	},
 }
