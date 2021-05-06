@@ -2,7 +2,8 @@ export const customConfig = [
 	{
 		prop: 'title',
 		label: '标题',
-		type: 'func-input',
+		type: 'func-select',
+		options: ['aaaaa', 'hhhhhhh']
 	},
 	{
 		prop: 'backgrounds',
