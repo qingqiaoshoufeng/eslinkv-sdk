@@ -3,7 +3,7 @@
 	.fn-flex.flex-column.d-widget-list-card.pointer(
 		draggable="true",
 		@dragstart="dragstart($event)")
-		h2.ellipsis {{ componentTitle }}
+		h2.ellipsis(:title="componentTitle") {{ componentTitle }}
 		.d-widget-list-img.fn-flex(
 			:style="{ backgroundImage: `url(${componentAvatar})` }")
 </template>
