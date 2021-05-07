@@ -25,7 +25,7 @@ function getInitPanelConfig() {
 }
 
 const state = Vue.observable({
-	version: '1.0.3',
+	version: '1.1.0',
 	widgetAdded: {},
 	screenAvatar: '',
 	screenName: '未命名',
