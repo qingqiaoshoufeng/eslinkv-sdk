@@ -132,8 +132,12 @@ export default {
 			this.handleActivated(this.platform.widgetAdded[item.id])
 			const rightMenu = document.getElementById('right-menu')
 			rightMenu.classList.add('active')
+			if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
+				rightMenu.style.top = e.clientY - rightMenu.scrollHeight + 'px'
+			} else {
+				rightMenu.style.top = e.clientY + 'px'
+			}
 			rightMenu.style.left = e.clientX + 'px'
-			rightMenu.style.top = e.clientY + 'px'
 		},
 		drop(e) {
 			this.isDragIn = false
