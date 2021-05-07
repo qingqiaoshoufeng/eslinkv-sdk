@@ -4,6 +4,27 @@ import { Message } from 'view-design'
 import copy from 'fast-copy'
 
 /**
+ * @description 按照引用路径，查找末端数据
+ */
+export const usePath = (path, data) => {
+	const keys = path ? path.split('.') : []
+	while (keys.length) {
+		const key = keys.shift()
+		if (!key) {
+			Message.warning(`数据源查找路径 ${path} 无效！`)
+			break
+		}
+		data = data[key]
+		if (data === undefined) {
+			Message.warning(
+				`数据源查找路径 ${path}，在 ${key} 处未引用到有效数据！`,
+			)
+			break
+		}
+	}
+	return data
+}
+/**
  * @description 合并对象 生成一个新的对象,用前面的覆盖后面的
  */
 export const configMerge = function (from, to) {

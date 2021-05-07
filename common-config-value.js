@@ -80,10 +80,9 @@ const commonConfigValue = useColorTheme =>
 				// 	animate: '',
 				// }
 			],
-			component: {
-				ids: [],
-				type: '',
-			},
+			component: [
+				// { ids: [], type: '', source:'', target:'' }
+			],
 		},
 	})
 

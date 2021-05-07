@@ -92,24 +92,27 @@
 		.d-manage-modal-control
 			label 组件关联
 			.d-manage-modal-control-right
-				i-switch(v-model="item.config.api.bind.enable" style="margin-right: 10px")
+				i-switch(v-model="item.config.api.bind.enable", style="margin-right: 10px")
 				i-select(
-					v-if="item.config.api.bind.enable"
+					v-if="item.config.api.bind.enable",
 					v-model="item.config.api.bind.refIds",
 					filterable,
 					multiple,
 					:style="{ width: '100px' }")
 					i-option(:value="item.id", v-for="(item, key) in relateList", :key="key") {{ item.id }}
-		.d-manage-modal-control
+		.d-manage-modal-control(
+			v-for="(m, n) in item.config.event.component",
+			:key="n",
+			style="align-items: baseline")
 			label 组件事件
 			.d-manage-modal-control-right
 				i-select(
 					clearable,
-					v-model="item.config.event.component.type",
+					v-model="m.type",
 					:style="{ marginRight: '10px', width: '100px' }")
 					i-option(value="update") 更新组件
 				i-select(
-					v-model="item.config.event.component.ids",
+					v-model="m.ids",
 					placeholder="选择组件",
 					multiple,
 					filterable,
@@ -118,9 +121,24 @@
 						:value="k",
 						:key="i",
 						v-for="(k, i) in Object.keys(platform.widgetAdded)") {{ platform.widgetAdded[k].config.widget.name }}
-		.d-manage-modal-control(v-for="(m, n) in item.config.event.scene" :key="n" style="align-items: baseline;")
+				i-input(v-model="m.source", placeholder="源地址路径" @on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",)
+				i-input(v-model="m.target", placeholder="目标地址路径" @on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",)
+				i-icon(
+					type="ios-trash-outline",
+					color="#fff",
+					size="20",
+					style="cursor: pointer",
+					@click="delComponentEvent(n)")
+		.add-scene(:style="{marginBottom:'10px'}")
+			i-button(@click="addComponentEvent", type="primary") 添加组件事件
+		.d-manage-modal-control(
+			v-for="(m, n) in item.config.event.scene",
+			:key="n",
+			style="align-items: baseline")
 			label 场景事件
-			.d-manage-modal-control-right(style="justify-content: space-between;")
+			.d-manage-modal-control-right(style="justify-content: space-between")
 				i-select(
 					clearable,
 					v-model="m.type",
@@ -142,10 +160,15 @@
 					placeholder="场景动画",
 					v-model="m.animate",
 					:style="{ width: '100px' }")
-					i-option(:value="k" v-for="(k, i) in animates" :key="i") {{ k }}
-				i-icon(type="ios-trash-outline" color="#fff" size="20" style="cursor: pointer;" @click="delSceneEvent(n)")
+					i-option(:value="k", v-for="(k, i) in animates", :key="i") {{ k }}
+				i-icon(
+					type="ios-trash-outline",
+					color="#fff",
+					size="20",
+					style="cursor: pointer",
+					@click="delSceneEvent(n)")
 		.add-scene
-			i-button(@click="addSceneEvent" type="primary") 添加场景事件
+			i-button(@click="addSceneEvent", type="primary") 添加场景事件
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -254,7 +277,17 @@ export default class FuncData extends func {
 			animate: '',
 		})
 	}
-
+	addComponentEvent() {
+		this.item.config.event.component.push({
+			ids: [],
+			type: '',
+			source: 'data',
+			target: '',
+		})
+	}
+	delComponentEvent(index) {
+		this.item.config.event.component.splice(index, 1)
+	}
 	delSceneEvent(index) {
 		this.item.config.event.scene.splice(index, 1)
 	}

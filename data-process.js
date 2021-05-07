@@ -1,4 +1,4 @@
-// todo 移除/改造
+import { usePath } from './src/utils'
 const buildWall = source => {
 	source = `with (wall) { ${source} }`
 	// eslint-disable-next-line no-new-func
@@ -35,27 +35,6 @@ export default {
 			}
 		},
 		/**
-		 * @description 按照引用路径，查找末端数据
-		 */
-		usePath(path, data) {
-			const keys = path ? path.split('.') : []
-			while (keys.length) {
-				const key = keys.shift()
-				if (!key) {
-					this.$Message.warning(`数据源查找路径 ${path} 无效！`)
-					break
-				}
-				data = data[key]
-				if (data === undefined) {
-					this.$Message.warning(
-						`数据源查找路径 ${path}，在 ${key} 处未引用到有效数据！`,
-					)
-					break
-				}
-			}
-			return data
-		},
-		/**
 		 * @description 数据加工
 		 */
 		useProcess(process = {}, data) {
@@ -77,7 +56,7 @@ export default {
 			if (!response.data || typeof response.data !== 'object') {
 				return
 			}
-			response = this.usePath(path, response)
+			response = usePath(path, response)
 			response = this.useProcess(process, response)
 			this.data = response
 		},

@@ -4,7 +4,7 @@ import dataProcess from './data-process.js'
 import globalConfigValue from './common-config-value'
 import platform from './src/store/platform.store'
 import instance from './src/store/instance.store'
-import { configMerge } from './src/utils'
+import { configMerge, usePath } from './src/utils'
 
 const mx: any = {
 	mixins: [fetch, dataProcess],
@@ -61,18 +61,20 @@ const mx: any = {
 					default:
 				}
 			}
-			switch (this.configValue.event.component.type) {
-				case 'update':
+			for (const item of this.configValue.event.component) {
+				if (item.type === 'update') {
 					const coms = Object.values(
 						platform.state.widgetAdded,
-					).filter((v: any) =>
-						this.configValue.event.component.ids.includes(v.id),
-					)
+					).filter((v: any) => item.ids.includes(v.id))
+					const data = usePath(item.source.trim(), val)
 					coms.forEach((v: any) => {
-						instance.actions.updateComponent(v.id, val)
+						instance.actions.updateComponentTarget(
+							v.id,
+							item.target,
+							data,
+						)
 					})
-					break
-				default:
+				}
 			}
 		},
 		/**

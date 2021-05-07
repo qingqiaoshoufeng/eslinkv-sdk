@@ -15,6 +15,11 @@ const actions = {
 	setInstance(key, value) {
 		state[key] = value
 	},
+	updateComponentTarget: (id, target, value) => {
+		eval(
+			`eslinkV.$store.platform.state.widgetAdded['${id}'].${target}=value`,
+		)
+	},
 	updateComponent: (id, config) => {
 		const widgetConfig = platform.state.widgetAdded[id].config.api
 		if (config.params) {
