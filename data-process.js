@@ -5,7 +5,7 @@ const buildWall = source => {
 	return new Function('wall', source)
 }
 
-const createSandbox = source => {
+export const createSandbox = source => {
 	return function () {
 		return buildWall(source).call({ ...arguments[0] }, { ...arguments[0] })
 	}

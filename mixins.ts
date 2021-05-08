@@ -4,6 +4,7 @@ import dataProcess from './data-process.js'
 import globalConfigValue from './common-config-value'
 import platform from './src/store/platform.store'
 import instance from './src/store/instance.store'
+import { createSandbox } from './data-process'
 import { configMerge, usePath } from './src/utils'
 
 const mx: any = {
@@ -66,14 +67,26 @@ const mx: any = {
 					const coms = Object.values(
 						platform.state.widgetAdded,
 					).filter((v: any) => item.ids.includes(v.id))
-					const data = usePath(item.source.trim(), val)
-					coms.forEach((v: any) => {
-						instance.actions.updateComponentTarget(
-							v.id,
-							item.target,
-							data,
-						)
-					})
+					let data = usePath(item.source.trim(), val)
+					const { enable, methodBody } = item.process
+					if (enable && methodBody.trim()) {
+						try {
+							const processor = createSandbox(methodBody)
+							data = processor({ data })
+							coms.forEach((v: any) => {
+								instance.actions.updateComponentTarget(
+									v.id,
+									item.target,
+									data,
+								)
+							})
+						} catch (err) {
+							console.warn('数据加工函数语法错误：', err.message)
+							this.$Message.warning(
+								'数据加工函数语法错误：' + err.message,
+							)
+						}
+					}
 				}
 			}
 		},

@@ -131,6 +131,13 @@
 					size="20",
 					style="cursor: pointer",
 					@click="delComponentEvent(n)")
+				d-code(
+					label="数据加工",
+					:code="m.process.methodBody",
+					:show="m.process.enable",
+					@update:code="value => (m.process.methodBody = value)")
+					template(slot="right")
+						i-switch(v-model="m.process.enable")
 		.add-scene(:style="{marginBottom:'10px'}")
 			i-button(@click="addComponentEvent", type="primary") 添加组件事件
 		.d-manage-modal-control(
@@ -283,6 +290,10 @@ export default class FuncData extends func {
 			type: '',
 			source: 'data',
 			target: '',
+			process: {
+				enable: false,
+				methodBody: '',
+			},
 		})
 	}
 	delComponentEvent(index) {
