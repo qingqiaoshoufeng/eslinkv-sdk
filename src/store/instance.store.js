@@ -16,9 +16,23 @@ const actions = {
 		state[key] = value
 	},
 	updateComponentTarget: (id, target, value) => {
-		eval(
-			`eslinkV.$store.platform.state.widgetAdded['${id}'].${target}=value`,
-		)
+		switch (target) {
+			case 'config.api.params':
+				platform.state.widgetAdded[id].config.api.params = {
+					...platform.state.widgetAdded[id].config.api.params,
+					...value,
+				}
+				break
+			case 'config.api.data':
+				platform.state.widgetAdded[id].config.api.data = value
+				break
+			case 'config.config':
+				platform.state.widgetAdded[id].config.config = {
+					...platform.state.widgetAdded[id].config.config,
+					...value,
+				}
+				break
+		}
 	},
 	updateComponent: (id, config) => {
 		const widgetConfig = platform.state.widgetAdded[id].config.api

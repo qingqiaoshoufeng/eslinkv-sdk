@@ -86,6 +86,14 @@ const mx: any = {
 								'数据加工函数语法错误：' + err.message,
 							)
 						}
+					} else {
+						coms.forEach((v: any) => {
+							instance.actions.updateComponentTarget(
+								v.id,
+								item.target,
+								data,
+							)
+						})
 					}
 				}
 			}

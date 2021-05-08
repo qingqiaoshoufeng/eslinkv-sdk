@@ -100,82 +100,91 @@
 					multiple,
 					:style="{ width: '100px' }")
 					i-option(:value="item.id", v-for="(item, key) in relateList", :key="key") {{ item.id }}
-		.d-manage-modal-control(
-			v-for="(m, n) in item.config.event.component",
-			:key="n",
-			style="align-items: baseline")
-			label 组件事件
+		.d-manage-modal-control
+			label 事件配置
 			.d-manage-modal-control-right
-				i-select(
-					clearable,
-					v-model="m.type",
-					:style="{ marginRight: '10px', width: '100px' }")
-					i-option(value="update") 更新组件
-				i-select(
-					v-model="m.ids",
-					placeholder="选择组件",
-					multiple,
-					filterable,
-					:style="{ width: '100px' }")
-					i-option(
-						:value="k",
-						:key="i",
-						v-for="(k, i) in Object.keys(platform.widgetAdded)") {{ platform.widgetAdded[k].config.widget.name }}
-				i-input(v-model="m.source", placeholder="源地址路径" @on-focus="event.inputFocus = true",
-					@on-blur="event.inputFocus = false",)
-				i-input(v-model="m.target", placeholder="目标地址路径" @on-focus="event.inputFocus = true",
-					@on-blur="event.inputFocus = false",)
-				i-icon(
-					type="ios-trash-outline",
-					color="#fff",
-					size="20",
-					style="cursor: pointer",
-					@click="delComponentEvent(n)")
-				d-code(
-					label="数据加工",
-					:code="m.process.methodBody",
-					:show="m.process.enable",
-					@update:code="value => (m.process.methodBody = value)")
-					template(slot="right")
-						i-switch(v-model="m.process.enable")
-		.add-scene(:style="{marginBottom:'10px'}")
-			i-button(@click="addComponentEvent", type="primary") 添加组件事件
-		.d-manage-modal-control(
-			v-for="(m, n) in item.config.event.scene",
-			:key="n",
-			style="align-items: baseline")
-			label 场景事件
-			.d-manage-modal-control-right(style="justify-content: space-between")
-				i-select(
-					clearable,
-					v-model="m.type",
-					placeholder="事件类型",
-					:style="{ marginRight: '10px', width: '100px' }")
-					i-option(value="openScene") 打开场景
-					i-option(value="closeScene") 关闭场景
-					i-option(value="changeScene") 切换场景
-				i-select(
-					v-model="m.id",
-					filterable,
-					placeholder="目标场景",
-					:style="{ width: '100px' }")
-					i-option(:value="0") 主场景
-					i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
-				i-select(
-					clearable,
-					filterable,
-					placeholder="场景动画",
-					v-model="m.animate",
-					:style="{ width: '100px' }")
-					i-option(:value="k", v-for="(k, i) in animates", :key="i") {{ k }}
-				i-icon(
-					type="ios-trash-outline",
-					color="#fff",
-					size="20",
-					style="cursor: pointer",
-					@click="delSceneEvent(n)")
-		.add-scene
-			i-button(@click="addSceneEvent", type="primary") 添加场景事件
+				i-button(type="primary", @click="eventModal = true") 配置事件
+		i-modal(v-model="eventModal", title="事件配置", :footer-hide="true")
+			.d-manage-modal-control(
+				v-for="(m, n) in item.config.event.component",
+				:key="n",
+				style="align-items: baseline")
+				label 组件事件
+				.d-manage-modal-control-right.d-data-modal-control-right.fn-flex.flex-column
+					.fn-flex.fn-flex(:style="{ flex: 1, width: '100%' }")
+						i-select(
+							clearable,
+							v-model="m.type",
+							placeholder="事件类型",
+							:style="{ marginRight: '10px' }")
+							i-option(value="update") 更新组件
+						i-select(v-model="m.ids", placeholder="选择组件", multiple, filterable)
+							i-option(
+								:value="k",
+								:key="i",
+								v-for="(k, i) in Object.keys(platform.widgetAdded)") {{ platform.widgetAdded[k].config.widget.name }}
+					.fn-flex.fn-flex(:style="{ flex: 1, width: '100%' }")
+						i-input(
+							v-model="m.source",
+							placeholder="源地址路径",
+							@on-focus="event.inputFocus = true",
+							@on-blur="event.inputFocus = false",
+							:style="{ marginRight: '10px' }")
+						i-select(clearable, v-model="m.target", placeholder="目标地址路径")
+							i-option(value="config.api.params") 更新请求参数
+							i-option(value="config.api.data") 更新响应数据
+							i-option(value="config.config") 更新自定义数据
+					d-code(
+						:style="{ width: '100%' }",
+						label="更新加工",
+						:code="m.process.methodBody",
+						:show="m.process.enable",
+						@update:code="value => (m.process.methodBody = value)")
+						template(slot="right")
+							i-switch(v-model="m.process.enable")
+					i-icon.pointer(
+						type="ios-trash-outline",
+						color="#fff",
+						size="20",
+						@click="delComponentEvent(n)")
+			.add-scene(:style="{ marginBottom: '10px' }")
+				i-button(@click="addComponentEvent", type="primary") 添加组件事件
+			.d-manage-modal-control(
+				v-for="(m, n) in item.config.event.scene",
+				:key="n",
+				style="align-items: baseline")
+				label 场景事件
+				.d-manage-modal-control-right.d-data-modal-control-right.fn-flex.flex-column(
+					style="justify-content: space-between")
+					.fn-flex.flex-row(:style="{ flex: 1, width: '100%' }")
+						i-select(
+							clearable,
+							v-model="m.type",
+							placeholder="事件类型",
+							:style="{ marginRight: '10px' }")
+							i-option(value="openScene") 打开场景
+							i-option(value="closeScene") 关闭场景
+							i-option(value="changeScene") 切换场景
+						i-select(
+							v-model="m.id",
+							filterable,
+							placeholder="目标场景",
+							:style="{ marginRight: '10px' }")
+							i-option(:value="0") 主场景
+							i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
+						i-select(
+							clearable,
+							filterable,
+							placeholder="场景过度动画",
+							v-model="m.animate")
+							i-option(:value="k", v-for="(k, i) in animates", :key="i") {{ k }}
+					i-icon.pointer(
+						type="ios-trash-outline",
+						color="#fff",
+						size="20",
+						@click="delSceneEvent(n)")
+			.add-scene
+				i-button(@click="addSceneEvent", type="primary") 添加场景事件
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -188,6 +197,7 @@ import { animates } from './config.js'
 @Component({ components: { databaseConfig, dCode } })
 export default class FuncData extends func {
 	animates = animates
+	eventModal = false
 	// START_PROD
 	showDatabaseConfigModal = false
 
@@ -309,5 +319,10 @@ export default class FuncData extends func {
 	padding-right: 10px;
 	display: flex;
 	justify-content: flex-end;
+}
+.d-data-modal-control-right {
+	width: 400px;
+	text-align: left;
+	margin-right: 0;
 }
 </style>
