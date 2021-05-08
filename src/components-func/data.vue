@@ -298,7 +298,7 @@ export default class FuncData extends func {
 		this.item.config.event.component.push({
 			ids: [],
 			type: '',
-			source: 'data',
+			source: '',
 			target: '',
 			process: {
 				enable: false,
