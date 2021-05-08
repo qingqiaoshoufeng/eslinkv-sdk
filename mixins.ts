@@ -51,6 +51,7 @@ const mx: any = {
 				const animate = item.animate
 				switch (item.type) {
 					case 'openScene':
+						scene.state.activeWidgetId = this.config.widget.id
 						scene.actions.createSceneInstance(sceneId, animate)
 						break
 					case 'closeScene':
@@ -206,6 +207,11 @@ const mx: any = {
 			}
 			return `d-${now}`
 		},
+		isSceneActive () {
+			if (!this.config) return false
+			if (!this.config.event.scene.length) return false
+			return scene.state.activeWidgetId === this.config.widget.id && this.config.event.scene.some(v => v.id === scene.state.index)
+		}
 	},
 	watch: {
 		configReady(value) {
