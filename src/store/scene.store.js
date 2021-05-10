@@ -151,7 +151,8 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 				.getElementsByClassName('detail-container')[0]
 				.appendChild(comp.$el)
 			document.getElementById(id).parentNode.style.transform = transform
-			document.getElementById(id).classList.add(showAnimationStyle)
+			if (showAnimationStyle)
+				document.getElementById(id).classList.add(showAnimationStyle)
 		}
 	},
 }
