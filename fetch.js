@@ -188,6 +188,10 @@ export default {
 			immediate: true,
 			deep: true,
 		},
+		'config.api.params': {
+			handler: 'handleApiChange',
+			deep: true,
+		},
 		autoFetchApi: {
 			handler: function (value) {
 				if (value) {
