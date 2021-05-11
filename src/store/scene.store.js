@@ -16,7 +16,8 @@ import { store } from './index'
 // 创建和销毁不能变更index
 const state = Vue.observable({
 	activeWidgetId: '', // 被激活的场景对应组件
-	index: 0,
+	activeSceneId: 0, // 被激活的场景id
+	index: 0, // 当前主场景id
 	list: [],
 	obj: {},
 	showAnimationStyle: '',
@@ -93,7 +94,7 @@ const actions = {
 			const event = new CustomEvent('DestroyScene', { detail: { index } })
 			document.dispatchEvent(event)
 			setTimeout(() => {
-				// state.index = 0
+				state.activeSceneId = 0
 				document.getElementById(index).parentNode.remove()
 				instance.actions.setInstance('createKanboard', null) // 初始化实例场景
 				instance.actions.setInstance('createComp', null) // 初始化实例场景
@@ -146,7 +147,7 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 			})
 			const comp = new Comp().$mount()
 			instance.actions.setInstance('createComp', comp)
-			// state.index = id
+			state.activeSceneId = id
 			document
 				.getElementsByClassName('detail-container')[0]
 				.appendChild(comp.$el)

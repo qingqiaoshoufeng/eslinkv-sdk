@@ -210,7 +210,7 @@ const mx: any = {
 		isSceneActive () {
 			if (!this.config) return false
 			if (!this.config.event.scene.length) return false
-			return scene.state.activeWidgetId === this.config.widget.id && this.config.event.scene.some(v => v.id === scene.state.index)
+			return scene.state.activeWidgetId === this.config.widget.id && this.config.event.scene.some(v => v.id === scene.state.activeSceneId)
 		}
 	},
 	watch: {
