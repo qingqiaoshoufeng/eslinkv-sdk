@@ -12,6 +12,9 @@ const mouseup = e => {
 	if (event.state.contentDrag) {
 		event.state.contentDrag = false
 	}
+	if (platform.state.searchModal) {
+		platform.state.searchModal = false
+	}
 	if (event.state.kuangMove) {
 		document.getElementById('d-kuang').style.display = 'none'
 		event.state.kuangMove = false

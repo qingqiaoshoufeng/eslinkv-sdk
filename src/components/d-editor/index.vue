@@ -72,6 +72,7 @@
 	// 右键菜单
 	right-menu
 	d-footer
+	d-search
 </template>
 <script>
 import rightMenu from '../right-menu/index'
@@ -81,6 +82,7 @@ import parts from '../d-widget-part/index'
 import widgetOperation from './widget-operation'
 import dRightManage from '../d-right-manage'
 import dFooter from '../d-footer'
+import dSearch from '../d-search'
 import dGuide from '../d-guide'
 import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
@@ -94,6 +96,7 @@ export default {
 		parts,
 		rulerCanvas,
 		dFooter,
+		dSearch,
 		dGuide,
 		dr,
 		dRightManage,

@@ -9,11 +9,6 @@ import instance from './instance.store'
 import platform from './platform.store'
 import { store } from './index'
 
-// todo bug
-// activeWidgetId
-// 在创建场景和销毁场景时变更了
-// index
-// 创建和销毁不能变更index
 const state = Vue.observable({
 	activeWidgetId: '', // 被激活的场景对应组件
 	activeSceneId: 0, // 被激活的场景id

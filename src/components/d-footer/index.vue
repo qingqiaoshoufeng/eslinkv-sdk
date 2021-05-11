@@ -1,11 +1,11 @@
 <template lang="pug">
 .d-footer.fn-flex.flex-row.pos-r.z-index-999
 	.d-footer-bar.fn-flex.flex-row
-		.d-footer-bar-text {{ scene.index === 0 ? '主场景' : scene.index === -1 ? '回收站' : scene.obj[scene.index].name }}
+		.d-footer-bar-text.ellipsis {{ scene.index === 0 ? '主场景' : scene.index === -1 ? '回收站' : scene.obj[scene.index].name }}
 		.d-footer-bar-text {{ platform.panelConfig.size.width }}×{{ platform.panelConfig.size.height }}{{ platform.panelConfig.size.unit }}
 	.d-footer-bar.fn-flex
 		label.d-footer-hot-keys.pos-r.fn-flex.flex-row
-			.d-footer-bar-text.pointer(@click="showHotKey = !showHotKey") 快捷键
+			.d-footer-bar-text.pointer.ellipsis(@click="showHotKey = !showHotKey") 快捷键
 			.d-footer-hot-key-list.pos-a(:class="{ active: showHotKey }")
 				ul
 					li.fn-flex.flex-row(v-for="item in hotKeys", :key="item.name")

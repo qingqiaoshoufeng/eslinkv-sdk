@@ -35,6 +35,7 @@ const state = Vue.observable({
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏
+	searchModal: false,
 	autoAlignGuide: true, // 自动贴靠参考线
 })
 const actions = {

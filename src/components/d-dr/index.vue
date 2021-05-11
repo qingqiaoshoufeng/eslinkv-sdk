@@ -24,11 +24,11 @@
 	.dr-tip-top.pos-a(
 		v-if="tipShow",
 		:style="{ top: `-${top}px`, height: `${top}px` }")
-		span.pos-a {{ top }}
+		span.pos-a {{ left }}
 	.dr-tip-left.pos-a(
 		v-if="tipShow",
 		:style="{ left: `-${left}px`, width: `${left}px` }")
-		span.pos-a {{ left }}
+		span.pos-a {{ top }}
 	slot
 </template>
 <script>
