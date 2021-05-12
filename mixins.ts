@@ -46,6 +46,7 @@ const mx: any = {
 	methods: {
 		__handleClick__(val) {
 			if (val) scene.state.transferData = val
+			if (!this.configValue) return
 			for (const item of this.configValue.event.scene) {
 				const sceneId = item.id
 				const animate = item.animate
