@@ -131,7 +131,7 @@ export default {
 		},
 		showRightMenu(e, item) {
 			e.preventDefault()
-			if (item.config.widget.locked) return
+			// if (item.config.widget.locked) return
 			this.handleActivated(this.platform.widgetAdded[item.id])
 			const rightMenu = document.getElementById('right-menu')
 			rightMenu.classList.add('active')

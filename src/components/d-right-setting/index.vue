@@ -1,6 +1,5 @@
 <template lang="pug">
-.d-right-modal-box.z-index-999(
-	:style="{ width: `${ruler.xRoomR1}px` }")
+.d-right-modal-box.z-index-999(:style="{ width: `${ruler.xRoomR1}px` }")
 	.d-right-modal-name.fn-flex.flex-row
 		span(contenteditable="editName", @input="changeName") {{ staticName }}
 		i-icon.pointer(
@@ -12,8 +11,10 @@
 			type="ios-create-outline",
 			@click="editName = true",
 			v-if="!editName")
-		i-icon.pointer(type="md-eye", @click="handleHide", v-if="!editName")
-		i-icon.pointer(type="md-lock", @click="handleLock", v-if="!editName")
+		i-icon.pointer(
+			:type="platform.widgetAdded[platform.chooseWidgetId].config.widget.locked ? 'md-lock' : 'md-unlock'",
+			@click="handleLock",
+			v-if="!editName")
 	.d-right-modal-id
 		span ID: {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].id : '' }}
 	.d-right-modal-type
@@ -36,12 +37,11 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import itemList from './item-list.vue'
 import platform from '../../store/platform.store'
 import ruler from '../../store/ruler.store'
-import { Icon, Input } from 'view-design'
+import { Icon } from 'view-design'
 @Component({
 	components: {
 		itemList,
 		'i-icon': Icon,
-		'i-input': Input,
 	},
 })
 export default class DRightSetting extends Vue {
@@ -94,14 +94,6 @@ export default class DRightSetting extends Vue {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.widget.name = e.target.innerText
-	}
-
-	handleHide() {
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
-		].config.widget.hide = !this.platform.widgetAdded[
-			this.platform.chooseWidgetId
-		].config.widget.hide
 	}
 
 	handleLock() {

@@ -32,6 +32,7 @@ const mouseup = e => {
 		const minPointerY = Math.min(startPointerY, endPointerY)
 		const maxPointerX = Math.max(startPointerX, endPointerX)
 		const maxPointerY = Math.max(startPointerY, endPointerY)
+		platform.state.chooseWidgetArray = []
 		Object.values(platform.state.widgetAdded).forEach(v => {
 			// 只能框选当前场景下的组件
 			if (v.scene === scene.state.index) {
@@ -51,6 +52,10 @@ const mouseup = e => {
 					minPointerY < widgetEndY &&
 					widgetEndY < maxPointerY
 				) {
+					platform.state.chooseWidgetArray = [
+						...platform.state.chooseWidgetArray,
+						v.id,
+					]
 					platform.state.chooseWidgetId = v.id
 					platform.state.chooseWidgetState = false
 				}

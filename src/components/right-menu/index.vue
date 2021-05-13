@@ -1,7 +1,5 @@
 <template lang="pug">
-#right-menu.right-menu.pos-f(
-	ref="rightMenu",
-	@contextmenu.stop.prevent)
+#right-menu.right-menu.pos-f(ref="rightMenu", @contextmenu.stop.prevent)
 	ul.list
 		li(@click="handleZIndexTop")
 			i-icon(type="md-arrow-round-up")
@@ -24,8 +22,9 @@
 			i-icon(type="md-eye-off")
 			span 隐藏
 		li(@click="handleLock")
-			i-icon(type="md-lock")
+			i-icon(:type="isLock ? 'md-lock' : 'md-unlock'")
 			span {{ isLock ? '解锁' : '锁定' }}
+	ul.list
 		li(@click="copyWidget")
 			i-icon(type="ios-copy")
 			span 复制
@@ -147,6 +146,8 @@ export default class rightMenu extends Vue {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.widget.locked = this.isLock
+		const rightMenu = document.getElementById('right-menu')
+		rightMenu.classList.remove('active')
 	}
 
 	@Watch('platform.chooseWidgetId')
@@ -188,7 +189,9 @@ export default class rightMenu extends Vue {
 
 	.list {
 		border-bottom: 1px solid #22242b;
-
+		&:last-child {
+			border-bottom: none;
+		}
 		li {
 			position: relative;
 			display: flex;
@@ -203,6 +206,7 @@ export default class rightMenu extends Vue {
 
 			span {
 				margin-left: 4px;
+				user-select: none;
 			}
 		}
 	}

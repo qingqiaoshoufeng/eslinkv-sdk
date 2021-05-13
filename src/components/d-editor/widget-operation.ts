@@ -58,7 +58,7 @@ class Mixins extends Vue {
 
 	handleActivated(obj) {
 		const { config, id, type } = obj
-		if (!this.widgetEditable(obj)) {
+		if (config.widget.hide) {
 			return
 		}
 		platform.actions.chooseWidget(id)

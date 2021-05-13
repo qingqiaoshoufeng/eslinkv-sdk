@@ -2,24 +2,24 @@
 .d-detail.fn-flex(v-if="show")
 	.d-detail-left.fn-flex
 		.d-detail-left-icon-box.fn-flex
-			i-icon.pointer(
-				title="组件",
-				type="ios-cube-outline",
-				@click="handleLeft1",
-				:size="18",
-				:class="{ active: left1 }")
-			i-icon.pointer(
-				title="场景",
-				type="ios-photos-outline",
-				@click="handleLeft2",
-				:size="18",
-				:class="{ active: left2 }")
-			i-icon.pointer(
-				title="设置",
-				type="ios-archive-outline",
-				@click="handleRight1",
-				:size="18",
-				:class="{ active: right1 }")
+			i-tooltip(placement="bottom", content="组件区")
+				i-icon.pointer(
+					type="ios-cube-outline",
+					@click="handleLeft1",
+					:size="18",
+					:class="{ active: left1 }")
+			i-tooltip(placement="bottom", content="场景区")
+				i-icon.pointer(
+					type="ios-photos-outline",
+					@click="handleLeft2",
+					:size="18",
+					:class="{ active: left2 }")
+			i-tooltip(placement="bottom", content="设置区")
+				i-icon.pointer(
+					type="ios-archive-outline",
+					@click="handleRight1",
+					:size="18",
+					:class="{ active: right1 }")
 	.d-detail-middle.fn-flex
 		span.d-detail-title {{ platform.screenName }}
 	ul.d-detail-right.fn-flex
@@ -47,7 +47,15 @@
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
-import { Icon, Button, Modal, Form, FormItem, Input } from 'view-design'
+import {
+	Icon,
+	Button,
+	Modal,
+	Form,
+	FormItem,
+	Input,
+	Tooltip,
+} from 'view-design'
 import copy from 'fast-copy'
 import { mixins } from 'vue-class-component'
 import platform from '../../store/platform.store'
@@ -68,6 +76,7 @@ import detailMx from './detail.mx'
 		'i-form': Form,
 		'i-form-item': FormItem,
 		'i-input': Input,
+		'i-tooltip': Tooltip,
 	},
 })
 export default class DDetail extends mixins(

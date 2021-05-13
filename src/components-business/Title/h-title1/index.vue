@@ -1,10 +1,13 @@
 <template lang="pug">
-.widget-part(:style="styles" v-if="config")
+.widget-part(:style="styles", v-if="config")
 	.fn-flex.flex-row.h-title-1
 		.h-title-1-icon
 		h2(@click="__handleClick__(test)") {{ config.config.title }}
 	.imgs
-		img(v-for="(k, i) in config.config.backgrounds" :src="k.background" :key="i")
+		img(
+			v-for="(k, i) in config.config.backgrounds",
+			:src="k.background",
+			:key="i")
 </template>
 <script lang="ts">
 import widgetMixin from '../../../../mixins'

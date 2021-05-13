@@ -31,6 +31,7 @@ const state = Vue.observable({
 	screenName: '未命名',
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
 	chooseWidgetId: null, // 选中项id
+	chooseWidgetArray: [], // 选中项ids
 	chooseWidgetState: true, // 是否可编辑
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac
@@ -48,6 +49,7 @@ const actions = {
 	unChooseWidget() {
 		state.chooseWidgetState = true
 		state.chooseWidgetId = null
+		state.chooseWidgetArray = []
 		document.getElementById('right-menu').classList.remove('active')
 	},
 	chooseWidget(id) {

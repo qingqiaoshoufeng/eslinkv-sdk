@@ -20,41 +20,7 @@
 			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
-		li.pointer.pos-r(
-			v-for="item in list",
-			:class="[{ active: platform.chooseWidgetId === item.id }]",
-			:key="item.id",
-			@click="handleChoose(item.id)")
-			.fn-flex.flex-row
-				.d-left-scene-left
-					.fn-flex.flex-column
-						.fn-flex-row
-							i-icon(
-								:type="`md-eye${item.config.widget.hide ? '-off' : ''}`",
-								:title="!item.config.widget.hide ? '隐藏' : '显示'",
-								@click="handleTaggerHide(item.id)",
-								@click.stop)
-							i-icon(
-								:type="`md-${item.config.widget.locked ? '' : 'un'}lock`",
-								:title="!item.config.widget.locked ? '锁定' : '解锁'",
-								@click="handleTaggerLock(item.id)",
-								@click.stop)
-							i-icon(
-								type="md-trash",
-								title="删除",
-								@click="handleDelete(item.id)",
-								@click.stop)
-						h2 {{ item.config.widget.name }}
-				.d-left-scene-right.fn-flex.flex-column
-					i-icon(
-						type="ios-arrow-dropup",
-						@click="handleUpZIndex(item.id)",
-						@click.stop)
-					span {{ item.config.layout.zIndex }}
-					i-icon(
-						type="ios-arrow-dropdown",
-						@click="handleDownZIndex(item.id)",
-						@click.stop)
+		item-card(v-for="item in list", :key="item.id", :item="item")
 	.d-left-scene-bottom.fn-flex.flex-row
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('copy')") 复制
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('create')") 新增
@@ -76,33 +42,21 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import {
-	Icon,
-	Input,
-	Select,
-	Option,
-	DropdownMenu,
-	DropdownItem,
-	Dropdown,
-	Modal,
-	Button,
-} from 'view-design'
+import { Icon, Input, Select, Option, Modal } from 'view-design'
 import scene from '../../store/scene.store'
 import platform from '../../store/platform.store'
 import ruler from '../../store/ruler.store'
 import { copyText } from '../../utils/index'
+import ItemCard from './item-card.vue'
 
 @Component({
 	components: {
+		ItemCard,
 		'i-icon': Icon,
 		'i-modal': Modal,
 		'i-input': Input,
 		'i-select': Select,
 		'i-option': Option,
-		'i-button': Button,
-		'i-dropdown-menu': DropdownMenu,
-		'i-dropdown-item': DropdownItem,
-		'i-dropdown': Dropdown,
 	},
 })
 export default class DLeftScene extends Vue {
@@ -121,14 +75,6 @@ export default class DLeftScene extends Vue {
 			}
 		}
 		return list
-	}
-
-	handleUpZIndex(id) {
-		this.platform.widgetAdded[id].config.layout.zIndex++
-	}
-
-	handleDownZIndex(id) {
-		this.platform.widgetAdded[id].config.layout.zIndex--
 	}
 
 	handleFocusSceneName() {
@@ -158,33 +104,8 @@ export default class DLeftScene extends Vue {
 		}
 	}
 
-	handleChoose(id) {
-		this.platform.chooseWidgetId = id
-	}
-
 	handleCopy() {
 		copyText(this.scene.index)
-	}
-
-	handleDelete(id) {
-		this.$Modal.confirm({
-			title: '提示',
-			content: '是否删除当前组件？',
-			onOk: () => {
-				this.$delete(this.platform.widgetAdded, id)
-				this.platform.chooseWidgetId = null
-			},
-		})
-	}
-
-	handleTaggerHide(id) {
-		this.platform.widgetAdded[id].config.widget.hide = !this.platform
-			.widgetAdded[id].config.widget.hide
-	}
-
-	handleTaggerLock(id) {
-		this.platform.widgetAdded[id].config.widget.locked = !this.platform
-			.widgetAdded[id].config.widget.locked
 	}
 
 	createScene() {
@@ -233,44 +154,6 @@ export default class DLeftScene extends Vue {
 .d-left-scene-list {
 	padding-left: 8px;
 	flex: 1;
-
-	li {
-		align-items: center;
-		justify-content: center;
-		height: 60px;
-		padding: 10px;
-		margin: 10px 0;
-		font-size: 12px;
-		border: 1px solid #393b4a;
-		transition: all 0.3s;
-
-		::v-deep {
-			.ivu-input {
-				font-size: 12px;
-			}
-		}
-
-		h3,
-		p {
-			font-size: 12px;
-			font-weight: normal;
-		}
-
-		h2 {
-			font-size: 14px;
-			font-weight: normal;
-		}
-
-		&.active {
-			color: var(--white);
-			background-color: var(--themeColor);
-			border-color: var(--themeColor);
-		}
-
-		&:hover {
-			border-color: var(--themeColor);
-		}
-	}
 }
 
 .d-left-scene {
@@ -281,30 +164,6 @@ export default class DLeftScene extends Vue {
 	transition: all 0.3s;
 	ul {
 		overflow-y: auto;
-	}
-
-	.d-left-scene-left,
-	.d-left-scene-right {
-		align-items: center;
-	}
-
-	.d-left-scene-left {
-		width: 150px;
-
-		.ivu-icon {
-			margin-right: 4px;
-			font-size: 14px;
-
-			&:hover {
-				color: var(--themeColor);
-			}
-		}
-	}
-
-	.d-left-scene-right {
-		justify-content: center;
-		margin-left: auto;
-		font-weight: bold;
 	}
 }
 </style>
