@@ -16,20 +16,20 @@
 			i-switch(v-model="item.market")
 	// END_PROD
 	.d-manage-modal-control
-		label 自动贴靠参考线
+		label 开启组件内部事件
 		.d-manage-modal-control-right
-			i-switch(v-model="platform.autoAlignGuide")
+			i-switch(v-model="event.componentsDisabled[platform.chooseWidgetId]")
 </template>
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
-import instance from '../store/instance.store'
 import platform from '../store/platform.store'
+import event from '../store/event.store'
 
 @Component
 export default class FuncCustom extends func {
-	instance = instance.state
 	platform = platform.state
+	event = event.state
 	versionList = []
 
 	// START_PROD

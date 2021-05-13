@@ -21,7 +21,10 @@
 		.d-manage-modal-control(v-if="apiType === '自定义URL'")
 			label 接口地址
 			.d-manage-modal-control-right
-				i-input(v-model="item.config.api.url")
+				i-input(
+					v-model="item.config.api.url",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false")
 		.d-manage-modal-control(v-if="apiType === '自定义URL'")
 			label
 			.d-manage-modal-control-right
@@ -33,11 +36,18 @@
 					i-option(value="PUT") PUT
 					i-option(value="DELETE") DELETE
 					i-option(value="PATCH") PATCH
-				i-input(v-model="item.config.api.path", :style="{ width: '100px' }")
+				i-input(
+					v-model="item.config.api.path",
+					:style="{ width: '100px' }",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false")
 		.d-manage-modal-control(v-if="item.config.api.system.enable")
 			label 接口地址
 			.d-manage-modal-control-right
-				i-input(v-model="item.config.api.system.interface")
+				i-input(
+					v-model="item.config.api.system.interface",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false")
 		.d-manage-modal-control(v-if="item.config.api.system.enable")
 			label
 			.d-manage-modal-control-right
@@ -49,7 +59,11 @@
 					i-option(value="PUT") PUT
 					i-option(value="DELETE") DELETE
 					i-option(value="PATCH") PATCH
-				i-input(v-model="item.config.api.system.path", :style="{ width: '100px' }")
+				i-input(
+					v-model="item.config.api.system.path",
+					:style="{ width: '100px' }",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false")
 				database-config(
 					ref="dataBaseConfig",
 					:showModal="showDatabaseConfigModal",
@@ -82,6 +96,8 @@
 				i-input-number(
 					:min="1",
 					:step="1",
+					@on-focus="event.inputFocus = true",
+					@on-blur="event.inputFocus = false",
 					:formatter="value => `${value} ms`",
 					v-model="item.config.api.autoFetch.duration",
 					:style="{ marginRight: '10px' }",

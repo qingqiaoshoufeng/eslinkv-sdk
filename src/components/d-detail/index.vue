@@ -23,7 +23,7 @@
 	.d-detail-middle.fn-flex
 		span.d-detail-title {{ platform.screenName }}
 	ul.d-detail-right.fn-flex
-		li.fn-flex.flex-column.pointer(@click="search")
+		//li.fn-flex.flex-column.pointer(@click="search")
 			i-icon(type="ios-search-outline", :size="24")
 			span 搜索
 		li.fn-flex.flex-column.pointer(@click="preview", v-if="!isNew")

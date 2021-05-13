@@ -30,6 +30,9 @@
 		:style="{ left: `-${left}px`, width: `${left}px` }")
 		span.pos-a {{ top }}
 	slot
+	.dr-disabled-event.pos-a(
+		:style="{ width: '100%', height: '100%', top: 0, left: 0, zIndex: z }",
+		v-if="!event.componentsDisabled[id]")
 </template>
 <script>
 import { addEvent, removeEvent } from './dom'

@@ -7,6 +7,7 @@ import { store } from './index'
 
 const state = Vue.observable({
 	func: {},
+	componentsDisabled: {}, // 组件事件屏蔽
 	contentMove: false, // 是否按下了 空格 键，启动内容区拖动
 	contentDrag: false, // 是否按下了 空格 键，之后按下了左键
 	guideDrag: false, // 点击拖拽参考线
