@@ -4,8 +4,9 @@ div
 		label 
 			span {{ label }}
 			i-icon.full-icon.pointer(
-				type="ios-paper-outline",
+				type="md-code-working",
 				@click="modal = true",
+				size="16",
 				title="全屏编辑")
 		.d-manage-modal-control-right
 			slot(name="right")

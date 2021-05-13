@@ -10,7 +10,7 @@
 			:config="k",
 			v-for="(k, i) in config.children",
 			:key="i",
-			:parentProp="inputKey"
+			:parentProp="inputKey",
 			:parentIndex="n")
 </template>
 <script lang="ts">
@@ -22,14 +22,14 @@ import DManageItem from '../components/d-right-setting/item.vue'
 export default class FuncGroup extends func {
 	get icon() {
 		if (this.obj[this.inputKey].length > 1) {
-			return ['ios-add-circle-outline', 'ios-trash-outline']
+			return ['md-add', 'ios-trash-outline']
 		} else {
-			return ['ios-add-circle-outline']
+			return ['md-add']
 		}
 	}
 
 	handleClick(value, index) {
-		if (value === 'ios-add-circle-outline') {
+		if (value === 'md-add') {
 			const child = {}
 			this.config.children.forEach(v => {
 				child[v.prop] = ''
