@@ -11,6 +11,10 @@
 	.d-manage-modal-control
 		label
 		.d-manage-modal-control-right
+			//d-input(
+			//	v-model="platform.panelConfig.size.width",
+			//	:style="{ marginRight: '10px', width: '67px' }")
+			//	span(slot="append") .com
 			i-input-number(
 				:min="1",
 				:step="1",

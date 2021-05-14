@@ -25,7 +25,7 @@
 			@click="handleClick(index)",
 			:key="item",
 			:class="{ active: index === tabIndex }") {{ item }}
-	.d-right-modal.d-scrollbar
+	.d-right-modal.d-scrollbar-none
 		itemList(
 			v-for="(item, index) in chooseList",
 			:list="item.key",
@@ -110,7 +110,7 @@ export default class DRightSetting extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.d-scrollbar {
+.d-right-modal {
 	height: calc(100vh - 191px);
 }
 </style>
