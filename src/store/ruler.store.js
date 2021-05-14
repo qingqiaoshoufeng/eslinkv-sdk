@@ -50,7 +50,7 @@ const actions = {
 		}
 	},
 	zoomOut(step = 2) {
-		if (state.zoom > state.zoomStep) {
+		if (state.zoom * 100 > step) {
 			state.zoom = +((state.zoom * 100 - step) / 100).toFixed(2)
 		}
 	},
