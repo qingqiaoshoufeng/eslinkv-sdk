@@ -12,7 +12,7 @@
 		v-for="handle in actualHandles",
 		:key="handle",
 		:class="['dr-handle', `dr-handle-${handle}`]",
-		:style="{ display: enabled && !dragging ? 'block' : 'none' }",
+		:style="{ display: enabled ? 'block' : 'none', transform: `scale(${1 / scaleRatio})` }",
 		@mousedown.stop.prevent="handleDown(handle, $event)",
 		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
 		slot(:name="handle")
