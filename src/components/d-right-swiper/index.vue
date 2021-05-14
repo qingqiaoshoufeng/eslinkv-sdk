@@ -6,11 +6,12 @@
 		i-icon.pointer.d-right-swiper-title-down.fn-flex(type="ios-arrow-down")
 		label.pointer {{ title }}
 		.d-right-swiper-title-right.fn-flex.flex-row
-			i-icon.pointer(v-for="item in icon")(
-				:type="item",
-				@click="handleIconClick(item)",
-				size="14",
-				@click.stop)
+			i-tooltip(v-for="item in icon", :content="item.msg")
+				i-icon.pointer(
+					:type="item.icon",
+					@click="handleIconClick(item.icon)",
+					size="14",
+					@click.stop)
 	.d-right-swiper-content(
 		:class="{ active }",
 		:style="{ height: active ? '' : '0' }")
@@ -18,11 +19,12 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { Icon } from 'view-design'
+import { Icon, Tooltip } from 'view-design'
 
 @Component({
 	components: {
 		'i-icon': Icon,
+		'i-tooltip': Tooltip,
 	},
 })
 export default class DRightSwiper extends Vue {
@@ -33,6 +35,7 @@ export default class DRightSwiper extends Vue {
 	// @ts-ignore
 	active = this.show
 	handleIconClick(value) {
+		this.active = true
 		this.$emit('icon-click', value)
 	}
 }

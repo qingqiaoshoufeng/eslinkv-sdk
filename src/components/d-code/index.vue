@@ -3,11 +3,12 @@ div
 	.d-manage-modal-control
 		label 
 			span {{ label }}
-			i-icon.full-icon.pointer(
-				type="md-code-working",
-				@click="modal = true",
-				size="16",
-				title="全屏编辑")
+			i-tooltip(content="全屏编辑")
+				i-icon.full-icon.pointer(
+					type="md-code-working",
+					@click="modal = true",
+					size="16",
+					title="")
 		.d-manage-modal-control-right
 			slot(name="right")
 	.d-manage-modal-control(v-if="show")
@@ -28,7 +29,7 @@ div
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator'
-import { Icon, Modal } from 'view-design'
+import { Icon, Modal, Tooltip } from 'view-design'
 import event from '@/store/event.store'
 const editor = require('vue2-ace-editor')
 
@@ -37,6 +38,7 @@ const editor = require('vue2-ace-editor')
 		editor,
 		'i-icon': Icon,
 		'i-modal': Modal,
+		'i-tooltip': Tooltip,
 	},
 })
 export default class DDcode extends Vue {

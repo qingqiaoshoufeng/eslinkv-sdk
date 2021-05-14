@@ -24,14 +24,14 @@
 		i-icon.d-upload-download-icon.pos-a.pointer(
 			v-if="value",
 			title="下载",
-			type="ios-download-outline",
+			type="md-cloud-download",
 			color="#fff",
 			size="14",
 			@click="handleDown")
 		i-icon.d-upload-remove-icon.pos-a.pointer(
 			v-if="value",
 			title="删除",
-			type="ios-trash-outline",
+			type="md-trash",
 			color="#fff",
 			size="14",
 			@click="handleRemove")

@@ -2,7 +2,7 @@
 .d-left-scene.pos-a.fn-flex.flex-column(
 	:style="{ width: `${ruler.xRoomL2}px`, left: `${ruler.xRoomL1}px` }")
 	.d-left-modal-title.text-center
-		span 场景
+		span 场景区
 	header.fn-flex.flex-row
 		i-input(
 			:value="scene.obj[scene.index].name",

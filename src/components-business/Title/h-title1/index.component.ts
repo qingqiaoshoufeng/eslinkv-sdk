@@ -3,7 +3,7 @@ export const customConfig = [
 		prop: 'title',
 		label: '标题',
 		type: 'func-select',
-		options: ['aaaaa', 'hhhhhhh']
+		options: ['aaaaa', 'hhhhhhh'],
 	},
 	{
 		prop: 'backgrounds',
@@ -12,8 +12,8 @@ export const customConfig = [
 		children: [
 			{
 				prop: 'background',
-				label: '动画',
-				type: 'func-video',
+				label: '图片',
+				type: 'func-image',
 			},
 		],
 	},

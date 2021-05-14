@@ -1,17 +1,17 @@
 <template lang="pug">
 .func-group.fn-flex.flex-column
-	d-right-swiper(
+	d-right-swiper-list(
 		:title="config.label",
-		:icon="icon",
-		@icon-click="value => handleClick(value, n)",
-		v-for="(v, n) in obj[inputKey]",
-		:key="n")
-		DManageItem(
-			:config="k",
-			v-for="(k, i) in config.children",
-			:key="i",
-			:parentProp="inputKey",
-			:parentIndex="n")
+		@add-click="handleAddClick",
+		:list="obj[inputKey]",
+		@remove-click="handleRemoveClick")
+		template(v-slot="dataDefault", v-for="(k, n) in config.children")
+			DManageItem(
+				:config="k",
+				v-if="dataDefault.index === dataDefault.activeIndex",
+				:key="`${dataDefault.index}-${n}`",
+				:parentProp="inputKey",
+				:parentIndex="dataDefault.index")
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -20,29 +20,43 @@ import DManageItem from '../components/d-right-setting/item.vue'
 
 @Component({ components: { DManageItem } })
 export default class FuncGroup extends func {
-	get icon() {
-		if (this.obj[this.inputKey].length > 1) {
-			return ['md-add', 'ios-trash-outline']
-		} else {
-			return ['md-add']
-		}
+	handleAddClick() {
+		const child = {}
+		this.config.children.forEach(v => {
+			child[v.prop] = ''
+		})
+		this.obj[this.inputKey].push(child)
 	}
 
-	handleClick(value, index) {
-		if (value === 'md-add') {
-			const child = {}
-			this.config.children.forEach(v => {
-				child[v.prop] = ''
-			})
-			this.obj[this.inputKey].push(child)
-		}
-		if (value === 'ios-trash-outline') {
-			this.obj[this.inputKey].splice(index, 1)
-		}
+	handleRemoveClick(index) {
+		this.obj[this.inputKey].splice(index, 1)
 	}
 }
 </script>
 <style lang="scss" scoped>
+.func-group-empty {
+	span {
+		padding: 5px 10px 0 10px;
+		font-size: 12px;
+		color: #bfbfbf;
+	}
+}
+.func-group-tab {
+	border-bottom: 1px solid var(--borderGray);
+	margin-bottom: 10px;
+	padding: 5px 10px 0 10px;
+	span {
+		margin-right: 10px;
+		padding-bottom: 5px;
+		&:last-child {
+			margin-bottom: 0;
+		}
+		&.active {
+			border-bottom: 1px solid var(--themeColor);
+			color: var(--themeColor);
+		}
+	}
+}
 .func-group {
 	::v-deep + .d-manage-modal-control {
 		margin-top: 10px;

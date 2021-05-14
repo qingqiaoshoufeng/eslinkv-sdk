@@ -2,8 +2,8 @@
 component(
 	:is="currentComponent[config.type]",
 	:config="config",
-  :parentProp="parentProp"
-  :parentIndex="parentIndex")
+	:parentProp="parentProp",
+	:parentIndex="parentIndex")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'

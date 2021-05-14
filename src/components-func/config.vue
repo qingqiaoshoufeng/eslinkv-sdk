@@ -42,7 +42,10 @@
 				:disabled="true",
 				:style="{ width: '166px', marginLeft: '10px' }")
 	.d-manage-modal-control
-		label 背景图
+		label 
+			span(style="margin-right: 5px") 背景图
+			i-tooltip(content="支持jpg，png，gif", placement="top")
+				i-icon(type="md-help-circle", size="16")
 		.d-manage-modal-control-right
 			d-upload(
 				v-model="platform.panelConfig.background.url",
@@ -60,7 +63,10 @@
 				i-option(value="full-height") 100%高度
 	// START_PROD
 	.d-manage-modal-control
-		label 封面
+		label
+			span(style="margin-right: 5px") 封面
+			i-tooltip(content="支持jpg，png，gif", placement="top")
+				i-icon(type="md-help-circle", size="16")
 		.d-manage-modal-control-right
 			d-upload(
 				v-model="platform.screenAvatar",
@@ -87,10 +93,12 @@ import html2canvas from 'html2canvas'
 import platform from '../store/platform.store.js'
 import scene from '../store/scene.store.js'
 import dUpload from '../components/d-upload/index.vue'
+import { Tooltip } from 'view-design'
 
 @Component({
 	components: {
 		dUpload,
+		'i-tooltip': Tooltip,
 	},
 })
 export default class FuncConfig extends func {

@@ -20,10 +20,12 @@ import platform from '../store/platform.store'
 import event from '../store/event.store'
 import scene from '../store/scene.store'
 import dRightSwiper from '../components/d-right-swiper/index.vue'
+import dRightSwiperList from '../components/d-right-swiper-list/index.vue'
 
 @Component({
 	components: {
 		dRightSwiper,
+		dRightSwiperList,
 		'i-input': Input,
 		'i-upload': Upload,
 		'i-icon': Icon,

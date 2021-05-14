@@ -16,10 +16,10 @@
 							img.d-footer-hot-key-img(
 								v-if="child.type === 'img'",
 								:src="child.value")
-	.d-footer-bar.fn-flex(:style="{ marginLeft: 'auto' }")
-		label {{ zoom }}
-	.d-footer-bar.fn-flex(title="缩小")
+	.d-footer-bar.fn-flex(title="缩小" :style="{ marginLeft: 'auto' }")
 		d-svg.pointer(icon-class="zoomOut", @click="handleZoomOut")
+	.d-footer-bar.fn-flex
+		label {{ zoom }}
 	.d-footer-bar.fn-flex(title="放大")
 		d-svg.pointer(icon-class="zoomIn", @click="handleZoomIn")
 	.d-footer-bar.fn-flex(title="最佳比例")
