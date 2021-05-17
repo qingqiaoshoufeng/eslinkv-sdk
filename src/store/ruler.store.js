@@ -9,9 +9,9 @@ import event from './event.store'
 const state = Vue.observable({
 	dragId: `drag-content-${+new Date()}`,
 	origin: '',
-	xRoomL1: 238,
-	xRoomL2: 238,
-	xRoomR1: 350,
+	xRoomL1: +localStorage.getItem('xRoomL1'),
+	xRoomL2: +localStorage.getItem('xRoomL2'),
+	xRoomR1: +localStorage.getItem('xRoomR1'),
 	yRoom: 60,
 	guideLines: [], // 参考线
 	guideStartX: 0, // 参考线开始移动的位置

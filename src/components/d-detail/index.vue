@@ -7,19 +7,19 @@
 					type="ios-cube-outline",
 					@click="handleLeft1",
 					:size="18",
-					:class="{ active: left1 }")
+					:class="{ active: ruler.xRoomL1 > 0 }")
 			i-tooltip(placement="bottom", content="场景区")
 				i-icon.pointer(
 					type="ios-photos-outline",
 					@click="handleLeft2",
 					:size="18",
-					:class="{ active: left2 }")
+					:class="{ active: ruler.xRoomL2 > 0 }")
 			i-tooltip(placement="bottom", content="设置区")
 				i-icon.pointer(
 					type="ios-archive-outline",
 					@click="handleRight1",
 					:size="18",
-					:class="{ active: right1 }")
+					:class="{ active: ruler.xRoomR1 > 0 }")
 	.d-detail-middle.fn-flex
 		span.d-detail-title {{ platform.screenName }}
 	ul.d-detail-right.fn-flex
@@ -95,44 +95,20 @@ export default class DDetail extends mixins(
 	loading = false
 	isNew = true
 	screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
-	left1 = true
-	right1 = true
-	left2 = true
-	xRoomL1 = 0
-	xRoomL2 = 0
-	xRoomR1 = 0
 
 	handleLeft1() {
-		this.left1 = !this.left1
-		if (this.left1) {
-			this.ruler.xRoomL1 = this.xRoomL1
-			this.xRoomL1 = 0
-		} else {
-			this.xRoomL1 = this.ruler.xRoomL1
-			this.ruler.xRoomL1 = 0
-		}
+		this.ruler.xRoomL1 = this.ruler.xRoomL1 > 0 ? 0 : 238
+		localStorage.setItem('xRoomL1', this.ruler.xRoomL1)
 	}
 
 	handleRight1() {
-		this.right1 = !this.right1
-		if (this.right1) {
-			this.ruler.xRoomR1 = this.xRoomR1
-			this.xRoomR1 = 0
-		} else {
-			this.xRoomR1 = this.ruler.xRoomR1
-			this.ruler.xRoomR1 = 0
-		}
+		this.ruler.xRoomR1 = this.ruler.xRoomR1 > 0 ? 0 : 350
+		localStorage.setItem('xRoomR1', this.ruler.xRoomR1)
 	}
 
 	handleLeft2() {
-		this.left2 = !this.left2
-		if (this.left2) {
-			this.ruler.xRoomL2 = this.xRoomL2
-			this.xRoomL2 = 0
-		} else {
-			this.xRoomL2 = this.ruler.xRoomL2
-			this.ruler.xRoomL2 = 0
-		}
+		this.ruler.xRoomL2 = this.ruler.xRoomL2 > 0 ? 0 : 238
+		localStorage.setItem('xRoomL2', this.ruler.xRoomL2)
 	}
 
 	search() {
