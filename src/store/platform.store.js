@@ -12,7 +12,6 @@ function getInitPanelConfig() {
 		size: {
 			width: 1920,
 			height: 1080,
-			unit: 'px',
 			isMobile: false,
 			layoutMode: 'full-height',
 		},

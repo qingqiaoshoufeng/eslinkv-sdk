@@ -2,7 +2,7 @@
 .d-footer.fn-flex.flex-row.pos-r.z-index-999
 	.d-footer-bar.fn-flex.flex-row
 		.d-footer-bar-text.ellipsis {{ scene.index === 0 ? '主场景' : scene.index === -1 ? '回收站' : scene.obj[scene.index].name }}
-		.d-footer-bar-text {{ platform.panelConfig.size.width }}×{{ platform.panelConfig.size.height }}{{ platform.panelConfig.size.unit }}
+		.d-footer-bar-text {{ platform.panelConfig.size.width }}×{{ platform.panelConfig.size.height }}px
 	.d-footer-bar.fn-flex
 		label.d-footer-hot-keys.pos-r.fn-flex.flex-row
 			.d-footer-bar-text.pointer.ellipsis(@click="showHotKey = !showHotKey") 快捷键
@@ -142,6 +142,7 @@ export default class DFooter extends Vue {
 	color: var(--white_08);
 	border-radius: 2px;
 	transition: all 0.3s;
+	user-select: none;
 	.d-footer-bar-text {
 		opacity: 0.5;
 	}

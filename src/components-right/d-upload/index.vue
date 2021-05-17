@@ -2,9 +2,13 @@
 .d-upload
 	.d-upload-img.pos-r
 		img(:src="value", v-if="value && type === 'img'")
-		video(ref="video" :src="value", v-if="value && type === 'video'", loop)
+		video(ref="video", :src="value", v-if="value && type === 'video'", loop)
 		.progress(v-if="isShowProgress")
-			i-progress(:percent="percent" text-inside :stroke-width="16" status="active")
+			i-progress(
+				:percent="percent",
+				text-inside,
+				:stroke-width="16",
+				status="active")
 		i-upload.pointer.pos-a(
 			:action="action",
 			:data="data",
@@ -139,13 +143,12 @@ export default class DUpload extends Vue {
 
 	&:hover {
 		border: 1px solid var(--themeColor);
-
-		.d-upload-text {
-			color: var(--themeColor);
-		}
 	}
 
 	::v-deep {
+		.ivu-upload {
+			background-color: #181b24;
+		}
 		.ivu-upload-select {
 			display: flex;
 			display: -webkit-flex;
@@ -156,6 +159,7 @@ export default class DUpload extends Vue {
 			transition: all 0.3s;
 
 			.d-upload-text {
+				color: #fafafa;
 				font-size: 14px;
 			}
 		}

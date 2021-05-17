@@ -49,16 +49,16 @@
 						@widget-config-update="data => handleWidgetConfig(data, item)")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(
-				:data-top="`${platform.panelConfig.size.height}${platform.panelConfig.size.unit}`",
+				:data-top="`${platform.panelConfig.size.height}px`",
 				data-left="0px")
 			.d-editor-line(
 				data-top="0px",
-				:style="{ width: 0, height: `${platform.panelConfig.size.height}${platform.panelConfig.size.unit}` }",
-				:data-left="`${platform.panelConfig.size.width}${platform.panelConfig.size.unit}`")
+				:style="{ width: 0, height: `${platform.panelConfig.size.height}px` }",
+				:data-left="`${platform.panelConfig.size.width}px`")
 			.d-editor-line(
 				data-top="0px",
 				data-left="0px",
-				:style="{ height: `${platform.panelConfig.size.height}${platform.panelConfig.size.unit}`, width: 0 }")
+				:style="{ height: `${platform.panelConfig.size.height}px`, width: 0 }")
 			// 参考线
 			span.ref-line.v-line.pos-a(
 				v-for="item in vLine",
@@ -169,8 +169,8 @@ export default {
 	computed: {
 		canvasStyle() {
 			return {
-				width: `${this.platform.panelConfig.size.width}${this.platform.panelConfig.size.unit}`,
-				height: `${this.platform.panelConfig.size.height}${this.platform.panelConfig.size.unit}`,
+				width: `${this.platform.panelConfig.size.width}px`,
+				height: `${this.platform.panelConfig.size.height}px`,
 				'background-color': this.platform.panelConfig.background.color,
 				'background-image': `url(${this.platform.panelConfig.background.url})`,
 			}

@@ -3,13 +3,13 @@
 	d-right-swiper(title="数据请求", :show="true")
 		// START_PROD
 		.d-manage-modal-control
-			label 请求方式
+			label 数据类型
 			.d-manage-modal-control-right
 				i-select(
 					v-model="apiType",
 					:style="{ width: apiType === '数仓平台' ? '122px' : '208px' }")
-					i-option(value="无") 无
-					i-option(value="自定义URL") 自定义URL
+					i-option(value="静态数据") 静态数据
+					i-option(value="API接口") API接口
 					i-option(value="数仓平台") 数仓平台
 				i-button.setting-btn(
 					@click="openSystemConfig",
@@ -18,14 +18,14 @@
 					:style="{ marginLeft: '10px' }",
 					v-if="apiType === '数仓平台'",
 					:disabled="!item.config.api.system.enable") 配置
-		.d-manage-modal-control(v-if="apiType === '自定义URL'")
+		.d-manage-modal-control(v-if="apiType === 'API接口'")
 			label 接口地址
 			.d-manage-modal-control-right
 				i-input(
 					v-model="item.config.api.url",
 					@on-focus="event.inputFocus = true",
 					@on-blur="event.inputFocus = false")
-		.d-manage-modal-control(v-if="apiType === '自定义URL'")
+		.d-manage-modal-control(v-if="apiType === 'API接口'")
 			label
 			.d-manage-modal-control-right
 				i-select(
@@ -82,16 +82,22 @@
 			:code="apiData",
 			@update:code="value => (apiData = value)")
 	// START_PROD
-	d-right-swiper(title="数据处理")
+	d-right-swiper-eye(
+		title="数据过滤器",
+		:enable="item.config.api.process.enable",
+		@open-click="item.config.api.process.enable = true",
+		@close-click="item.config.api.process.enable = false")
 		d-code(
-			label="数据加工",
+			label="数据过滤器",
 			:code="item.config.api.process.methodBody",
-			:show="item.config.api.process.enable",
 			@update:code="value => (item.config.api.process.methodBody = value)")
-			template(slot="right")
-				i-switch(v-model="item.config.api.process.enable")
+	d-right-swiper-eye(
+		title="自动更新",
+		:enable="item.config.api.autoFetch.enable",
+		@open-click="item.config.api.autoFetch.enable = true",
+		@close-click="item.config.api.autoFetch.enable = false")
 		.d-manage-modal-control
-			label 自动更新
+			label
 			.d-manage-modal-control-right
 				i-input-number(
 					:min="1",
@@ -99,24 +105,25 @@
 					@on-focus="event.inputFocus = true",
 					@on-blur="event.inputFocus = false",
 					:formatter="value => `${value} ms`",
-					v-model="item.config.api.autoFetch.duration",
-					:style="{ marginRight: '10px' }",
-					v-if="item.config.api.autoFetch.enable")
-				i-switch(v-model="item.config.api.autoFetch.enable")
+					v-model="item.config.api.autoFetch.duration")
 	// END_PROD
+	data-event-component
+	data-event-scene
+	.d-manage-modal-control
+		label 开启组件内部事件
+		.d-manage-modal-control-right
+			i-switch(v-model="event.componentsDisabled[platform.chooseWidgetId]")
 	.d-manage-modal-control
 		label 组件关联
 		.d-manage-modal-control-right
-			i-switch(v-model="item.config.api.bind.enable", style="margin-right: 10px")
+			i-switch(v-model="item.config.api.bind.enable")
 			i-select(
 				v-if="item.config.api.bind.enable",
 				v-model="item.config.api.bind.refIds",
 				filterable,
 				multiple,
-				:style="{ width: '100px' }")
+				:style="{ width: '100px', marginLeft: '10px' }")
 				i-option(:value="item.id", v-for="(item, key) in relateList", :key="key") {{ item.id }}
-	data-event-component
-	data-event-scene
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -141,9 +148,9 @@ export default class FuncData extends func {
 		if (this.item.config.api.system.enable) {
 			return '数仓平台'
 		} else if (this.item.config.api.url) {
-			return '自定义URL'
+			return 'API接口'
 		} else {
-			return '无'
+			return '静态数据'
 		}
 	}
 
@@ -151,7 +158,7 @@ export default class FuncData extends func {
 		if (val === '数仓平台') {
 			this.item.config.api.system.enable = true
 			this.item.config.api.url = ''
-		} else if (val === '无') {
+		} else if (val === '静态数据') {
 			this.item.config.api.url = ''
 			this.item.config.api.system.enable = false
 		} else {

@@ -80,24 +80,20 @@ export default {
 			default: false,
 		},
 		w: {
-			type: Number,
+			type: [String, Number],
 			default: 200,
-			validator: val => val > 0,
 		},
 		h: {
-			type: Number,
+			type: [String, Number],
 			default: 200,
-			validator: val => val > 0,
 		},
 		x: {
-			type: Number,
+			type: [String, Number],
 			default: 0,
-			validator: val => typeof val === 'number',
 		},
 		y: {
-			type: Number,
+			type: [String, Number],
 			default: 0,
-			validator: val => typeof val === 'number',
 		},
 		z: {
 			type: [String, Number],
@@ -170,7 +166,11 @@ export default {
 		this.$el.ondragstart = () => false
 		this.rawRight = -this.rawWidth - this.rawLeft
 		this.rawBottom = -this.rawHeight - this.rawTop
-		addEvent(document.documentElement, 'mousedown', this.deselect)
+		addEvent(
+			document.getElementById('ruler-content'),
+			'mousedown',
+			this.deselect,
+		)
 		addEvent(
 			document.documentElement,
 			'touchend touchcancel',
@@ -178,7 +178,11 @@ export default {
 		)
 	},
 	beforeDestroy() {
-		removeEvent(document.documentElement, 'mousedown', this.deselect)
+		removeEvent(
+			document.getElementById('ruler-content'),
+			'mousedown',
+			this.deselect,
+		)
 		removeEvent(document.documentElement, 'touchstart', this.handleUp)
 		removeEvent(document.documentElement, 'mousemove', this.move)
 		removeEvent(document.documentElement, 'touchmove', this.move)

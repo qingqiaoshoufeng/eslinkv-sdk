@@ -19,8 +19,9 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import platform from '../store/platform.store'
 import event from '../store/event.store'
 import scene from '../store/scene.store'
-import dRightSwiper from '../components/d-right-swiper/index.vue'
-import dRightSwiperList from '../components/d-right-swiper-list/index.vue'
+import dRightSwiper from '../components-right/d-right-swiper/index.vue'
+import dRightSwiperList from '../components-right/d-right-swiper-list/index.vue'
+import dRightSwiperEye from '../components-right/d-right-swiper-eye/index.vue'
 import dInput from '../components/d-input/index.vue'
 
 @Component({
@@ -28,6 +29,7 @@ import dInput from '../components/d-input/index.vue'
 		dRightSwiper,
 		dInput,
 		dRightSwiperList,
+		dRightSwiperEye,
 		'i-input': Input,
 		'i-upload': Upload,
 		'i-icon': Icon,

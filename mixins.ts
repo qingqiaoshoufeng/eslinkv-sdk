@@ -186,14 +186,12 @@ const mx: any = {
 		styles() {
 			const { layout } = this.config
 			return {
-				width: `${layout.size.width}${layout.size.unit}`,
-				height: `${layout.size.height}${layout.size.unit}`,
+				width: `${layout.size.width}px`,
+				height: `${layout.size.height}px`,
 				zIndex: `${layout.zIndex}`,
-				transform: `translate3d(${layout.position.left}${
-					layout.position.unit
-				}, ${layout.position.top}${layout.position.unit},0) ${
-					layout.scale ? 'scale(' + layout.scale + ')' : ''
-				}`,
+				transform: `translate3d(${layout.position.left}px, ${
+					layout.position.top
+				}px,0) ${layout.scale ? 'scale(' + layout.scale + ')' : ''}`,
 			}
 		},
 		id() {
@@ -208,11 +206,16 @@ const mx: any = {
 			}
 			return `d-${now}`
 		},
-		isSceneActive () {
+		isSceneActive() {
 			if (!this.config) return false
 			if (!this.config.event.scene.length) return false
-			return scene.state.activeWidgetId === this.config.widget.id && this.config.event.scene.some(v => v.id === scene.state.activeSceneId)
-		}
+			return (
+				scene.state.activeWidgetId === this.config.widget.id &&
+				this.config.event.scene.some(
+					v => v.id === scene.state.activeSceneId,
+				)
+			)
+		},
 	},
 	watch: {
 		configReady(value) {

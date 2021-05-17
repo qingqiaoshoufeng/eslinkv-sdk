@@ -33,8 +33,8 @@ export default class DView extends Vue {
 
 	canvasStyle() {
 		const val = {
-			width: `${this.platform.panelConfig.size.width}${this.platform.panelConfig.size.unit}`,
-			height: `${this.platform.panelConfig.size.height}${this.platform.panelConfig.size.unit}`,
+			width: `${this.platform.panelConfig.size.width}px`,
+			height: `${this.platform.panelConfig.size.height}px`,
 			'background-color': this.platform.panelConfig.background.color,
 			'background-image': `url(${this.platform.panelConfig.background.url})`,
 		}

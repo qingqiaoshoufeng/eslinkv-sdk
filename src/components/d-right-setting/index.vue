@@ -1,7 +1,7 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999(:style="{ width: `${ruler.xRoomR1}px` }")
 	.d-right-modal-name.fn-flex.flex-row
-		span(contenteditable="editName", @input="changeName") {{ staticName }}
+		span(contenteditable="editName", @input="changeName") {{ staticName }}_{{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].id : '' }}
 		i-icon.pointer(
 			type="md-checkmark",
 			slot="suffix",
@@ -15,10 +15,8 @@
 			:type="platform.widgetAdded[platform.chooseWidgetId].config.widget.locked ? 'md-lock' : 'md-unlock'",
 			@click="handleLock",
 			v-if="!editName")
-	.d-right-modal-id
-		span ID: {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].id : '' }}
-	.d-right-modal-type
-		span 类型: {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].type : '' }}
+	.d-right-modal-id.fn-flex.flex-column
+		span {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].config.widget.componentVersion : '' }} | {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].type : '' }}
 	.d-right-modal-title.pointer.text-center.fn-flex.flex-row
 		span.pos-r(
 			v-for="(item, index) in title",

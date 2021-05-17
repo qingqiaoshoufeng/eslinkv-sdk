@@ -1,7 +1,7 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999.fn-flex.flex-column(
 	:style="{ width: `${ruler.xRoomR1}px`, height: '100%', flex: 1 }")
-	.d-right-modal-name.fn-flex.flex-row
+	.d-right-modal-name.fn-flex.flex-row(:style="{marginBottom:'10px'}")
 		span#platform-name(:contenteditable="editName") {{ staticName }}
 		i-icon.pointer(
 			type="md-checkmark",
@@ -12,10 +12,6 @@
 			type="ios-create-outline",
 			@click="editNameHandle",
 			v-if="!editName")
-	.d-right-modal-id
-		span version: {{ platform.version }}
-	.d-right-modal-type
-		span ID: {{ platform.panelConfig.id }}
 	.d-right-modal-border
 	config
 </template>

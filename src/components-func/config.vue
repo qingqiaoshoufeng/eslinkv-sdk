@@ -11,30 +11,14 @@
 	.d-manage-modal-control
 		label
 		.d-manage-modal-control-right
-			//d-input(
-			//	v-model="platform.panelConfig.size.width",
-			//	:style="{ marginRight: '10px', width: '67px' }")
-			//	span(slot="append") .com
-			i-input-number(
-				:min="1",
-				:step="1",
-				:formatter="value => `W:${value}`",
+			d-input(
+				append="W",
 				v-model="platform.panelConfig.size.width",
-				:style="{ marginRight: '10px', width: '67px' }",
-				:parser="value => value.replace('W:', '')")
-			i-input-number(
-				:min="1",
-				:step="1",
-				:formatter="value => `h:${value}`",
+				:style="{ width: '100px' }")
+			d-input(
+				append="H",
 				v-model="platform.panelConfig.size.height",
-				:style="{ marginRight: '10px', width: '67px' }",
-				:parser="value => value.replace('h:', '')")
-			i-select(
-				v-model="platform.panelConfig.size.unit",
-				:style="{ width: '55px' }")
-				i-option(value="px") px
-				i-option(value="%") %
-				i-option(value="vw/vh") vw/vh
+				:style="{ marginLeft: '10px', width: '100px' }")
 	.d-manage-modal-control
 		label 背景色
 		.d-manage-modal-control-right
@@ -96,7 +80,7 @@ import html2canvas from 'html2canvas'
 // END_PROD
 import platform from '../store/platform.store.js'
 import scene from '../store/scene.store.js'
-import dUpload from '../components/d-upload/index.vue'
+import dUpload from '../components-right/d-upload/index.vue'
 import { Tooltip } from 'view-design'
 
 @Component({

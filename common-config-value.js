@@ -14,11 +14,9 @@ const commonConfigValue = useColorTheme =>
 			size: {
 				width: 300,
 				height: 200,
-				unit: 'px',
 			},
 			position: {
 				value: 'absolute',
-				unit: 'px',
 				left: 0,
 				top: 0,
 			},

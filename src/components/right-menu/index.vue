@@ -60,7 +60,7 @@ export default class rightMenu extends Vue {
 		this.instance.kanboard.$refs[
 			`widget_${this.platform.chooseWidgetId}`
 		][0].$children[0].updateKey++
-		this.handleUnActive()
+		this.hideRightMenu()
 	}
 
 	handleZIndex(num) {
@@ -69,7 +69,7 @@ export default class rightMenu extends Vue {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.layout.zIndex = this.zIndex
-		this.handleUnActive()
+		this.hideRightMenu()
 	}
 
 	handleZIndexTop() {
@@ -77,7 +77,7 @@ export default class rightMenu extends Vue {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.layout.zIndex = this.maxZIndex
-		this.handleUnActive()
+		this.hideRightMenu()
 	}
 
 	handleZIndexBottom() {
@@ -85,7 +85,7 @@ export default class rightMenu extends Vue {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.layout.zIndex = this.minZIndex
-		this.handleUnActive()
+		this.hideRightMenu()
 	}
 
 	hideWidget() {
@@ -105,7 +105,7 @@ export default class rightMenu extends Vue {
 				this.handleUnActive()
 			},
 			onCancel: () => {
-				this.handleUnActive()
+				this.hideRightMenu()
 			},
 		})
 	}
@@ -137,6 +137,11 @@ export default class rightMenu extends Vue {
 		this.handleUnActive()
 	}
 
+	hideRightMenu() {
+		const rightMenu = document.getElementById('right-menu')
+		rightMenu.classList.remove('active')
+	}
+
 	handleUnActive() {
 		platform.actions.unChooseWidget()
 	}
@@ -146,8 +151,7 @@ export default class rightMenu extends Vue {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.widget.locked = this.isLock
-		const rightMenu = document.getElementById('right-menu')
-		rightMenu.classList.remove('active')
+		this.hideRightMenu()
 	}
 
 	@Watch('platform.chooseWidgetId')

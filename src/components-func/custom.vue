@@ -15,10 +15,6 @@
 					:key="i") {{ item.componentVersion }}
 			i-switch(v-model="item.market")
 	// END_PROD
-	.d-manage-modal-control
-		label 开启组件内部事件
-		.d-manage-modal-control-right
-			i-switch(v-model="event.componentsDisabled[platform.chooseWidgetId]")
 </template>
 <script lang="ts">
 import func from './func.mx'
