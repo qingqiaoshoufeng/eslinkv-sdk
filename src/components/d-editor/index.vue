@@ -11,42 +11,28 @@
 		// 大屏
 		#screen.canvas-wrapper.pos-r(
 			:style="canvasStyle",
-			@dragenter="isDragIn = true",
-			@dragleave.self="isDragIn = false",
 			@drop="drop",
 			@click.stop,
 			@dragover.prevent)
 			// 小工具清单
 			template(v-for="item in platform.widgetAdded")
-				dr(
-					v-if="showParts(item)",
-					:key="item.id",
-					:ref="`widget_${item.id}`",
-					:id="item.id",
-					:scale-ratio="ruler.zoom",
-					:draggable="widgetEditable(item)",
-					:resizable="widgetEditable(item)",
-					:scale="item.config.layout.scale",
-					:active="item.id === platform.chooseWidgetId && widgetEditable(item)",
-					:w="item.config.layout.size.width",
-					:h="item.config.layout.size.height",
-					:x="item.config.layout.position.left",
-					:y="item.config.layout.position.top",
-					:z="item.config.layout.zIndex",
-					:snap="platform.autoAlignGuide",
-					:class="[{ 'no-pointer': isDragIn, locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
-					:snap-to-target="['.d-editor-line', '.dr-unactive']",
-					@resizestop="onResizeStop",
-					@refLineParams="params => getRefLineParams(params, item)",
-					@dragstop="onDragStop",
-					@activated="handleActivated(item)",
-					@contextmenu.native="showRightMenu($event, item)")
-					parts(
-						:ref="item.id",
-						:type="item.type",
-						:config="item.config",
-						:market="item.market",
-						@widget-config-update="data => handleWidgetConfig(data, item)")
+				item-card(:item="item")
+			dr(
+				v-show="platform.chooseWidgetId",
+				:ref="`widget_${chooseItem.id}`",
+				:id="chooseItem.id",
+				:scale-ratio="ruler.zoom",
+				:draggable="widgetEditable(chooseItem)",
+				:resizable="widgetEditable(chooseItem)",
+				:scale="chooseItem.config.layout.scale",
+				:snap="platform.autoAlignGuide",
+				:class="[{ locked: chooseItem.config.widget.locked }, `widget-${chooseItem.id}`]",
+				:snap-to-target="['.d-editor-line', '.widget-part-fixed']",
+				@resizestop="onResizeStop",
+				@refLineParams="params => getRefLineParams(params, chooseItem)",
+				@dragstop="onDragStop",
+				@contextmenu.native="showRightMenu($event, chooseItem)")
+				item-card(:item="chooseItem", :inDr="true")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(
 				:data-top="`${platform.panelConfig.size.height}px`",
@@ -69,7 +55,6 @@
 				v-show="item.display",
 				:style="{ top: item.position, left: item.origin, width: item.lineLength }")
 	d-guide
-	// 右键菜单
 	right-menu
 	d-footer
 	d-search
@@ -78,7 +63,6 @@
 import rightMenu from '../right-menu/index'
 import rulerCanvas from '../d-ruler/index.vue'
 import dr from '../../components/d-dr'
-import parts from '../d-widget-part/index'
 import widgetOperation from './widget-operation'
 import dRightManage from '../d-right-manage'
 import dFooter from '../d-footer'
@@ -88,12 +72,13 @@ import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
 import ruler from '../../store/ruler.store'
+import ItemCard from './item-card.vue'
 
 export default {
 	name: 'd-editor',
 	mixins: [widgetOperation],
 	components: {
-		parts,
+		ItemCard,
 		rulerCanvas,
 		dFooter,
 		dSearch,
@@ -110,7 +95,6 @@ export default {
 			platform: platform.state,
 			scene: scene.state,
 			ruler: ruler.state,
-			isDragIn: false,
 			vLine: [],
 			hLine: [],
 		}
@@ -131,7 +115,6 @@ export default {
 		},
 		showRightMenu(e, item) {
 			e.preventDefault()
-			// if (item.config.widget.locked) return
 			this.handleActivated(this.platform.widgetAdded[item.id])
 			const rightMenu = document.getElementById('right-menu')
 			rightMenu.classList.add('active')
@@ -143,7 +126,6 @@ export default {
 			rightMenu.style.left = e.clientX + 'px'
 		},
 		drop(e) {
-			this.isDragIn = false
 			const widgetConfig = e.dataTransfer.getData('widget-config')
 			if (widgetConfig) {
 				this.handleWidgetDrop(e, widgetConfig)
@@ -167,6 +149,30 @@ export default {
 		},
 	},
 	computed: {
+		chooseItem() {
+			if (this.platform.chooseWidgetId)
+				return this.platform.widgetAdded[this.platform.chooseWidgetId]
+			return {
+				id: 0,
+				config: {
+					layout: {
+						size: {
+							width: 0,
+							height: 0,
+						},
+						position: {
+							left: 0,
+							top: 0,
+						},
+						zIndex: 0,
+					},
+					widget: {
+						locked: false,
+						hide: false,
+					},
+				},
+			}
+		},
 		canvasStyle() {
 			return {
 				width: `${this.platform.panelConfig.size.width}px`,
@@ -178,17 +184,6 @@ export default {
 		canvasSize() {
 			const { width, height } = this.platform.panelConfig.size
 			return { width, height }
-		},
-		showParts() {
-			return item => {
-				if (item.scene === 0) {
-					return true
-				}
-				if (item.scene === this.scene.index) {
-					return true
-				}
-				return false
-			}
 		},
 	},
 	beforeDestroy() {
@@ -333,9 +328,5 @@ export default {
 			}
 		}
 	}
-}
-
-.no-pointer {
-	pointer-events: none;
 }
 </style>

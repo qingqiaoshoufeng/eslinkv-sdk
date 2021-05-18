@@ -59,24 +59,11 @@ export default class DView extends Vue {
 	}
 }
 </script>
-<style lang="scss">
-.scene-temporary-wrapper {
-	.widget-part {
-		position: absolute !important;
-	}
-}
-</style>
 <style lang="scss" scoped>
 .canvas-wrapper {
 	&::before {
 		display: flex;
 		content: '';
-	}
-
-	::v-deep {
-		& > .widget-part {
-			position: absolute !important;
-		}
 	}
 }
 

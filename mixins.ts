@@ -226,10 +226,6 @@ const mx: any = {
 				})
 			}
 		},
-		'config.widget.locked'(value) {
-			if (this.$el.style)
-				this.$el.style.pointerEvents = value ? 'none' : null
-		},
 	},
 }
 export default mx

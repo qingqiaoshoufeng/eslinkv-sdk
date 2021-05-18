@@ -9,10 +9,9 @@ class Mixins extends Vue {
 	platform = platform.state
 	scene = scene.state
 
-	handleWidgetConfig({ value = {} }) {
-		this.updateWidget(value)
+	initWidgetConfig(id, type, scene, market) {
+		platform.actions.setWidgetsAddedItem(id, type, null, scene, market)
 	}
-
 	updateWidget(value) {
 		if (!value || !value.widget) return
 		const id = value.widget.id
@@ -20,11 +19,6 @@ class Mixins extends Vue {
 		if (!id || !currentWidget) return
 		this.$set(currentWidget, 'config', value)
 	}
-
-	initWidgetConfig(id, type, scene, market) {
-		platform.actions.setWidgetsAddedItem(id, type, null, scene, market)
-	}
-
 	// 小工具放置到画布
 	handleWidgetDrop(e, data) {
 		const { offsetX, offsetY } = e

@@ -15,8 +15,8 @@
 			:type="platform.widgetAdded[platform.chooseWidgetId].config.widget.locked ? 'md-lock' : 'md-unlock'",
 			@click="handleLock",
 			v-if="!editName")
-	.d-right-modal-id.fn-flex.flex-column
-		span {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].config.widget.componentVersion : '' }} | {{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].type : '' }}
+	.d-right-modal-id.fn-flex.flex-column(v-if="platform.chooseWidgetId")
+		span {{ platform.widgetAdded[platform.chooseWidgetId].config.widget.componentVersion }} | {{ platform.widgetAdded[platform.chooseWidgetId].config.widget.name }}
 	.d-right-modal-title.pointer.text-center.fn-flex.flex-row
 		span.pos-r(
 			v-for="(item, index) in title",

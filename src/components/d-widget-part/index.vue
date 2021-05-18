@@ -1,5 +1,5 @@
 <template lang="pug">
-component(
+component.widget-part(
 	:is="currentComponent",
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
@@ -169,5 +169,6 @@ export default {
 	backface-visibility: hidden;
 	top: 0;
 	left: 0;
+	position: absolute;
 }
 </style>

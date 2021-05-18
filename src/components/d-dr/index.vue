@@ -4,8 +4,7 @@
 	:data-id="id",
 	:data-top="`${this.top}px`",
 	:data-left="`${this.left}px`",
-	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: dragging, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
-	@click="elementEnable",
+	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: event.kuangDragging, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
 	@mousedown="elementDown",
 	@touchstart="elementTouchDown")
 	div(
@@ -16,11 +15,7 @@
 		@mousedown.stop.prevent="handleDown(handle, $event)",
 		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
 		slot(:name="handle")
-	.dr-line.pos-a
-		.dr-line-top.pos-a
-		.dr-line-bottom.pos-a
-		.dr-line-left.pos-a
-		.dr-line-right.pos-a
+	d-dr-kuang
 	.dr-tip-top.pos-a(
 		v-if="tipShow",
 		:style="{ top: `-${top}px`, height: `${top}px` }")
@@ -31,7 +26,7 @@
 		span.pos-a {{ top }}
 	slot
 	.dr-disabled-event.pos-a(
-		:style="{ width: '100%', height: '100%', top: 0, left: 0, zIndex: z }",
+		:style="{ width: '100%', height: '100%', top: 0, left: 0 }",
 		v-if="!event.componentsDisabled[id]")
 </template>
 <script>
@@ -39,6 +34,8 @@ import { addEvent, removeEvent } from './dom'
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import { dDrMouseDown } from '@/events'
+import dDrKuang from '../d-dr-kuang/index.vue'
+
 const events = {
 	mouse: {
 		start: 'mousedown',
@@ -55,16 +52,15 @@ const events = {
 let eventsFor = events.mouse
 
 export default {
+	components: {
+		dDrKuang,
+	},
 	replace: true,
 	name: 'd-dr',
 	props: {
 		id: {
-			type: String,
+			type: [String, Number],
 			default: '',
-		},
-		active: {
-			type: Boolean,
-			default: false,
 		},
 		draggable: {
 			type: Boolean,
@@ -78,28 +74,6 @@ export default {
 		lockAspectRatio: {
 			type: Boolean,
 			default: false,
-		},
-		w: {
-			type: [String, Number],
-			default: 200,
-		},
-		h: {
-			type: [String, Number],
-			default: 200,
-		},
-		x: {
-			type: [String, Number],
-			default: 0,
-		},
-		y: {
-			type: [String, Number],
-			default: 0,
-		},
-		z: {
-			type: [String, Number],
-			default: 'auto',
-			validator: val =>
-				typeof val === 'string' ? val === 'auto' : val >= 0,
 		},
 		axis: {
 			type: String,
@@ -135,27 +109,25 @@ export default {
 			default: 1,
 		},
 	},
-
 	data() {
 		return {
 			snapTolerance: 5, // 当调用对齐时，用来设置组件与组件之间的对齐距离，以像素为单位
 			platform: platform.state,
 			event: event.state,
-			rawWidth: this.w,
-			rawHeight: this.h,
-			rawLeft: this.x,
-			rawTop: this.y,
+			rawWidth: 0,
+			rawHeight: 0,
+			rawLeft: 0,
+			rawTop: 0,
+			z: 0,
 			rawRight: null,
 			rawBottom: null,
-			left: this.x,
-			top: this.y,
+			left: 0,
+			top: 0,
 			right: null,
 			bottom: null,
-			aspectFactor: this.w / this.h,
+			aspectFactor: 0,
 			handle: null,
-			enabled: this.active,
 			resizing: false,
-			dragging: false,
 			brotherNodes: [],
 		}
 	},
@@ -193,7 +165,6 @@ export default {
 			this.deselect,
 		)
 	},
-
 	methods: {
 		// 重置边界和鼠标状态
 		resetBoundsAndMouseState() {
@@ -211,15 +182,6 @@ export default {
 			eventsFor = events.touch
 			this.elementDown(e)
 		},
-		elementEnable(e) {
-			if (this.enabled) return
-			const target = e.target || e.srcElement
-			if (this.$el.contains(target)) {
-				this.enabled = true
-				this.$emit('activated')
-				this.$emit('update:active', true)
-			}
-		},
 		// 元素按下
 		elementDown(e) {
 			if (!this.enabled || event.contentMove) return
@@ -232,7 +194,7 @@ export default {
 
 				if (this.draggable) {
 					dDrMouseDown(e)
-					this.dragging = true
+					this.event.kuangDragging = true
 				}
 
 				if (this.snapToTarget) {
@@ -264,22 +226,15 @@ export default {
 			}
 		},
 		// 取消
-		deselect(e) {
-			const target = e.target || e.srcElement
-			const regex = new RegExp(this.className + '-([trmbl]{2})', '')
-
-			if (!this.$el.contains(target) && !regex.test(target.className)) {
-				if (this.enabled) {
-					this.enabled = false
-					this.$emit('deactivated')
-					this.$emit('update:active', false)
-				}
-				removeEvent(
-					document.documentElement,
-					eventsFor.move,
-					this.handleMove,
-				)
+		deselect() {
+			if (this.enabled) {
+				this.$emit('deactivated')
 			}
+			removeEvent(
+				document.documentElement,
+				eventsFor.move,
+				this.handleMove,
+			)
 			this.resetBoundsAndMouseState()
 		},
 		// 控制柄触摸按下
@@ -317,7 +272,7 @@ export default {
 		},
 		// 移动
 		move(e) {
-			if (this.dragging) {
+			if (this.event.kuangDragging) {
 				this.elementMove(e)
 				return
 			}
@@ -346,35 +301,30 @@ export default {
 			this.rawLeft = mouseClickPosition.left - deltaX
 			this.rawRight = mouseClickPosition.right + deltaX
 			if (this.snap) this.snapCheck()
-			// this.$emit('dragging', this.left, this.top)
+			this.$emit('dragging', this.left, this.top)
 		},
 		// 控制柄移动
 		handleMove(e) {
 			const handle = this.handle
 			const mouseClickPosition = this.mouseClickPosition
-
 			const tmpDeltaX =
 				mouseClickPosition.mouseX -
 				(e.touches ? e.touches[0].pageX : e.pageX)
 			const tmpDeltaY =
 				mouseClickPosition.mouseY -
 				(e.touches ? e.touches[0].pageY : e.pageY)
-
 			const deltaX = Math.round(tmpDeltaX / this.scaleRatio)
 			const deltaY = Math.round(tmpDeltaY / this.scaleRatio)
-
 			if (handle.includes('b')) {
 				this.rawBottom = mouseClickPosition.bottom + deltaY
 			} else if (handle.includes('t')) {
 				this.rawTop = mouseClickPosition.top - deltaY
 			}
-
 			if (handle.includes('r')) {
 				this.rawRight = mouseClickPosition.right + deltaX
 			} else if (handle.includes('l')) {
 				this.rawLeft = mouseClickPosition.left - deltaX
 			}
-
 			this.$emit('resizing', this.left, this.top, this.width, this.height)
 		},
 		// 从控制柄松开
@@ -407,8 +357,8 @@ export default {
 					this.height,
 				)
 			}
-			if (this.dragging) {
-				this.dragging = false
+			if (this.event.kuangDragging) {
+				this.event.kuangDragging = false
 				this.$emit('refLineParams', refLine)
 				this.$emit('dragstop', this.left, this.top)
 			}
@@ -575,9 +525,12 @@ export default {
 		},
 	},
 	computed: {
+		enabled() {
+			return this.id === this.platform.chooseWidgetId
+		},
 		tipShow() {
 			return (
-				this.dragging &&
+				this.event.kuangDragging &&
 				this.top > 0 &&
 				this.left > 0 &&
 				this.top < this.platform.panelConfig.size.height &&
@@ -616,14 +569,6 @@ export default {
 		},
 	},
 	watch: {
-		active(val) {
-			this.enabled = val
-			if (val) {
-				this.$emit('activated')
-			} else {
-				this.$emit('deactivated')
-			}
-		},
 		rawLeft(newLeft) {
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
@@ -670,21 +615,30 @@ export default {
 
 			this.bottom = newBottom
 		},
-		x() {
-			if (this.resizing || this.dragging) {
-				return
-			}
-			const delta = this.x - this.left
-			this.rawLeft = this.x
-			this.rawRight = this.right - delta
-		},
-		y() {
-			if (this.resizing || this.dragging) {
-				return
-			}
-			const delta = this.y - this.top
-			this.rawTop = this.y
-			this.rawBottom = this.bottom - delta
+		'platform.chooseWidgetId': {
+			handler: function (val) {
+				if (val) {
+					const chooseItem = this.platform.widgetAdded[
+						this.platform.chooseWidgetId
+					]
+					this.rawLeft = chooseItem.config.layout.position.left
+					this.left = chooseItem.config.layout.position.left
+					this.rawTop = chooseItem.config.layout.position.top
+					this.top = chooseItem.config.layout.position.top
+					const deltaXL = this.rawLeft - this.left
+					const deltaYT = this.rawTop - this.top
+					const deltaWW =
+						this.width - chooseItem.config.layout.size.width
+					const deltaHH =
+						this.height - chooseItem.config.layout.size.height
+					this.rawRight = this.right - deltaXL
+					this.rawBottom = this.bottom - deltaYT
+					this.rawRight = this.right + deltaWW
+					this.rawBottom = this.bottom + deltaHH
+					this.z = chooseItem.config.layout.zIndex
+				}
+			},
+			deep: true,
 		},
 		lockAspectRatio(val) {
 			if (val) {
@@ -692,20 +646,6 @@ export default {
 			} else {
 				this.aspectFactor = undefined
 			}
-		},
-		w() {
-			if (this.resizing || this.dragging) {
-				return
-			}
-			const delta = this.width - this.w
-			this.rawRight = this.right + delta
-		},
-		h() {
-			if (this.resizing || this.dragging) {
-				return
-			}
-			const delta = this.height - this.h
-			this.rawBottom = this.bottom + delta
 		},
 	},
 }

@@ -1,5 +1,5 @@
 <template lang="pug">
-.widget-part(:style="styles", v-if="config")
+div(:style="styles", v-if="config")
 	.fn-flex.flex-row.h-title-1
 		.h-title-1-icon
 		h2(@click="__handleClick__(test)") {{ config.config.title }}

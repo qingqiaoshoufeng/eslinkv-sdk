@@ -56,8 +56,6 @@ const mouseup = e => {
 						...platform.state.chooseWidgetArray,
 						v.id,
 					]
-					platform.state.chooseWidgetId = v.id
-					platform.state.chooseWidgetState = false
 				}
 			}
 		})
