@@ -1,6 +1,7 @@
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 import { getQueryString } from '../../utils/index'
+import Platform from '@/controller/Platform'
 
 export default {
 	data() {
@@ -76,9 +77,16 @@ export default {
 		const templateId = this.$route.query.templateId
 		const id = this.$route.params.id || templateId
 		const file = this.$route.params.file
+		// if (file) {
+		// 	new Platform({ fileUrl: file, isLocalFile: true })
+		// }
+		// if (id) {
+		// 	new Platform({ screenId: id })
+		// }
+
 		if (id) {
 			this.$api.screen.detail({ screenId: id }).then(res => {
-				this.screenType = res.screenType
+				this.platform.screenType = res.screenType
 				this.platform.screenAvatar = res.screenAvatar
 				this.platform.screenName = res.screenName
 				this.platform.panelConfig = res.screenConfig.kanboard

@@ -27,6 +27,8 @@ const state = Vue.observable({
 	version: '1.1.0',
 	widgetAdded: {},
 	screenAvatar: '',
+	screenType: 'CUSTOM', // CUSTOM 普通大屏 TEMPLATE 模版大屏
+	screenId: null,
 	screenName: '未命名',
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
 	chooseWidgetId: null, // 选中项id

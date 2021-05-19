@@ -16,7 +16,6 @@
 		"baseUrl": ".",
 		"typeRoots": [
 			"./node_modules/@types/",
-			"./types/"
 		], // 包含类型声明的文件列表
 		"strict": false,
 		"noImplicitAny": false, // 在表达式和声明上有隐含的 any类型时报错
@@ -39,7 +38,8 @@
 	"include": [
 		"src/**/*.ts",
 		"src/**/*.tsx",
-		"src/**/*.vue"
+		"src/**/*.vue",
+		"types/Platform.d.ts"
 	],
 	"exclude": [
 		"node_modules"
