@@ -4,7 +4,8 @@
 	:data-id="id",
 	:data-top="`${this.top}px`",
 	:data-left="`${this.left}px`",
-	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: event.kuangDragging, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
+	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: dragging, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
+	@click="elementEnable",
 	@mousedown="elementDown",
 	@touchstart="elementTouchDown")
 	.dr-handle(
@@ -61,8 +62,9 @@ export default {
 			type: [String, Number],
 			default: '',
 		},
-		activeWidget: {
-			type: Object,
+		active: {
+			type: Boolean,
+			default: false,
 		},
 		draggable: {
 			type: Boolean,
@@ -76,6 +78,32 @@ export default {
 		lockAspectRatio: {
 			type: Boolean,
 			default: false,
+		},
+		w: {
+			type: Number,
+			default: 200,
+			validator: val => val > 0,
+		},
+		h: {
+			type: Number,
+			default: 200,
+			validator: val => val > 0,
+		},
+		x: {
+			type: Number,
+			default: 0,
+			validator: val => typeof val === 'number',
+		},
+		y: {
+			type: Number,
+			default: 0,
+			validator: val => typeof val === 'number',
+		},
+		z: {
+			type: [String, Number],
+			default: 'auto',
+			validator: val =>
+				typeof val === 'string' ? val === 'auto' : val >= 0,
 		},
 		axis: {
 			type: String,
@@ -108,20 +136,21 @@ export default {
 			snapTolerance: 5, // 当调用对齐时，用来设置组件与组件之间的对齐距离，以像素为单位
 			platform: platform.state,
 			event: event.state,
-			rawWidth: 0,
-			rawHeight: 0,
-			rawLeft: 0,
-			rawTop: 0,
-			z: 0,
+			rawWidth: this.w,
+			rawHeight: this.h,
+			rawLeft: this.x,
+			rawTop: this.y,
 			rawRight: null,
 			rawBottom: null,
-			left: 0,
-			top: 0,
+			left: this.x,
+			top: this.y,
 			right: null,
 			bottom: null,
-			aspectFactor: 0,
+			aspectFactor: this.w / this.h,
 			handle: null,
+			enabled: this.active,
 			resizing: false,
+			dragging: false,
 			brotherNodes: [],
 		}
 	},
@@ -159,6 +188,11 @@ export default {
 		)
 	},
 	methods: {
+		elementEnable(e) {
+			if (this.enabled) return
+			this.enabled = true
+			this.$emit('activated')
+		},
 		// 重置边界和鼠标状态
 		resetBoundsAndMouseState() {
 			this.mouseClickPosition = {
@@ -179,11 +213,10 @@ export default {
 		elementDown(e) {
 			if (!this.enabled || event.contentMove) return
 			const target = e.target || e.srcElement
-
 			if (this.$el.contains(target)) {
 				if (this.draggable) {
 					dDrMouseDown(e)
-					this.event.kuangDragging = true
+					this.dragging = true
 				}
 
 				if (this.snapToTarget) {
@@ -215,15 +248,21 @@ export default {
 			}
 		},
 		// 取消
-		deselect() {
-			if (this.enabled) {
-				this.$emit('deactivated')
+		deselect(e) {
+			const target = e.target || e.srcElement
+			const regex = new RegExp(this.className + '-([trmbl]{2})', '')
+			if (!this.$el.contains(target) && !regex.test(target.className)) {
+				if (this.enabled) {
+					this.enabled = false
+					this.$emit('deactivated')
+					this.$emit('update:active', false)
+				}
+				removeEvent(
+					document.documentElement,
+					eventsFor.move,
+					this.handleMove,
+				)
 			}
-			removeEvent(
-				document.documentElement,
-				eventsFor.move,
-				this.handleMove,
-			)
 			this.resetBoundsAndMouseState()
 		},
 		// 控制柄触摸按下
@@ -258,7 +297,7 @@ export default {
 		},
 		// 移动
 		move(e) {
-			if (this.event.kuangDragging) {
+			if (this.dragging) {
 				this.elementMove(e)
 				return
 			}
@@ -287,7 +326,7 @@ export default {
 			this.rawLeft = mouseClickPosition.left - deltaX
 			this.rawRight = mouseClickPosition.right + deltaX
 			if (this.snap) this.snapCheck()
-			this.$emit('dragging', this.left, this.top)
+			// this.$emit('dragging', this.left, this.top)
 		},
 		// 控制柄移动
 		handleMove(e) {
@@ -343,8 +382,8 @@ export default {
 					this.height,
 				)
 			}
-			if (this.event.kuangDragging) {
-				this.event.kuangDragging = false
+			if (this.dragging) {
+				this.dragging = false
 				this.$emit('refLineParams', refLine)
 				this.$emit('dragstop', this.left, this.top)
 			}
@@ -511,12 +550,9 @@ export default {
 		},
 	},
 	computed: {
-		enabled() {
-			return this.id === this.platform.chooseWidgetId
-		},
 		tipShow() {
 			return (
-				this.event.kuangDragging &&
+				this.dragging &&
 				this.top > 0 &&
 				this.left > 0 &&
 				this.top < this.platform.panelConfig.size.height &&
@@ -555,6 +591,14 @@ export default {
 		},
 	},
 	watch: {
+		active(val) {
+			this.enabled = val
+			if (val) {
+				this.$emit('activated')
+			} else {
+				this.$emit('deactivated')
+			}
+		},
 		rawLeft(newLeft) {
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
@@ -601,27 +645,21 @@ export default {
 
 			this.bottom = newBottom
 		},
-		'activeWidget.config.layout': {
-			handler: function (val) {
-				if (val && this.platform.chooseWidgetId) {
-					this.rawLeft = val.position.left
-					this.left = val.position.left
-					this.rawTop = val.position.top
-					this.top = val.position.top
-					const deltaXL = this.rawLeft - this.left
-					const deltaYT = this.rawTop - this.top
-					const deltaWW =
-						this.width - val.size.width
-					const deltaHH =
-						this.height - val.size.height
-					this.rawRight = this.right - deltaXL
-					this.rawBottom = this.bottom - deltaYT
-					this.rawRight = this.right + deltaWW
-					this.rawBottom = this.bottom + deltaHH
-					this.z = val.zIndex
-				}
-			},
-			deep: true,
+		x() {
+			if (this.resizing || this.dragging) {
+				return
+			}
+			const delta = this.x - this.left
+			this.rawLeft = this.x
+			this.rawRight = this.right - delta
+		},
+		y() {
+			if (this.resizing || this.dragging) {
+				return
+			}
+			const delta = this.y - this.top
+			this.rawTop = this.y
+			this.rawBottom = this.bottom - delta
 		},
 		lockAspectRatio(val) {
 			if (val) {
@@ -630,9 +668,23 @@ export default {
 				this.aspectFactor = undefined
 			}
 		},
+		w() {
+			if (this.resizing || this.dragging) {
+				return
+			}
+			const delta = this.width - this.w
+			this.rawRight = this.right + delta
+		},
+		h() {
+			if (this.resizing || this.dragging) {
+				return
+			}
+			const delta = this.height - this.h
+			this.rawBottom = this.bottom + delta
+		},
 	},
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import './index.scss';
 </style>

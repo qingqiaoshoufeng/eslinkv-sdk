@@ -1,39 +1,60 @@
 <template lang="pug">
-.widget-part-edit.pos-a(:style="style")
+dr(
+	v-if="showParts(item)",
+	:key="item.id",
+	:ref="`widget_${item.id}`",
+	:id="item.id",
+	:scale-ratio="ruler.zoom",
+	:draggable="widgetEditable(item)",
+	:resizable="widgetEditable(item)",
+	:scale="item.config.layout.scale",
+	:active="item.id === platform.chooseWidgetId && widgetEditable(item)",
+	:w="item.config.layout.size.width",
+	:h="item.config.layout.size.height",
+	:x="item.config.layout.position.left",
+	:y="item.config.layout.position.top",
+	:z="item.config.layout.zIndex",
+	:snap="platform.autoAlignGuide",
+	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
+	:snap-to-target="['.d-editor-line', '.dr-unactive']",
+	@resizestop="onResizeStop",
+	@refLineParams="params => getRefLineParams(params, item)",
+	@dragstop="onDragStop",
+	@activated="handleActivated(item)",
+	@contextmenu.native="showRightMenu($event, item)")
 	parts(
-		:data-top="`${item.config.layout.position.top}px`",
-		:data-left="`${item.config.layout.position.left}px`",
-		:class="platform.chooseWidgetId === item.id ? '' : 'widget-part-fixed'",
 		:ref="item.id",
 		:type="item.type",
 		:config="item.config",
 		:market="item.market",
-		@click.native="handleActivated(item)",
-		@contextmenu.native="showRightMenu($event, item)",
 		@widget-config-update="data => handleWidgetConfig(data, item)")
-	d-dr-kuang
 </template>
 <script lang="ts">
+import dr from '../../components/d-dr/index.vue'
 import dDrKuang from '../../components/d-dr-kuang/index.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import scene from '@/store/scene.store.js'
 import platform from '@/store/platform.store.js'
 import parts from '../d-widget-part/index.vue'
 import event from '@/store/event.store.js'
-
+import ruler from '../../store/ruler.store'
 @Component({
 	components: {
+		dr,
 		dDrKuang,
 		parts,
 	},
 })
 export default class ItemCard extends Vue {
 	scene = scene.state
+	ruler = ruler.state
 	platform = platform.state
 	currentWidgetType = null
 	event = event.state
 
 	@Prop() item
+	@Prop() getRefLineParams
+	@Prop({ default: false }) inDr
 
 	get style() {
 		return {
@@ -43,7 +64,18 @@ export default class ItemCard extends Vue {
 			zIndex: this.item.config.layout.zIndex,
 		}
 	}
-	
+	get showParts() {
+		return item => {
+			if (item.scene === 0) {
+				return true
+			}
+			if (item.scene === this.scene.index) {
+				return true
+			}
+			return false
+		}
+	}
+
 	showRightMenu(e, item) {
 		e.preventDefault()
 		this.handleActivated(this.platform.widgetAdded[item.id])
@@ -55,6 +87,28 @@ export default class ItemCard extends Vue {
 			rightMenu.style.top = e.clientY + 'px'
 		}
 		rightMenu.style.left = e.clientX + 'px'
+	}
+
+	onDragStop(left, top) {
+		this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+		].config.layout.position.left = left
+		this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+		].config.layout.position.top = top
+	}
+
+	onResizeStop(left, top, width, height) {
+		this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+		].config.layout.size.width = width
+		this.platform.widgetAdded[
+			this.platform.chooseWidgetId
+		].config.layout.size.height = height
+	}
+
+	widgetEditable({ config }) {
+		return !config.widget.locked && !config.widget.hide
 	}
 
 	handleActivated(obj) {

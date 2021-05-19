@@ -15,25 +15,7 @@
 			@click.stop,
 			@dragover.prevent)
 			// 小工具清单
-			template(v-for="item in platform.widgetAdded")
-				item-card(:item="item")
-			dr(
-				v-show="platform.chooseWidgetId",
-				:ref="`widget_${chooseItem.id}`",
-				:id="chooseItem.id",
-				:activeWidget="chooseItem",
-				:scale-ratio="ruler.zoom",
-				:draggable="widgetEditable(chooseItem)",
-				:resizable="widgetEditable(chooseItem)",
-				:scale="chooseItem.config.layout.scale",
-				:snap="platform.autoAlignGuide",
-				:class="[{ locked: chooseItem.config.widget.locked }, `widget-${chooseItem.id}`]",
-				:snap-to-target="['.d-editor-line', '.widget-part-fixed']",
-				@resizestop="onResizeStop",
-				@refLineParams="params => getRefLineParams(params, chooseItem)",
-				@dragstop="onDragStop",
-				@dragging="onDragging",
-				@contextmenu.native="showRightMenu($event, chooseItem)")
+			item-card(:item="item" v-for="item in platform.widgetAdded" :getRefLineParams="getRefLineParams")
 			dr-more(v-show="platform.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(
@@ -64,7 +46,6 @@
 <script>
 import rightMenu from '../right-menu/index'
 import rulerCanvas from '../d-ruler/index.vue'
-import dr from '../../components/d-dr'
 import drMore from '../../components/d-dr-more'
 import widgetOperation from './widget-operation'
 import dRightManage from '../d-right-manage'
@@ -76,7 +57,6 @@ import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
 import ruler from '../../store/ruler.store'
 import ItemCard from './item-card.vue'
-import { throttle } from 'throttle-debounce'
 
 export default {
 	name: 'd-editor',
@@ -87,7 +67,6 @@ export default {
 		dFooter,
 		dSearch,
 		dGuide,
-		dr,
 		drMore,
 		dRightManage,
 		rightMenu,
@@ -105,10 +84,6 @@ export default {
 		}
 	},
 	methods: {
-		onDragging: throttle(50, false, function (left, top) {
-			this.chooseItem.config.layout.position.left = left
-			this.chooseItem.config.layout.position.top = top
-		}),
 		getRefLineParams(params, item) {
 			const { vLine, hLine } = params
 			this.vLine = vLine.map(child => {
@@ -140,48 +115,8 @@ export default {
 				this.handleWidgetDrop(e, widgetConfig)
 			}
 		},
-		onDragStop(left, top) {
-			this.platform.widgetAdded[
-				this.platform.chooseWidgetId
-			].config.layout.position.left = left
-			this.platform.widgetAdded[
-				this.platform.chooseWidgetId
-			].config.layout.position.top = top
-		},
-		onResizeStop(left, top, width, height) {
-			this.platform.widgetAdded[
-				this.platform.chooseWidgetId
-			].config.layout.size.width = width
-			this.platform.widgetAdded[
-				this.platform.chooseWidgetId
-			].config.layout.size.height = height
-		},
 	},
 	computed: {
-		chooseItem() {
-			if (this.platform.chooseWidgetId)
-				return this.platform.widgetAdded[this.platform.chooseWidgetId]
-			return {
-				id: 0,
-				config: {
-					layout: {
-						size: {
-							width: 0,
-							height: 0,
-						},
-						position: {
-							left: 0,
-							top: 0,
-						},
-						zIndex: 0,
-					},
-					widget: {
-						locked: false,
-						hide: false,
-					},
-				},
-			}
-		},
 		canvasStyle() {
 			return {
 				width: `${this.platform.panelConfig.size.width}px`,

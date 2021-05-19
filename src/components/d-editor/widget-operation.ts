@@ -51,8 +51,6 @@ class Mixins extends Vue {
 	}
 
 	handleActivated(obj) {
-		console.log(1)
-		console.log(obj)
 		const { config, id, type } = obj
 		if (config.widget.hide) {
 			return
@@ -61,10 +59,6 @@ class Mixins extends Vue {
 		platform.actions.setChooseWidgetCustomConfig(config.customConfig)
 		this.currentWidgetType = type
 		this.platform.chooseWidgetId = id
-	}
-
-	widgetEditable({ config }) {
-		return !config.widget.locked && !config.widget.hide
 	}
 }
 
