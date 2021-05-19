@@ -51,6 +51,8 @@ class Mixins extends Vue {
 	}
 
 	handleActivated(obj) {
+		console.log(1)
+		console.log(obj)
 		const { config, id, type } = obj
 		if (config.widget.hide) {
 			return

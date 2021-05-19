@@ -21,6 +21,7 @@
 				v-show="platform.chooseWidgetId",
 				:ref="`widget_${chooseItem.id}`",
 				:id="chooseItem.id",
+				:activeWidget="chooseItem",
 				:scale-ratio="ruler.zoom",
 				:draggable="widgetEditable(chooseItem)",
 				:resizable="widgetEditable(chooseItem)",
@@ -31,11 +32,8 @@
 				@resizestop="onResizeStop",
 				@refLineParams="params => getRefLineParams(params, chooseItem)",
 				@dragstop="onDragStop",
+				@dragging="onDragging",
 				@contextmenu.native="showRightMenu($event, chooseItem)")
-				item-card(
-					:item="chooseItem",
-					:inDr="true",
-					:style="{ transform: 'translate3d(0, 0, 0)!important', position: 'relative!important' }")
 			dr-more(v-show="platform.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(
@@ -78,6 +76,7 @@ import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
 import ruler from '../../store/ruler.store'
 import ItemCard from './item-card.vue'
+import { throttle } from 'throttle-debounce'
 
 export default {
 	name: 'd-editor',
@@ -106,6 +105,10 @@ export default {
 		}
 	},
 	methods: {
+		onDragging: throttle(50, false, function (left, top) {
+			this.chooseItem.config.layout.position.left = left
+			this.chooseItem.config.layout.position.top = top
+		}),
 		getRefLineParams(params, item) {
 			const { vLine, hLine } = params
 			this.vLine = vLine.map(child => {

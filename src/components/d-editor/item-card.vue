@@ -1,5 +1,5 @@
 <template lang="pug">
-.widget-part-edit.pos-a(:style="style", v-if="showParts(item)")
+.widget-part-edit.pos-a(:style="style")
 	parts(
 		:data-top="`${item.config.layout.position.top}px`",
 		:data-left="`${item.config.layout.position.left}px`",
@@ -34,7 +34,6 @@ export default class ItemCard extends Vue {
 	event = event.state
 
 	@Prop() item
-	@Prop({ default: false }) inDr
 
 	get style() {
 		return {
@@ -44,26 +43,7 @@ export default class ItemCard extends Vue {
 			zIndex: this.item.config.layout.zIndex,
 		}
 	}
-	get showParts() {
-		return item => {
-			if (this.inDr && item.type) {
-				return true
-			}
-			if (
-				this.platform.chooseWidgetId === item.id &&
-				this.event.kuangDragging
-			) {
-				return false
-			}
-			if (item.scene === 0) {
-				return true
-			}
-			if (item.scene === this.scene.index) {
-				return true
-			}
-			return false
-		}
-	}
+	
 	showRightMenu(e, item) {
 		e.preventDefault()
 		this.handleActivated(this.platform.widgetAdded[item.id])

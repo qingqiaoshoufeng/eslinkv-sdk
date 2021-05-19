@@ -83,7 +83,7 @@ export default class DRightSetting extends Vue {
 			: ''
 	}
 
-	@Watch('platform.chooseWidgetCustomConfig', { deep: true })
+	@Watch('platform.chooseWidgetCustomConfig', { deep: true, immediate: true })
 	changeChooseWidgetCustomConfig(val) {
 		this.chooseList[3].key = val
 	}

@@ -61,6 +61,9 @@ export default {
 			type: [String, Number],
 			default: '',
 		},
+		activeWidget: {
+			type: Object,
+		},
 		draggable: {
 			type: Boolean,
 			default: true,
@@ -598,27 +601,24 @@ export default {
 
 			this.bottom = newBottom
 		},
-		'platform.chooseWidgetId': {
+		'activeWidget.config.layout': {
 			handler: function (val) {
-				if (val) {
-					const chooseItem = this.platform.widgetAdded[
-						this.platform.chooseWidgetId
-					]
-					this.rawLeft = chooseItem.config.layout.position.left
-					this.left = chooseItem.config.layout.position.left
-					this.rawTop = chooseItem.config.layout.position.top
-					this.top = chooseItem.config.layout.position.top
+				if (val && this.platform.chooseWidgetId) {
+					this.rawLeft = val.position.left
+					this.left = val.position.left
+					this.rawTop = val.position.top
+					this.top = val.position.top
 					const deltaXL = this.rawLeft - this.left
 					const deltaYT = this.rawTop - this.top
 					const deltaWW =
-						this.width - chooseItem.config.layout.size.width
+						this.width - val.size.width
 					const deltaHH =
-						this.height - chooseItem.config.layout.size.height
+						this.height - val.size.height
 					this.rawRight = this.right - deltaXL
 					this.rawBottom = this.bottom - deltaYT
 					this.rawRight = this.right + deltaWW
 					this.rawBottom = this.bottom + deltaHH
-					this.z = chooseItem.config.layout.zIndex
+					this.z = val.zIndex
 				}
 			},
 			deep: true,
