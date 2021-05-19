@@ -156,14 +156,14 @@ export default class DLeftWidget extends Vue {
 		width: 100%;
 
 		&.active {
-			::v-deep {
+			/deep/ {
 				.ivu-icon {
 					transform: rotate(0);
 				}
 			}
 		}
 
-		::v-deep {
+		/deep/ {
 			.ivu-icon {
 				margin: 0 10px;
 				color: rgb(188, 201, 212);

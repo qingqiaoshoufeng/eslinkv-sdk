@@ -145,7 +145,7 @@ export default class DUpload extends Vue {
 		border: 1px solid var(--themeColor);
 	}
 
-	::v-deep {
+	/deep/ {
 		.ivu-upload {
 			background-color: #181b24;
 		}

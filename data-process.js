@@ -27,11 +27,13 @@ export default {
 			api.data = value
 		},
 		updateInnerData(value) {
-			try {
-				this.data = JSON.parse(value)
-			} catch (e) {
-				console.warn(e)
-				this.data = value
+			if (value !== '') {
+				try {
+					this.data = JSON.parse(value)
+				} catch (e) {
+					console.warn(e)
+					this.data = value
+				}
 			}
 		},
 		/**

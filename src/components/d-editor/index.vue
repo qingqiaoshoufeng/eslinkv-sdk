@@ -32,7 +32,10 @@
 				@refLineParams="params => getRefLineParams(params, chooseItem)",
 				@dragstop="onDragStop",
 				@contextmenu.native="showRightMenu($event, chooseItem)")
-				item-card(:item="chooseItem", :inDr="true")
+				item-card(
+					:item="chooseItem",
+					:inDr="true",
+					:style="{ transform: 'translate3d(0, 0, 0)!important', position: 'relative!important' }")
 			dr-more(v-show="platform.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(
@@ -265,7 +268,7 @@ export default {
 		opacity 0.2s cubic-bezier(0.5, 0, 0.5, 1);
 	transform: translate3d(0, 0, 0);
 
-	::v-deep {
+	/deep/ {
 		& > .config-panel {
 			width: 100% !important;
 			height: 100% !important;

@@ -73,7 +73,7 @@ export default class FuncGroup extends Vue {
 	}
 }
 .func-group {
-	::v-deep + .d-manage-modal-control {
+	/deep/ + .d-manage-modal-control {
 		margin-top: 10px;
 	}
 }

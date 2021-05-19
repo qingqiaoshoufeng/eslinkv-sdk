@@ -35,9 +35,8 @@
 		outline: none;
 	}
 
-	::v-deep {
+	/deep/ {
 		.widget,
-		.widget-part-edit,
 		.widget-part {
 			position: relative !important;
 			transform: translate3d(0, 0, 0) !important;

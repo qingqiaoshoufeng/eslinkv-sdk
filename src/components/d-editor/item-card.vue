@@ -1,9 +1,8 @@
 <template lang="pug">
-.widget-part-edit.pos-a(:style="style")
+.widget-part-edit.pos-a(:style="style", v-if="showParts(item)")
 	parts(
 		:data-top="`${item.config.layout.position.top}px`",
 		:data-left="`${item.config.layout.position.left}px`",
-		v-if="showParts(item)",
 		:class="platform.chooseWidgetId === item.id ? '' : 'widget-part-fixed'",
 		:ref="item.id",
 		:type="item.type",

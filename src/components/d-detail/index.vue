@@ -274,7 +274,7 @@ export default class DDetail extends mixins(
 	background-color: #313239;
 	border-bottom: 1px solid #000;
 
-	::v-deep button {
+	/deep/ button {
 		margin-left: 10px;
 	}
 }

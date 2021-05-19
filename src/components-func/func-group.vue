@@ -58,7 +58,7 @@ export default class FuncGroup extends func {
 	}
 }
 .func-group {
-	::v-deep + .d-manage-modal-control {
+	/deep/ + .d-manage-modal-control {
 		margin-top: 10px;
 	}
 }

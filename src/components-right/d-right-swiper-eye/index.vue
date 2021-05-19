@@ -87,10 +87,10 @@ export default class DRightSwiperEye extends Vue {
 			border-top: none;
 		}
 	}
-	::v-deep + .d-manage-modal-control-base {
+	/deep/ + .d-manage-modal-control-base {
 		margin-top: 10px;
 	}
-	::v-deep + .d-manage-modal-control {
+	/deep/ + .d-manage-modal-control {
 		margin-top: 10px;
 	}
 }

@@ -68,6 +68,7 @@ export default class DLeftScene extends Vue {
 
 	handleChoose(id) {
 		this.platform.chooseWidgetId = id
+		this.platform.chooseWidgetState = false
 	}
 
 	handleTaggerHide(id) {
@@ -87,7 +88,7 @@ export default class DLeftScene extends Vue {
 	border: 1px solid #393b4a;
 	transition: all 0.3s;
 
-	::v-deep {
+	/deep/ {
 		.ivu-input {
 			font-size: 12px;
 		}

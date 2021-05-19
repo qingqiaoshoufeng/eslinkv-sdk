@@ -25,16 +25,18 @@ export default class DSearch extends Vue {
 	platform = platform.state
 	scene = scene.state
 	keyword = ''
-	
+
 	@Watch('keyword')
-	keywordChange (val) {
+	keywordChange(val) {
 		if (!val) {
 			this.searchResult = []
 			return
 		}
 		let arr = []
 		for (const key in this.platform.widgetAdded) {
-			if (this.platform.widgetAdded[key].config.widget.name.includes(val)) {
+			if (
+				this.platform.widgetAdded[key].config.widget.name.includes(val)
+			) {
 				arr.push(this.platform.widgetAdded[key])
 			}
 		}
@@ -75,7 +77,7 @@ export default class DSearch extends Vue {
 	margin-left: calc(-35% + 18px);
 	border-radius: 4px;
 
-	::v-deep {
+	/deep/ {
 		.d-detail-input {
 			input {
 				background: rgba(10, 10, 14, 0.7);
