@@ -31,6 +31,13 @@ const state = Vue.observable({
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
 	chooseWidgetId: null, // 选中项id
 	chooseWidgetArray: [], // 选中项ids
+	chooseWidgetArrayConfig: {
+		left: 0,
+		top: 0,
+		width: 0,
+		height: 0,
+		z: 0,
+	}, // 选中项配置
 	chooseWidgetState: true, // 是否可编辑
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac

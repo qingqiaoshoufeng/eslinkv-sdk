@@ -33,6 +33,7 @@
 				@dragstop="onDragStop",
 				@contextmenu.native="showRightMenu($event, chooseItem)")
 				item-card(:item="chooseItem", :inDr="true")
+			dr-more(v-show="platform.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(
 				:data-top="`${platform.panelConfig.size.height}px`",
@@ -63,6 +64,7 @@
 import rightMenu from '../right-menu/index'
 import rulerCanvas from '../d-ruler/index.vue'
 import dr from '../../components/d-dr'
+import drMore from '../../components/d-dr-more'
 import widgetOperation from './widget-operation'
 import dRightManage from '../d-right-manage'
 import dFooter from '../d-footer'
@@ -84,6 +86,7 @@ export default {
 		dSearch,
 		dGuide,
 		dr,
+		drMore,
 		dRightManage,
 		rightMenu,
 	},

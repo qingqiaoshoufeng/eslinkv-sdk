@@ -56,6 +56,47 @@ const mouseup = e => {
 				}
 			}
 		})
+		let minLeft = null,
+			maxLeft = null,
+			width = 0,
+			height = 0,
+			minTop = null,
+			maxTop = null
+		platform.state.chooseWidgetArray.map(item => {
+			const m = platform.state.widgetAdded[item]
+			if (minLeft === null) {
+				minLeft = m.config.layout.position.left
+			}
+			if (maxLeft === null) {
+				maxLeft = m.config.layout.position.left
+				width = m.config.layout.size.width
+			}
+			if (minTop === null) {
+				minTop = m.config.layout.position.top
+			}
+			if (maxTop === null) {
+				maxTop = m.config.layout.position.top
+				height = m.config.layout.size.height
+			}
+			if (minLeft > m.config.layout.position.left)
+				minLeft = m.config.layout.position.left
+			if (maxLeft < m.config.layout.position.left) {
+				maxLeft = m.config.layout.position.left
+				width = m.config.layout.size.width
+			}
+			if (minTop > m.config.layout.position.top)
+				minTop = m.config.layout.position.top
+			if (maxTop < m.config.layout.position.top) {
+				maxTop = m.config.layout.position.top
+				height = m.config.layout.size.height
+			}
+		})
+		platform.state.chooseWidgetArrayConfig.left = minLeft
+		platform.state.chooseWidgetArrayConfig.top = minTop
+		platform.state.chooseWidgetArrayConfig.width =
+			width + (maxLeft - minLeft)
+		platform.state.chooseWidgetArrayConfig.height =
+			height + (maxTop - minTop)
 	}
 	if (event.state.componentMove) {
 		event.state.componentMove = false

@@ -7,14 +7,13 @@
 	:class="[{ ['dr-active']: enabled, ['dr-unactive']: !enabled, ['dr-dragging']: event.kuangDragging, ['dr-resizing']: resizing, ['dr-draggable']: draggable, ['dr-resizable']: resizable }]",
 	@mousedown="elementDown",
 	@touchstart="elementTouchDown")
-	div(
+	.dr-handle(
 		v-for="handle in actualHandles",
 		:key="handle",
-		:class="['dr-handle', `dr-handle-${handle}`]",
+		:class="[`dr-handle-${handle}`]",
 		:style="{ display: enabled ? 'block' : 'none', transform: `scale(${1 / scaleRatio})` }",
 		@mousedown.stop.prevent="handleDown(handle, $event)",
 		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
-		slot(:name="handle")
 	d-dr-kuang
 	.dr-tip-top.pos-a(
 		v-if="tipShow",
@@ -80,14 +79,6 @@ export default {
 			default: 'both',
 			validator: val => ['x', 'y', 'both'].includes(val),
 		},
-		onDragStart: {
-			type: Function,
-			default: null,
-		},
-		onResizeStart: {
-			type: Function,
-			default: null,
-		},
 		// 元素对齐
 		snap: {
 			type: Boolean,
@@ -135,7 +126,6 @@ export default {
 		this.resetBoundsAndMouseState()
 	},
 	mounted() {
-		this.$el.ondragstart = () => false
 		this.rawRight = -this.rawWidth - this.rawLeft
 		this.rawBottom = -this.rawHeight - this.rawTop
 		addEvent(
@@ -188,10 +178,6 @@ export default {
 			const target = e.target || e.srcElement
 
 			if (this.$el.contains(target)) {
-				if (this.onDragStart && this.onDragStart(e) === false) {
-					return
-				}
-
 				if (this.draggable) {
 					dDrMouseDown(e)
 					this.event.kuangDragging = true
@@ -245,9 +231,6 @@ export default {
 		// 控制柄按下
 		handleDown(handle, e) {
 			if (!this.enabled) return
-			if (this.onResizeStart && this.onResizeStart(handle, e) === false) {
-				return
-			}
 			if (e.stopPropagation) e.stopPropagation()
 			// Here we avoid a dangerous recursion by faking
 			// corner handles as middle handles
@@ -650,6 +633,6 @@ export default {
 	},
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import './index.scss';
 </style>

@@ -42,6 +42,7 @@
 }
 
 .dr-active,
+.dr-more,
 .widget-part-edit:hover {
 	.dr-line-top,
 	.dr-line-bottom,
