@@ -38,7 +38,6 @@ const state = Vue.observable({
 		height: 0,
 		z: 0,
 	}, // 选中项配置
-	chooseWidgetState: true, // 是否可编辑
 	panelConfig: getInitPanelConfig(),
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏
@@ -53,14 +52,12 @@ const actions = {
 		state.widgetAdded = {}
 	},
 	unChooseWidget() {
-		state.chooseWidgetState = true
 		state.chooseWidgetId = null
 		state.chooseWidgetArray = []
 		document.getElementById('right-menu').classList.remove('active')
 	},
 	chooseWidget(id) {
 		state.chooseWidgetId = id
-		state.chooseWidgetState = false
 	},
 	setChooseWidgetCustomConfig(value = []) {
 		state.chooseWidgetCustomConfig = [...value, { type: 'custom' }]

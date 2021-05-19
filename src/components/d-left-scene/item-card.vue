@@ -68,7 +68,6 @@ export default class DLeftScene extends Vue {
 
 	handleChoose(id) {
 		this.platform.chooseWidgetId = id
-		this.platform.chooseWidgetState = false
 	}
 
 	handleTaggerHide(id) {

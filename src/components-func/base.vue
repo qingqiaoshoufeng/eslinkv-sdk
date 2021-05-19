@@ -5,8 +5,7 @@
 			label 位置
 			.d-manage-modal-control-right
 				i-select(
-					v-model="item.config.layout.position.value",
-					:disabled="platform.chooseWidgetState")
+					v-model="item.config.layout.position.value")
 					i-option(value="absolute") 绝对定位
 					i-option(value="fixed") 浮动定位
 					i-option(value="relative") 相对定位
@@ -35,7 +34,7 @@
 		.d-manage-modal-control
 			label 场景
 			.d-manage-modal-control-right
-				i-select(v-model="item.scene", :disabled="platform.chooseWidgetState")
+				i-select(v-model="item.scene")
 					i-option(:value="0") 主场景
 					i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 					i-option(:value="-1") 回收站
@@ -46,7 +45,6 @@
 					v-model="scale",
 					@on-focus="event.inputFocus = true",
 					@on-blur="event.inputFocus = false",
-					:disabled="platform.chooseWidgetState",
 					:style="{ width: '100px' }")
 	d-right-swiper-eye(
 		title="载入动画",
@@ -57,8 +55,7 @@
 			label 动画形式
 			.d-manage-modal-control-right
 				i-select(
-					v-model="item.config.animation.enter",
-					:disabled="platform.chooseWidgetState")
+					v-model="item.config.animation.enter",)
 					i-option(
 						:value="k.value",
 						v-for="k in animationEnterNames",

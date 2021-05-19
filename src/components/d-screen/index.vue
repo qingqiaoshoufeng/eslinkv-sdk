@@ -6,7 +6,7 @@
 		d-left-component
 		d-left-scene
 		d-editor(ref="kanboardEditor")
-		d-right-manage(v-if="platform.chooseWidgetState")
+		d-right-manage(v-if="!platform.chooseWidgetId")
 		d-right-setting(v-else)
 </template>
 <script lang="ts">

@@ -7,8 +7,7 @@
 			i-select(
 				v-model="item.config.widget.componentVersion",
 				v-if="item.market",
-				:style="{ marginRight: '10px', width: '156px' }",
-				:disabled="platform.chooseWidgetState")
+				:style="{ marginRight: '10px', width: '156px' }")
 				i-option(
 					:value="item.componentVersion",
 					v-for="(item, i) in versionList",
