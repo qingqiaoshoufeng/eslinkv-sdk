@@ -7,7 +7,8 @@
 		d-left-scene
 		d-editor(ref="kanboardEditor")
 		d-right-manage(v-if="!platform.chooseWidgetId")
-		d-right-setting(v-else)
+		d-right-setting(v-if="platform.chooseWidgetId")
+		d-right-setting-more(v-if="platform.chooseWidgetArray.length > 1")
 </template>
 <script lang="ts">
 import { Vue, Component, Provide } from 'vue-property-decorator'
@@ -18,6 +19,7 @@ import dLeftScene from '../d-left-scene/index.vue'
 import dEditor from '../d-editor/index.vue'
 import dRightManage from '../d-right-manage/index.vue'
 import dRightSetting from '../d-right-setting/index.vue'
+import dRightSettingMore from '../d-right-setting-more/index.vue'
 import { dScreenWheel } from '@/events'
 
 @Component({
@@ -26,6 +28,7 @@ import { dScreenWheel } from '@/events'
 		dLeftScene,
 		dRightManage,
 		dRightSetting,
+		dRightSettingMore,
 		dEditor,
 	},
 })

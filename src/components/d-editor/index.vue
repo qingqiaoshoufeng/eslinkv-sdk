@@ -147,14 +147,17 @@ export default {
 .ref-line {
 	background-color: var(--lineRed);
 }
+
 .v-line {
 	width: 1px;
 	height: 100%;
 }
+
 .h-line {
 	width: 100%;
 	height: 1px;
 }
+
 .d-editor {
 	background-color: #313239;
 	transition: all 0.3s;

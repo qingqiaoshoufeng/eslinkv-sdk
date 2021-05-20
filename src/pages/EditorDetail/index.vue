@@ -14,6 +14,7 @@
 			v-else,
 			:style="viewStyle")
 		d-detail(:show="false")
+		
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'

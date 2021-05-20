@@ -80,30 +80,24 @@ export default {
 			default: false,
 		},
 		w: {
-			type: Number,
+			type: [String, Number],
 			default: 200,
-			validator: val => val > 0,
 		},
 		h: {
-			type: Number,
+			type: [String, Number],
 			default: 200,
-			validator: val => val > 0,
 		},
 		x: {
-			type: Number,
+			type: [String, Number],
 			default: 0,
-			validator: val => typeof val === 'number',
 		},
 		y: {
-			type: Number,
+			type: [String, Number],
 			default: 0,
-			validator: val => typeof val === 'number',
 		},
 		z: {
 			type: [String, Number],
 			default: 'auto',
-			validator: val =>
-				typeof val === 'string' ? val === 'auto' : val >= 0,
 		},
 		axis: {
 			type: String,
@@ -685,6 +679,6 @@ export default {
 	},
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import './index.scss';
 </style>

@@ -1,19 +1,15 @@
 <template lang="pug">
 .d-manage-modal-control-base
-	.d-manage-modal-control
-		label 色盘
-		.d-manage-modal-control-right
-			i-color-picker(
-				:alpha="true",
-				size="small",
-				v-model="colorDiskArray[index]",
-				@on-change="val => colorDiskChange(val, index)",
-				v-for="(item, index) in colorTheme.colorDisk",
-				:style="{ marginLeft: '10px', marginBottom: '10px' }")
-	.d-manage-modal-control
-		label
-		.d-manage-modal-control-right
-			i-button(@click="handleResetColor", type="primary") 一键恢复官方主题色盘
+	d-right-control(label="色盘")
+		i-color-picker(
+			:alpha="true",
+			size="small",
+			v-model="colorDiskArray[index]",
+			@on-change="val => colorDiskChange(val, index)",
+			v-for="(item, index) in colorTheme.colorDisk",
+			:style="{ marginLeft: '10px', marginBottom: '10px' }")
+	d-right-control
+		i-button(@click="handleResetColor", type="primary") 一键恢复官方主题色盘
 </template>
 <script lang="ts">
 import func from './func.mx'

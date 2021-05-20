@@ -1,73 +1,57 @@
 <template lang="pug">
 .d-manage-modal-control-base
 	d-right-swiper(title="基础属性", :show="true")
-		.d-manage-modal-control
-			label 位置
-			.d-manage-modal-control-right
-				i-select(
-					v-model="item.config.layout.position.value")
-					i-option(value="absolute") 绝对定位
-					i-option(value="fixed") 浮动定位
-					i-option(value="relative") 相对定位
-		.d-manage-modal-control
-			label
-			.d-manage-modal-control-right
-				d-input(
-					append="X",
-					v-model="item.config.layout.position.left",
-					:style="{ width: '100px', marginRight: '10px' }")
-				d-input(
-					append="Y",
-					v-model="item.config.layout.position.top",
-					:style="{ width: '100px'}")
-		.d-manage-modal-control
-			label 宽高
-			.d-manage-modal-control-right
-				d-input(
-					append="W",
-					v-model="item.config.layout.size.width",
-					:style="{ width: '100px', marginRight: '10px' }")
-				d-input(
-					append="H",
-					v-model="item.config.layout.size.height",
-					:style="{ width: '100px' }")
-		.d-manage-modal-control
-			label 场景
-			.d-manage-modal-control-right
-				i-select(v-model="item.scene")
-					i-option(:value="0") 主场景
-					i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
-					i-option(:value="-1") 回收站
-		.d-manage-modal-control
-			label 缩放比例
-			.d-manage-modal-control-right
-				i-input(
-					v-model="scale",
-					@on-focus="event.inputFocus = true",
-					@on-blur="event.inputFocus = false",
-					:style="{ width: '100px' }")
+		d-right-control(label="位置")
+			i-select(
+				v-model="item.config.layout.position.value")
+				i-option(value="absolute") 绝对定位
+				i-option(value="fixed") 浮动定位
+				i-option(value="relative") 相对定位
+		d-right-control
+			d-input(
+				append="X",
+				v-model="item.config.layout.position.left",
+				:style="{ width: '100px', marginRight: '10px' }")
+			d-input(
+				append="Y",
+				v-model="item.config.layout.position.top",
+				:style="{ width: '100px'}")
+		d-right-control(label="宽高")
+			d-input(
+				append="W",
+				v-model="item.config.layout.size.width",
+				:style="{ width: '100px', marginRight: '10px' }")
+			d-input(
+				append="H",
+				v-model="item.config.layout.size.height",
+				:style="{ width: '100px' }")
+		d-right-control(label="场景")
+			i-select(v-model="item.scene")
+				i-option(:value="0") 主场景
+				i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
+				i-option(:value="-1") 回收站
+		d-right-control(label="缩放比例")
+			i-input(
+				v-model="scale",
+				@on-focus="event.inputFocus = true",
+				@on-blur="event.inputFocus = false",
+				:style="{ width: '100px' }")
 	d-right-swiper-eye(
 		title="载入动画",
 		@open-click="item.config.animation.transitionEnable = true",
 		@close-click="item.config.animation.transitionEnable = false",
 		:enable="item.config.animation.transitionEnable")
-		.d-manage-modal-control
-			label 动画形式
-			.d-manage-modal-control-right
-				i-select(
-					v-model="item.config.animation.enter",)
-					i-option(
-						:value="k.value",
-						v-for="k in animationEnterNames",
-						:key="k.value") {{ k.label }}
-		.d-manage-modal-control
-			label 延时时长
-			.d-manage-modal-control-right
-				d-input(append="ms", v-model="item.config.animation.delay")
-		.d-manage-modal-control
-			label 动画时长
-			.d-manage-modal-control-right
-				d-input(append="ms", v-model="item.config.animation.duration")
+		d-right-control(label="动画形式")
+			i-select(
+				v-model="item.config.animation.enter",)
+				i-option(
+					:value="k.value",
+					v-for="k in animationEnterNames",
+					:key="k.value") {{ k.label }}
+		d-right-control(label="延时时长")
+			d-input(append="ms", v-model="item.config.animation.delay")
+		d-right-control(label="动画时长")
+			d-input(append="ms", v-model="item.config.animation.duration")
 </template>
 <script lang="ts">
 import func from './func.mx'

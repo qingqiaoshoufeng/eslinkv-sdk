@@ -9,7 +9,6 @@ import { store } from './index'
 const state = Vue.observable({
 	kanboard: null,
 	createKanboard: null,
-	createComp: null,
 })
 const actions = {
 	setInstance(key, value) {

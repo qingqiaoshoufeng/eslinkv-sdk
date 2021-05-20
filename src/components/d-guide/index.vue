@@ -176,8 +176,8 @@ export default class Guide extends Vue {
 		font-size: 12px;
 		line-height: 12px;
 		color: var(--white);
-		background: var(--lineRed);
 		user-select: none;
+		background: var(--lineRed);
 	}
 }
 
@@ -190,7 +190,6 @@ export default class Guide extends Vue {
 
 .d-guide-line-v,
 .d-guide-line-h {
-	background-color: var(--lineRed);
 	opacity: 1;
 	transform-origin: left top;
 }
@@ -198,8 +197,9 @@ export default class Guide extends Vue {
 .d-guide-line-h {
 	left: 0;
 	width: 100%;
-	height: 1px;
+	height: 0;
 	cursor: row-resize;
+	border-top: 1px solid var(--lineRed);
 
 	&:hover {
 		&::before {
@@ -216,9 +216,10 @@ export default class Guide extends Vue {
 
 .d-guide-line-v {
 	top: 0;
-	width: 1px;
+	width: 0;
 	height: 100%;
 	cursor: col-resize;
+	border-left: 1px solid var(--lineRed);
 
 	&:hover {
 		&::before {

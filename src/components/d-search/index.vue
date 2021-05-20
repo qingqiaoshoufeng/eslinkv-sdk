@@ -1,10 +1,14 @@
 <template lang="pug">
 .container(:class="{ active: platform.searchModal }")
-	.d-detail-search.animated.searchFadeInDown(
-		v-click-outside="close")
-		i-input.d-detail-input(suffix="ios-search", placeholder="请输入组件名" v-model="keyword")
+	.d-detail-search.animated.searchFadeInDown(v-click-outside="close")
+		i-input.d-detail-input(
+			@on-focus="event.inputFocus = true",
+			@on-blur="event.inputFocus = false",
+			suffix="ios-search",
+			placeholder="请输入组件名",
+			v-model="keyword")
 		ul.result
-			li(v-for="(k, i) in searchResult", :key="i" @click="check(k)") {{ k.config.widget.name }}
+			li(v-for="(k, i) in searchResult", :key="i", @click="check(k)") {{ k.config.widget.name }}
 </template>
 <script lang="ts">
 import platform from '../../store/platform.store'
@@ -12,6 +16,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
 import scene from '../../store/scene.store'
+import event from '../../store/event.store'
 
 @Component({
 	components: {
@@ -24,6 +29,7 @@ export default class DSearch extends Vue {
 	searchResult = []
 	platform = platform.state
 	scene = scene.state
+	event = event.state
 	keyword = ''
 
 	@Watch('keyword')
@@ -58,17 +64,19 @@ export default class DSearch extends Vue {
 </script>
 <style lang="scss" scoped>
 .container {
-	display: none;
 	position: fixed;
-	left: 0;
-	right: 0;
 	top: 0;
+	right: 0;
 	bottom: 0;
+	left: 0;
 	z-index: 9999;
+	display: none;
+
 	&.active {
 		display: block;
 	}
 }
+
 .d-detail-search {
 	position: absolute;
 	top: 100px;
@@ -80,27 +88,31 @@ export default class DSearch extends Vue {
 	/deep/ {
 		.d-detail-input {
 			input {
-				background: rgba(10, 10, 14, 0.7);
 				color: #fff;
+				background: rgba(10, 10, 14, 0.7);
 			}
 		}
 	}
 }
+
 .result {
-	margin-top: 10px;
 	max-height: 200px;
+	margin-top: 10px;
 	overflow-y: auto;
 	background: rgba(10, 10, 14, 0.7);
+
 	li {
 		height: 30px;
-		line-height: 30px;
-		margin: 4px 0;
 		padding: 0 10px;
+		margin: 4px 0;
+		line-height: 30px;
 		color: #fff;
+
 		&:hover {
 			background: #2d8cf0;
 		}
 	}
+
 	&::-webkit-scrollbar {
 		width: 4px;
 		height: 1px;

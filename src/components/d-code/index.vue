@@ -1,16 +1,7 @@
 <template lang="pug">
 div
-	.d-manage-modal-control
-		label 
-			span {{ label }}
-			i-tooltip(content="全屏编辑")
-				i-icon.full-icon.pointer(
-					type="md-code-working",
-					@click="modal = true",
-					size="16",
-					title="")
-		.d-manage-modal-control-right
-			slot(name="right")
+	d-right-control(:label="label", title="全屏编辑", icon="md-code-working")
+		slot(name="right")
 	.d-manage-modal-control(v-if="show")
 		editor.d-manage-modal-control-editor(
 			v-model="syncedCode",
@@ -30,12 +21,14 @@ div
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator'
 import { Icon, Modal, Tooltip } from 'view-design'
+import dRightControl from '../../components-right/d-right-control/index.vue'
 import event from '@/store/event.store'
 const editor = require('vue2-ace-editor')
 
 @Component({
 	components: {
 		editor,
+		dRightControl,
 		'i-icon': Icon,
 		'i-modal': Modal,
 		'i-tooltip': Tooltip,
@@ -80,9 +73,11 @@ export default class DDcode extends Vue {
 	padding-left: 6px;
 	cursor: pointer;
 }
+
 .d-manage-modal-control-editor {
 	margin-right: 10px;
 }
+
 ::v-deep {
 	.ace_scrollbar-v {
 		&::-webkit-scrollbar {

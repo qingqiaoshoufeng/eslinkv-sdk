@@ -3,11 +3,12 @@
  */
 
 import { uuid } from '../utils'
-import parts from '../components/d-widget-part/index'
 import Vue from 'vue'
 import instance from './instance.store'
 import platform from './platform.store'
 import { store } from './index'
+import parts from '../components/d-widget-part/index'
+Vue.component('parts', parts)
 
 const state = Vue.observable({
 	activeWidgetId: '', // 被激活的场景对应组件
@@ -19,6 +20,7 @@ const state = Vue.observable({
 	transferData: null, // 场景交互时传递的数据
 	status: 'inEdit', // inEdit  在编辑器中  inPreview 在预览中
 	sceneObj: {},
+	widgetLoaded: {},
 })
 const actions = {
 	setStatus(status) {
@@ -135,13 +137,11 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 						array,
 					}
 				},
-				components: { parts },
 				mounted() {
 					instance.actions.setInstance('createKanboard', this)
 				},
 			})
 			const comp = new Comp().$mount()
-			instance.actions.setInstance('createComp', comp)
 			state.activeSceneId = id
 			document
 				.getElementsByClassName('detail-container')[0]

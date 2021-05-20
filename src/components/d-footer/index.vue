@@ -140,12 +140,14 @@ export default class DFooter extends Vue {
 	height: 100%;
 	margin-right: 15px;
 	color: var(--white_08);
+	user-select: none;
 	border-radius: 2px;
 	transition: all 0.3s;
-	user-select: none;
+
 	.d-footer-bar-text {
 		opacity: 0.5;
 	}
+
 	&:hover {
 		.d-footer-bar-text {
 			opacity: 1;
@@ -171,22 +173,25 @@ export default class DFooter extends Vue {
 		bottom: 100%;
 		width: 230px;
 		padding: 10px 10px 0 10px;
+		color: var(--white_06);
 		pointer-events: none;
 		background: #2d2f38;
 		border-radius: 2px;
+		box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.57);
 		opacity: 0;
 		transition: all 0.3s;
 		transform: translate3d(0, -20px, 0);
-		color: var(--white_06);
-		box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.57);
+
 		li {
 			align-items: center;
 			height: 44px;
 			white-space: nowrap;
 			border-bottom: 1px solid #22242b;
+
 			&:last-child {
 				border-bottom: none;
 			}
+
 			.d-footer-key-code {
 				&:last-child {
 					.d-footer-hot-key-text {
@@ -194,6 +199,7 @@ export default class DFooter extends Vue {
 					}
 				}
 			}
+
 			label {
 				margin-right: auto;
 			}
@@ -203,9 +209,11 @@ export default class DFooter extends Vue {
 				text-align: right;
 				letter-spacing: 0;
 			}
+
 			.d-footer-hot-key-img {
 				margin-left: 6px;
 			}
+
 			.d-footer-hot-key-text {
 				margin-right: 10px;
 				margin-left: 10px;

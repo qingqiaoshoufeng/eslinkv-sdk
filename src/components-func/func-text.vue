@@ -1,8 +1,6 @@
 <template lang="pug">
-.d-manage-modal-control
-	label {{ config.label }}
-	.d-manage-modal-control-right
-		span.d-manage-modal-control-text {{ obj[inputKey] }}
+d-right-control(:label="config.label")
+	span.d-manage-modal-control-text {{ obj[inputKey] }}
 </template>
 <script lang="ts">
 import func from './func.mx'

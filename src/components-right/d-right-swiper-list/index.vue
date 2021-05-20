@@ -44,34 +44,41 @@ export default class FuncGroup extends Vue {
 </script>
 <style lang="scss" scoped>
 .func-group-empty {
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
+
 	img {
 		max-width: 50%;
 	}
+
 	span {
 		padding: 5px 10px 0 10px;
 		font-size: 12px;
 		color: #bfbfbf;
 	}
 }
+
 .func-group-tab {
-	border-bottom: 1px solid var(--borderGray);
-	margin-bottom: 10px;
-	padding: 5px 10px 0 10px;
 	flex-wrap: wrap;
+	padding: 5px 10px 0 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid var(--borderGray);
+
 	span {
-		margin-right: 10px;
 		padding-bottom: 5px;
+		margin-right: 10px;
+
 		&:last-child {
 			margin-bottom: 0;
 		}
+
 		&.active {
-			border-bottom: 1px solid var(--themeColor);
 			color: var(--themeColor);
+			border-bottom: 1px solid var(--themeColor);
 		}
 	}
 }
+
 .func-group {
 	/deep/ + .d-manage-modal-control {
 		margin-top: 10px;

@@ -1,11 +1,10 @@
 <template lang="pug">
-.d-manage-modal-control
-	label
-		span(style="margin-right: 5px;") {{ config.label }}
-		tooltip(content="支持mp4,webm,mov" placement="top")
-			i-icon(type="md-help-circle" size="16")
-	.d-manage-modal-control-right
-		d-upload(v-model="obj[inputKey]", :data="formData", type="video" accept="video/*")
+d-right-control(:label="config.label", title="支持mp4,webm,mov")
+	d-upload(
+		v-model="obj[inputKey]",
+		:data="formData",
+		type="video",
+		accept="video/*")
 </template>
 <script lang="ts">
 import func from './func.mx'

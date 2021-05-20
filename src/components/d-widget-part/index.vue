@@ -17,6 +17,7 @@ component.widget-part(
 <script>
 import Vue from 'vue'
 import custom from '../../store/custom.store'
+import scene from '../../store/scene.store'
 
 const prefix1 = 'market-'
 const prefix2 = 'eslinkv-'
@@ -49,6 +50,7 @@ export default {
 			ready: false,
 			animationClass: null,
 			custom: custom.state,
+			scene: scene.state,
 		}
 	},
 	computed: {
@@ -101,9 +103,7 @@ export default {
 		loadMarket() {
 			this.componentVersion = this.config.widget.componentVersion
 			if (
-				Vue.options.components[
-					`${prefix1}${this.type}-${this.componentVersion}`
-				]
+				this.scene.widgetLoaded[`${this.type}${this.componentVersion}`]
 			) {
 				this.ready = true
 			} else {
@@ -162,13 +162,13 @@ export default {
 </script>
 <style lang="scss">
 .widget-part {
+	position: absolute;
+	top: 0;
+	left: 0;
 	font-size: 15px;
 	line-height: 1.5em;
 	color: rgb(0, 0, 0);
 	text-align: center;
 	backface-visibility: hidden;
-	top: 0;
-	left: 0;
-	position: absolute;
 }
 </style>

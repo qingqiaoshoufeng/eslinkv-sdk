@@ -193,9 +193,11 @@ export default class rightMenu extends Vue {
 
 	.list {
 		border-bottom: 1px solid #22242b;
+
 		&:last-child {
 			border-bottom: none;
 		}
+
 		li {
 			position: relative;
 			display: flex;

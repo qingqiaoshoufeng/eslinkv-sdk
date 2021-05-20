@@ -131,6 +131,7 @@ export default class DUpload extends Vue {
 	justify-content: center;
 	width: 208px;
 	height: 115px;
+
 	video,
 	img {
 		max-width: 100%;
@@ -149,6 +150,7 @@ export default class DUpload extends Vue {
 		.ivu-upload {
 			background-color: #181b24;
 		}
+
 		.ivu-upload-select {
 			display: flex;
 			display: -webkit-flex;
@@ -159,19 +161,19 @@ export default class DUpload extends Vue {
 			transition: all 0.3s;
 
 			.d-upload-text {
-				color: #fafafa;
 				font-size: 14px;
+				color: #fafafa;
 			}
 		}
 	}
 }
 
 .progress {
-	width: 80%;
 	position: absolute;
-	left: 50%;
 	top: 50%;
-	transform: translate(-50%, -50%);
+	left: 50%;
+	width: 80%;
 	line-height: 1;
+	transform: translate(-50%, -50%);
 }
 </style>

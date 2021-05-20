@@ -144,6 +144,7 @@ export default class DLeftWidget extends Vue {
 			}
 		}
 	}
+
 	p {
 		user-select: none;
 	}

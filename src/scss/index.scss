@@ -42,9 +42,11 @@ body {
 .pointer {
 	cursor: pointer;
 }
+
 .pointer-no {
 	pointer-events: none;
 }
+
 .fn-clear {
 	*zoom: 1;
 
@@ -188,38 +190,48 @@ body {
 .ivu-modal-content {
 	background-color: #2d2f38;
 }
+
 .ivu-modal-header {
-	border: none;
-	text-align: center;
 	padding: 16px 0 0 0;
+	text-align: center;
+	border: none;
 }
+
 .ivu-modal-header-inner {
 	color: var(--white);
 }
+
 .ivu-modal-close {
 	.ivu-icon {
 		color: var(--white);
 	}
+
 	&:hover {
 		.ivu-icon {
 			color: var(--themeColor);
 		}
 	}
 }
+
 .ivu-modal-confirm-head-title {
 	color: var(--white);
 }
+
 .ivu-modal-footer {
 	border: none;
 }
+
 .ivu-modal-mask {
 	background-color: rgba(0, 0, 0, 0.4);
 }
+
 .ivu-modal-body {
 	color: var(--white);
+
 	.ivu-form-item-label {
 		color: var(--white);
 	}
+
 	.ivu-select-not-found {
 		padding: 4px 0;
 	}
@@ -267,6 +279,7 @@ body {
 
 	.ivu-input-disabled {
 		background-color: #181b24 !important;
+
 		&:hover {
 			border: 1px solid var(--themeColor) !important;
 		}
@@ -275,9 +288,11 @@ body {
 	.ivu-color-picker {
 		display: block;
 		cursor: pointer;
+
 		.ivu-icon {
 			display: none;
 		}
+
 		.ivu-input-icon-normal + .ivu-input {
 			padding-right: 7px;
 		}
@@ -290,6 +305,7 @@ body {
 	.ivu-radio-group-button {
 		display: block;
 	}
+
 	&::-webkit-scrollbar {
 		width: 4px;
 		height: 1px;
@@ -318,8 +334,10 @@ body {
 		}
 	}
 }
+
 .ivu-select-dropdown {
 	overflow-y: auto;
+
 	&::-webkit-scrollbar {
 		width: 4px;
 		height: 1px;

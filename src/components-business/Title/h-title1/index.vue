@@ -1,13 +1,8 @@
 <template lang="pug">
-div(:style="styles", v-if="config")
+div(:style="styles", v-if="data")
 	.fn-flex.flex-row.h-title-1
 		.h-title-1-icon
-		h2(@click="__handleClick__(test)") {{ config.config.title }}
-	.imgs
-		img(
-			v-for="(k, i) in config.config.backgrounds",
-			:src="k.background",
-			:key="i")
+		h2(@click="__handleClick__(test)") {{ data.title }}
 </template>
 <script lang="ts">
 import widgetMixin from '../../../../mixins'

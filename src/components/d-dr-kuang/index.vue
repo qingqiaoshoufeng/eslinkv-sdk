@@ -1,44 +1,52 @@
 <template lang="pug">
 .dr-line.pos-a
-	.dr-line-top.pos-a
-	.dr-line-bottom.pos-a
-	.dr-line-left.pos-a
-	.dr-line-right.pos-a
+	.dr-line-top.pos-a(:style="{ height: `${1 / ruler.zoom}px` }")
+	.dr-line-bottom.pos-a(:style="{ height: `${1 / ruler.zoom}px` }")
+	.dr-line-left.pos-a(:style="{ width: `${1 / ruler.zoom}px` }")
+	.dr-line-right.pos-a(:style="{ width: `${1 / ruler.zoom}px` }")
 </template>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import ruler from '@/store/ruler.store.js'
+@Component
+export default class DDrKuang extends Vue {
+	ruler = ruler.state
+}
+</script>
 <style lang="scss">
 .dr-line {
-	height: 100%;
-	width: 100%;
 	top: 0;
 	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .dr-line-top {
-	width: 100%;
-	height: 1px;
 	top: 0;
 	left: 0;
+	width: 100%;
+	height: 1px;
 }
 
 .dr-line-bottom {
-	width: 100%;
-	height: 1px;
 	bottom: 0;
 	left: 0;
+	width: 100%;
+	height: 1px;
 }
 
 .dr-line-left {
-	width: 1px;
-	height: 100%;
 	top: 0;
 	left: 0;
+	width: 1px;
+	height: 100%;
 }
 
 .dr-line-right {
-	width: 1px;
-	height: 100%;
 	top: 0;
 	right: 0;
+	width: 1px;
+	height: 100%;
 }
 
 .dr-active,
@@ -59,6 +67,7 @@
 	.dr-line-right {
 		background-color: var(--themeColor_04);
 	}
+
 	&::after {
 		opacity: 1;
 	}

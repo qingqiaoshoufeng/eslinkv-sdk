@@ -1,86 +1,62 @@
 <template lang="pug">
 .d-right-modal.d-scrollbar
-	.d-manage-modal-control
-		label 屏幕大小
-		.d-manage-modal-control-right
-			i-select(v-model="size")
-				i-option(value="1920*1080") 大屏推荐尺寸1920*1080
-				i-option(value="1366*768") web最常见尺寸1366*768
-				i-option(value="1024*768") web最小尺寸1024*768
-				i-option(value="other") 自定义
-	.d-manage-modal-control
-		label
-		.d-manage-modal-control-right
-			d-input(
-				append="W",
-				v-model="platform.panelConfig.size.width",
-				:style="{ width: '100px' }")
-			d-input(
-				append="H",
-				v-model="platform.panelConfig.size.height",
-				:style="{ marginLeft: '10px', width: '100px' }")
-	.d-manage-modal-control
-		label 背景色
-		.d-manage-modal-control-right
-			i-color-picker(
-				:alpha="true",
-				v-model="platform.panelConfig.background.color")
-			i-input(
-				v-model="platform.panelConfig.background.color",
-				:disabled="true",
-				:style="{ width: '166px', marginLeft: '10px' }")
-	.d-manage-modal-control
-		label 
-			span(style="margin-right: 5px") 背景图
-			i-tooltip(content="支持jpg，png，gif", placement="top")
-				i-icon(type="md-help-circle", size="16")
-		.d-manage-modal-control-right
-			d-upload(
-				v-model="platform.panelConfig.background.url",
-				:data="backGroundFormData")
-	.d-manage-modal-control
-		label 移动看板
-		.d-manage-modal-control-right
-			i-switch(v-model="platform.panelConfig.size.isMobile")
-	.d-manage-modal-control
-		label 适配模式
-		.d-manage-modal-control-right
-			i-select(v-model="platform.panelConfig.size.layoutMode")
-				i-option(value="full-size") 充满页面
-				i-option(value="full-width") 100%宽度
-				i-option(value="full-height") 100%高度
+	d-right-control(label="屏幕大小")
+		i-select(v-model="size")
+			i-option(value="1920*1080") 大屏推荐尺寸1920*1080
+			i-option(value="1366*768") web最常见尺寸1366*768
+			i-option(value="1024*768") web最小尺寸1024*768
+			i-option(value="other") 自定义
+	d-right-control
+		d-input(
+			append="W",
+			v-model="platform.panelConfig.size.width",
+			:style="{ width: '100px' }")
+		d-input(
+			append="H",
+			v-model="platform.panelConfig.size.height",
+			:style="{ marginLeft: '10px', width: '100px' }")
+	d-right-control(label="背景色")
+		i-color-picker(
+			:alpha="true",
+			v-model="platform.panelConfig.background.color")
+		i-input(
+			v-model="platform.panelConfig.background.color",
+			:disabled="true",
+			:style="{ width: '166px', marginLeft: '10px' }")
+	d-right-control(label="背景图", title="支持jpg，png，gif")
+		d-upload(
+			v-model="platform.panelConfig.background.url",
+			:data="backGroundFormData")
+	d-right-control(label="移动看板")
+		i-switch(v-model="platform.panelConfig.size.isMobile")
+	d-right-control(label="适配模式")
+		i-select(v-model="platform.panelConfig.size.layoutMode")
+			i-option(value="full-size") 充满页面
+			i-option(value="full-width") 100%宽度
+			i-option(value="full-height") 100%高度
 	// START_PROD
-	.d-manage-modal-control
-		label
-			span(style="margin-right: 5px") 封面
-			i-tooltip(content="支持jpg，png，gif", placement="top")
-				i-icon(type="md-help-circle", size="16")
-		.d-manage-modal-control-right
-			d-upload(
-				v-model="platform.screenAvatar",
-				:data="screenAvatarFormData",
-				@success="handleScreenAvatar")
-	.d-manage-modal-control
-		label
-		.d-manage-modal-control-right
-			i-button(@click="screenAvatar", type="primary") 截屏
+	d-right-control(label="封面", title="支持jpg，png，gif")
+		d-upload(
+			v-model="platform.screenAvatar",
+			:data="screenAvatarFormData",
+			@success="handleScreenAvatar")
+	d-right-control
+		i-button(@click="screenAvatar", type="primary") 截屏
 	// END_PROD
-	.d-manage-modal-control(v-if="scene.list.length > 0")
-		label 首场景
-		.d-manage-modal-control-right
-			i-select(filterable, v-model="platform.panelConfig.mainScene")
-				i-option(:value="0") 主场景
-				i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
+	d-right-control(label="首场景", v-if="scene.list.length > 0")
+		i-select(filterable, v-model="platform.panelConfig.mainScene")
+			i-option(:value="0") 主场景
+			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 </template>
 <script lang="ts">
-import func from './func.mx'
+import func from '@/components-func/func.mx'
 import { Component } from 'vue-property-decorator'
 // START_PROD
 import html2canvas from 'html2canvas'
 // END_PROD
-import platform from '../store/platform.store.js'
-import scene from '../store/scene.store.js'
-import dUpload from '../components-right/d-upload/index.vue'
+import platform from '@/store/platform.store.js'
+import scene from '@/store/scene.store.js'
+import dUpload from '@/components-right/d-upload/index.vue'
 import { Tooltip } from 'view-design'
 
 @Component({

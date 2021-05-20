@@ -26,6 +26,7 @@ dr(
 		:ref="item.id",
 		:type="item.type",
 		:config="item.config",
+		:children="item.children",
 		:market="item.market",
 		@widget-config-update="data => handleWidgetConfig(data, item)")
 </template>
@@ -98,6 +99,7 @@ export default class ItemCard extends Vue {
 		].config.layout.position.top = top
 	}
 
+	// @ts-ignore
 	onResizeStop(left, top, width, height) {
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId

@@ -1,18 +1,16 @@
 <template lang="pug">
 .d-manage-modal-control-base
 	// START_PROD
-	.d-manage-modal-control
-		label 组件市场
-		.d-manage-modal-control-right
-			i-select(
-				v-model="item.config.widget.componentVersion",
-				v-if="item.market",
-				:style="{ marginRight: '10px', width: '156px' }")
-				i-option(
-					:value="item.componentVersion",
-					v-for="(item, i) in versionList",
-					:key="i") {{ item.componentVersion }}
-			i-switch(v-model="item.market")
+	d-right-control(label="组件市场")
+		i-select(
+			v-model="item.config.widget.componentVersion",
+			v-if="item.market",
+			:style="{ marginRight: '10px', width: '156px' }")
+			i-option(
+				:value="item.componentVersion",
+				v-for="(item, i) in versionList",
+				:key="i") {{ item.componentVersion }}
+		i-switch(v-model="item.market")
 	// END_PROD
 </template>
 <script lang="ts">

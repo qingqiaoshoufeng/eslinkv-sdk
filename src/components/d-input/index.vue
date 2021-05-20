@@ -23,13 +23,15 @@ export default class DInput extends Vue {
 <style lang="scss" scoped>
 .d-input {
 	border: 1px solid #393b4a;
+
 	/deep/ {
 		.ivu-input {
 			color: #fafafa;
 			background-color: #181b24;
-			border-radius: 2px;
 			border: none;
+			border-radius: 2px;
 		}
+
 		.ivu-input-group-append {
 			background-color: #181b24;
 			border: none;

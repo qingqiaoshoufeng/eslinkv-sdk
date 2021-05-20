@@ -138,22 +138,25 @@ export default class DLeftScene extends Vue {
 <style lang="scss" scoped>
 .d-left-scene-bottom {
 	width: 100%;
+
 	.d-left-scene-bottom-btn {
+		flex: 1;
 		height: 30px;
 		line-height: 30px;
-		border-top: 1px solid #282f3a;
-		flex: 1;
 		color: #999;
 		cursor: pointer;
+		border-top: 1px solid #282f3a;
+
 		&.disabled {
-			cursor: no-drop;
 			color: rgb(61, 77, 102);
+			cursor: no-drop;
 		}
 	}
 }
+
 .d-left-scene-list {
-	padding-left: 8px;
 	flex: 1;
+	padding-left: 8px;
 }
 
 .d-left-scene {
@@ -162,6 +165,7 @@ export default class DLeftScene extends Vue {
 	background-color: #1d2127;
 	border-left: 1px solid #000;
 	transition: all 0.3s;
+
 	ul {
 		overflow-y: auto;
 	}

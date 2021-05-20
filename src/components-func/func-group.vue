@@ -41,22 +41,27 @@ export default class FuncGroup extends func {
 		color: #bfbfbf;
 	}
 }
+
 .func-group-tab {
-	border-bottom: 1px solid var(--borderGray);
-	margin-bottom: 10px;
 	padding: 5px 10px 0 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid var(--borderGray);
+
 	span {
-		margin-right: 10px;
 		padding-bottom: 5px;
+		margin-right: 10px;
+
 		&:last-child {
 			margin-bottom: 0;
 		}
+
 		&.active {
-			border-bottom: 1px solid var(--themeColor);
 			color: var(--themeColor);
+			border-bottom: 1px solid var(--themeColor);
 		}
 	}
 }
+
 .func-group {
 	/deep/ + .d-manage-modal-control {
 		margin-top: 10px;

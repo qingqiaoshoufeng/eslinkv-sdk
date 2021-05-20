@@ -71,7 +71,8 @@ const actions = {
 		Vue.set(state.widgetAdded[id].config.api, 'data', JSON.stringify(data))
 	},
 	updateConfig(id, config) {
-		Vue.set(state.widgetAdded[id], 'config', config)
+		if (state.widgetAdded[id])
+			Vue.set(state.widgetAdded[id], 'config', config)
 	},
 	setWidgetsAdded(value) {
 		state.widgetAdded = value

@@ -19,11 +19,11 @@
 import { Component, Vue } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import ruler from '../../store/ruler.store'
-import configProd from '../../components-func/config.vue'
+import config from './config.vue'
 import { Icon, Input } from 'view-design'
 @Component({
 	components: {
-		config: configProd,
+		config,
 		'i-icon': Icon,
 		'i-input': Input,
 	},

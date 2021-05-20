@@ -2,74 +2,64 @@
 .d-manage-modal-control-data
 	d-right-swiper(title="数据请求", :show="true")
 		// START_PROD
-		.d-manage-modal-control
-			label 数据类型
-			.d-manage-modal-control-right
-				i-select(
-					v-model="apiType",
-					:style="{ width: apiType === '数仓平台' ? '122px' : '208px' }")
-					i-option(value="静态数据") 静态数据
-					i-option(value="API接口") API接口
-					i-option(value="数仓平台") 数仓平台
-				i-button.setting-btn(
-					@click="openSystemConfig",
-					type="primary",
-					icon="md-settings",
-					:style="{ marginLeft: '10px' }",
-					v-if="apiType === '数仓平台'",
-					:disabled="!item.config.api.system.enable") 配置
-		.d-manage-modal-control(v-if="apiType === 'API接口'")
-			label 接口地址
-			.d-manage-modal-control-right
-				i-input(
-					v-model="item.config.api.url",
-					@on-focus="event.inputFocus = true",
-					@on-blur="event.inputFocus = false")
-		.d-manage-modal-control(v-if="apiType === 'API接口'")
-			label
-			.d-manage-modal-control-right
-				i-select(
-					v-model="item.config.api.method",
-					:style="{ marginRight: '10px', width: '100px' }")
-					i-option(value="GET") GET
-					i-option(value="POST") POST
-					i-option(value="PUT") PUT
-					i-option(value="DELETE") DELETE
-					i-option(value="PATCH") PATCH
-				i-input(
-					v-model="item.config.api.path",
-					:style="{ width: '100px' }",
-					@on-focus="event.inputFocus = true",
-					@on-blur="event.inputFocus = false")
-		.d-manage-modal-control(v-if="item.config.api.system.enable")
-			label 接口地址
-			.d-manage-modal-control-right
-				i-input(
-					v-model="item.config.api.system.interface",
-					@on-focus="event.inputFocus = true",
-					@on-blur="event.inputFocus = false")
-		.d-manage-modal-control(v-if="item.config.api.system.enable")
-			label
-			.d-manage-modal-control-right
-				i-select(
-					v-model="item.config.api.system.method",
-					:style="{ marginRight: '10px', width: '100px' }")
-					i-option(value="GET") GET
-					i-option(value="POST") POST
-					i-option(value="PUT") PUT
-					i-option(value="DELETE") DELETE
-					i-option(value="PATCH") PATCH
-				i-input(
-					v-model="item.config.api.system.path",
-					:style="{ width: '100px' }",
-					@on-focus="event.inputFocus = true",
-					@on-blur="event.inputFocus = false")
-				database-config(
-					ref="dataBaseConfig",
-					:showModal="showDatabaseConfigModal",
-					@close="showDatabaseConfigModal = false",
-					@update="updateApiSystem",
-					@keyup.native.stop)
+		d-right-control(label="数据类型")
+			i-select(
+				v-model="apiType",
+				:style="{ width: apiType === '数仓平台' ? '122px' : '208px' }")
+				i-option(value="静态数据") 静态数据
+				i-option(value="API接口") API接口
+				i-option(value="数仓平台") 数仓平台
+			i-button.setting-btn(
+				@click="openSystemConfig",
+				type="primary",
+				icon="md-settings",
+				:style="{ marginLeft: '10px' }",
+				v-if="apiType === '数仓平台'",
+				:disabled="!item.config.api.system.enable") 配置
+		d-right-control(label="接口地址", v-if="apiType === 'API接口'")
+			i-input(
+				v-model="item.config.api.url",
+				@on-focus="event.inputFocus = true",
+				@on-blur="event.inputFocus = false")
+		d-right-control(v-if="apiType === 'API接口'")
+			i-select(
+				v-model="item.config.api.method",
+				:style="{ marginRight: '10px', width: '100px' }")
+				i-option(value="GET") GET
+				i-option(value="POST") POST
+				i-option(value="PUT") PUT
+				i-option(value="DELETE") DELETE
+				i-option(value="PATCH") PATCH
+			i-input(
+				v-model="item.config.api.path",
+				:style="{ width: '100px' }",
+				@on-focus="event.inputFocus = true",
+				@on-blur="event.inputFocus = false")
+		d-right-control(label="接口地址", v-if="item.config.api.system.enable")
+			i-input(
+				v-model="item.config.api.system.interface",
+				@on-focus="event.inputFocus = true",
+				@on-blur="event.inputFocus = false")
+		d-right-control(v-if="item.config.api.system.enable")
+			i-select(
+				v-model="item.config.api.system.method",
+				:style="{ marginRight: '10px', width: '100px' }")
+				i-option(value="GET") GET
+				i-option(value="POST") POST
+				i-option(value="PUT") PUT
+				i-option(value="DELETE") DELETE
+				i-option(value="PATCH") PATCH
+			i-input(
+				v-model="item.config.api.system.path",
+				:style="{ width: '100px' }",
+				@on-focus="event.inputFocus = true",
+				@on-blur="event.inputFocus = false")
+			database-config(
+				ref="dataBaseConfig",
+				:showModal="showDatabaseConfigModal",
+				@close="showDatabaseConfigModal = false",
+				@update="updateApiSystem",
+				@keyup.native.stop)
 		d-code(
 			label="请求参数",
 			lang="json",
@@ -96,34 +86,28 @@
 		:enable="item.config.api.autoFetch.enable",
 		@open-click="item.config.api.autoFetch.enable = true",
 		@close-click="item.config.api.autoFetch.enable = false")
-		.d-manage-modal-control
-			label
-			.d-manage-modal-control-right
-				i-input-number(
-					:min="1",
-					:step="1",
-					@on-focus="event.inputFocus = true",
-					@on-blur="event.inputFocus = false",
-					:formatter="value => `${value} ms`",
-					v-model="item.config.api.autoFetch.duration")
+		d-right-control
+			i-input-number(
+				:min="1",
+				:step="1",
+				@on-focus="event.inputFocus = true",
+				@on-blur="event.inputFocus = false",
+				:formatter="value => `${value} ms`",
+				v-model="item.config.api.autoFetch.duration")
 	// END_PROD
 	data-event-component
 	data-event-scene
-	.d-manage-modal-control
-		label 开启组件内部事件
-		.d-manage-modal-control-right
-			i-switch(v-model="event.componentsDisabled[platform.chooseWidgetId]")
-	.d-manage-modal-control
-		label 组件关联
-		.d-manage-modal-control-right
-			i-switch(v-model="item.config.api.bind.enable")
-			i-select(
-				v-if="item.config.api.bind.enable",
-				v-model="item.config.api.bind.refIds",
-				filterable,
-				multiple,
-				:style="{ width: '100px', marginLeft: '10px' }")
-				i-option(:value="item.id", v-for="(item, key) in relateList", :key="key") {{ item.id }}
+	d-right-control(label="开启组件内部事件")
+		i-switch(v-model="event.componentsDisabled[platform.chooseWidgetId]")
+	d-right-control(label="组件关联")
+		i-switch(v-model="item.config.api.bind.enable")
+		i-select(
+			v-if="item.config.api.bind.enable",
+			v-model="item.config.api.bind.refIds",
+			filterable,
+			multiple,
+			:style="{ width: '100px', marginLeft: '10px' }")
+			i-option(:value="item.id", v-for="(item, key) in relateList", :key="key") {{ item.id }}
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -194,8 +178,11 @@ export default class FuncData extends func {
 		if (v) {
 			try {
 				data[prop] = JSON.stringify(JSON.parse(v))
-			} catch (e) {
-				console.warn(e)
+			} catch (err) {
+				console.log(
+					`${this.item.config.widget.name} ${this.item.config.widget.componentVersion} JSON 格式化 响应数据有错误信息！！！`,
+				)
+				console.log(err.stack)
 			}
 		} else {
 			data[prop] = ''

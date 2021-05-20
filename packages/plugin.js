@@ -17,7 +17,8 @@ import {
 import Vue from 'vue'
 import Hljs from 'highlight.js'
 import 'highlight.js/styles/tomorrow-night.css'
-
+import group from '../src/components/d-widget-part-group'
+Vue.component('eslinkv-group', group)
 const Highlight = {
 	install: function (Vue) {
 		Vue.directive('highlight', {
