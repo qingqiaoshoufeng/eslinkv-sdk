@@ -554,8 +554,8 @@ export default {
 				this.dragging &&
 				this.top > 0 &&
 				this.left > 0 &&
-				this.top < this.platform.panelConfig.size.height &&
-				this.left < this.platform.panelConfig.size.width
+				this.top < this.platform.height &&
+				this.left < this.platform.width
 			)
 		},
 		style() {

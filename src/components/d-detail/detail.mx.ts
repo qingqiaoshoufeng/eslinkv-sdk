@@ -15,7 +15,7 @@ export default {
 			const marketComponents: { type: string; version: string }[] = []
 			const obj: { [key: string]: widgetConfig } = {}
 			const p = []
-			res.screenConfig.widgets.forEach((item: widgetConfigOriginal) => {
+			res.screenConfig.widgets.forEach(item => {
 				obj[item.id] = {
 					id: item.id,
 					market: item.market,
@@ -86,9 +86,10 @@ export default {
 					this.platform.screenType = res.screenType
 					this.platform.screenAvatar = res.screenAvatar
 					this.platform.screenName = res.screenName
-					this.platform.panelConfig = res.screenConfig.kanboard
-						? res.screenConfig.kanboard
-						: res.screenConfig.panelConfig
+					this.platform.backgroundImage =
+						res.screenConfig.panelConfig.background.url
+					this.platform.backgroundColor =
+						res.screenConfig.panelConfig.background.color
 					this.refillConfig(res)
 				})
 		}
@@ -96,9 +97,10 @@ export default {
 			this.$api.screen
 				.detailFile(decodeURIComponent(file))
 				.then((res: platformInitResult) => {
-					this.platform.panelConfig = res.screenConfig.kanboard
-						? res.screenConfig.kanboard
-						: res.screenConfig.panelConfig
+					this.platform.backgroundImage =
+						res.screenConfig.panelConfig.background.url
+					this.platform.backgroundColor =
+						res.screenConfig.panelConfig.background.color
 					this.refillConfig(res)
 				})
 		}

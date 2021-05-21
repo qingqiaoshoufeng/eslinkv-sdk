@@ -9,28 +9,28 @@
 	d-right-control
 		d-input(
 			append="W",
-			v-model="platform.panelConfig.size.width",
+			v-model="platform.width",
 			:style="{ width: '100px' }")
 		d-input(
 			append="H",
-			v-model="platform.panelConfig.size.height",
+			v-model="platform.height",
 			:style="{ marginLeft: '10px', width: '100px' }")
 	d-right-control(label="背景色")
 		i-color-picker(
 			:alpha="true",
-			v-model="platform.panelConfig.background.color")
+			v-model="platform.backgroundColor")
 		i-input(
-			v-model="platform.panelConfig.background.color",
+			v-model="platform.backgroundColor",
 			:disabled="true",
 			:style="{ width: '166px', marginLeft: '10px' }")
 	d-right-control(label="背景图", title="支持jpg，png，gif")
 		d-upload(
-			v-model="platform.panelConfig.background.url",
+			v-model="platform.backgroundImage",
 			:data="backGroundFormData")
 	d-right-control(label="移动看板")
-		i-switch(v-model="platform.panelConfig.size.isMobile")
+		i-switch(v-model="platform.isMobile")
 	d-right-control(label="适配模式")
-		i-select(v-model="platform.panelConfig.size.layoutMode")
+		i-select(v-model="platform.layoutMode")
 			i-option(value="full-size") 充满页面
 			i-option(value="full-width") 100%宽度
 			i-option(value="full-height") 100%高度
@@ -44,7 +44,7 @@
 		i-button(@click="screenAvatar", type="primary") 截屏
 	// END_PROD
 	d-right-control(label="首场景", v-if="scene.list.length > 0")
-		i-select(filterable, v-model="platform.panelConfig.mainScene")
+		i-select(filterable, v-model="platform.mainScene")
 			i-option(:value="0") 主场景
 			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 </template>
@@ -79,8 +79,8 @@ export default class FuncConfig extends func {
 	// END_PROD
 
 	get size() {
-		const width = this.platform.panelConfig.size.width
-		const height = this.platform.panelConfig.size.height
+		const width = this.platform.width
+		const height = this.platform.height
 		if (width !== 1920 && width !== 1366 && width !== 1024) {
 			return 'other'
 		}
@@ -93,8 +93,8 @@ export default class FuncConfig extends func {
 	set size(value) {
 		if (value !== 'other' && value) {
 			const [width, height] = value.split('*')
-			this.platform.panelConfig.size.width = +width
-			this.platform.panelConfig.size.height = +height
+			this.platform.width = +width
+			this.platform.height = +height
 		}
 	}
 

@@ -1,4 +1,4 @@
-<template lang="pug">
+﻿<template lang="pug">
 .d-detail.fn-flex(v-if="show")
 	.d-detail-left.fn-flex
 		.d-detail-left-icon-box.fn-flex
@@ -117,7 +117,7 @@ export default class DDetail extends mixins(
 
 	preview() {
 		window.open(
-			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.platform.panelConfig.size.layoutMode}`,
+			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.platform.layoutMode}`,
 		)
 	}
 
@@ -161,17 +161,6 @@ export default class DDetail extends mixins(
 
 	platFormData() {
 		const defaultConfig = commonConfigValue() // 读取默认配置
-		const panelConfig = this.platform.panelConfig
-		delete panelConfig.info
-		delete panelConfig.id
-		const { size } = panelConfig
-		delete size.preset
-		if (
-			size.range &&
-			!Object.values(size.range).find(item => item !== 0 && item !== '%')
-		) {
-			delete size.range
-		}
 		const widgetAdded = copy(this.platform.widgetAdded)
 		const widgets = Object.values(widgetAdded).map(
 			({ id, market = false, type, config, scene = 0 }) => {
@@ -189,14 +178,13 @@ export default class DDetail extends mixins(
 					scene,
 					type,
 					market,
-					value: { ...config },
+					...config,
 				}
 			},
 		)
 		return {
 			screenName: this.platform.screenName,
 			screenConfig: {
-				panelConfig, // 看板画布配置
 				widgets, // 小工具配置
 				scene: this.scene.obj, // 场景
 			},

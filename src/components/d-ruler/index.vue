@@ -52,8 +52,13 @@ export default class DRuler extends Vue {
 		this.ruler.contentX += this.ruler.contentScrollLeft
 	}
 
-	@Watch('platform.panelConfig.size', { deep: true })
-	panelConfigSizeChange() {
+	@Watch('platform.height', { deep: true })
+	heightChange() {
+		ruler.actions.resetZoom()
+	}
+
+	@Watch('platform.width', { deep: true })
+	widthChange() {
 		ruler.actions.resetZoom()
 	}
 

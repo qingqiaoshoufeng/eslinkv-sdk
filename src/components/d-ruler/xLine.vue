@@ -46,11 +46,6 @@ export default class XLine extends Vue {
 		this.init()
 	}
 
-	@Watch('panelConfig.size.width')
-	widthChange() {
-		this.init()
-	}
-
 	translateAnimation(num) {
 		const animation = requestAnimationFrame(() =>
 			this.translateAnimation(num),
@@ -116,13 +111,13 @@ export default class XLine extends Vue {
 	 */
 	init() {
 		this.context.translate(
-			(this.platform.panelConfig.size.width * (1 - this.ruler.zoom)) / 2 +
+			(this.platform.width * (1 - this.ruler.zoom)) / 2 +
 				this.ruler.contentX -
 				this.ruler.guideStartX,
 			0,
 		)
 		this.ruler.guideStartX =
-			(this.platform.panelConfig.size.width * (1 - this.ruler.zoom)) / 2 +
+			(this.platform.width * (1 - this.ruler.zoom)) / 2 +
 			this.ruler.contentX
 		if (loadImg) {
 			this.initDraw()

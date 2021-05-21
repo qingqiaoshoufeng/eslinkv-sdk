@@ -20,7 +20,7 @@ interface widgetUseResult {
 	componentEnTitle: string /*组件英文名即类型*/
 	componentId: string /*组件id*/
 	componentTitle: string /*组件中文名*/
-	componentType: string /*组件类别：基础 BASICS*/
+	componentType: string /*组件类别：基础 BASICS 地图 MAP 图表antv ANTV 图表Echarts ECHARTS*/
 	componentTypeId: string /*组件所属分类id*/
 	componentVersion: string /*组件版本号*/
 	componentZipUrl: string /*组件zip url*/

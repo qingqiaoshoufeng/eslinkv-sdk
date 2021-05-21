@@ -6,25 +6,9 @@ import { store } from './index'
 
 const isMac = /macintosh|mac os x/i.test(navigator.userAgent)
 
-function getInitPanelConfig() {
-	return {
-		// 看板配置
-		size: {
-			width: 1920,
-			height: 1080,
-			isMobile: false,
-			layoutMode: 'full-height',
-		},
-		background: {
-			url: '',
-			color: 'rgba(24, 27, 36,1)',
-		},
-		mainScene: 0, // 设置进入场景
-	}
-}
-
 const state = Vue.observable({
 	version: '1.1.0',
+	screenVersion: 0,
 	widgetAdded: {},
 	screenAvatar: '',
 	screenType: 'CUSTOM', // CUSTOM 普通大屏 TEMPLATE 模版大屏
@@ -40,7 +24,14 @@ const state = Vue.observable({
 		height: 0,
 		z: 0,
 	}, // 选中项配置
-	panelConfig: getInitPanelConfig(),
+	backgroundImage: '',
+	backgroundColor: 'rgba(24, 27, 36,1)',
+	width: 1920,
+	height: 1080,
+	isMobile: false,
+	layoutMode: 'full-height',
+	mainScene: 0, // 设置进入场景
+
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏
 	searchModal: false,
@@ -50,7 +41,6 @@ const actions = {
 	initPlatformConfig() {
 		state.screenName = '未命名'
 		state.screenAvatar = ''
-		state.panelConfig = getInitPanelConfig()
 		state.widgetAdded = {}
 	},
 	unChooseWidget() {

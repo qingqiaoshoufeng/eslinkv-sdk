@@ -19,16 +19,16 @@
 			dr-more(v-show="platform.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(
-				:data-top="`${platform.panelConfig.size.height}px`",
+				:data-top="`${platform.height}px`",
 				data-left="0px")
 			.d-editor-line(
 				data-top="0px",
-				:style="{ width: 0, height: `${platform.panelConfig.size.height}px` }",
-				:data-left="`${platform.panelConfig.size.width}px`")
+				:style="{ width: 0, height: `${platform.height}px` }",
+				:data-left="`${platform.width}px`")
 			.d-editor-line(
 				data-top="0px",
 				data-left="0px",
-				:style="{ height: `${platform.panelConfig.size.height}px`, width: 0 }")
+				:style="{ height: `${platform.height}px`, width: 0 }")
 			// 参考线
 			span.ref-line.v-line.pos-a(
 				v-for="item in vLine",
@@ -119,14 +119,14 @@ export default {
 	computed: {
 		canvasStyle() {
 			return {
-				width: `${this.platform.panelConfig.size.width}px`,
-				height: `${this.platform.panelConfig.size.height}px`,
-				'background-color': this.platform.panelConfig.background.color,
-				'background-image': `url(${this.platform.panelConfig.background.url})`,
+				width: `${this.platform.width}px`,
+				height: `${this.platform.height}px`,
+				'background-color': this.platform.backgroundColor,
+				'background-image': `url(${this.platform.backgroundImage})`,
 			}
 		},
 		canvasSize() {
-			const { width, height } = this.platform.panelConfig.size
+			const { width, height } = this.platform
 			return { width, height }
 		},
 	},

@@ -45,7 +45,7 @@ export default class YLine extends Vue {
 		this.init()
 	}
 
-	@Watch('platform.panelConfig.size.height')
+	@Watch('platform.height')
 	heightChange() {
 		this.init()
 	}
@@ -120,14 +120,12 @@ export default class YLine extends Vue {
 	init() {
 		this.context.translate(
 			0,
-			(this.platform.panelConfig.size.height * (1 - this.ruler.zoom)) /
-				2 +
+			(this.platform.height * (1 - this.ruler.zoom)) / 2 +
 				this.ruler.contentY -
 				this.ruler.guideStartY,
 		)
 		this.ruler.guideStartY =
-			(this.platform.panelConfig.size.height * (1 - this.ruler.zoom)) /
-				2 +
+			(this.platform.height * (1 - this.ruler.zoom)) / 2 +
 			this.ruler.contentY
 		if (loadImg) {
 			this.initDraw()

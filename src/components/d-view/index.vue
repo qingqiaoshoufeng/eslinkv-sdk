@@ -33,10 +33,10 @@ export default class DView extends Vue {
 
 	canvasStyle() {
 		const val = {
-			width: `${this.platform.panelConfig.size.width}px`,
-			height: `${this.platform.panelConfig.size.height}px`,
-			'background-color': this.platform.panelConfig.background.color,
-			'background-image': `url(${this.platform.panelConfig.background.url})`,
+			width: `${this.platform.width}px`,
+			height: `${this.platform.height}px`,
+			'background-color': this.platform.backgroundColor,
+			'background-image': `url(${this.platform.backgroundImage})`,
 		}
 		if (val) {
 			this.$emit('mounted', val)

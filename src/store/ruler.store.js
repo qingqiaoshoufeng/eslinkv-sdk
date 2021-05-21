@@ -35,8 +35,8 @@ const actions = {
 		const rulerContent = document.getElementById('ruler-content')
 		const rulerOffsetWidth = rulerContent.offsetWidth - state.size
 		const rulerOffsetHeight = rulerContent.offsetHeight
-		const platformWidth = platform.state.panelConfig.size.width
-		const platformHeight = platform.state.panelConfig.size.height
+		const platformWidth = platform.state.width
+		const platformHeight = platform.state.height
 		state.zoom =
 			~~((rulerOffsetWidth / platformWidth) * 100) / 100 || state.zoomStep
 		const deltaX = (rulerOffsetWidth - platformWidth) * 0.5

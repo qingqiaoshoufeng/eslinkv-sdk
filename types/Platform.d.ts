@@ -12,6 +12,7 @@ interface platformInitResult {
 	screenType: string /*大屏类型：CUSTOM 普通大屏 TEMPLATE 模版大屏*/
 	screenAvatar: string /*大屏封面图*/
 	screenName: string /*大屏名称*/
+	screenVersion: number /*大屏版本号*/
 }
 
 interface screenConfig {
