@@ -16,6 +16,7 @@ const state = Vue.observable({
 	screenName: '未命名',
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
 	chooseWidgetId: null, // 选中项id
+	chooseWidgetChildId: null, // 选中的分组内的组件id
 	chooseWidgetArray: [], // 选中项ids
 	chooseWidgetArrayConfig: {
 		left: 0,
@@ -45,6 +46,7 @@ const actions = {
 	},
 	unChooseWidget() {
 		state.chooseWidgetId = null
+		state.chooseWidgetChildId = null
 		state.chooseWidgetArray = []
 		document.getElementById('right-menu').classList.remove('active')
 	},

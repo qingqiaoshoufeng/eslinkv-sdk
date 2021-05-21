@@ -57,11 +57,12 @@ export default class Func extends Vue {
 	@Prop() parentIndex // group时会有
 
 	get item() {
-		if (this.platform.widgetAdded[this.platform.chooseWidgetId]) {
-			return this.platform.widgetAdded[this.platform.chooseWidgetId]
-		} else {
-			return null
+		if (!this.platform.chooseWidgetId) return null
+		const widget = this.platform.widgetAdded[this.platform.chooseWidgetId]
+		if (widget.children && this.platform.chooseWidgetChildId) {
+			return widget.children.find(v => v.id === this.platform.chooseWidgetChildId)
 		}
+		return widget
 	}
 
 	get fixedConfig() {

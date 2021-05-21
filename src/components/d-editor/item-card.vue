@@ -137,12 +137,18 @@ export default class ItemCard extends Vue {
 	}
 
 	handleActivated(obj) {
-		const { config, id, type } = obj
+		const { config, id, type, children } = obj
 		if (config.widget.hide) {
 			return
 		}
 		platform.actions.chooseWidget(id)
-		platform.actions.setChooseWidgetCustomConfig(config.customConfig)
+		if (children && this.platform.chooseWidgetChildId) {
+			platform.actions.setChooseWidgetCustomConfig(
+				children.find(v => v.id === this.platform.chooseWidgetChildId).config.customConfig
+			)
+		} else {
+			platform.actions.setChooseWidgetCustomConfig(config.customConfig)
+		}
 		this.currentWidgetType = type
 		this.platform.chooseWidgetId = id
 	}

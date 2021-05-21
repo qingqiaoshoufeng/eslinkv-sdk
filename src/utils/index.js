@@ -2,6 +2,7 @@ import commonConfigValue from '../../common-config-value'
 import Clipboard from 'clipboard'
 import { Message } from 'view-design'
 import copy from 'fast-copy'
+import platform from "@/store/platform.store";
 
 /**
  * @description 按照引用路径，查找末端数据
@@ -390,4 +391,16 @@ export function copyText(text, success, error) {
 		document.body.removeChild(oCopyBtn)
 	})
 	oCopyBtn.click()
+}
+
+/**
+ * @description 当前选中组件
+ */
+export function chooseWidget () {
+	if (!platform.state.chooseWidgetId) return null
+	const widget = platform.state.widgetAdded[platform.state.chooseWidgetId]
+	if (widget.children && platform.state.chooseWidgetChildId) {
+		return widget.children.find(v => v.id === platform.state.chooseWidgetChildId)
+	}
+	return widget
 }

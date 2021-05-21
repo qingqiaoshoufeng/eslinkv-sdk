@@ -1,7 +1,7 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999(:style="{ width: `${ruler.xRoomR1}px` }")
 	.d-right-modal-name.fn-flex.flex-row
-		span(contenteditable="editName", @input="changeName") {{ staticName }}_{{ platform.chooseWidgetId ? platform.widgetAdded[platform.chooseWidgetId].id : '' }}
+		span(contenteditable="editName", @input="changeName") {{ staticName }}_{{ chooseWidget ? chooseWidget.id : '' }}
 		i-icon.pointer(
 			type="md-checkmark",
 			slot="suffix",
@@ -47,7 +47,6 @@ export default class DRightSetting extends Vue {
 	editName = false
 	platform = platform.state
 	ruler = ruler.state
-	staticName = ''
 	title = ['基础', '交互', '主题', '自定义']
 	chooseList: any = [
 		{
@@ -67,20 +66,23 @@ export default class DRightSetting extends Vue {
 			needChoose: true,
 		},
 	]
-
-	@Watch('platform.chooseWidgetId', { deep: true })
-	onChooseWidgetId() {
-		this.staticName = this.platform.chooseWidgetId
-			? this.platform.widgetAdded[this.platform.chooseWidgetId].config
-					.widget.name
-			: ''
+	
+	get staticName () {
+		if (!this.platform.chooseWidgetId) return ''
+		const widget = this.platform.widgetAdded[this.platform.chooseWidgetId]
+		if (widget.children && this.platform.chooseWidgetChildId) {
+			return widget.children.find(v => v.id === this.platform.chooseWidgetChildId).config.widget.name
+		}
+		return this.platform.widgetAdded[this.platform.chooseWidgetId].config.widget.name
 	}
-
-	mounted() {
-		this.staticName = this.platform.chooseWidgetId
-			? this.platform.widgetAdded[this.platform.chooseWidgetId].config
-					.widget.name
-			: ''
+	
+	get chooseWidget () {
+		if (!this.platform.chooseWidgetId) return null
+		const widget = this.platform.widgetAdded[this.platform.chooseWidgetId]
+		if (widget.children && this.platform.chooseWidgetChildId) {
+			return widget.children.find(v => v.id === this.platform.chooseWidgetChildId)
+		}
+		return widget
 	}
 
 	@Watch('platform.chooseWidgetCustomConfig', { deep: true, immediate: true })
@@ -89,17 +91,11 @@ export default class DRightSetting extends Vue {
 	}
 
 	changeName(e) {
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
-		].config.widget.name = e.target.innerText
+		this.chooseWidget.config.widget.name = e.target.innerText.split('_')[0]
 	}
 
 	handleLock() {
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
-		].config.widget.locked = !this.platform.widgetAdded[
-			this.platform.chooseWidgetId
-		].config.widget.locked
+		this.chooseWidget.config.widget.locked = !this.chooseWidget.config.widget.locked
 	}
 
 	handleClick(index) {
