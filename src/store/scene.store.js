@@ -3,12 +3,11 @@
  */
 
 import { uuid } from '../utils'
+import parts from '../components/d-widget-part/index'
 import Vue from 'vue'
 import instance from './instance.store'
 import platform from './platform.store'
 import { store } from './index'
-import parts from '../components/d-widget-part/index'
-Vue.component('parts', parts)
 
 const state = Vue.observable({
 	activeWidgetId: '', // 被激活的场景对应组件
@@ -137,6 +136,7 @@ style="pointer-events:${pointerEvents};position:fixed;left:0;top:0;right:0;botto
 						array,
 					}
 				},
+				components: { parts },
 				mounted() {
 					instance.actions.setInstance('createKanboard', this)
 				},
