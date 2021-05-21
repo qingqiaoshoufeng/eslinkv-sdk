@@ -20,7 +20,9 @@
 			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
-		item-card(v-for="item in list", :key="item.id", :item="item")
+		draggable(v-model="list" @change="sceneWidgetDragEnd")
+			transition-group
+				item-card(v-for="item in list", :key="item.id", :item="item")
 	.d-left-scene-bottom.fn-flex.flex-row
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('copy')") 复制
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('create')") 新增
@@ -41,16 +43,18 @@
 				@on-search="handleCopy")
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Icon, Input, Select, Option, Modal } from 'view-design'
 import scene from '../../store/scene.store'
 import platform from '../../store/platform.store'
 import ruler from '../../store/ruler.store'
 import { copyText } from '../../utils/index'
 import ItemCard from './item-card.vue'
+import draggable from 'vuedraggable'
 
 @Component({
 	components: {
+		draggable,
 		ItemCard,
 		'i-icon': Icon,
 		'i-modal': Modal,
@@ -65,8 +69,34 @@ export default class DLeftScene extends Vue {
 	platform: any = platform.state
 	editScene = false
 	copyModel = false
+	list:any = []
+	
+	created () {
+		this.getList()
+	}
 
-	get list() {
+	// get list() {
+	// 	console.log('getList')
+	// 	const list = []
+	// 	for (const key in this.platform.widgetAdded) {
+	// 		const item = this.platform.widgetAdded[key]
+	// 		if (item.scene === this.scene.index) {
+	// 			list.push(item)
+	// 		}
+	// 	}
+	// 	return list
+	// }
+	//
+	// set list (val) {
+	// 	console.log('setList', val)
+	// }
+
+	@Watch('platform.widgetAdded')
+	widgetAddedChange (val) {
+		this.getList()
+	}
+	
+	getList () {
 		const list = []
 		for (const key in this.platform.widgetAdded) {
 			const item = this.platform.widgetAdded[key]
@@ -74,7 +104,10 @@ export default class DLeftScene extends Vue {
 				list.push(item)
 			}
 		}
-		return list
+		list.sort((a, b) => {
+			return b.config.layout.zIndex - a.config.layout.zIndex
+		})
+		this.list = list
 	}
 
 	handleFocusSceneName() {
@@ -132,6 +165,22 @@ export default class DLeftScene extends Vue {
 				}
 			},
 		})
+	}
+
+	sceneWidgetDragEnd (e) {
+		if (e.moved.newIndex > e.moved.oldIndex) {
+			// 向下移动
+			this.list.slice(0, e.moved.newIndex).forEach(v => {
+				v.config.layout.zIndex++
+			})
+			this.list[e.moved.newIndex].config.layout.zIndex = this.list[e.moved.newIndex - 1].config.layout.zIndex - 1
+		} else if (e.moved.newIndex < e.moved.oldIndex) {
+			// 向上移动
+			this.list.slice(0, e.moved.newIndex).forEach(v => {
+				v.config.layout.zIndex++
+			})
+			this.list[e.moved.newIndex].config.layout.zIndex = this.list[e.moved.newIndex + 1].config.layout.zIndex + 1
+		}
 	}
 }
 </script>
