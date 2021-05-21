@@ -1,8 +1,8 @@
 <template lang="pug">
 .d-upload
 	.d-upload-img.pos-r
-		img(:src="value", v-if="value && type === 'img'")
-		video(ref="video", :src="value", v-if="value && type === 'video'", loop)
+		img.pos-r.z-index-9(:src="value", v-if="value && type === 'img'")
+		video.pos-r.z-index-9(ref="video", :src="value", v-if="value && type === 'video'", loop)
 		.progress(v-if="isShowProgress")
 			i-progress(
 				:percent="percent",
@@ -10,6 +10,7 @@
 				:stroke-width="16",
 				status="active")
 		i-upload.pointer.pos-a(
+			:class="{ 'd-upload-empty': !value }",
 			:action="action",
 			:data="data",
 			:accept="accept",
