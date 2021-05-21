@@ -1,9 +1,9 @@
 <template lang="pug">
 .dr-line.pos-a
-	.dr-line-top.pos-a(:style="{ height: `${1 / ruler.zoom}px` }")
-	.dr-line-bottom.pos-a(:style="{ height: `${1 / ruler.zoom}px` }")
-	.dr-line-left.pos-a(:style="{ width: `${1 / ruler.zoom}px` }")
-	.dr-line-right.pos-a(:style="{ width: `${1 / ruler.zoom}px` }")
+	.dr-line-top.pos-a(:style="{ height: `${returnRatio}px` }")
+	.dr-line-bottom.pos-a(:style="{ height: `${returnRatio}px` }")
+	.dr-line-left.pos-a(:style="{ width: `${returnRatio}px` }")
+	.dr-line-right.pos-a(:style="{ width: `${returnRatio}px` }")
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
@@ -11,6 +11,10 @@ import ruler from '@/store/ruler.store.js'
 @Component
 export default class DDrKuang extends Vue {
 	ruler = ruler.state
+
+	get returnRatio() {
+		return this.ruler.zoom < 1 ? 1 / this.ruler.zoom : 1
+	}
 }
 </script>
 <style lang="scss">

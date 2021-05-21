@@ -12,18 +12,20 @@
 		v-for="handle in actualHandles",
 		:key="handle",
 		:class="[`dr-handle-${handle}`]",
-		:style="{ display: enabled ? 'block' : 'none', transform: `scale(${1 / scaleRatio})` }",
+		:style="{ display: enabled ? 'block' : 'none', transform: `scale(${returnRatio})` }",
 		@mousedown.stop.prevent="handleDown(handle, $event)",
 		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
 	d-dr-kuang
 	.dr-tip-top.pos-a(
 		v-if="tipShow",
-		:style="{ top: `-${top}px`, height: `${top}px` }")
-		span.pos-a {{ left }}
+		:style="{ top: `-${top}px`, height: `${top}px`, borderWidth: `${returnRatio}px` }")
+		span.pos-a(
+			:style="{ fontSize: `${14 * returnRatio}px`, right: `${5 * returnRatio}px`, bottom: `${30 * returnRatio}px` }") {{ left }}
 	.dr-tip-left.pos-a(
 		v-if="tipShow",
-		:style="{ left: `-${left}px`, width: `${left}px` }")
-		span.pos-a {{ top }}
+		:style="{ left: `-${left}px`, width: `${left}px`, borderWidth: `${returnRatio}px` }")
+		span.pos-a(
+			:style="{ fontSize: `${14 * returnRatio}px`, right: `${30 * returnRatio}px`, bottom: `${5 * returnRatio}px` }") {{ top }}
 	slot
 	.dr-disabled-event.pos-a(
 		:style="{ width: '100%', height: '100%', top: 0, left: 0 }",
@@ -544,6 +546,9 @@ export default {
 		},
 	},
 	computed: {
+		returnRatio() {
+			return this.scaleRatio < 1 ? 1 / this.scaleRatio : this.scaleRatio
+		},
 		tipShow() {
 			return (
 				this.dragging &&

@@ -91,12 +91,35 @@ export default class ItemCard extends Vue {
 	}
 
 	onDragStop(left, top) {
+		const diffLeft =
+			left -
+			this.platform.widgetAdded[this.platform.chooseWidgetId].config
+				.layout.position.left
+		const diffTop =
+			top -
+			this.platform.widgetAdded[this.platform.chooseWidgetId].config
+				.layout.position.top
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.layout.position.left = left
 		this.platform.widgetAdded[
 			this.platform.chooseWidgetId
 		].config.layout.position.top = top
+		this.onGroupDragStop(
+			this.platform.widgetAdded[this.platform.chooseWidgetId],
+			diffLeft,
+			diffTop,
+		)
+	}
+
+	onGroupDragStop(item, diffLeft, diffTop) {
+		if (item.children) {
+			item.children.map(child => {
+				child.config.layout.position.left += diffLeft
+				child.config.layout.position.top += diffTop
+				this.onGroupDragStop(child, diffLeft, diffTop)
+			})
+		}
 	}
 
 	// @ts-ignore
