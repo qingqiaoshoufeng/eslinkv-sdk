@@ -93,7 +93,9 @@ export default class DLeftScene extends Vue {
 
 	@Watch('platform.widgetAdded')
 	widgetAddedChange (val) {
-		this.getList()
+		this.$nextTick(() => {
+			this.getList()
+		})
 	}
 	
 	getList () {

@@ -4,25 +4,23 @@ li.pointer.pos-r.d-left-scene-list-li(
 	:key="item.id")
 	.parent(@click="handleChoose(item.id)")
 		.d-left-scene-left
-			.fn-flex.flex-column
-				.fn-flex-row
-					i-icon(
-						:type="`md-eye${item.config.widget.hide ? '-off' : ''}`",
-						:title="!item.config.widget.hide ? '隐藏' : '显示'",
-						@click="handleTaggerHide(item.id)",
-						@click.stop)
-				h2 {{ item.config.widget.name }}
-		.d-left-scene-right.fn-flex.flex-column
+			h2 {{ item.config.widget.name }}
+		.d-left-scene-right
 			i-icon(
-				type="ios-arrow-dropup",
-				@click="handleUpZIndex(item.id)",
+				v-if="item.config.widget.hide"
+				type="md-eye-off",
+				title="显示",
+				@click="handleTaggerHide(item.id)",
 				@click.stop)
-			span {{ item.config.layout.zIndex }}
 			i-icon(
-				type="ios-arrow-dropdown",
-				@click="handleDownZIndex(item.id)",
+				style="margin-left: 10px;"
+				v-if="item.config.widget.locked"
+				type="md-unlock",
+				title="解锁",
+				@click="handleUnLock(item.id)",
 				@click.stop)
 	.children(
+		v-if="platform.chooseWidgetId === item.id"
 		v-for="(k, i) in item.children"
 		:key="i"
 		@click="handleChooseChild(item.id, k.id)"
@@ -30,24 +28,8 @@ li.pointer.pos-r.d-left-scene-list-li(
 	)
 		.fn-flex.flex-row
 			.d-left-scene-left
-				.fn-flex.flex-column
-					.fn-flex-row
-						i-icon(
-							:type="`md-eye${k.config.widget.hide ? '-off' : ''}`",
-							:title="!k.config.widget.hide ? '隐藏' : '显示'",
-							@click="handleTaggerHide(k.id)",
-							@click.stop)
-					h2 {{ k.config.widget.name }}
-			.d-left-scene-right.fn-flex.flex-column
-				i-icon(
-					type="ios-arrow-dropup",
-					@click="handleUpZIndex(k.id)",
-					@click.stop)
-				span {{ k.config.layout.zIndex }}
-				i-icon(
-					type="ios-arrow-dropdown",
-					@click="handleDownZIndex(k.id)",
-					@click.stop)
+				h2 {{ k.config.widget.name }}
+			.d-left-scene-right
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
@@ -88,6 +70,10 @@ export default class DLeftSceneItem extends Vue {
 		this.platform.widgetAdded[id].config.layout.zIndex--
 	}
 
+	handleUnLock(id) {
+		this.platform.widgetAdded[id].config.widget.locked = false
+	}
+
 	handleFocusSceneName() {
 		platform.actions.unChooseWidget()
 	}
@@ -112,7 +98,6 @@ export default class DLeftSceneItem extends Vue {
 </script>
 <style lang="scss" scoped>
 .d-left-scene-list-li {
-	height: 60px;
 	margin: 10px 0;
 	font-size: 12px;
 	border: 1px solid #393b4a;

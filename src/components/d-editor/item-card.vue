@@ -173,4 +173,7 @@ export default class ItemCard extends Vue {
 		transform: translate3d(0, 0, 0) !important;
 	}
 }
+.dr-hide {
+	display: none;
+}
 </style>
