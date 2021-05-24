@@ -1,6 +1,6 @@
 <template lang="pug">
-div(:style="styles", v-if="data")
-	.fn-flex.flex-row.h-title-1
+eslinkv-base(:value="value" :customConfig="customConfig")
+	.fn-flex.flex-row.h-title-1(v-if="data")
 		.h-title-1-icon
 		h2(@click="__handleClick__(test)") {{ data.title }}
 </template>
@@ -8,9 +8,10 @@ div(:style="styles", v-if="data")
 import widgetMixin from '../../../../mixins'
 import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
+import eslinkvBase from '../../eslinkvBase.vue'
 import { value, customConfig } from './index.component'
 
-@Component
+@Component({ components: {eslinkvBase}})
 export default class extends mixins(widgetMixin) {
 	test = {
 		data: {
@@ -28,13 +29,8 @@ export default class extends mixins(widgetMixin) {
 			],
 		},
 	}
-
-	created() {
-		;(this as any).configValue = (this as any).parseConfigValue(
-			value,
-			customConfig,
-		)
-	}
+	value = value
+	customConfig = customConfig
 }
 </script>
 <style lang="scss">
