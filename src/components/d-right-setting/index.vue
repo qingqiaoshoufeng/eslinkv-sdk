@@ -36,6 +36,8 @@ import itemList from './item-list.vue'
 import platform from '../../store/platform.store'
 import ruler from '../../store/ruler.store'
 import { Icon } from 'view-design'
+import {chooseWidget} from '@/utils'
+
 @Component({
 	components: {
 		itemList,
@@ -68,21 +70,11 @@ export default class DRightSetting extends Vue {
 	]
 	
 	get staticName () {
-		if (!this.platform.chooseWidgetId) return ''
-		const widget = this.platform.widgetAdded[this.platform.chooseWidgetId]
-		if (widget.children && this.platform.chooseWidgetChildId) {
-			return widget.children.find(v => v.id === this.platform.chooseWidgetChildId).config.widget.name
-		}
-		return this.platform.widgetAdded[this.platform.chooseWidgetId].config.widget.name
+		return this.chooseWidget.config.widget.name
 	}
 	
 	get chooseWidget () {
-		if (!this.platform.chooseWidgetId) return null
-		const widget = this.platform.widgetAdded[this.platform.chooseWidgetId]
-		if (widget.children && this.platform.chooseWidgetChildId) {
-			return widget.children.find(v => v.id === this.platform.chooseWidgetChildId)
-		}
-		return widget
+		return chooseWidget()
 	}
 
 	@Watch('platform.chooseWidgetCustomConfig', { deep: true, immediate: true })

@@ -51,18 +51,12 @@ class Mixins extends Vue {
 	}
 
 	handleActivated(obj) {
-		const { config, id, type, children } = obj
+		const { config, id, type } = obj
 		if (config.widget.hide) {
 			return
 		}
 		platform.actions.chooseWidget(id)
-		if (children && this.platform.chooseWidgetChildId) {
-			platform.actions.setChooseWidgetCustomConfig(
-				children.find(v => v.id === this.platform.chooseWidgetChildId).config.customConfig
-			)
-		} else {
-			platform.actions.setChooseWidgetCustomConfig(config.customConfig)
-		}
+		platform.actions.setChooseWidgetCustomConfig(config.customConfig)
 		this.currentWidgetType = type
 		this.platform.chooseWidgetId = id
 	}

@@ -24,6 +24,7 @@ import dRightSwiperList from '../components-right/d-right-swiper-list/index.vue'
 import dRightSwiperEye from '../components-right/d-right-swiper-eye/index.vue'
 import dRightControl from '../components-right/d-right-control/index.vue'
 import dInput from '../components/d-input/index.vue'
+import {chooseWidget} from '@/utils'
 
 @Component({
 	components: {
@@ -57,12 +58,7 @@ export default class Func extends Vue {
 	@Prop() parentIndex // group时会有
 
 	get item() {
-		if (!this.platform.chooseWidgetId) return null
-		const widget = this.platform.widgetAdded[this.platform.chooseWidgetId]
-		if (widget.children && this.platform.chooseWidgetChildId) {
-			return widget.children.find(v => v.id === this.platform.chooseWidgetChildId)
-		}
-		return widget
+		return chooseWidget()
 	}
 
 	get fixedConfig() {

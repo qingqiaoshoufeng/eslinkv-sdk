@@ -2,7 +2,7 @@
 li.pointer.pos-r.d-left-scene-list-li(
 	:class="[{ active: !platform.chooseWidgetChildId && platform.chooseWidgetId === item.id }]",
 	:key="item.id")
-	.parent(@click="handleChoose(item.id)")
+	.parent(@click="handleChoose(item)")
 		.d-left-scene-left
 			h2 {{ item.config.widget.name }}
 		.d-left-scene-right
@@ -19,17 +19,7 @@ li.pointer.pos-r.d-left-scene-list-li(
 				title="解锁",
 				@click="handleUnLock(item.id)",
 				@click.stop)
-	.children(
-		v-if="platform.chooseWidgetId === item.id"
-		v-for="(k, i) in item.children"
-		:key="i"
-		@click="handleChooseChild(item.id, k.id)"
-		:class="{active: platform.chooseWidgetChildId === k.id}"
-	)
-		.fn-flex.flex-row
-			.d-left-scene-left
-				h2 {{ k.config.widget.name }}
-			.d-left-scene-right
+	WidgetGroup(:childList="childList" v-if="platform.chooseWidgetId === item.id")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
@@ -37,11 +27,13 @@ import { Icon } from 'view-design'
 import scene from '../../store/scene.store'
 import platform from '../../store/platform.store'
 import ruler from '../../store/ruler.store'
+import WidgetGroup from './widget-group.vue'
 import { chooseWidget } from '@/utils'
 
 @Component({
 	components: {
 		'i-icon': Icon,
+		WidgetGroup
 	},
 })
 export default class DLeftSceneItem extends Vue {
@@ -50,6 +42,7 @@ export default class DLeftSceneItem extends Vue {
 	platform: any = platform.state
 	editScene = false
 	copyModel = false
+	childList = []
 	@Prop() item
 	get list() {
 		const list = []
@@ -78,9 +71,12 @@ export default class DLeftSceneItem extends Vue {
 		platform.actions.unChooseWidget()
 	}
 
-	handleChoose(id) {
-		this.platform.chooseWidgetId = id
+	handleChoose(item) {
+		this.platform.chooseWidgetId = item.id
 		this.platform.chooseWidgetChildId = null
+		if (item.children) {
+			this.childList = item.children
+		}
 	}
 
 	handleChooseChild(parentId, id) {
@@ -161,7 +157,7 @@ export default class DLeftSceneItem extends Vue {
 	font-weight: bold;
 }
 
-.children {
+.child {
 	padding: 10px 10px 10px 20px;
 	background: #282f3a;
 	&.active {

@@ -400,7 +400,26 @@ export function chooseWidget () {
 	if (!platform.state.chooseWidgetId) return null
 	const widget = platform.state.widgetAdded[platform.state.chooseWidgetId]
 	if (widget.children && platform.state.chooseWidgetChildId) {
-		return widget.children.find(v => v.id === platform.state.chooseWidgetChildId)
+		return searchWidget(widget, platform.state.chooseWidgetChildId)
 	}
 	return widget
+}
+
+/**
+ * @description 查找对应id的组建
+ */
+function searchWidget (widget, id) {
+	let res
+	if (widget.children && id) {
+		res = widget.children.find(v => v.id === id)
+	}
+	if (!res) {
+		for (const v of widget.children) {
+			if (v.children) {
+				res = searchWidget(v, id)
+				if (res) break
+			}
+		}
+	}
+	return res
 }
