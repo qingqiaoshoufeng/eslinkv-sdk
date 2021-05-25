@@ -56,8 +56,8 @@ export default class FuncAnimation extends func {
 
 	handleSync() {
 		this.instance.kanboard.$refs[
-			`widget_${this.platform.chooseWidgetId}`
-		][0].$children[0].updateKey++
+			`${this.platform.chooseWidgetId}`
+			][0].$children[0].updateKey++
 	}
 }
 </script>

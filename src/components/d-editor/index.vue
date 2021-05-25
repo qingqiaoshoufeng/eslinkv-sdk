@@ -15,7 +15,7 @@
 			@click.stop,
 			@dragover.prevent)
 			// 小工具清单
-			item-card(:item="item" v-for="item in platform.widgetAdded" :getRefLineParams="getRefLineParams")
+			item-card(:item="item" v-for="item in platform.widgetAdded" :getRefLineParams="getRefLineParams" :ref="item.id")
 			dr-more(v-show="platform.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(

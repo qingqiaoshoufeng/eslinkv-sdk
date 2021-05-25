@@ -23,7 +23,6 @@ dr(
 	@activated="handleActivated(item)",
 	@contextmenu.native="showRightMenu($event, item)")
 	parts(
-		:ref="item.id",
 		:type="item.type",
 		:config="item.config",
 		:children="item.children",
