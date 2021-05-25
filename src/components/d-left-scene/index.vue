@@ -71,34 +71,7 @@ export default class DLeftScene extends Vue {
 	copyModel = false
 	list:any = []
 	
-	created () {
-		this.getList()
-	}
-
-	// get list() {
-	// 	console.log('getList')
-	// 	const list = []
-	// 	for (const key in this.platform.widgetAdded) {
-	// 		const item = this.platform.widgetAdded[key]
-	// 		if (item.scene === this.scene.index) {
-	// 			list.push(item)
-	// 		}
-	// 	}
-	// 	return list
-	// }
-	//
-	// set list (val) {
-	// 	console.log('setList', val)
-	// }
-
-	@Watch('platform.widgetAdded')
-	widgetAddedChange (val) {
-		this.$nextTick(() => {
-			this.getList()
-		})
-	}
-	
-	getList () {
+	get list() {
 		const list = []
 		for (const key in this.platform.widgetAdded) {
 			const item = this.platform.widgetAdded[key]
@@ -109,7 +82,11 @@ export default class DLeftScene extends Vue {
 		list.sort((a, b) => {
 			return b.config.layout.zIndex - a.config.layout.zIndex
 		})
-		this.list = list
+		return list
+	}
+
+	set list (val) {
+		console.log('setList', val)
 	}
 
 	handleFocusSceneName() {
