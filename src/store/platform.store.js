@@ -10,10 +10,7 @@ const state = Vue.observable({
 	version: '1.1.0',
 	screenVersion: 0,
 	widgetAdded: {},
-	screenAvatar: '',
 	screenType: 'CUSTOM', // CUSTOM 普通大屏 TEMPLATE 模版大屏
-	screenId: null,
-	screenName: '未命名',
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
 	chooseWidgetId: null, // 选中项id
 	chooseWidgetChildId: null, // 选中的分组内的组件id
@@ -25,10 +22,6 @@ const state = Vue.observable({
 		height: 0,
 		z: 0,
 	}, // 选中项配置
-	backgroundImage: '',
-	backgroundColor: 'rgba(24, 27, 36,1)',
-	width: 1920,
-	height: 1080,
 	isMobile: false,
 	layoutMode: 'full-height',
 	mainScene: 0, // 设置进入场景
@@ -40,8 +33,6 @@ const state = Vue.observable({
 })
 const actions = {
 	initPlatformConfig() {
-		state.screenName = '未命名'
-		state.screenAvatar = ''
 		state.widgetAdded = {}
 	},
 	unChooseWidget() {

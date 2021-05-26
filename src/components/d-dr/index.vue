@@ -37,6 +37,7 @@ import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import { dDrMouseDown } from '@/events'
 import dDrKuang from '../d-dr-kuang/index.vue'
+import ScreenPc from '@/controller/Screen/pc'
 
 const events = {
 	mouse: {
@@ -148,6 +149,7 @@ export default {
 			resizing: false,
 			dragging: false,
 			brotherNodes: [],
+			screen: {},
 		}
 	},
 	created() {
@@ -166,6 +168,7 @@ export default {
 			'touchend touchcancel',
 			this.deselect,
 		)
+		this.screen = ScreenPc.getInstance()
 	},
 	beforeDestroy() {
 		removeEvent(
@@ -554,8 +557,8 @@ export default {
 				this.dragging &&
 				this.top > 0 &&
 				this.left > 0 &&
-				this.top < this.platform.height &&
-				this.left < this.platform.width
+				this.top < this.screen.height &&
+				this.left < this.screen.width
 			)
 		},
 		style() {

@@ -11,39 +11,26 @@
 		"downlevelIteration": true, // 降级遍历器实现，如果目标源是es3/5，那么遍历器会有降级的实现
 		"noUnusedLocals": true, // 检查只声明、未使用的局部变量(只提示不报错)
 		"noUnusedParameters": true, // 检查未使用的函数参数(只提示不报错)
-		"removeComments":true, // 删除注释
+		"removeComments": true, // 删除注释
 		"sourceMap": true,
 		"baseUrl": ".",
-		"typeRoots": [
-			"./node_modules/@types/",
-		], // 包含类型声明的文件列表
+		"typeRoots": ["./node_modules/@types/"], // 包含类型声明的文件列表
 		"strict": false,
 		"noImplicitAny": false, // 在表达式和声明上有隐含的 any类型时报错
 		"noImplicitThis": false, // 在"this"表达式上有隐含的 any类型时报错
-		"types": [
-			"webpack-env"
-		],
+		"types": ["webpack-env"],
 		"paths": {
-			"@/*": [
-				"./src/*"
-			]
+			"@/*": ["./src/*"]
 		},
-		"lib": [
-			"esnext",
-			"dom",
-			"dom.iterable",
-			"scripthost"
-		]
+		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},
 	"include": [
 		"src/**/*.ts",
 		"src/**/*.tsx",
 		"src/**/*.vue",
-		"types/Platform.d.ts",
+		"types/Screen.d.ts",
 		"types/Scene.d.ts",
 		"types/Widget.d.ts"
 	],
-	"exclude": [
-		"node_modules"
-	]
+	"exclude": ["node_modules"]
 }

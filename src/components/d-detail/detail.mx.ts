@@ -76,51 +76,25 @@ export default {
 					console.error('组件初始化加载失败')
 				})
 		},
-		jianrong(res) {
-			if (res.screenConfig.panelConfig) {
-				this.platform.backgroundImage =
-					res.screenConfig.panelConfig.background.url
-				this.platform.backgroundColor =
-					res.screenConfig.panelConfig.background.color
-				this.platform.width = res.screenConfig.panelConfig.size.width
-				this.platform.height = res.screenConfig.panelConfig.size.height
-				this.platform.isMobile = !!res.screenConfig.panelConfig.size
-					.isMobile
-				this.platform.layoutMode =
-					res.screenConfig.panelConfig.size.layoutMode
-				this.platform.mainScene = res.screenConfig.panelConfig.mainScene
-			} else {
-				this.platform.backgroundImage = res.screenConfig.backgroundImage
-				this.platform.backgroundColor = res.screenConfig.backgroundColor
-				this.platform.width = res.screenConfig.width
-				this.platform.height = res.screenConfig.height
-				this.platform.isMobile = !!res.screenConfig.isMobile
-				this.platform.layoutMode = res.screenConfig.layoutMode
-				this.platform.mainScene = res.screenConfig.mainScene
-			}
-		},
 	},
 	mounted() {
 		const templateId = this.$route.query.templateId
 		const id = this.$route.params.id || templateId
 		const file = this.$route.params.file
 		if (id) {
-			this.$api.screen
-				.detail({ screenId: id })
-				.then((res: platformInitResult) => {
-					this.platform.screenType = res.screenType
-					this.platform.screenAvatar = res.screenAvatar
-					this.platform.screenName = res.screenName
-					this.platform.screenVersion = res.screenVersion
-					this.jianrong(res)
-					this.refillConfig(res)
-				})
+			// this.$api.screen
+			// 	.detail({ screenId: id })
+			// 	.then((res: platformInitResult) => {
+			// 		this.platform.screenType = res.screenType
+			// 		this.platform.screenVersion = res.screenVersion
+			// 		this.jianrong(res)
+			// 		this.refillConfig(res)
+			// 	})
 		}
 		if (file) {
 			this.$api.screen
 				.detailFile(decodeURIComponent(file))
 				.then((res: platformInitResult) => {
-					this.jianrong(res)
 					this.refillConfig(res)
 				})
 		}

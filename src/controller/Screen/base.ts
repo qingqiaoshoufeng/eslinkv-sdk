@@ -1,8 +1,19 @@
+import { update } from '@/api/screen.api'
+import { Message } from 'view-design'
+
 export default class ScreenBase {
 	/* 大屏ID */
 	public screenId: string = ''
 	/* 大屏名 */
 	public screenName: string = ''
+	get name() {
+		return this.screenName
+	}
+	set name(screenName: string) {
+		this.screenName = screenName
+		this.updateScreen({ screenName })
+	}
+
 	/* 大屏配置 */
 	public screenConfig: any = {}
 	/* 大屏类型 CUSTOM:大屏 TEMPLATE:模版 */
@@ -11,6 +22,14 @@ export default class ScreenBase {
 	public screenPublish: string = ''
 	/* 大屏缩略图 */
 	public screenAvatar: string = ''
+	get avatar() {
+		return this.screenAvatar
+	}
+	set avatar(screenAvatar: string) {
+		this.screenAvatar = screenAvatar
+		this.updateScreen({ screenAvatar })
+	}
+
 	/* 大屏版本号 */
 	public screenVersion: string = ''
 	/* 大屏适配方式 */
@@ -23,4 +42,51 @@ export default class ScreenBase {
 	public createTime: string
 	/* 更新时间 */
 	public updateTime: string
+	/* 大屏宽度 */
+	public screenWidth: number = 1920
+	get width() {
+		return this.screenWidth
+	}
+	set width(screenWidth: number) {
+		this.screenWidth = screenWidth
+	}
+	/* 大屏高度 */
+	public screenHeight: number = 1080
+	get height() {
+		return this.screenHeight
+	}
+	set height(screenHeight: number) {
+		this.screenHeight = screenHeight
+	}
+	/* 大屏背景颜色 */
+	public screenBackGroundColor: string = 'rgba(24, 27, 36,1)'
+	get backgroundColor() {
+		return this.screenBackGroundColor
+	}
+	set backgroundColor(screenBackGroundColor: string) {
+		this.screenBackGroundColor = screenBackGroundColor
+	}
+	/* 大屏背景图片 */
+	public screenBackGroundImage: string
+	get backgroundImage() {
+		return this.screenBackGroundImage
+	}
+	set backgroundImage(screenBackGroundImage: string) {
+		this.screenBackGroundImage = screenBackGroundImage
+	}
+	/* 大屏首屏场景 */
+	public screenMainScene: string
+	/* 大屏平台类型 PC:PC */
+	public screenPlatform: string
+
+	updateScreen(obj: any): void {
+		if (this.screenId) {
+			update({
+				screenId: this.screenId,
+				...obj,
+			}).then(() => {
+				Message.success('修改成功')
+			})
+		}
+	}
 }

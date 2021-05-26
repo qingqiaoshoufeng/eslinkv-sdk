@@ -18,6 +18,7 @@ import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 import instance from '../../store/instance.store'
 import { Component, Vue, Provide } from 'vue-property-decorator'
+import ScreenPc from '@/controller/Screen/pc'
 
 @Component({
 	components: {
@@ -30,13 +31,13 @@ export default class DView extends Vue {
 
 	platform = platform.state
 	scene = scene.state
-
+	screen = {}
 	canvasStyle() {
 		const val = {
-			width: `${this.platform.width}px`,
-			height: `${this.platform.height}px`,
-			'background-color': this.platform.backgroundColor,
-			'background-image': `url(${this.platform.backgroundImage})`,
+			width: `${this.screen.width}px`,
+			height: `${this.screen.height}px`,
+			'background-color': this.screen.backgroundColor,
+			'background-image': `url(${this.screen.backgroundImage})`,
 		}
 		if (val) {
 			this.$emit('mounted', val)
@@ -56,6 +57,7 @@ export default class DView extends Vue {
 	mounted() {
 		instance.actions.setInstance('kanboard', this)
 		scene.actions.setStatus('inPreview')
+		this.screen = ScreenPc.getInstance()
 	}
 }
 </script>

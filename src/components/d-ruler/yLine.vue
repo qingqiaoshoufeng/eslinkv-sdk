@@ -16,6 +16,7 @@ import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import ruler from '../../store/ruler.store'
 import { rulerLineMouseUp, rulerLineMouseDown } from '@/events'
+import ScreenPc from '@/controller/Screen/pc'
 let i = 0
 let loadImg = false
 const bgImg = new Image()
@@ -28,6 +29,7 @@ export default class YLine extends Vue {
 	showHelp = false
 	canvas = null
 	context = null
+	screen = {}
 	rulerLineMouseDown = rulerLineMouseDown
 	rulerLineMouseUp = rulerLineMouseUp
 
@@ -45,7 +47,7 @@ export default class YLine extends Vue {
 		this.init()
 	}
 
-	@Watch('platform.height')
+	@Watch('screen.height')
 	heightChange() {
 		this.init()
 	}
@@ -120,12 +122,12 @@ export default class YLine extends Vue {
 	init() {
 		this.context.translate(
 			0,
-			(this.platform.height * (1 - this.ruler.zoom)) / 2 +
+			(this.screen.height * (1 - this.ruler.zoom)) / 2 +
 				this.ruler.contentY -
 				this.ruler.guideStartY,
 		)
 		this.ruler.guideStartY =
-			(this.platform.height * (1 - this.ruler.zoom)) / 2 +
+			(this.screen.height * (1 - this.ruler.zoom)) / 2 +
 			this.ruler.contentY
 		if (loadImg) {
 			this.initDraw()
@@ -147,6 +149,7 @@ export default class YLine extends Vue {
 		this.context.font = '10px sans-serif'
 		this.context.fillStyle = '#999'
 		this.init()
+		this.screen = ScreenPc.getInstance()
 	}
 }
 </script>

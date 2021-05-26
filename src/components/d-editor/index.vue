@@ -15,20 +15,22 @@
 			@click.stop,
 			@dragover.prevent)
 			// 小工具清单
-			item-card(:item="item" v-for="item in platform.widgetAdded" :getRefLineParams="getRefLineParams" :ref="item.id")
+			item-card(
+				:item="item",
+				v-for="item in platform.widgetAdded",
+				:getRefLineParams="getRefLineParams",
+				:ref="item.id")
 			dr-more(v-show="platform.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
-			.d-editor-line(
-				:data-top="`${platform.height}px`",
-				data-left="0px")
+			.d-editor-line(:data-top="`${screen.height}px`", data-left="0px")
 			.d-editor-line(
 				data-top="0px",
-				:style="{ width: 0, height: `${platform.height}px` }",
-				:data-left="`${platform.width}px`")
+				:style="{ width: 0, height: `${screen.height}px` }",
+				:data-left="`${screen.width}px`")
 			.d-editor-line(
 				data-top="0px",
 				data-left="0px",
-				:style="{ height: `${platform.height}px`, width: 0 }")
+				:style="{ height: `${screen.height}px`, width: 0 }")
 			// 参考线
 			span.ref-line.v-line.pos-a(
 				v-for="item in vLine",
@@ -57,6 +59,7 @@ import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
 import ruler from '../../store/ruler.store'
 import ItemCard from './item-card.vue'
+import ScreenPc from '@/controller/Screen/pc'
 
 export default {
 	name: 'd-editor',
@@ -81,6 +84,7 @@ export default {
 			ruler: ruler.state,
 			vLine: [],
 			hLine: [],
+			screen: {},
 		}
 	},
 	methods: {
@@ -118,11 +122,12 @@ export default {
 	},
 	computed: {
 		canvasStyle() {
+			console.log(this.screen)
 			return {
-				width: `${this.platform.width}px`,
-				height: `${this.platform.height}px`,
-				'background-color': this.platform.backgroundColor,
-				'background-image': `url(${this.platform.backgroundImage})`,
+				width: `${this.screen.width}px`,
+				height: `${this.screen.height}px`,
+				'background-color': this.screen.backgroundColor,
+				'background-image': `url(${this.screen.backgroundImage})`,
 			}
 		},
 		canvasSize() {
@@ -137,6 +142,7 @@ export default {
 		platform.actions.initPlatformConfig()
 		instance.actions.setInstance('kanboard', this)
 		scene.actions.setStatus('inEdit')
+		this.screen = ScreenPc.getInstance()
 	},
 }
 </script>

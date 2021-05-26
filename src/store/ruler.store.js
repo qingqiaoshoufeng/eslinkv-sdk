@@ -3,8 +3,8 @@
  */
 import Vue from 'vue'
 import { store } from './index'
-import platform from './platform.store'
 import event from './event.store'
+import ScreenPc from '@/controller/Screen/pc'
 
 const state = Vue.observable({
 	dragId: `drag-content-${+new Date()}`,
@@ -35,12 +35,13 @@ const actions = {
 		const rulerContent = document.getElementById('ruler-content')
 		const rulerOffsetWidth = rulerContent.offsetWidth - state.size
 		const rulerOffsetHeight = rulerContent.offsetHeight
-		const platformWidth = platform.state.width
-		const platformHeight = platform.state.height
+		const screen = ScreenPc.getInstance()
+		const width = screen.width
+		const height = screen.height
 		state.zoom =
-			~~((rulerOffsetWidth / platformWidth) * 100) / 100 || state.zoomStep
-		const deltaX = (rulerOffsetWidth - platformWidth) * 0.5
-		const deltaY = (rulerOffsetHeight - platformHeight) * 0.5
+			~~((rulerOffsetWidth / width) * 100) / 100 || state.zoomStep
+		const deltaX = (rulerOffsetWidth - width) * 0.5
+		const deltaY = (rulerOffsetHeight - height) * 0.5
 		state.contentX = Math.ceil(deltaX)
 		state.contentY = Math.ceil(deltaY)
 	},

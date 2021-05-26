@@ -16,6 +16,7 @@ import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import ruler from '../../store/ruler.store'
 import { rulerLineMouseUp, rulerLineMouseDown } from '@/events'
+import ScreenPc from '@/controller/Screen/pc'
 
 let i = 0
 let loadImg = false
@@ -29,6 +30,7 @@ export default class XLine extends Vue {
 	showHelp = false
 	canvas: null
 	context = null
+	screen = {}
 	rulerLineMouseDown = rulerLineMouseDown
 	rulerLineMouseUp = rulerLineMouseUp
 
@@ -111,13 +113,13 @@ export default class XLine extends Vue {
 	 */
 	init() {
 		this.context.translate(
-			(this.platform.width * (1 - this.ruler.zoom)) / 2 +
+			(this.screen.width * (1 - this.ruler.zoom)) / 2 +
 				this.ruler.contentX -
 				this.ruler.guideStartX,
 			0,
 		)
 		this.ruler.guideStartX =
-			(this.platform.width * (1 - this.ruler.zoom)) / 2 +
+			(this.screen.width * (1 - this.ruler.zoom)) / 2 +
 			this.ruler.contentX
 		if (loadImg) {
 			this.initDraw()
@@ -139,6 +141,7 @@ export default class XLine extends Vue {
 		this.context.font = '10px sans-serif'
 		this.context.fillStyle = '#999'
 		this.init()
+		this.screen = ScreenPc.getInstance()
 	}
 }
 </script>

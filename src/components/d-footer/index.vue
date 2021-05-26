@@ -2,7 +2,7 @@
 .d-footer.fn-flex.flex-row.pos-r.z-index-999
 	.d-footer-bar.fn-flex.flex-row
 		.d-footer-bar-text.ellipsis {{ scene.index === 0 ? '主场景' : scene.index === -1 ? '回收站' : scene.obj[scene.index].name }}
-		.d-footer-bar-text {{ platform.width }}×{{ platform.height }}px
+		.d-footer-bar-text {{ screen.width }}×{{ screen.height }}px
 	.d-footer-bar.fn-flex
 		label.d-footer-hot-keys.pos-r.fn-flex.flex-row
 			.d-footer-bar-text.pointer.ellipsis(@click="showHotKey = !showHotKey") 快捷键
@@ -16,7 +16,7 @@
 							img.d-footer-hot-key-img(
 								v-if="child.type === 'img'",
 								:src="child.value")
-	.d-footer-bar.fn-flex(title="缩小" :style="{ marginLeft: 'auto' }")
+	.d-footer-bar.fn-flex(title="缩小", :style="{ marginLeft: 'auto' }")
 		d-svg.pointer(icon-class="zoomOut", @click="handleZoomOut")
 	.d-footer-bar.fn-flex
 		label {{ zoom }}
@@ -36,6 +36,7 @@ import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 import ruler from '../../store/ruler.store'
 import { Icon } from 'view-design'
+import ScreenPc from '@/controller/Screen/pc'
 
 @Component({
 	components: {
@@ -48,7 +49,7 @@ export default class DFooter extends Vue {
 	ruler = ruler.state
 	showHotKey = false
 	hotKeys = []
-
+	screen = {}
 	get zoom() {
 		const zoom = this.ruler.zoom
 		return `${~~(zoom * 100)}%`
@@ -118,6 +119,7 @@ export default class DFooter extends Vue {
 				key: [{ value: mouseWheelImg, type: 'img' }],
 			},
 		]
+		this.screen = ScreenPc.getInstance()
 	}
 }
 </script>

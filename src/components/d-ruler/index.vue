@@ -52,12 +52,12 @@ export default class DRuler extends Vue {
 		this.ruler.contentX += this.ruler.contentScrollLeft
 	}
 
-	@Watch('platform.height', { deep: true })
+	@Watch('screen.height', { deep: true })
 	heightChange() {
 		ruler.actions.resetZoom()
 	}
 
-	@Watch('platform.width', { deep: true })
+	@Watch('screen.width', { deep: true })
 	widthChange() {
 		ruler.actions.resetZoom()
 	}

@@ -7,26 +7,22 @@
 			i-option(value="1024*768") web最小尺寸1024*768
 			i-option(value="other") 自定义
 	d-right-control
-		d-input(
-			append="W",
-			v-model="platform.width",
-			:style="{ width: '100px' }")
+		d-input(append="W", v-model="screen.width", :style="{ width: '100px' }")
 		d-input(
 			append="H",
-			v-model="platform.height",
+			v-model="screen.height",
 			:style="{ marginLeft: '10px', width: '100px' }")
 	d-right-control(label="背景色")
 		i-color-picker(
 			:alpha="true",
-			v-model="platform.backgroundColor")
+			v-model="screen.backgroundColor",
+			v-if="screen.backgroundColor")
 		i-input(
-			v-model="platform.backgroundColor",
+			v-model="screen.backgroundColor",
 			:disabled="true",
 			:style="{ width: '166px', marginLeft: '10px' }")
 	d-right-control(label="背景图", title="支持jpg，png，gif")
-		d-upload(
-			v-model="platform.backgroundImage",
-			:data="backGroundFormData")
+		d-upload(v-model="screen.backgroundImage", :data="backGroundFormData")
 	d-right-control(label="移动看板")
 		i-switch(v-model="platform.isMobile")
 	d-right-control(label="适配模式")
@@ -36,10 +32,7 @@
 			i-option(value="full-height") 100%高度
 	// START_PROD
 	d-right-control(label="封面", title="支持jpg，png，gif")
-		d-upload(
-			v-model="platform.screenAvatar",
-			:data="screenAvatarFormData",
-			@success="handleScreenAvatar")
+		d-upload(v-model="screen.avatar", :data="screenAvatarFormData")
 	d-right-control
 		i-button(@click="screenAvatar", type="primary") 截屏
 	// END_PROD
@@ -58,7 +51,7 @@ import platform from '@/store/platform.store.js'
 import scene from '@/store/scene.store.js'
 import dUpload from '@/components-right/d-upload/index.vue'
 import { Tooltip } from 'view-design'
-
+import ScreenPc from '@/controller/Screen/pc'
 @Component({
 	components: {
 		dUpload,
@@ -71,16 +64,14 @@ export default class FuncConfig extends func {
 	backGroundFormData = {
 		library: 'componentBackGround',
 	}
-
-	// START_PROD
+	screen = {}
 	screenAvatarFormData = {
 		library: 'screenAvatar',
 	}
-	// END_PROD
 
 	get size() {
-		const width = this.platform.width
-		const height = this.platform.height
+		const width = this.screen.width
+		const height = this.screen.height
 		if (width !== 1920 && width !== 1366 && width !== 1024) {
 			return 'other'
 		}
@@ -93,21 +84,12 @@ export default class FuncConfig extends func {
 	set size(value) {
 		if (value !== 'other' && value) {
 			const [width, height] = value.split('*')
-			this.platform.width = +width
-			this.platform.height = +height
+			this.screen.width = +width
+			this.screen.height = +height
 		}
 	}
 
 	// START_PROD
-	handleScreenAvatar(res) {
-		const {
-			params: { id },
-		} = this.$route
-		this.$api.screen.update({
-			screenId: id,
-			screenAvatar: res ? res.result.url : '',
-		})
-	}
 
 	async screenAvatar() {
 		const {
@@ -120,11 +102,7 @@ export default class FuncConfig extends func {
 				console.warn(e)
 				this.$Message.error('截屏创建失败')
 			})
-			this.platform.screenAvatar = (screenAvatar as any).url
-			this.$api.screen.update({
-				screenId: id,
-				screenAvatar: (screenAvatar as any).url,
-			})
+			this.screen.avatar = (screenAvatar as any).url
 		}
 	}
 
@@ -201,5 +179,9 @@ export default class FuncConfig extends func {
 		})
 	}
 	// END_PROD
+
+	mounted() {
+		this.screen = ScreenPc.getInstance()
+	}
 }
 </script>

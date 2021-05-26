@@ -21,7 +21,7 @@
 					:size="18",
 					:class="{ active: ruler.xRoomR1 > 0 }")
 	.d-detail-middle.fn-flex
-		span.d-detail-title {{ platform.screenName }}
+		span.d-detail-title {{ screen.name }}
 	ul.d-detail-right.fn-flex
 		li.fn-flex.flex-column.pointer(@click.stop="search")
 			i-icon(type="ios-search-outline", :size="24")
@@ -94,6 +94,7 @@ export default class DDetail extends mixins(
 	shareModal = false
 	loading = false
 	isNew = true
+	screen = {}
 	screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
 
 	handleLeft1() {
@@ -183,7 +184,6 @@ export default class DDetail extends mixins(
 			},
 		)
 		return {
-			screenName: this.platform.screenName,
 			screenConfig: {
 				widgets, // 小工具配置
 				scene: this.scene.obj, // 场景
@@ -193,11 +193,9 @@ export default class DDetail extends mixins(
 
 	mounted() {
 		this.isNew = !this.$route.params.id
-		console.log(
-			ScreenPc.getInstance({
-				screenId: '7e17bd2e-19b4-4fef-aa85-b8890954bf8b',
-			}),
-		)
+		this.screen = ScreenPc.getInstance({
+			screenId: '7e17bd2e-19b4-4fef-aa85-b8890954bf8b',
+		})
 	}
 }
 </script>

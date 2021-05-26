@@ -18,8 +18,8 @@ export default class ScreenPc extends base {
 	public init(obj: any) {
 		if (obj) {
 			detail({ screenId: obj.screenId }).then(res => {
-				this.screenId = res.screenId
 				this.screenName = res.screenName
+				this.screenAvatar = res.screenAvatar
 				this.screenPublish = res.screenPublish
 				this.screenType = res.screenType
 				this.screenVersion = res.screenVersion
@@ -28,7 +28,23 @@ export default class ScreenPc extends base {
 				this.createTime = res.createTime
 				this.updateTime = res.updateTime
 				this.screenConfig = res.screenConfig
-				console.log(this)
+				this.screenWidth = res.screenWidth
+					? res.screenWidth
+					: res.screenConfig.width
+				this.screenHeight = res.screenHeight
+					? res.screenHeight
+					: res.screenConfig.height
+				this.screenBackGroundColor = res.screenBackGroundColor
+					? res.screenBackGroundColor
+					: res.screenConfig.backgroundColor
+				this.screenBackGroundImage = res.screenBackGroundImage
+					? res.screenBackGroundImage
+					: res.screenConfig.backgroundImage
+				this.screenMainScene = res.screenMainScene
+					? res.screenMainScene
+					: res.screenConfig.mainScene
+				this.screenPlatform = res.screenPlatform
+				this.screenId = res.screenId
 			})
 		}
 	}
