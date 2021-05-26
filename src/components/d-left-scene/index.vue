@@ -20,7 +20,7 @@
 			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
-		draggable(v-model="list" @change="sceneWidgetDragEnd")
+		draggable(v-model="list", @change="sceneWidgetDragEnd")
 			transition-group
 				item-card(v-for="item in list", :key="item.id", :item="item")
 	.d-left-scene-bottom.fn-flex.flex-row
@@ -146,19 +146,21 @@ export default class DLeftScene extends Vue {
 		})
 	}
 
-	sceneWidgetDragEnd (e) {
+	sceneWidgetDragEnd(e) {
 		if (e.moved.newIndex > e.moved.oldIndex) {
 			// 向下移动
 			this.list.slice(0, e.moved.newIndex).forEach(v => {
 				v.config.layout.zIndex++
 			})
-			this.list[e.moved.newIndex].config.layout.zIndex = this.list[e.moved.newIndex - 1].config.layout.zIndex - 1
+			this.list[e.moved.newIndex].config.layout.zIndex =
+				this.list[e.moved.newIndex - 1].config.layout.zIndex - 1
 		} else if (e.moved.newIndex < e.moved.oldIndex) {
 			// 向上移动
 			this.list.slice(0, e.moved.newIndex).forEach(v => {
 				v.config.layout.zIndex++
 			})
-			this.list[e.moved.newIndex].config.layout.zIndex = this.list[e.moved.newIndex + 1].config.layout.zIndex + 1
+			this.list[e.moved.newIndex].config.layout.zIndex =
+				this.list[e.moved.newIndex + 1].config.layout.zIndex + 1
 		}
 	}
 }

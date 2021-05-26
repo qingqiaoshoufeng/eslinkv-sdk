@@ -116,9 +116,23 @@ export default {
 						const script = document.createElement('script')
 						script.onload = () => {
 							this.ready = true
+							this.scene.widgetLoaded[
+								`${this.type}${this.componentVersion}`
+							] = true
 						}
-						script.src = res.componentJsUrl
-						document.head.appendChild(script)
+						if (res) {
+							script.src = res.componentJsUrl
+							document.head.appendChild(script)
+						} else {
+							console.error(
+								`${this.type}${this.componentVersion}加载组件失败`,
+							)
+						}
+					})
+					.catch(() => {
+						console.error(
+							`${this.type}${this.componentVersion}加载组件失败`,
+						)
 					})
 			}
 		},
