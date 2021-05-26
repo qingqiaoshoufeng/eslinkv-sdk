@@ -57,9 +57,8 @@ export default class rightMenu extends Vue {
 	maxZIndex = 0
 
 	handleSync() {
-		this.instance.kanboard.$refs[
-			`${this.platform.chooseWidgetId}`
-		][0].$children[0].updateKey++
+		this.instance.kanboard.$refs[`${this.platform.chooseWidgetId}`][0]
+			.$children[0].updateKey++
 		this.hideRightMenu()
 	}
 
@@ -133,6 +132,7 @@ export default class rightMenu extends Vue {
 			widget.type,
 			widget.config,
 			widget.scene,
+			widget.market,
 		)
 		this.handleUnActive()
 	}

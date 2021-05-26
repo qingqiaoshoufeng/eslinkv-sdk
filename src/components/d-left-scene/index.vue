@@ -43,7 +43,7 @@
 				@on-search="handleCopy")
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { Icon, Input, Select, Option, Modal } from 'view-design'
 import scene from '../../store/scene.store'
 import platform from '../../store/platform.store'
@@ -69,8 +69,7 @@ export default class DLeftScene extends Vue {
 	platform: any = platform.state
 	editScene = false
 	copyModel = false
-	list:any = []
-	
+
 	get list() {
 		const list = []
 		for (const key in this.platform.widgetAdded) {
@@ -85,7 +84,7 @@ export default class DLeftScene extends Vue {
 		return list
 	}
 
-	set list (val) {
+	set list(val) {
 		console.log('setList', val)
 	}
 
