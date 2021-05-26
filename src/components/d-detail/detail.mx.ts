@@ -33,7 +33,6 @@ export default {
 			marketComponents.forEach(item => {
 				if (this.scene.widgetLoaded[`${item.type}${item.version}`])
 					return
-				this.scene.widgetLoaded[`${item.type}${item.version}`] = true
 				p.push(
 					new Promise<number>((resolve, reject) => {
 						this.$api.marketComponent
@@ -44,6 +43,9 @@ export default {
 							.then((res: widgetUseResult) => {
 								const script = document.createElement('script')
 								script.onload = () => {
+									this.scene.widgetLoaded[
+										`${item.type}${item.version}`
+									] = true
 									resolve(1)
 								}
 								script.onerror = () => {
@@ -74,6 +76,29 @@ export default {
 					console.error('组件初始化加载失败')
 				})
 		},
+		jianrong(res) {
+			if (res.screenConfig.panelConfig) {
+				this.platform.backgroundImage =
+					res.screenConfig.panelConfig.background.url
+				this.platform.backgroundColor =
+					res.screenConfig.panelConfig.background.color
+				this.platform.width = res.screenConfig.panelConfig.size.width
+				this.platform.height = res.screenConfig.panelConfig.size.height
+				this.platform.isMobile = !!res.screenConfig.panelConfig.size
+					.isMobile
+				this.platform.layoutMode =
+					res.screenConfig.panelConfig.size.layoutMode
+				this.platform.mainScene = res.screenConfig.panelConfig.mainScene
+			} else {
+				this.platform.backgroundImage = res.screenConfig.backgroundImage
+				this.platform.backgroundColor = res.screenConfig.backgroundColor
+				this.platform.width = res.screenConfig.width
+				this.platform.height = res.screenConfig.height
+				this.platform.isMobile = !!res.screenConfig.isMobile
+				this.platform.layoutMode = res.screenConfig.layoutMode
+				this.platform.mainScene = res.screenConfig.mainScene
+			}
+		},
 	},
 	mounted() {
 		const templateId = this.$route.query.templateId
@@ -86,10 +111,8 @@ export default {
 					this.platform.screenType = res.screenType
 					this.platform.screenAvatar = res.screenAvatar
 					this.platform.screenName = res.screenName
-					this.platform.backgroundImage =
-						res.screenConfig.panelConfig.background.url
-					this.platform.backgroundColor =
-						res.screenConfig.panelConfig.background.color
+					this.platform.screenVersion = res.screenVersion
+					this.jianrong(res)
 					this.refillConfig(res)
 				})
 		}
@@ -97,10 +120,7 @@ export default {
 			this.$api.screen
 				.detailFile(decodeURIComponent(file))
 				.then((res: platformInitResult) => {
-					this.platform.backgroundImage =
-						res.screenConfig.panelConfig.background.url
-					this.platform.backgroundColor =
-						res.screenConfig.panelConfig.background.color
+					this.jianrong(res)
 					this.refillConfig(res)
 				})
 		}

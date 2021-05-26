@@ -58,8 +58,8 @@ export default {
 			if (this.ready) {
 				if (
 					this.market &&
-					Vue.options.components[
-						`${prefix1}${this.type}-${this.componentVersion}`
+					this.scene.widgetLoaded[
+						`${this.type}${this.componentVersion}`
 					]
 				) {
 					return `${prefix1}${this.type}-${this.componentVersion}`
@@ -69,7 +69,10 @@ export default {
 			return null
 		},
 		animation() {
-			return this.config.animation || {}
+			if (this.config.animation) {
+				return this.config.animation
+			}
+			return {}
 		},
 		animationEnabled() {
 			return this.animation.transitionEnable
@@ -161,7 +164,9 @@ export default {
 		if (this.market) {
 			this.loadMarket()
 		} else {
-			if (Vue.options.components[`${prefix2}${this.type}`]) {
+			if (
+				this.scene.widgetLoaded[`${this.type}${this.componentVersion}`]
+			) {
 				this.ready = true
 			} else {
 				Vue.component(
