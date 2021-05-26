@@ -66,7 +66,7 @@ import loadMask from '../load-mask/index.vue'
 import importMx from './import.mx'
 import exportMx from './export.mx'
 import detailMx from './detail.mx'
-
+import ScreenPc from '@/controller/Screen/pc'
 @Component({
 	components: {
 		'i-icon': Icon,
@@ -193,6 +193,11 @@ export default class DDetail extends mixins(
 
 	mounted() {
 		this.isNew = !this.$route.params.id
+		console.log(
+			ScreenPc.getInstance({
+				screenId: '7e17bd2e-19b4-4fef-aa85-b8890954bf8b',
+			}),
+		)
 	}
 }
 </script>
