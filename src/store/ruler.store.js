@@ -46,9 +46,7 @@ const actions = {
 		state.contentY = Math.ceil(deltaY)
 	},
 	zoomIn(step = 2) {
-		if (state.zoom < 4) {
-			state.zoom = +((state.zoom * 100 + step) / 100).toFixed(2)
-		}
+		state.zoom = +((state.zoom * 100 + step) / 100).toFixed(2)
 	},
 	zoomOut(step = 2) {
 		if (state.zoom * 100 > step) {

@@ -1,8 +1,8 @@
 import { update } from '@/api/screen.api'
 import { Message } from 'view-design'
 import { debounce } from 'throttle-debounce'
-
-export default class ScreenBase {
+import scene from './scene'
+export default class ScreenBase extends scene {
 	/* 大屏ID */
 	public screenId: string = ''
 	/* 大屏名 */
@@ -14,12 +14,15 @@ export default class ScreenBase {
 		this.screenName = screenName
 		this.updateScreen({ screenName })
 	}
-
+	/* 已废弃 */
 	/* 大屏配置 */
 	public screenConfig: any = {}
+	/* 大屏组件配置 */
+	public screenWidgets: any = []
 	/* 大屏类型 CUSTOM:大屏 TEMPLATE:模版 */
 	public screenType: string = ''
-	/* 大屏发布情况 EDIT:未发布 COMPLETE:已发布 */
+	/* 已废弃 */
+	/* 大屏发布情况 EDIT:未发布 COMPLETE:已发布*/
 	public screenPublish: string = ''
 	/* 大屏缩略图 */
 	public screenAvatar: string = ''
@@ -88,6 +91,13 @@ export default class ScreenBase {
 	}
 	/* 大屏首屏场景 */
 	public screenMainScene: string
+	get mainScene() {
+		return this.screenMainScene
+	}
+	set mainScene(screenMainScene: string) {
+		this.screenBackGroundImage = screenMainScene
+		this.updateScreen({ screenMainScene })
+	}
 	/* 大屏平台类型 PC:PC */
 	public screenPlatform: string
 }

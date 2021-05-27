@@ -1,0 +1,93 @@
+import { uuid } from '@/utils'
+import { Modal } from 'view-design'
+import Vue from 'vue'
+export default class SceneBase {
+	/* 大屏场景配置 */
+	public screenScene: any = {}
+	/* 大屏场景数据序列化 */
+	public sceneList = []
+	/* 大屏场景数据序列化 */
+	public sceneObj = {}
+	/* 大屏当前场景 */
+	static _sceneIndex = 0
+	get sceneIndex() {
+		return SceneBase._sceneIndex
+	}
+	set sceneIndex(val) {
+		SceneBase._sceneIndex = val
+		let event = new CustomEvent('SceneIndex', { detail: { index: val } })
+		document.dispatchEvent(event)
+		event = null
+	}
+
+	public initScene(res) {
+		if (res.screenScene) {
+			this.screenScene = res.screenScene
+		} else {
+			this.screenScene = res.screenConfig.scene
+		}
+		if (this.screenScene instanceof Array) {
+			this.sceneList = this.screenScene
+			this.screenScene.forEach(item => {
+				this.sceneObj[item] = {
+					name: `场景${item}`,
+				}
+			})
+		} else {
+			this.sceneObj = this.screenScene
+			const arr = []
+			for (const key in this.screenScene) {
+				arr.push({ name: this.screenScene[key].name, key })
+			}
+			arr.sort(function (a, b) {
+				return a.name.localeCompare(b.name)
+			})
+			this.sceneList = arr.map(item => item.key)
+		}
+		// todo
+		// const widgets = Object.values(platform.state.widgetAdded)
+		// const list = this.list
+		// widgets.forEach(item => {
+		// 	const index = list.indexOf(item.scene)
+		// 	if (index !== -1) {
+		// 		if (!this.sceneObj[list[index]]) {
+		// 			this.sceneObj[list[index]] = {}
+		// 		}
+		// 		if (!this.sceneObj[list[index]].list) {
+		// 			this.sceneObj[list[index]].list = []
+		// 		}
+		// 		this.sceneObj[list[index]].list.push(item)
+		// 	}
+		// })
+	}
+
+	public createScene() {
+		const name = uuid()
+		Vue.set(this.sceneList, this.sceneList.length, name)
+		Vue.set(this.sceneObj, name, { name: `场景${name}` })
+		this.sceneIndex = name
+	}
+
+	public destroyScene() {
+		if (this.sceneIndex === 0) {
+			return false
+		}
+		Modal.confirm({
+			title: '提示',
+			content: '是否删除当前场景？该场景未删除的组件将自动进入回收站！',
+			onOk: () => {
+				const index = this.sceneIndex
+				this.sceneIndex = 0
+				Vue.delete(this.sceneObj, index)
+				this.sceneList.splice(index, 1)
+				// todo
+				// for (const key in this.platform.widgetAdded) {
+				// 	const item = this.platform.widgetAdded[key]
+				// 	if (item.scene === index) {
+				// 		item.scene = -1
+				// 	}
+				// }
+			},
+		})
+	}
+}

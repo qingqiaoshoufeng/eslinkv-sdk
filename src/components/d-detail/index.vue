@@ -117,8 +117,11 @@ export default class DDetail extends mixins(
 	}
 
 	preview() {
+		const scene = this.screen.mainScene
+			? `&scene=${this.screen.mainScene}`
+			: ''
 		window.open(
-			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.platform.layoutMode}`,
+			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.screen.layoutMode}${scene}`,
 		)
 	}
 

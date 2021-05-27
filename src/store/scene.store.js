@@ -16,7 +16,6 @@ const state = Vue.observable({
 	list: [],
 	obj: {},
 	showAnimationStyle: '',
-	transferData: null, // 场景交互时传递的数据
 	status: 'inEdit', // inEdit  在编辑器中  inPreview 在预览中
 	sceneObj: {},
 	widgetLoaded: {},

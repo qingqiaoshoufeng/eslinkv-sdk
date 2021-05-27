@@ -37,8 +37,10 @@
 			type="primary",
 			:loading="screenAvatarLoading") 截屏
 	// END_PROD
-	d-right-control(label="首场景", v-if="scene.list.length > 0")
-		i-select(filterable, v-model="platform.mainScene")
+	d-right-control(
+		label="首场景",
+		v-if="screen.sceneList && screen.sceneList.length > 0")
+		i-select(filterable, v-model="screen.mainScene")
 			i-option(:value="0") 主场景
 			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 </template>
