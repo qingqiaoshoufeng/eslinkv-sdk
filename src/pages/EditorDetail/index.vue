@@ -2,19 +2,15 @@
 .detail-container
 	.preview-wrapper.fit-mode(
 		:class="{ mobile: isMobile }",
-		:style="{ backgroundColor: platform.backgroundColor, backgroundImage: `url(${platform.backgroundImage})` }")
+		:style="{ backgroundColor: screen.backgroundColor }")
 		.mobile-wrap(:style="{ height: mobileWrapHeight + 'px' }", v-if="isMobile")
-			d-view(
-				@mounted="updateSize",
-				ref="previewContainer",
-				:style="viewStyle")
+			d-view(@mounted="updateSize", ref="previewContainer", :style="viewStyle")
 		d-view(
 			@mounted="updateSize",
 			ref="previewContainer",
 			v-else,
 			:style="viewStyle")
 		d-detail(:show="false")
-		
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
@@ -22,6 +18,7 @@ import dDetail from '../../components/d-detail/index.vue'
 import dView from '../../components/d-view/index.vue'
 import platform from '../../store/platform.store.js'
 import { getQueryString } from '../../utils'
+import ScreenPc from '@/controller/Screen/pc'
 
 @Component({
 	components: {
@@ -36,6 +33,7 @@ export default class detail extends Vue {
 	scaleY = 1
 	scaleX = 0
 	actualScaleRatio = 1
+	screen = {}
 
 	get viewStyle() {
 		let scale
@@ -70,6 +68,14 @@ export default class detail extends Vue {
 		}
 		this.mobileWrapHeight = h * this.actualScaleRatio
 	}
+	created() {
+		const {
+			params: { id },
+		} = this.$route
+		this.screen = ScreenPc.getInstance({
+			screenId: id,
+		})
+	}
 }
 </script>
 <style lang="scss">
@@ -95,6 +101,7 @@ export default class detail extends Vue {
 		position: relative;
 		flex-grow: 0;
 		flex-shrink: 0;
+		background-size: contain;
 	}
 
 	&.fit-mode {

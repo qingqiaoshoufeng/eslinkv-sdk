@@ -1,5 +1,6 @@
 import { update } from '@/api/screen.api'
 import { Message } from 'view-design'
+import { debounce } from 'throttle-debounce'
 
 export default class ScreenBase {
 	/* 大屏ID */
@@ -34,6 +35,13 @@ export default class ScreenBase {
 	public screenVersion: string = ''
 	/* 大屏适配方式 */
 	public screenLayoutMode: string = ''
+	get layoutMode() {
+		return this.screenLayoutMode
+	}
+	set layoutMode(screenLayoutMode: string) {
+		this.screenLayoutMode = screenLayoutMode
+		this.updateScreen({ screenLayoutMode })
+	}
 	/* 备注 */
 	public remark: string = ''
 	/* 排序 */
@@ -49,6 +57,7 @@ export default class ScreenBase {
 	}
 	set width(screenWidth: number) {
 		this.screenWidth = screenWidth
+		this.updateScreen({ screenWidth })
 	}
 	/* 大屏高度 */
 	public screenHeight: number = 1080
@@ -57,6 +66,7 @@ export default class ScreenBase {
 	}
 	set height(screenHeight: number) {
 		this.screenHeight = screenHeight
+		this.updateScreen({ screenHeight })
 	}
 	/* 大屏背景颜色 */
 	public screenBackGroundColor: string = 'rgba(24, 27, 36,1)'
@@ -65,6 +75,7 @@ export default class ScreenBase {
 	}
 	set backgroundColor(screenBackGroundColor: string) {
 		this.screenBackGroundColor = screenBackGroundColor
+		this.updateScreen({ screenBackGroundColor })
 	}
 	/* 大屏背景图片 */
 	public screenBackGroundImage: string
@@ -73,20 +84,21 @@ export default class ScreenBase {
 	}
 	set backgroundImage(screenBackGroundImage: string) {
 		this.screenBackGroundImage = screenBackGroundImage
+		this.updateScreen({ screenBackGroundImage })
 	}
 	/* 大屏首屏场景 */
 	public screenMainScene: string
 	/* 大屏平台类型 PC:PC */
 	public screenPlatform: string
-
-	updateScreen(obj: any): void {
-		if (this.screenId) {
-			update({
-				screenId: this.screenId,
-				...obj,
-			}).then(() => {
-				Message.success('修改成功')
-			})
-		}
-	}
 }
+
+ScreenBase.prototype.updateScreen = debounce(1500, false, function (obj: any) {
+	if (this.screenId) {
+		update({
+			screenId: this.screenId,
+			...obj,
+		}).then(() => {
+			Message.success('修改成功')
+		})
+	}
+})

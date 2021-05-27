@@ -10,12 +10,14 @@ export default class ScreenPc extends base {
 
 	public static getInstance(obj: any): ScreenPc {
 		if (this._instance == null) {
+			console.log(obj)
 			this._instance = new ScreenPc(obj)
 		}
 		return ScreenPc._instance
 	}
 
 	public init(obj: any) {
+		console.log(obj)
 		if (obj) {
 			detail({ screenId: obj.screenId }).then(res => {
 				this.screenName = res.screenName

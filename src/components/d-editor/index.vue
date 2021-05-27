@@ -122,7 +122,6 @@ export default {
 	},
 	computed: {
 		canvasStyle() {
-			console.log(this.screen)
 			return {
 				width: `${this.screen.width}px`,
 				height: `${this.screen.height}px`,
@@ -190,7 +189,7 @@ export default {
 #screen {
 	box-shadow: rgba(0, 0, 0, 0.5) 0 0 30px 0;
 	transition: background-image 0.5s;
-
+	background-size: contain;
 	&::before {
 		display: flex;
 		content: '';

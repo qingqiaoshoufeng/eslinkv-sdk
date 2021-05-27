@@ -191,10 +191,13 @@ export default class DDetail extends mixins(
 		}
 	}
 
-	mounted() {
-		this.isNew = !this.$route.params.id
+	created() {
+		const {
+			params: { id },
+		} = this.$route
+		this.isNew = !id
 		this.screen = ScreenPc.getInstance({
-			screenId: '7e17bd2e-19b4-4fef-aa85-b8890954bf8b',
+			screenId: id,
 		})
 	}
 }

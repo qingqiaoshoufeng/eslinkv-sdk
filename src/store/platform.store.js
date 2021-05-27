@@ -23,7 +23,6 @@ const state = Vue.observable({
 		z: 0,
 	}, // 选中项配置
 	isMobile: false,
-	layoutMode: 'full-height',
 	mainScene: 0, // 设置进入场景
 
 	isMac, // 是否是mac

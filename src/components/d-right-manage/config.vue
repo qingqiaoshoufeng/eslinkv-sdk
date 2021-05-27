@@ -23,10 +23,8 @@
 			:style="{ width: '166px', marginLeft: '10px' }")
 	d-right-control(label="背景图", title="支持jpg，png，gif")
 		d-upload(v-model="screen.backgroundImage", :data="backGroundFormData")
-	d-right-control(label="移动看板")
-		i-switch(v-model="platform.isMobile")
 	d-right-control(label="适配模式")
-		i-select(v-model="platform.layoutMode")
+		i-select(v-model="screen.layoutMode")
 			i-option(value="full-size") 充满页面
 			i-option(value="full-width") 100%宽度
 			i-option(value="full-height") 100%高度
@@ -34,7 +32,10 @@
 	d-right-control(label="封面", title="支持jpg，png，gif")
 		d-upload(v-model="screen.avatar", :data="screenAvatarFormData")
 	d-right-control
-		i-button(@click="screenAvatar", type="primary") 截屏
+		i-button(
+			@click="screenAvatar",
+			type="primary",
+			:loading="screenAvatarLoading") 截屏
 	// END_PROD
 	d-right-control(label="首场景", v-if="scene.list.length > 0")
 		i-select(filterable, v-model="platform.mainScene")
@@ -68,6 +69,7 @@ export default class FuncConfig extends func {
 	screenAvatarFormData = {
 		library: 'screenAvatar',
 	}
+	screenAvatarLoading = false
 
 	get size() {
 		const width = this.screen.width
@@ -90,20 +92,20 @@ export default class FuncConfig extends func {
 	}
 
 	// START_PROD
-
 	async screenAvatar() {
-		const {
-			params: { id },
-		} = this.$route
-		if (id) {
-			const screenAvatar = await this.capture({
-				selector: '#screen',
-			}).catch(e => {
+		this.screenAvatarLoading = true
+		this.capture({
+			selector: '#screen',
+		})
+			.then(res => {
+				this.screenAvatarLoading = false
+				this.screen.avatar = (res as any).url
+			})
+			.catch(e => {
 				console.warn(e)
+				this.screenAvatarLoading = false
 				this.$Message.error('截屏创建失败')
 			})
-			this.screen.avatar = (screenAvatar as any).url
-		}
 	}
 
 	/**
@@ -120,7 +122,6 @@ export default class FuncConfig extends func {
 				resolve(data)
 			})
 			.catch(reject)
-			.finally(() => {})
 	}
 
 	/**
