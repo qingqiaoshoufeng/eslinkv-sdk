@@ -199,9 +199,7 @@ export default class DDetail extends mixins(
 			params: { id },
 		} = this.$route
 		this.isNew = !id
-		this.screen = ScreenPc.getInstance({
-			screenId: id,
-		})
+		this.screen = this.$screen
 	}
 }
 </script>

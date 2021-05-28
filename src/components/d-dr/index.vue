@@ -168,7 +168,7 @@ export default {
 			'touchend touchcancel',
 			this.deselect,
 		)
-		this.screen = ScreenPc.getInstance()
+		this.screen = this.$screen
 	},
 	beforeDestroy() {
 		removeEvent(

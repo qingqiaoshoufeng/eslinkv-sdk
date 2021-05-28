@@ -7,6 +7,9 @@
 import { Vue, Component } from 'vue-property-decorator'
 import dScreen from '../../components/d-screen/index.vue'
 import dDetail from '../../components/d-detail/index.vue'
+import ScreenPc from '@/controller/Screen/pc'
+
+ScreenPc.getInstance()
 
 @Component({
 	components: {

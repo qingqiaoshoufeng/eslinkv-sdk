@@ -43,7 +43,7 @@ export default class DRightManage extends Vue {
 		this.editName = false
 	}
 	mounted() {
-		this.screen = ScreenPc.getInstance()
+		this.screen = this.$screen
 	}
 }
 </script>

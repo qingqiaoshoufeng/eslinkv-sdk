@@ -9,12 +9,10 @@ export default class SceneBase {
 	/* 大屏场景数据序列化 */
 	public sceneObj = {}
 	/* 大屏当前场景 */
-	static _sceneIndex = 0
-	get sceneIndex() {
-		return SceneBase._sceneIndex
-	}
-	set sceneIndex(val) {
-		SceneBase._sceneIndex = val
+	public sceneIndex = 0
+	
+	public setSceneIndex(val) {
+		this.sceneIndex = val
 		let event = new CustomEvent('SceneIndex', { detail: { index: val } })
 		document.dispatchEvent(event)
 		event = null
@@ -65,7 +63,7 @@ export default class SceneBase {
 		const name = uuid()
 		Vue.set(this.sceneList, this.sceneList.length, name)
 		Vue.set(this.sceneObj, name, { name: `场景${name}` })
-		this.sceneIndex = name
+		this.setSceneIndex(name)
 	}
 
 	public destroyScene() {
@@ -77,7 +75,7 @@ export default class SceneBase {
 			content: '是否删除当前场景？该场景未删除的组件将自动进入回收站！',
 			onOk: () => {
 				const index = this.sceneIndex
-				this.sceneIndex = 0
+				this.setSceneIndex(0)
 				Vue.delete(this.sceneObj, index)
 				this.sceneList.splice(index, 1)
 				// todo

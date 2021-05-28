@@ -141,7 +141,7 @@ export default {
 		platform.actions.initPlatformConfig()
 		instance.actions.setInstance('kanboard', this)
 		scene.actions.setStatus('inEdit')
-		this.screen = ScreenPc.getInstance()
+		this.screen = this.$screen
 	},
 }
 </script>

@@ -184,7 +184,7 @@ export default class FuncConfig extends func {
 	// END_PROD
 
 	mounted() {
-		this.screen = ScreenPc.getInstance()
+		this.screen = this.$screen
 	}
 }
 </script>

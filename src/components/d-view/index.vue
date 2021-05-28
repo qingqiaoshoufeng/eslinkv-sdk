@@ -57,7 +57,7 @@ export default class DView extends Vue {
 	mounted() {
 		instance.actions.setInstance('kanboard', this)
 		scene.actions.setStatus('inPreview')
-		this.screen = ScreenPc.getInstance()
+		this.screen = this.$screen
 	}
 }
 </script>

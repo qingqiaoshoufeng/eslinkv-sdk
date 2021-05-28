@@ -149,7 +149,7 @@ export default class YLine extends Vue {
 		this.context.font = '10px sans-serif'
 		this.context.fillStyle = '#999'
 		this.init()
-		this.screen = ScreenPc.getInstance()
+		this.screen = this.$screen
 	}
 }
 </script>

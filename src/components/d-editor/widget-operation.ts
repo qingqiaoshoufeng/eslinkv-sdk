@@ -2,6 +2,7 @@ import { uuid } from '../../utils/index'
 import { Vue, Component } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
+import ScreenPc from '@/controller/Screen/pc'
 
 @Component
 class Mixins extends Vue {
@@ -44,7 +45,7 @@ class Mixins extends Vue {
 		widget.componentVersion = componentVersion
 		widget.componentId = componentId
 		const value = { layout, widget, config, api }
-		this.initWidgetConfig(id, type, this.scene.index, market)
+		this.initWidgetConfig(id, type, this.$screen.sceneIndex, market)
 		this.updateWidget(value)
 		this.currentWidgetType = type
 		return id

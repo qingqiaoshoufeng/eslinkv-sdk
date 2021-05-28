@@ -5,19 +5,18 @@
 		span 场景区
 	header.fn-flex.flex-row
 		i-input(
-			:value="screen.sceneObj[screen.sceneIndex].name",
+			:value="$screen.sceneObj[$screen.sceneIndex].name",
 			@on-change="handleSceneName",
 			@on-focus="event.inputFocus = true",
 			@on-blur="event.inputFocus = false",
 			v-if="editScene")
 			i-icon(type="md-checkmark", slot="suffix", @click="editScene = false")
 		i-select(
-			v-model="screen.sceneIndex",
+			v-model="$screen.sceneIndex",
 			v-if="!editScene",
-			filterable,
-			@on-query-change="handleFocusSceneName")
+			filterable,)
 			i-option(:value="0") 主场景
-			i-option(:value="key", v-for="(item, key) in screen.sceneObj", :key="key") {{ item.name }}
+			i-option(:value="key", v-for="(item, key) in $screen.sceneObj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
 		draggable(v-model="list", @change="sceneWidgetDragEnd")
@@ -28,22 +27,22 @@
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('create')") 新增
 		.d-left-scene-bottom-btn.text-center(
 			@click="handleSetScene('edit')",
-			:class="{ disabled: screen.sceneIndex === 0 }") 编辑
+			:class="{ disabled: $screen.sceneIndex === 0 }") 编辑
 		.d-left-scene-bottom-btn.text-center(
 			@click="handleSetScene('destroy')",
-			:class="{ disabled: screen.sceneIndex === 0 }") 删除
+			:class="{ disabled: $screen.sceneIndex === 0 }") 删除
 	i-modal(v-model="copyModel", title="提示", :footer-hide="true")
 		.fn-flex.flex-row
-			span.fn-hide.copy-id {{ screen.sceneIndex }}
+			span.fn-hide.copy-id {{ $screen.sceneIndex }}
 			i-input(
-				v-model="screen.sceneIndex",
+				v-model="$screen.sceneIndex",
 				search,
 				readonly,
 				enter-button="复制",
 				@on-search="handleCopy")
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Icon, Input, Select, Option, Modal } from 'view-design'
 import scene from '../../store/scene.store'
 import platform from '../../store/platform.store'
@@ -51,7 +50,6 @@ import ruler from '../../store/ruler.store'
 import { copyText } from '../../utils/index'
 import ItemCard from './item-card.vue'
 import draggable from 'vuedraggable'
-import ScreenPc from '@/controller/Screen/pc'
 
 @Component({
 	components: {
@@ -70,40 +68,45 @@ export default class DLeftScene extends Vue {
 	platform: any = platform.state
 	editScene = false
 	copyModel = false
-	screen = {}
+	$screen = {}
+	list = []
 
-	get list() {
+	@Watch('platform.widgetAdded')
+	widgetAddedChange () {
+		this.$nextTick(() => {
+			this.getList()
+		})
+	}
+	@Watch('$screen.sceneIndex')
+	sceneIndexChange () {
+		this.getList()
+		platform.actions.unChooseWidget()
+	}
+
+	getList() {
 		const list = []
 		for (const key in this.platform.widgetAdded) {
 			const item = this.platform.widgetAdded[key]
-			if (item.scene === this.scene.index) {
+			if (item.scene === this.$screen.sceneIndex) {
 				list.push(item)
 			}
 		}
 		list.sort((a, b) => {
 			return b.config.layout.zIndex - a.config.layout.zIndex
 		})
-		return list
-	}
-
-	set list(val) {
-		console.log('setList', val)
-	}
-
-	handleFocusSceneName() {
-		platform.actions.unChooseWidget()
+		this.list = list
 	}
 
 	handleSetScene(name) {
 		switch (name) {
 			case 'create':
-				this.screen.createScene()
+				this.$screen.createScene()
 				break
 			case 'edit':
 				this.editScene = true
 				break
 			case 'destroy':
-				this.screen.destroyScene()
+				this.$screen.destroyScene()
 				break
 			case 'copy':
 				this.copyModel = true
@@ -112,7 +115,7 @@ export default class DLeftScene extends Vue {
 	}
 
 	handleCopy() {
-		copyText(this.screen.sceneIndex)
+		copyText(this.$screen.sceneIndex)
 	}
 
 	handleSceneName(e) {
@@ -138,7 +141,7 @@ export default class DLeftScene extends Vue {
 	}
 
 	mounted() {
-		this.screen = ScreenPc.getInstance()
+		this.getList()
 	}
 }
 </script>

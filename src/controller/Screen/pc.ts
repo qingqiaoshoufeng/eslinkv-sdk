@@ -1,18 +1,16 @@
 import base from './base'
+import Vue from 'vue'
 import { detail } from '@/api/screen.api'
 export default class ScreenPc extends base {
-	private static _instance: ScreenPc
-
 	constructor(obj: any) {
 		super()
 		this.init(obj)
 	}
 
 	public static getInstance(obj: any): ScreenPc {
-		if (this._instance == null) {
-			this._instance = new ScreenPc(obj)
+		if (!Vue.prototype.$screen || Object.keys(Vue.prototype.$screen).length === 0) {
+			Vue.prototype.$screen = new ScreenPc(obj)
 		}
-		return ScreenPc._instance
 	}
 
 	private serialize(res) {

@@ -119,7 +119,7 @@ export default class DFooter extends Vue {
 				key: [{ value: mouseWheelImg, type: 'img' }],
 			},
 		]
-		this.screen = ScreenPc.getInstance()
+		this.screen = this.$screen
 	}
 }
 </script>
