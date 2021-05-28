@@ -1,4 +1,4 @@
-import ruler from '@/store/ruler.store'
+import Vue from 'vue'
 
 /**
  * @description
@@ -10,9 +10,9 @@ const dScreenWheel = e => {
 		e.preventDefault()
 		e.stopPropagation()
 		if (e.wheelDelta > 0) {
-			ruler.actions.zoomIn()
+			Vue.prototype.$ruler.zoomIn()
 		} else {
-			ruler.actions.zoomOut()
+			Vue.prototype.$ruler.zoomOut()
 		}
 		return false
 	}

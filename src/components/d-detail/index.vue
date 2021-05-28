@@ -21,7 +21,7 @@
 					:size="18",
 					:class="{ active: ruler.xRoomR1 > 0 }")
 	.d-detail-middle.fn-flex
-		span.d-detail-title {{ $screen.name }}
+		span.d-detail-title {{ screen.name }}
 	ul.d-detail-right.fn-flex
 		li.fn-flex.flex-column.pointer(@click.stop="search")
 			i-icon(type="ios-search-outline", :size="24")
@@ -59,7 +59,6 @@ import {
 import copy from 'fast-copy'
 import { mixins } from 'vue-class-component'
 import platform from '../../store/platform.store'
-import ruler from '../../store/ruler.store'
 import scene from '../../store/scene.store'
 import commonConfigValue from '../../../common-config-value'
 import loadMask from '../load-mask/index.vue'
@@ -88,8 +87,9 @@ export default class DDetail extends mixins(
 	@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
 
 	platform = platform.state
-	ruler = ruler.state
+	ruler = {}
 	scene = scene.state
+	screen = {}
 	loadingMsg = 'loading…'
 	shareModal = false
 	loading = false
@@ -116,11 +116,11 @@ export default class DDetail extends mixins(
 	}
 
 	preview() {
-		const scene = this.$screen.mainScene
-			? `&scene=${this.$screen.mainScene}`
+		const scene = this.screen.mainScene
+			? `&scene=${this.screen.mainScene}`
 			: ''
 		window.open(
-			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.$screen.layoutMode}${scene}`,
+			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.screen.layoutMode}${scene}`,
 		)
 	}
 
@@ -198,7 +198,10 @@ export default class DDetail extends mixins(
 			params: { id },
 		} = this.$route
 		this.isNew = !id
-		ScreenPc.getInstance({ screenId: id })
+		this.screen = ScreenPc.getInstance({ screenId: id })
+	}
+	mounted() {
+		this.ruler = this.$ruler
 	}
 }
 </script>

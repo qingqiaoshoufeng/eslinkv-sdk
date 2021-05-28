@@ -7,13 +7,15 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import ruler from '@/store/ruler.store.js'
 @Component
 export default class DDrKuang extends Vue {
-	ruler = ruler.state
+	ruler = {}
 
 	get returnRatio() {
 		return this.ruler.zoom < 1 ? 1 / this.ruler.zoom : 1
+	}
+	mounted() {
+		this.ruler = this.$ruler
 	}
 }
 </script>

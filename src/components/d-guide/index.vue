@@ -19,7 +19,6 @@
 <script>
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
-import ruler from '../../store/ruler.store'
 import { Component, Vue } from 'vue-property-decorator'
 import { rulerGuideMouseDown } from '@/events'
 @Component
@@ -30,7 +29,7 @@ export default class Guide extends Vue {
 	removeId = null
 	platform = platform.state
 	event = event.state
-	ruler = ruler.state
+	ruler = {}
 	rulerGuideMouseDown = rulerGuideMouseDown
 
 	/**
@@ -148,6 +147,7 @@ export default class Guide extends Vue {
 	mounted() {
 		document.addEventListener('keyup', this.dispatchHotKey)
 		document.addEventListener('click', this.closeGuideMenu)
+		this.ruler = this.$ruler
 	}
 
 	beforeDestroy() {

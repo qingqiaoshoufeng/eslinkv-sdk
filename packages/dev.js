@@ -8,7 +8,6 @@ import scene from '../src/store/scene.store'
 import instance from '../src/store/instance.store'
 import custom from '../src/store/custom.store'
 import event from '../src/store/event.store.js'
-import ruler from '../src/store/ruler.store.js'
 import dView from '../src/components/d-view/index.vue'
 import loadMask from '../src/components/load-mask/index.vue'
 import commonConfigValue from '../common-config-value.js'
@@ -23,7 +22,6 @@ const eslinkV = {
 	instance,
 	custom,
 	event,
-	ruler,
 	colorTheme,
 	dEditor,
 	dScreen,

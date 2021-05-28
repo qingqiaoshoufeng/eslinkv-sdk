@@ -1,7 +1,7 @@
 import scene from '@/store/scene.store'
 import event from '@/store/event.store'
-import ruler from '@/store/ruler.store'
 import platform from '@/store/platform.store'
+import Vue from 'vue'
 
 /**
  * @description
@@ -15,14 +15,14 @@ const mouseup = e => {
 	if (event.state.kuangMove) {
 		document.getElementById('d-kuang').style.display = 'none'
 		event.state.kuangMove = false
-		const startPointerX = ruler.actions.getActualPointerX(
+		const startPointerX = Vue.prototype.$ruler.getActualPointerX(
 			event.state.startX,
 		)
-		const startPointerY = ruler.actions.getActualPointerY(
+		const startPointerY = Vue.prototype.$ruler.getActualPointerY(
 			event.state.startY,
 		)
-		const endPointerX = ruler.actions.getActualPointerX(e.clientX)
-		const endPointerY = ruler.actions.getActualPointerY(e.clientY)
+		const endPointerX = Vue.prototype.$ruler.getActualPointerX(e.clientX)
+		const endPointerY = Vue.prototype.$ruler.getActualPointerY(e.clientY)
 		if (startPointerX === endPointerX || startPointerY === endPointerY)
 			return
 		const minPointerX = Math.min(startPointerX, endPointerX)

@@ -13,7 +13,7 @@ export default class ScreenPc extends base {
 			Object.keys(Vue.prototype.$screen).length === 0
 		) {
 			Vue.prototype.$screen = new ScreenPc(obj)
-			console.log(Vue.prototype.$screen)
+			return Vue.prototype.$screen
 		}
 	}
 

@@ -2,7 +2,7 @@
 .detail-container
 	.preview-wrapper.fit-mode(
 		:class="{ mobile: isMobile }",
-		:style="{ backgroundColor: $screen.backgroundColor }")
+		:style="{ backgroundColor: screen.backgroundColor }")
 		.mobile-wrap(:style="{ height: mobileWrapHeight + 'px' }", v-if="isMobile")
 			d-view(@mounted="updateSize", ref="previewContainer", :style="viewStyle")
 		d-view(
@@ -32,6 +32,7 @@ export default class detail extends Vue {
 	scaleY = 1
 	scaleX = 0
 	actualScaleRatio = 1
+	screen = {}
 
 	get viewStyle() {
 		let scale
@@ -65,6 +66,9 @@ export default class detail extends Vue {
 					: Math.min(clientWidth / w, clientHeight / h)
 		}
 		this.mobileWrapHeight = h * this.actualScaleRatio
+	}
+	mounted() {
+		this.screen = this.$screen
 	}
 }
 </script>

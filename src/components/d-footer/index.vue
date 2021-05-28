@@ -1,7 +1,7 @@
 <template lang="pug">
 .d-footer.fn-flex.flex-row.pos-r.z-index-999
 	.d-footer-bar.fn-flex.flex-row
-		.d-footer-bar-text.ellipsis {{ scene.index === 0 ? '主场景' : scene.index === -1 ? '回收站' : scene.obj[scene.index].name }}
+		.d-footer-bar-text.ellipsis(v-if="screen.sceneObj") {{ screen.sceneIndex === 0 ? '主场景' : screen.sceneIndex === -1 ? '回收站' : screen.sceneObj[screen.sceneIndex].name }}
 		.d-footer-bar-text {{ screen.width }}×{{ screen.height }}px
 	.d-footer-bar.fn-flex
 		label.d-footer-hot-keys.pos-r.fn-flex.flex-row
@@ -34,9 +34,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
-import ruler from '../../store/ruler.store'
 import { Icon } from 'view-design'
-import ScreenPc from '@/controller/Screen/pc'
 
 @Component({
 	components: {
@@ -46,10 +44,10 @@ import ScreenPc from '@/controller/Screen/pc'
 export default class DFooter extends Vue {
 	platform = platform.state
 	scene = scene.state
-	ruler = ruler.state
 	showHotKey = false
 	hotKeys = []
 	screen = {}
+	ruler = {}
 	get zoom() {
 		const zoom = this.ruler.zoom
 		return `${~~(zoom * 100)}%`
@@ -64,15 +62,15 @@ export default class DFooter extends Vue {
 	}
 
 	handleResetZoom() {
-		ruler.actions.resetZoom()
+		this.ruler.resetZoom()
 	}
 
 	handleZoomIn() {
-		ruler.actions.zoomIn(10)
+		this.ruler.zoomIn(10)
 	}
 
 	handleZoomOut() {
-		ruler.actions.zoomOut(10)
+		this.ruler.zoomOut(10)
 	}
 
 	mounted() {
@@ -120,6 +118,7 @@ export default class DFooter extends Vue {
 			},
 		]
 		this.screen = this.$screen
+		this.ruler = this.$ruler
 	}
 }
 </script>

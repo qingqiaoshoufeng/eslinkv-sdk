@@ -7,30 +7,30 @@
 			i-option(value="1024*768") web最小尺寸1024*768
 			i-option(value="other") 自定义
 	d-right-control
-		d-input(append="W", v-model="$screen.width", :style="{ width: '100px' }")
+		d-input(append="W", v-model="screen.width", :style="{ width: '100px' }")
 		d-input(
 			append="H",
-			v-model="$screen.height",
+			v-model="screen.height",
 			:style="{ marginLeft: '10px', width: '100px' }")
 	d-right-control(label="背景色")
 		i-color-picker(
 			:alpha="true",
-			v-model="$screen.backgroundColor",
-			v-if="$screen.backgroundColor")
+			v-model="screen.backgroundColor",
+			v-if="screen.backgroundColor")
 		i-input(
-			v-model="$screen.backgroundColor",
+			v-model="screen.backgroundColor",
 			:disabled="true",
 			:style="{ width: '166px', marginLeft: '10px' }")
 	d-right-control(label="背景图", title="支持jpg，png，gif")
-		d-upload(v-model="$screen.backgroundImage", :data="backGroundFormData")
+		d-upload(v-model="screen.backgroundImage", :data="backGroundFormData")
 	d-right-control(label="适配模式")
-		i-select(v-model="$screen.layoutMode")
+		i-select(v-model="screen.layoutMode")
 			i-option(value="full-size") 充满页面
 			i-option(value="full-width") 100%宽度
 			i-option(value="full-height") 100%高度
 	// START_PROD
 	d-right-control(label="封面", title="支持jpg，png，gif")
-		d-upload(v-model="$screen.avatar", :data="screenAvatarFormData")
+		d-upload(v-model="screen.avatar", :data="screenAvatarFormData")
 	d-right-control
 		i-button(
 			@click="screenAvatar",
@@ -39,8 +39,8 @@
 	// END_PROD
 	d-right-control(
 		label="首场景",
-		v-if="$screen.sceneList && $screen.sceneList.length > 0")
-		i-select(filterable, v-model="$screen.mainScene")
+		v-if="screen.sceneList && screen.sceneList.length > 0")
+		i-select(filterable, v-model="screen.mainScene")
 			i-option(:value="0") 主场景
 			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
 </template>
@@ -70,10 +70,10 @@ export default class FuncConfig extends func {
 		library: 'screenAvatar',
 	}
 	screenAvatarLoading = false
-
+	screen = {}
 	get size() {
-		const width = this.$screen.width
-		const height = this.$screen.height
+		const width = this.screen.width
+		const height = this.screen.height
 		if (width !== 1920 && width !== 1366 && width !== 1024) {
 			return 'other'
 		}
@@ -86,8 +86,8 @@ export default class FuncConfig extends func {
 	set size(value) {
 		if (value !== 'other' && value) {
 			const [width, height] = value.split('*')
-			this.$screen.width = +width
-			this.$screen.height = +height
+			this.screen.width = +width
+			this.screen.height = +height
 		}
 	}
 
@@ -99,7 +99,7 @@ export default class FuncConfig extends func {
 		})
 			.then(res => {
 				this.screenAvatarLoading = false
-				this.$screen.avatar = (res as any).url
+				this.screen.avatar = (res as any).url
 			})
 			.catch(e => {
 				console.warn(e)
@@ -180,5 +180,8 @@ export default class FuncConfig extends func {
 		})
 	}
 	// END_PROD
+	mounted() {
+		this.screen = this.$screen
+	}
 }
 </script>

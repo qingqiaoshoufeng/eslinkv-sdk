@@ -37,7 +37,6 @@ import scene from '@/store/scene.store.js'
 import platform from '@/store/platform.store.js'
 import parts from '../d-widget-part/index.vue'
 import event from '@/store/event.store.js'
-import ruler from '../../store/ruler.store'
 @Component({
 	components: {
 		dr,
@@ -47,7 +46,7 @@ import ruler from '../../store/ruler.store'
 })
 export default class ItemCard extends Vue {
 	scene = scene.state
-	ruler = ruler.state
+	ruler = {}
 	platform = platform.state
 	currentWidgetType = null
 	event = event.state
@@ -143,7 +142,8 @@ export default class ItemCard extends Vue {
 		platform.actions.chooseWidget(id)
 		if (children && this.platform.chooseWidgetChildId) {
 			platform.actions.setChooseWidgetCustomConfig(
-				children.find(v => v.id === this.platform.chooseWidgetChildId).config.customConfig
+				children.find(v => v.id === this.platform.chooseWidgetChildId)
+					.config.customConfig,
 			)
 		} else {
 			platform.actions.setChooseWidgetCustomConfig(config.customConfig)
@@ -162,6 +162,9 @@ export default class ItemCard extends Vue {
 		const currentWidget = this.platform.widgetAdded[id]
 		if (!id || !currentWidget) return
 		this.$set(currentWidget, 'config', value)
+	}
+	mounted() {
+		this.ruler = this.$ruler
 	}
 }
 </script>

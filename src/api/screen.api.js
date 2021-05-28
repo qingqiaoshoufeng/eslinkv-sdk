@@ -60,7 +60,7 @@ export function update(data) {
 	return request({
 		url: '/screen/update',
 		method: 'post',
-		data: data,
+		data,
 		headers,
 	})
 }

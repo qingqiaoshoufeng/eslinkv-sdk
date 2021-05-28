@@ -14,9 +14,7 @@
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
-import ruler from '../../store/ruler.store'
 import { rulerLineMouseUp, rulerLineMouseDown } from '@/events'
-import ScreenPc from '@/controller/Screen/pc'
 
 let i = 0
 let loadImg = false
@@ -26,7 +24,7 @@ const bgImg = new Image()
 export default class XLine extends Vue {
 	platform = platform.state
 	event = event.state
-	ruler = ruler.state
+	ruler = {}
 	showHelp = false
 	canvas: null
 	context = null
@@ -35,7 +33,7 @@ export default class XLine extends Vue {
 	rulerLineMouseUp = rulerLineMouseUp
 
 	get site() {
-		return ruler.actions.site('v')
+		return this.ruler.guideSite('v')
 	}
 
 	@Watch('ruler.zoom')
@@ -142,6 +140,7 @@ export default class XLine extends Vue {
 		this.context.fillStyle = '#999'
 		this.init()
 		this.screen = this.$screen
+		this.ruler = this.$ruler
 	}
 }
 </script>

@@ -9,7 +9,7 @@ class Mixins extends Vue {
 	currentWidgetType = null
 	platform = platform.state
 	scene = scene.state
-
+	screen = {}
 	initWidgetConfig(id, type, scene, market) {
 		platform.actions.setWidgetsAddedItem(id, type, null, scene, market)
 	}
@@ -45,7 +45,7 @@ class Mixins extends Vue {
 		widget.componentVersion = componentVersion
 		widget.componentId = componentId
 		const value = { layout, widget, config, api }
-		this.initWidgetConfig(id, type, this.$screen.sceneIndex, market)
+		this.initWidgetConfig(id, type, this.screen.sceneIndex, market)
 		this.updateWidget(value)
 		this.currentWidgetType = type
 		return id
@@ -60,6 +60,10 @@ class Mixins extends Vue {
 		platform.actions.setChooseWidgetCustomConfig(config.customConfig)
 		this.currentWidgetType = type
 		this.platform.chooseWidgetId = id
+	}
+
+	mounted() {
+		this.screen = this.$screen
 	}
 }
 

@@ -1,5 +1,5 @@
-import ruler from '@/store/ruler.store'
 import event from '@/store/event.store'
+import Vue from 'vue'
 
 /**
  * @description
@@ -12,17 +12,16 @@ const rulerLineMouseUp = (e, type, id) => {
 	 */
 	e.stopPropagation()
 	if (event.state.guideDrag) {
-		ruler.actions.changeGuideLine(type)
+		Vue.prototype.$ruler.changeGuideLine(type)
 		event.state.guideDrag = false
-		ruler.state.dragGuideId = ''
-		// START_PROD
-		if (id) {
-			this.$api.screenShare.screenShareUpdate({
-				screenId: id,
-				screenGuide: this.ruler.guideLines,
-			})
-		}
-		// END_PROD
+		Vue.prototype.$ruler.dragGuideId = ''
+		// todo
+		// if (id) {
+		// 	this.$api.screenShare.screenShareUpdate({
+		// 		screenId: id,
+		// 		screenGuide: Vue.prototype.$ruler.guideLines,
+		// 	})
+		// }
 	}
 }
 export default rulerLineMouseUp

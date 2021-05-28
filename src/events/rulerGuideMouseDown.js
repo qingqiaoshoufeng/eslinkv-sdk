@@ -1,5 +1,5 @@
-import ruler from '@/store/ruler.store'
 import event from '@/store/event.store'
+import Vue from 'vue'
 
 /**
  * @description
@@ -12,12 +12,12 @@ const rulerGuideMouseDown = (e, item) => {
 	 */
 	e.stopPropagation()
 	if (e.which !== 1) return
-	if (e.offsetX + e.offsetY > ruler.state.size) return
+	if (e.offsetX + e.offsetY > Vue.prototype.$ruler.size) return
 	const { clientX, clientY } = e
 	const { id } = item
-	ruler.state.guideDragStartX = clientX
-	ruler.state.guideDragStartY = clientY - ruler.state.yRoom
+	Vue.prototype.$ruler.guideDragStartX = clientX
+	Vue.prototype.$ruler.guideDragStartY = clientY - Vue.prototype.$ruler.yRoom
 	event.state.guideDrag = true
-	ruler.state.dragGuideId = id
+	Vue.prototype.$ruler.dragGuideId = id
 }
 export default rulerGuideMouseDown

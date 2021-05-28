@@ -1,5 +1,5 @@
-import ruler from '@/store/ruler.store'
 import event from '@/store/event.store'
+import Vue from 'vue'
 
 /**
  * @description
@@ -11,20 +11,19 @@ const rulerLineMouseDown = (e, type, id) => {
 	 * @description 标尺操作
 	 */
 	e.stopPropagation()
-	if (ruler.state.dragGuideId) {
-		ruler.actions.changeGuideLine(type)
+	if (Vue.prototype.$ruler.dragGuideId) {
+		Vue.prototype.$ruler.changeGuideLine(type)
 	} else {
-		ruler.actions.guideAdd(type)
+		Vue.prototype.$ruler.guideCreate(type)
 	}
-	// START_PROD
-	if (id) {
-		this.$api.screenShare.screenShareUpdate({
-			screenId: id,
-			screenGuide: this.ruler.guideLines,
-		})
-	}
-	// END_PROD
+	// todo
+	// if (id) {
+	// 	this.$api.screenShare.screenShareUpdate({
+	// 		screenId: id,
+	// 		screenGuide: this.ruler.guideLines,
+	// 	})
+	// }
 	event.state.guideDrag = false
-	ruler.state.dragGuideId = ''
+	Vue.prototype.$ruler.dragGuideId = ''
 }
 export default rulerLineMouseDown

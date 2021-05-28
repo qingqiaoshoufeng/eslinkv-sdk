@@ -34,9 +34,8 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import itemList from './item-list.vue'
 import platform from '../../store/platform.store'
-import ruler from '../../store/ruler.store'
 import { Icon } from 'view-design'
-import {chooseWidget} from '@/utils'
+import { chooseWidget } from '@/utils'
 
 @Component({
 	components: {
@@ -48,7 +47,7 @@ export default class DRightSetting extends Vue {
 	tabIndex = 0
 	editName = false
 	platform = platform.state
-	ruler = ruler.state
+	ruler = {}
 	title = ['基础', '交互', '主题', '自定义']
 	chooseList: any = [
 		{
@@ -68,12 +67,12 @@ export default class DRightSetting extends Vue {
 			needChoose: true,
 		},
 	]
-	
-	get staticName () {
+
+	get staticName() {
 		return this.chooseWidget.config.widget.name
 	}
-	
-	get chooseWidget () {
+
+	get chooseWidget() {
 		return chooseWidget()
 	}
 
@@ -87,11 +86,16 @@ export default class DRightSetting extends Vue {
 	}
 
 	handleLock() {
-		this.chooseWidget.config.widget.locked = !this.chooseWidget.config.widget.locked
+		this.chooseWidget.config.widget.locked = !this.chooseWidget.config
+			.widget.locked
 	}
 
 	handleClick(index) {
 		this.tabIndex = index
+	}
+
+	mounted() {
+		this.ruler = this.$ruler
 	}
 }
 </script>

@@ -2,6 +2,7 @@ import { update } from '@/api/screen.api'
 import { Message } from 'view-design'
 import { debounce } from 'throttle-debounce'
 import scene from './scene'
+import Vue from 'vue'
 
 export default class ScreenBase extends scene {
 	/* 大屏ID */
@@ -61,6 +62,7 @@ export default class ScreenBase extends scene {
 	}
 	set width(screenWidth: number) {
 		this.screenWidth = screenWidth
+		Vue.prototype.$ruler.resetZoom()
 		this.updateScreen({ screenWidth })
 	}
 	/* 大屏高度 */
@@ -70,6 +72,7 @@ export default class ScreenBase extends scene {
 	}
 	set height(screenHeight: number) {
 		this.screenHeight = screenHeight
+		Vue.prototype.$ruler.resetZoom()
 		this.updateScreen({ screenHeight })
 	}
 	/* 大屏背景颜色 */
@@ -82,7 +85,7 @@ export default class ScreenBase extends scene {
 		this.updateScreen({ screenBackGroundColor })
 	}
 	/* 大屏背景图片 */
-	public screenBackGroundImage: string
+	public screenBackGroundImage = ''
 	get backgroundImage() {
 		return this.screenBackGroundImage
 	}
@@ -96,7 +99,7 @@ export default class ScreenBase extends scene {
 		return this.screenMainScene
 	}
 	set mainScene(screenMainScene: string) {
-		this.screenBackGroundImage = screenMainScene
+		this.screenMainScene = screenMainScene
 		this.updateScreen({ screenMainScene })
 	}
 	/* 大屏平台类型 PC:PC */

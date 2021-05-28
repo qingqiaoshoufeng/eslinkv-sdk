@@ -7,7 +7,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Button } from 'view-design'
-import ruler from '@/store/ruler.store.js'
 import platform from '@/store/platform.store.js'
 import scene from '@/store/scene.store.js'
 import { uuid, configMerge } from '@/utils/index.js'
@@ -19,7 +18,7 @@ import commonConfigValue from '../../../common-config-value.js'
 	},
 })
 export default class DRightSettingMore extends Vue {
-	ruler = ruler.state
+	ruler = {}
 	platform = platform.state
 	scene = scene.state
 
@@ -68,6 +67,9 @@ export default class DRightSettingMore extends Vue {
 				this.platform.chooseWidgetArray = []
 			},
 		})
+	}
+	mounted() {
+		this.ruler = this.$ruler
 	}
 }
 </script>

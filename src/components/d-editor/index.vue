@@ -22,15 +22,15 @@
 				:ref="item.id")
 			dr-more(v-show="platform.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
-			.d-editor-line(:data-top="`${$screen.height}px`", data-left="0px")
+			.d-editor-line(:data-top="`${screen.height}px`", data-left="0px")
 			.d-editor-line(
 				data-top="0px",
-				:style="{ width: 0, height: `${$screen.height}px` }",
-				:data-left="`${$screen.width}px`")
+				:style="{ width: 0, height: `${screen.height}px` }",
+				:data-left="`${screen.width}px`")
 			.d-editor-line(
 				data-top="0px",
 				data-left="0px",
-				:style="{ height: `${$screen.height}px`, width: 0 }")
+				:style="{ height: `${screen.height}px`, width: 0 }")
 			// 参考线
 			span.ref-line.v-line.pos-a(
 				v-for="item in vLine",
@@ -57,7 +57,6 @@ import dGuide from '../d-guide'
 import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import scene from '../../store/scene.store'
-import ruler from '../../store/ruler.store'
 import ItemCard from './item-card.vue'
 import Ruler from '@/controller/Ruler'
 
@@ -81,7 +80,7 @@ export default {
 		return {
 			platform: platform.state,
 			scene: scene.state,
-			ruler: ruler.state,
+			ruler: {},
 			vLine: [],
 			hLine: [],
 		}
@@ -122,10 +121,10 @@ export default {
 	computed: {
 		canvasStyle() {
 			return {
-				width: `${this.$screen.width}px`,
-				height: `${this.$screen.height}px`,
-				'background-color': this.$screen.backgroundColor,
-				'background-image': `url(${this.$screen.backgroundImage})`,
+				width: `${this.screen.width}px`,
+				height: `${this.screen.height}px`,
+				'background-color': this.screen.backgroundColor,
+				'background-image': `url(${this.screen.backgroundImage})`,
 			}
 		},
 		canvasSize() {
@@ -136,11 +135,13 @@ export default {
 	beforeDestroy() {
 		this.platform.fullscreen = false
 	},
+	created() {
+		this.ruler = Ruler.getInstance()
+	},
 	mounted() {
 		platform.actions.initPlatformConfig()
 		instance.actions.setInstance('kanboard', this)
 		scene.actions.setStatus('inEdit')
-		Ruler.getInstance()
 	},
 }
 </script>

@@ -26,19 +26,17 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'view-design'
 import scene from '../../store/scene.store'
 import platform from '../../store/platform.store'
-import ruler from '../../store/ruler.store'
 import WidgetGroup from './widget-group.vue'
 import { chooseWidget } from '@/utils'
 
 @Component({
 	components: {
 		'i-icon': Icon,
-		WidgetGroup
+		WidgetGroup,
 	},
 })
 export default class DLeftSceneItem extends Vue {
 	scene: any = scene.state
-	ruler: any = ruler.state
 	platform: any = platform.state
 	editScene = false
 	copyModel = false
@@ -98,7 +96,7 @@ export default class DLeftSceneItem extends Vue {
 	font-size: 12px;
 	border: 1px solid #393b4a;
 	transition: all 0.3s;
-	
+
 	.parent {
 		display: flex;
 		align-items: center;

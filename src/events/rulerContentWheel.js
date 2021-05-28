@@ -1,4 +1,4 @@
-import ruler from '@/store/ruler.store'
+import Vue from 'vue'
 
 /**
  * @description
@@ -10,10 +10,10 @@ const rulerContentWheel = e => {
 		e.preventDefault()
 		e.stopPropagation()
 		if (e.shiftKey) {
-			ruler.state.contentX += e.wheelDelta > 0 ? 10 : -10
+			Vue.prototype.$ruler.contentX += e.wheelDelta > 0 ? 10 : -10
 			return false
 		}
-		ruler.state.contentY += e.wheelDelta > 0 ? 10 : -10
+		Vue.prototype.$ruler.contentY += e.wheelDelta > 0 ? 10 : -10
 	}
 }
 export default rulerContentWheel

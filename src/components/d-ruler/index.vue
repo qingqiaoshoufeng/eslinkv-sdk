@@ -11,7 +11,7 @@
 		@wheel="rulerContentWheel",
 		@mousemove="rulerContentMouseMove",
 		:class="{ drag: event.contentMove }")
-		.content-body.pos-a(:id="$ruler.dragId", :style="contentStyle")
+		.content-body.pos-a(:id="ruler.dragId", :style="contentStyle")
 			slot
 </template>
 <script lang="ts">
@@ -19,7 +19,6 @@ import xLine from './xLine.vue'
 import yLine from './yLine.vue'
 import platform from '../../store/platform.store'
 import event from '../../store/event.store'
-import ruler from '../../store/ruler.store'
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
 import { Icon } from 'view-design'
 import {
@@ -40,7 +39,7 @@ export default class DRuler extends Vue {
 
 	platform = platform.state
 	event = event.state
-	ruler = ruler.state
+	ruler = {}
 	contentWidth = 0
 	contentHeight = 0
 	rulerContentMouseDown = rulerContentMouseDown
@@ -50,16 +49,6 @@ export default class DRuler extends Vue {
 	@Watch('ruler.contentScrollLeft')
 	contentXChange() {
 		this.ruler.contentX += this.ruler.contentScrollLeft
-	}
-
-	@Watch('screen.height', { deep: true })
-	heightChange() {
-		ruler.actions.resetZoom()
-	}
-
-	@Watch('screen.width', { deep: true })
-	widthChange() {
-		ruler.actions.resetZoom()
 	}
 
 	@Watch('ruler.contentScrollTop')
@@ -76,7 +65,7 @@ export default class DRuler extends Vue {
 	}
 
 	windowResize() {
-		const id = this.$ruler.dragId
+		const id = this.ruler.dragId
 		const dragContent = document.getElementById(id)
 		// @ts-ignore
 		this.contentWidth = dragContent.firstChild.scrollWidth
@@ -86,8 +75,9 @@ export default class DRuler extends Vue {
 
 	mounted() {
 		window.addEventListener('resize', this.windowResize)
+		this.ruler = this.$ruler
 		setTimeout(() => {
-			ruler.actions.resetZoom()
+			this.ruler.resetZoom()
 		})
 	}
 }

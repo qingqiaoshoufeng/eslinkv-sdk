@@ -13,7 +13,6 @@
 <script lang="ts">
 import { Vue, Component, Provide } from 'vue-property-decorator'
 import platform from '../../store/platform.store.js'
-import ruler from '../../store/ruler.store.js'
 import dLeftComponent from '../d-left-component/index.vue'
 import dLeftScene from '../d-left-scene/index.vue'
 import dEditor from '../d-editor/index.vue'
@@ -34,9 +33,13 @@ import { dScreenWheel } from '@/events'
 })
 export default class dScreen extends Vue {
 	platform = platform.state
-	ruler = ruler.state
+	ruler = {}
 	dScreenWheel = dScreenWheel
 	@Provide('kanboardEditor') kanboardEditor = this.$refs.kanboardEditor
+
+	mounted() {
+		this.ruler = this.$ruler
+	}
 }
 </script>
 <style lang="scss" scoped>
