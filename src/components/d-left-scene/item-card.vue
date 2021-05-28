@@ -4,7 +4,7 @@ li.pointer.pos-r.d-left-scene-list-li(
 	:key="item.id")
 	.parent(@click="handleChoose(item)")
 		.d-left-scene-left
-			h2 {{ item.config.widget.name + '-' + item.config.layout.zIndex }}
+			h2 {{ item.config.widget.name }}
 		.d-left-scene-right
 			i-icon(
 				v-if="item.config.widget.hide"
