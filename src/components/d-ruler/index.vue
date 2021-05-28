@@ -71,6 +71,7 @@ export default class DRuler extends Vue {
 		this.contentWidth = dragContent.firstChild.scrollWidth
 		// @ts-ignore
 		this.contentHeight = dragContent.firstChild.scrollHeight
+		this.ruler.resetZoom()
 	}
 
 	mounted() {
