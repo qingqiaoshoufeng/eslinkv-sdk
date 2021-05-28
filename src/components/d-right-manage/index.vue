@@ -6,10 +6,10 @@
 		v-click-outside="close")
 		i-input.screen-name(
 			v-if="editName",
-			v-model="screen.name",
+			v-model="$screen.name",
 			@on-click="editName = false",
 			:autofocus="true")
-		span.screen-name-text(v-if="screen.name && !editName") {{ screen.name }}
+		span.screen-name-text(v-if="!editName") {{ $screen.name }}
 		i-icon.pointer.screen-name-icon(
 			type="ios-create-outline",
 			@click.stop="editName = true",
@@ -23,7 +23,6 @@ import platform from '../../store/platform.store'
 import ruler from '../../store/ruler.store'
 import config from './config.vue'
 import { Icon, Input } from 'view-design'
-import ScreenPc from '@/controller/Screen/pc'
 import ClickOutside from 'vue-click-outside'
 
 @Component({
@@ -38,12 +37,8 @@ export default class DRightManage extends Vue {
 	editName = false
 	platform = platform.state
 	ruler = ruler.state
-	screen = {}
 	close() {
 		this.editName = false
-	}
-	mounted() {
-		this.screen = this.$screen
 	}
 }
 </script>

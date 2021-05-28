@@ -2,11 +2,12 @@ import { update } from '@/api/screen.api'
 import { Message } from 'view-design'
 import { debounce } from 'throttle-debounce'
 import scene from './scene'
+
 export default class ScreenBase extends scene {
 	/* 大屏ID */
-	public screenId: string = ''
+	public screenId = ''
 	/* 大屏名 */
-	public screenName: string = ''
+	public screenName = '未命名'
 	get name() {
 		return this.screenName
 	}
@@ -20,12 +21,12 @@ export default class ScreenBase extends scene {
 	/* 大屏组件配置 */
 	public screenWidgets: any = []
 	/* 大屏类型 CUSTOM:大屏 TEMPLATE:模版 */
-	public screenType: string = ''
+	public screenType = ''
 	/* 已废弃 */
 	/* 大屏发布情况 EDIT:未发布 COMPLETE:已发布*/
-	public screenPublish: string = ''
+	public screenPublish = ''
 	/* 大屏缩略图 */
-	public screenAvatar: string = ''
+	public screenAvatar = ''
 	get avatar() {
 		return this.screenAvatar
 	}
@@ -35,9 +36,9 @@ export default class ScreenBase extends scene {
 	}
 
 	/* 大屏版本号 */
-	public screenVersion: string = ''
+	public screenVersion = ''
 	/* 大屏适配方式 */
-	public screenLayoutMode: string = ''
+	public screenLayoutMode = ''
 	get layoutMode() {
 		return this.screenLayoutMode
 	}
@@ -46,15 +47,15 @@ export default class ScreenBase extends scene {
 		this.updateScreen({ screenLayoutMode })
 	}
 	/* 备注 */
-	public remark: string = ''
+	public remark = ''
 	/* 排序 */
-	public sort: number = 1
+	public sort = 1
 	/* 创建时间 */
 	public createTime: string
 	/* 更新时间 */
 	public updateTime: string
 	/* 大屏宽度 */
-	public screenWidth: number = 1920
+	public screenWidth = 1920
 	get width() {
 		return this.screenWidth
 	}
@@ -63,7 +64,7 @@ export default class ScreenBase extends scene {
 		this.updateScreen({ screenWidth })
 	}
 	/* 大屏高度 */
-	public screenHeight: number = 1080
+	public screenHeight = 1080
 	get height() {
 		return this.screenHeight
 	}
@@ -72,7 +73,7 @@ export default class ScreenBase extends scene {
 		this.updateScreen({ screenHeight })
 	}
 	/* 大屏背景颜色 */
-	public screenBackGroundColor: string = 'rgba(24, 27, 36,1)'
+	public screenBackGroundColor = 'rgba(24, 27, 36,1)'
 	get backgroundColor() {
 		return this.screenBackGroundColor
 	}
@@ -100,15 +101,15 @@ export default class ScreenBase extends scene {
 	}
 	/* 大屏平台类型 PC:PC */
 	public screenPlatform: string
-}
 
-ScreenBase.prototype.updateScreen = debounce(1500, false, function (obj: any) {
-	if (this.screenId) {
-		update({
-			screenId: this.screenId,
-			...obj,
-		}).then(() => {
-			Message.success('修改成功')
-		})
-	}
-})
+	updateScreen = debounce(1500, false, function (obj: any) {
+		if (this.screenId) {
+			update({
+				screenId: this.screenId,
+				...obj,
+			}).then(() => {
+				Message.success('修改成功')
+			})
+		}
+	})
+}

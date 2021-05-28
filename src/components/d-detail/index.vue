@@ -21,7 +21,7 @@
 					:size="18",
 					:class="{ active: ruler.xRoomR1 > 0 }")
 	.d-detail-middle.fn-flex
-		span.d-detail-title {{ screen.name }}
+		span.d-detail-title {{ $screen.name }}
 	ul.d-detail-right.fn-flex
 		li.fn-flex.flex-column.pointer(@click.stop="search")
 			i-icon(type="ios-search-outline", :size="24")
@@ -94,7 +94,6 @@ export default class DDetail extends mixins(
 	shareModal = false
 	loading = false
 	isNew = true
-	screen = {}
 	screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
 
 	handleLeft1() {
@@ -117,11 +116,11 @@ export default class DDetail extends mixins(
 	}
 
 	preview() {
-		const scene = this.screen.mainScene
-			? `&scene=${this.screen.mainScene}`
+		const scene = this.$screen.mainScene
+			? `&scene=${this.$screen.mainScene}`
 			: ''
 		window.open(
-			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.screen.layoutMode}${scene}`,
+			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.$screen.layoutMode}${scene}`,
 		)
 	}
 
@@ -199,7 +198,7 @@ export default class DDetail extends mixins(
 			params: { id },
 		} = this.$route
 		this.isNew = !id
-		this.screen = this.$screen
+		ScreenPc.getInstance({ screenId: id })
 	}
 }
 </script>

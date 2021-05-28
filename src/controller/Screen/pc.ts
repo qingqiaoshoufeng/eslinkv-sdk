@@ -8,8 +8,12 @@ export default class ScreenPc extends base {
 	}
 
 	public static getInstance(obj: any): ScreenPc {
-		if (!Vue.prototype.$screen || Object.keys(Vue.prototype.$screen).length === 0) {
+		if (
+			!Vue.prototype.$screen ||
+			Object.keys(Vue.prototype.$screen).length === 0
+		) {
 			Vue.prototype.$screen = new ScreenPc(obj)
+			console.log(Vue.prototype.$screen)
 		}
 	}
 
@@ -48,7 +52,7 @@ export default class ScreenPc extends base {
 	}
 
 	public init(obj: any) {
-		if (obj) {
+		if (obj.screenId) {
 			detail({ screenId: obj.screenId }).then(res => {
 				this.serialize(res)
 			})

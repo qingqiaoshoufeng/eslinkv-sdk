@@ -18,7 +18,6 @@ import dDetail from '../../components/d-detail/index.vue'
 import dView from '../../components/d-view/index.vue'
 import platform from '../../store/platform.store.js'
 import { getQueryString } from '../../utils'
-import ScreenPc from '@/controller/Screen/pc'
 
 @Component({
 	components: {
@@ -66,14 +65,6 @@ export default class detail extends Vue {
 					: Math.min(clientWidth / w, clientHeight / h)
 		}
 		this.mobileWrapHeight = h * this.actualScaleRatio
-	}
-	created() {
-		const {
-			params: { id },
-		} = this.$route
-		ScreenPc.getInstance({
-			screenId: id,
-		})
 	}
 }
 </script>

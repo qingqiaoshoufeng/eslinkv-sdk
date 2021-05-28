@@ -11,7 +11,7 @@
 		@wheel="rulerContentWheel",
 		@mousemove="rulerContentMouseMove",
 		:class="{ drag: event.contentMove }")
-		.content-body.pos-a(:id="ruler.dragId", :style="contentStyle")
+		.content-body.pos-a(:id="$ruler.dragId", :style="contentStyle")
 			slot
 </template>
 <script lang="ts">
@@ -76,7 +76,7 @@ export default class DRuler extends Vue {
 	}
 
 	windowResize() {
-		const id = this.ruler.dragId
+		const id = this.$ruler.dragId
 		const dragContent = document.getElementById(id)
 		// @ts-ignore
 		this.contentWidth = dragContent.firstChild.scrollWidth

@@ -21,3 +21,9 @@ interface screenConfig {
 	scene: sceneConfig
 	widgets: widgetConfigOriginal[]
 }
+
+interface screenBaseInstance {
+	screenId: string
+	screenName: string
+	updateScreen(): void
+}
