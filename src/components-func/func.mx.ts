@@ -16,12 +16,14 @@ import {
 	Modal,
 } from 'view-design'
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import platform from '../store/platform.store'
 import event from '../store/event.store'
 import dRightSwiper from '../components-right/d-right-swiper/index.vue'
 import dRightSwiperList from '../components-right/d-right-swiper-list/index.vue'
 import dRightSwiperEye from '../components-right/d-right-swiper-eye/index.vue'
 import dRightControl from '../components-right/d-right-control/index.vue'
 import dInput from '../components/d-input/index.vue'
+import { chooseWidget } from '@/utils'
 
 @Component({
 	components: {
@@ -47,6 +49,7 @@ import dInput from '../components/d-input/index.vue'
 	},
 })
 export default class Func extends Vue {
+	platform = platform.state
 	event = event.state
 	screen = {}
 	@Prop() config
@@ -54,8 +57,7 @@ export default class Func extends Vue {
 	@Prop() parentIndex // group时会有
 
 	get item() {
-		if (this.screen) return this.screen.chooseWidget
-		return {}
+		return chooseWidget()
 	}
 
 	get fixedConfig() {

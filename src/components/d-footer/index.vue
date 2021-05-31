@@ -26,12 +26,13 @@
 		d-svg.pointer(icon-class="smile", @click="handleResetZoom")
 	.d-footer-bar.fn-flex(:style="{ marginRight: '0' }")
 		i-icon.pointer(
-			:type="screen.fullscreen ? 'md-contract' : 'md-expand'",
+			:type="platform.fullscreen ? 'md-contract' : 'md-expand'",
 			:size="18",
 			@click="handleFullscreen")
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import platform from '../../store/platform.store'
 import { Icon } from 'view-design'
 
 @Component({
@@ -40,6 +41,7 @@ import { Icon } from 'view-design'
 	},
 })
 export default class DFooter extends Vue {
+	platform = platform.state
 	showHotKey = false
 	hotKeys = []
 	screen = {}
@@ -50,7 +52,7 @@ export default class DFooter extends Vue {
 	}
 
 	handleFullscreen() {
-		if (this.screen.fullscreen) {
+		if (this.platform.fullscreen) {
 			document.exitFullscreen()
 		} else {
 			document.body.requestFullscreen()
@@ -70,10 +72,8 @@ export default class DFooter extends Vue {
 	}
 
 	mounted() {
-		this.screen = this.$screen
-		this.ruler = this.$ruler
-		const alt = this.screen.isMac ? '⌥' : 'Alt'
-		const ctrl = this.screen.isMac ? '⌃' : 'Ctrl'
+		const alt = this.platform.isMac ? '⌥' : 'Alt'
+		const ctrl = this.platform.isMac ? '⌃' : 'Ctrl'
 		const shift = 'Shift'
 		const space = '空格'
 		// const command = '⌘'
@@ -115,6 +115,8 @@ export default class DFooter extends Vue {
 				key: [{ value: mouseWheelImg, type: 'img' }],
 			},
 		]
+		this.screen = this.$screen
+		this.ruler = this.$ruler
 	}
 }
 </script>

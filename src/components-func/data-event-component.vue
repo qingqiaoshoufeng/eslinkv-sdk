@@ -22,7 +22,7 @@ d-right-swiper-list(
 					i-option(
 						:value="k",
 						:key="i",
-						v-for="(k, i) in Object.keys(screen.screenWidgets)") {{ screen.screenWidgets[k].config.widget.name }}
+						v-for="(k, i) in Object.keys(platform.widgetAdded)") {{ platform.widgetAdded[k].config.widget.name }}
 				i-input(
 					:style="{ marginBottom: '10px' }",
 					v-model="item.config.event.component[dataDefault.activeIndex].source",

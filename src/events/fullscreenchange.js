@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import platform from '@/store/platform.store'
 
 /**
  * @description
@@ -6,6 +6,6 @@ import Vue from 'vue'
  * 事件： keydown
  */
 const fullscreenchange = () => {
-	Vue.prototype.$screen.fullscreen = !Vue.prototype.$screen.fullscreen
+	platform.state.fullscreen = !platform.state.fullscreen
 }
 export default fullscreenchange

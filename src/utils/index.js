@@ -2,6 +2,8 @@ import commonConfigValue from '../../common-config-value'
 import Clipboard from 'clipboard'
 import { Message } from 'view-design'
 import copy from 'fast-copy'
+import platform from '@/store/platform.store'
+
 /**
  * @description 按照引用路径，查找末端数据
  */
@@ -389,4 +391,35 @@ export function copyText(text, success, error) {
 		document.body.removeChild(oCopyBtn)
 	})
 	oCopyBtn.click()
+}
+
+/**
+ * @description 当前选中组件
+ */
+export function chooseWidget() {
+	if (!platform.state.chooseWidgetId) return null
+	const widget = platform.state.widgetAdded[platform.state.chooseWidgetId]
+	if (widget.children && platform.state.chooseWidgetChildId) {
+		return searchWidget(widget, platform.state.chooseWidgetChildId)
+	}
+	return widget
+}
+
+/**
+ * @description 查找对应id的组建
+ */
+function searchWidget(widget, id) {
+	let res
+	if (widget.children && id) {
+		res = widget.children.find(v => v.id === id)
+	}
+	if (!res) {
+		for (const v of widget.children) {
+			if (v.children) {
+				res = searchWidget(v, id)
+				if (res) break
+			}
+		}
+	}
+	return res
 }

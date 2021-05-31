@@ -2,10 +2,11 @@ import scene from './src/store/scene.store'
 import fetch from './fetch.js'
 import dataProcess from './data-process.js'
 import globalConfigValue from './common-config-value'
+import platform from './src/store/platform.store'
 import instance from './src/store/instance.store'
 import { createSandbox } from './data-process'
 import { configMerge, usePath } from './src/utils'
-import Vue from 'vue'
+
 const mx: any = {
 	mixins: [fetch, dataProcess],
 	inject: ['kanboardEditor'],
@@ -21,6 +22,7 @@ const mx: any = {
 	},
 	data() {
 		return {
+			platform: platform.state,
 			scene: scene.state,
 			configValue: null,
 			ready: false,
@@ -65,7 +67,7 @@ const mx: any = {
 			for (const item of this.configValue.event.component) {
 				if (item.type === 'update') {
 					const coms = Object.values(
-						this.screen.screenWidgets,
+						platform.state.widgetAdded,
 					).filter((v: any) => item.ids.includes(v.id))
 					let data = usePath(item.source.trim(), val)
 					const { enable, methodBody } = item.process
@@ -172,10 +174,7 @@ const mx: any = {
 				res.customConfig = customConfig
 			}
 			if (this.config.widget) {
-				Vue.prototype.$screen.updateWidgetConfig(
-					this.config.widget.id,
-					res,
-				)
+				platform.actions.updateConfig(this.config.widget.id, res)
 			}
 			const payload = { value: { ...this.configValue } }
 			this.configReady = true

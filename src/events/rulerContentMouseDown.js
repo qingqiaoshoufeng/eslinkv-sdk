@@ -1,5 +1,6 @@
 import event from '@/store/event.store'
-import Vue from 'vue'
+import platform from '@/store/platform.store'
+
 /**
  * @description
  * DOM : #ruler-content
@@ -10,7 +11,7 @@ const rulerContentMouseDown = e => {
 	 * @description 取消选择组件
 	 */
 	if (!event.state.componentMove) {
-		Vue.prototype.$screen.unChooseWidget()
+		platform.actions.unChooseWidget()
 	}
 	// 判断是否为鼠标左键被按下
 	if (e.buttons !== 1 || e.which !== 1) return

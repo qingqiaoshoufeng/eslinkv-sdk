@@ -17,6 +17,7 @@
 <script lang="ts">
 import xLine from './xLine.vue'
 import yLine from './yLine.vue'
+import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
 import { Icon } from 'view-design'
@@ -36,6 +37,7 @@ export default class DRuler extends Vue {
 	@Prop({ default: false }) isScaleRevise
 	@Prop({ default: false }) parent
 
+	platform = platform.state
 	event = event.state
 	ruler = {}
 	contentWidth = 0

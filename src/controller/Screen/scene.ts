@@ -10,18 +10,18 @@ export default class SceneBase {
 	public sceneObj = {}
 	/* 大屏当前场景 */
 	public sceneIndex = 0
-	/* 切换场景 */
+
 	public setSceneIndex(val) {
 		this.sceneIndex = val
 		let event = new CustomEvent('SceneIndex', { detail: { index: val } })
 		document.dispatchEvent(event)
 		event = null
 	}
-	/* 更新场景名称 */
+
 	public setSceneName(name) {
 		this.sceneObj[this.sceneIndex].name = name.replace(/ /g, '')
 	}
-	/* 序列化场景数据 */
+
 	public initScene(res) {
 		if (res.screenScene) {
 			this.screenScene = res.screenScene
@@ -47,7 +47,7 @@ export default class SceneBase {
 			this.sceneList = arr.map(item => item.key)
 		}
 		// todo
-		// const widgets = Object.values(Vue.prototype.$screen.screenWidgets)
+		// const widgets = Object.values(platform.state.widgetAdded)
 		// const list = this.list
 		// widgets.forEach(item => {
 		// 	const index = list.indexOf(item.scene)
@@ -62,14 +62,14 @@ export default class SceneBase {
 		// 	}
 		// })
 	}
-	/* 创建场景 */
+
 	public createScene() {
 		const name = uuid()
 		Vue.set(this.sceneList, this.sceneList.length, name)
 		Vue.set(this.sceneObj, name, { name: `场景${name}` })
 		this.setSceneIndex(name)
 	}
-	/* 删除场景 */
+
 	public destroyScene() {
 		if (this.sceneIndex === 0) {
 			return false
@@ -83,8 +83,8 @@ export default class SceneBase {
 				Vue.delete(this.sceneObj, index)
 				this.sceneList.splice(index, 1)
 				// todo
-				// for (const key in this.screen.screenWidgets) {
-				// 	const item = this.screen.screenWidgets[key]
+				// for (const key in this.platform.widgetAdded) {
+				// 	const item = this.platform.widgetAdded[key]
 				// 	if (item.scene === index) {
 				// 		item.scene = -1
 				// 	}

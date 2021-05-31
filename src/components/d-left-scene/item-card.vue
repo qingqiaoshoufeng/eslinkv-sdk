@@ -1,30 +1,32 @@
 <template lang="pug">
 li.pointer.pos-r.d-left-scene-list-li(
-	:class="[{ active: !screen.chooseWidgetChildId && screen.chooseWidgetId === item.id }]",
+	:class="[{ active: !platform.chooseWidgetChildId && platform.chooseWidgetId === item.id }]",
 	:key="item.id")
 	.parent(@click="handleChoose(item)")
 		.d-left-scene-left
 			h2 {{ item.config.widget.name }}
 		.d-left-scene-right
 			i-icon(
-				v-if="item.config.widget.hide",
+				v-if="item.config.widget.hide"
 				type="md-eye-off",
 				title="显示",
 				@click="handleTaggerHide(item.id)",
 				@click.stop)
 			i-icon(
-				style="margin-left: 10px",
-				v-if="item.config.widget.locked",
+				style="margin-left: 10px;"
+				v-if="item.config.widget.locked"
 				type="md-unlock",
 				title="解锁",
 				@click="handleUnLock(item.id)",
 				@click.stop)
-	WidgetGroup(:childList="childList", v-if="screen.chooseWidgetId === item.id")
+	WidgetGroup(:childList="childList" v-if="platform.chooseWidgetId === item.id")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'view-design'
+import platform from '../../store/platform.store'
 import WidgetGroup from './widget-group.vue'
+import { chooseWidget } from '@/utils'
 
 @Component({
 	components: {
@@ -33,15 +35,15 @@ import WidgetGroup from './widget-group.vue'
 	},
 })
 export default class DLeftSceneItem extends Vue {
+	platform: any = platform.state
 	editScene = false
 	copyModel = false
 	childList = []
-	screen = {}
 	@Prop() item
 	get list() {
 		const list = []
-		for (const key in this.screen.screenWidgets) {
-			const item = this.screen.screenWidgets[key]
+		for (const key in this.platform.widgetAdded) {
+			const item = this.platform.widgetAdded[key]
 			if (item.scene === this.screen.sceneIndex) {
 				list.push(item)
 			}
@@ -50,35 +52,39 @@ export default class DLeftSceneItem extends Vue {
 	}
 
 	handleUpZIndex(id) {
-		this.screen.screenWidgets[id].config.layout.zIndex++
+		this.platform.widgetAdded[id].config.layout.zIndex++
 	}
 
 	handleDownZIndex(id) {
-		this.screen.screenWidgets[id].config.layout.zIndex--
+		this.platform.widgetAdded[id].config.layout.zIndex--
 	}
 
 	handleUnLock(id) {
-		this.screen.screenWidgets[id].config.widget.locked = false
+		this.platform.widgetAdded[id].config.widget.locked = false
 	}
 
 	handleFocusSceneName() {
-		this.screen.unChooseWidget()
+		platform.actions.unChooseWidget()
 	}
 
 	handleChoose(item) {
-		this.screen.chooseWidgetId = item.id
-		this.screen.chooseWidgetChildId = null
+		this.platform.chooseWidgetId = item.id
+		this.platform.chooseWidgetChildId = null
 		if (item.children) {
 			this.childList = item.children
 		}
 	}
 
-	handleTaggerHide(id) {
-		this.screen.screenWidgets[id].config.widget.hide = !this.screen
-			.screenWidgets[id].config.widget.hide
+	handleChooseChild(parentId, id) {
+		this.platform.chooseWidgetId = parentId
+		this.platform.chooseWidgetChildId = id
+		const target = chooseWidget()
+		platform.actions.setChooseWidgetCustomConfig(target.config.customConfig)
 	}
-	mounted() {
-		this.screen = this.$screen
+
+	handleTaggerHide(id) {
+		this.platform.widgetAdded[id].config.widget.hide = !this.platform
+			.widgetAdded[id].config.widget.hide
 	}
 }
 </script>

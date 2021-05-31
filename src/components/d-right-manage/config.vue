@@ -50,6 +50,7 @@ import { Component } from 'vue-property-decorator'
 // START_PROD
 import html2canvas from 'html2canvas'
 // END_PROD
+import platform from '@/store/platform.store.js'
 import dUpload from '@/components-right/d-upload/index.vue'
 import { Tooltip } from 'view-design'
 @Component({
@@ -59,6 +60,7 @@ import { Tooltip } from 'view-design'
 	},
 })
 export default class FuncConfig extends func {
+	platform = platform.state
 	backGroundFormData = {
 		library: 'componentBackGround',
 	}

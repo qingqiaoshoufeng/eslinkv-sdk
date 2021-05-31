@@ -1,6 +1,6 @@
 <template lang="pug">
 #screen.canvas-wrapper(ref="canvas-wrapper", :style="canvasStyle()")
-	template(v-for="item in screen.screenWidgets")
+	template(v-for="item in platform.widgetAdded")
 		parts(
 			v-if="showParts(item)",
 			:key="item.id",
@@ -14,6 +14,7 @@
 <script lang="ts">
 import parts from '../d-widget-part/index.vue'
 import loadMask from '../load-mask/index.vue'
+import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import { Component, Vue, Provide } from 'vue-property-decorator'
 
@@ -26,6 +27,7 @@ import { Component, Vue, Provide } from 'vue-property-decorator'
 export default class DView extends Vue {
 	@Provide('kanboardEditor') kanboardEditor = this
 
+	platform = platform.state
 	screen = {}
 	canvasStyle() {
 		const val = {

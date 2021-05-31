@@ -1,9 +1,9 @@
 <template lang="pug">
 .detail-container
 	.preview-wrapper.fit-mode(
-		:class="{ mobile: screen.isMobile }",
+		:class="{ mobile: isMobile }",
 		:style="{ backgroundColor: screen.backgroundColor }")
-		.mobile-wrap(:style="{ height: mobileWrapHeight + 'px' }", v-if="screen.isMobile")
+		.mobile-wrap(:style="{ height: mobileWrapHeight + 'px' }", v-if="isMobile")
 			d-view(@mounted="updateSize", ref="previewContainer", :style="viewStyle")
 		d-view(
 			@mounted="updateSize",
@@ -16,6 +16,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import dDetail from '../../components/d-detail/index.vue'
 import dView from '../../components/d-view/index.vue'
+import platform from '../../store/platform.store.js'
 import { getQueryString } from '../../utils'
 
 @Component({
@@ -25,6 +26,8 @@ import { getQueryString } from '../../utils'
 	},
 })
 export default class detail extends Vue {
+	platform = platform.state
+	isMobile = /android|iphone/i.test(navigator.userAgent)
 	mobileWrapHeight = 0
 	scaleY = 1
 	scaleX = 0
@@ -58,7 +61,7 @@ export default class detail extends Vue {
 				this.actualScaleRatio = clientHeight / h
 				break
 			default:
-				this.actualScaleRatio = this.screen.isMobile
+				this.actualScaleRatio = this.isMobile
 					? clientWidth / w
 					: Math.min(clientWidth / w, clientHeight / h)
 		}

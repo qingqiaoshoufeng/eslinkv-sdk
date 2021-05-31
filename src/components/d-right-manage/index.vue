@@ -19,6 +19,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import platform from '../../store/platform.store'
 import config from './config.vue'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
@@ -33,6 +34,7 @@ import ClickOutside from 'vue-click-outside'
 })
 export default class DRightManage extends Vue {
 	editName = false
+	platform = platform.state
 	ruler = {}
 	screen = {}
 	close() {

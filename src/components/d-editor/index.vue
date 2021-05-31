@@ -3,7 +3,7 @@
 // todo css 改造 适配组件嵌入式，非全屏
 #d-editor.d-editor.pos-r(
 	ref="canvas-wrapper",
-	:class="{ fullscreen: screen.fullscreen }",
+	:class="{ fullscreen: platform.fullscreen }",
 	:style="{ width: `calc(100% - ${ruler.xRoomL1 + ruler.xRoomL2 + ruler.xRoomR1}px)`, marginLeft: `${ruler.xRoomL1 + ruler.xRoomL2}px` }",
 	@contextmenu.stop.prevent)
 	// 标尺容器
@@ -17,10 +17,10 @@
 			// 小工具清单
 			item-card(
 				:item="item",
-				v-for="item in screen.screenWidgets",
+				v-for="item in platform.widgetAdded",
 				:getRefLineParams="getRefLineParams",
 				:ref="item.id")
-			dr-more(v-show="screen.chooseWidgetArray&&screen.chooseWidgetArray.length")
+			dr-more(v-show="platform.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(:data-top="`${screen.height}px`", data-left="0px")
 			.d-editor-line(
@@ -43,6 +43,7 @@
 	d-guide
 	right-menu
 	d-footer
+	d-search
 </template>
 <script>
 import rightMenu from '../right-menu/index'
@@ -51,7 +52,9 @@ import drMore from '../../components/d-dr-more'
 import widgetOperation from './widget-operation'
 import dRightManage from '../d-right-manage'
 import dFooter from '../d-footer'
+import dSearch from '../d-search'
 import dGuide from '../d-guide'
+import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import ItemCard from './item-card.vue'
 import Ruler from '@/controller/Ruler'
@@ -63,6 +66,7 @@ export default {
 		ItemCard,
 		rulerCanvas,
 		dFooter,
+		dSearch,
 		dGuide,
 		drMore,
 		dRightManage,
@@ -73,6 +77,7 @@ export default {
 	},
 	data() {
 		return {
+			platform: platform.state,
 			ruler: {},
 			screen: {},
 			vLine: [],
@@ -95,7 +100,7 @@ export default {
 		},
 		showRightMenu(e, item) {
 			e.preventDefault()
-			this.handleActivated(this.screen.screenWidgets[item.id])
+			this.handleActivated(this.platform.widgetAdded[item.id])
 			const rightMenu = document.getElementById('right-menu')
 			rightMenu.classList.add('active')
 			if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
@@ -122,17 +127,18 @@ export default {
 			}
 		},
 		canvasSize() {
-			const { width, height } = this.screen
+			const { width, height } = this.platform
 			return { width, height }
 		},
 	},
 	beforeDestroy() {
-		this.screen.fullscreen = false
+		this.platform.fullscreen = false
 	},
 	created() {
 		this.ruler = Ruler.getInstance()
 	},
 	mounted() {
+		platform.actions.initPlatformConfig()
 		this.screen = this.$screen
 		instance.actions.setInstance('kanboard', this)
 		this.screen.setStatus('inEdit')

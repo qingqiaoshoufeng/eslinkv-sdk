@@ -44,7 +44,6 @@
 					type="file",
 					accept="application/json",
 					@change="handleFile")
-	d-search(v-model="searchModal", :hide="() => (searchModal = false)")
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
@@ -59,14 +58,13 @@ import {
 } from 'view-design'
 import copy from 'fast-copy'
 import { mixins } from 'vue-class-component'
+import platform from '../../store/platform.store'
 import commonConfigValue from '../../../common-config-value'
 import loadMask from '../load-mask/index.vue'
 import importMx from './import.mx'
 import exportMx from './export.mx'
+import detailMx from './detail.mx'
 import ScreenPc from '@/controller/Screen/pc'
-import { getQueryString } from '@/utils'
-import dSearch from '@/components/d-search/index.vue'
-
 @Component({
 	components: {
 		'i-icon': Icon,
@@ -77,23 +75,24 @@ import dSearch from '@/components/d-search/index.vue'
 		'i-form-item': FormItem,
 		'i-input': Input,
 		'i-tooltip': Tooltip,
-		dSearch,
 	},
 })
 export default class DDetail extends mixins(
 	// @ts-ignore
 	exportMx,
+	detailMx,
 	importMx,
 ) {
 	@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
 
+	platform = platform.state
 	ruler = {}
 	screen = {}
 	loadingMsg = 'loading…'
 	shareModal = false
-	searchModal = false
 	loading = false
 	isNew = true
+	screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
 
 	handleLeft1() {
 		this.ruler.xRoomL1 = this.ruler.xRoomL1 > 0 ? 0 : 238
@@ -111,7 +110,7 @@ export default class DDetail extends mixins(
 	}
 
 	search() {
-		this.searchModal = true
+		this.platform.searchModal = true
 	}
 
 	preview() {
@@ -161,9 +160,9 @@ export default class DDetail extends mixins(
 		}
 	}
 
-	screenData() {
+	platFormData() {
 		const defaultConfig = commonConfigValue() // 读取默认配置
-		const widgetAdded = copy(this.screen.screenWidgets)
+		const widgetAdded = copy(this.platform.widgetAdded)
 		const widgets = Object.values(widgetAdded).map(
 			({ id, market = false, type, config, scene = 0 }) => {
 				const api = config.api
@@ -191,22 +190,11 @@ export default class DDetail extends mixins(
 	}
 
 	created() {
-		const templateId = this.$route.query.templateId
-		const id = this.$route.params.id || templateId
+		const {
+			params: { id },
+		} = this.$route
 		this.isNew = !id
 		this.screen = ScreenPc.getInstance({ screenId: id })
-		// const file = this.$route.params.file
-		// if (file) {
-		// 	this.$api.screen
-		// 		.detailFile(decodeURIComponent(file))
-		// 		.then((res) => {
-		// 			this.refillConfig(res)
-		// 		})
-		// }
-		const sceneIndex = getQueryString('scene')
-		if (sceneIndex) {
-			screen.setSceneIndex(sceneIndex)
-		}
 	}
 	mounted() {
 		this.ruler = this.$ruler
