@@ -20,7 +20,7 @@ export default class FuncGroup extends Vue {
 	@Prop() title: string
 	@Prop({ default: '配置' }) prefix: string
 	@Prop({ default: false }) show: boolean
-	@Prop({ default: [] }) list
+	@Prop({ default: () => [] }) list
 	index = 0
 	icon = [
 		{ icon: 'md-add-circle', msg: '加一个' },

@@ -45,13 +45,20 @@ export async function detail(data) {
 		headers,
 	})
 	const res = originData.screenConfig
+	const screenWidgets = originData.screenWidgets
 	if (res.widgets) {
 		res.widgets.forEach(v => {
 			setDefault(v.value)
 		})
 	}
+	if (screenWidgets) {
+		screenWidgets.forEach(v => {
+			setDefault(v.value)
+		})
+	}
 	return {
 		...originData,
+		screenWidgets,
 		screenConfig: res,
 	}
 }

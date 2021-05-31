@@ -43,7 +43,14 @@ class Mixins extends Vue {
 		widget.id = id
 		widget.componentVersion = componentVersion
 		widget.componentId = componentId
-		const value = { layout, widget, config, api }
+		layout.zIndex =
+			this.screen.sortByZIndexWidgetsList[0].config.layout.zIndex + 1
+		const value = {
+			layout,
+			widget,
+			config,
+			api,
+		}
 		this.initWidgetConfig(id, type, this.screen.sceneIndex, market)
 		this.updateWidget(value)
 		this.currentWidgetType = type
