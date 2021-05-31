@@ -16,14 +16,12 @@ import {
 	Modal,
 } from 'view-design'
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import platform from '../store/platform.store'
 import event from '../store/event.store'
 import dRightSwiper from '../components-right/d-right-swiper/index.vue'
 import dRightSwiperList from '../components-right/d-right-swiper-list/index.vue'
 import dRightSwiperEye from '../components-right/d-right-swiper-eye/index.vue'
 import dRightControl from '../components-right/d-right-control/index.vue'
 import dInput from '../components/d-input/index.vue'
-import { chooseWidget } from '@/utils'
 
 @Component({
 	components: {
@@ -49,16 +47,11 @@ import { chooseWidget } from '@/utils'
 	},
 })
 export default class Func extends Vue {
-	platform = platform.state
 	event = event.state
 	screen = {}
 	@Prop() config
 	@Prop() parentProp // group时会有
 	@Prop() parentIndex // group时会有
-
-	get item() {
-		return chooseWidget()
-	}
 
 	get fixedConfig() {
 		if (this.parentProp) {
@@ -73,13 +66,16 @@ export default class Func extends Vue {
 
 	get obj() {
 		if (!this.fixedConfig.prop) return null
-		let res = this.item
-		const props = this.fixedConfig.prop.split('.')
-		props.length = props.length - 1
-		props.forEach(v => {
-			res = res[v]
-		})
-		return this.parentProp ? res[this.parentIndex] : res
+		let res = this.screen.chooseWidget
+		if (res) {
+			const props = this.fixedConfig.prop.split('.')
+			props.length = props.length - 1
+			props.forEach(v => {
+				res = res[v]
+			})
+			return this.parentProp ? res[this.parentIndex] : res
+		}
+		return {}
 	}
 
 	// config.api.data，返回‘data‘
@@ -91,7 +87,7 @@ export default class Func extends Vue {
 	}
 
 	getItemValue(keyString) {
-		let res = this.item
+		let res = this.screen.chooseWidget
 		const props = keyString.split('.')
 		props.forEach(v => {
 			res = res[v]
@@ -100,7 +96,7 @@ export default class Func extends Vue {
 	}
 
 	getItemObj(keyString) {
-		let res = this.item
+		let res = this.screen.chooseWidget
 		const props = keyString.split('.')
 		props.length = props.length - 1
 		props.forEach(v => {

@@ -1,5 +1,5 @@
 <template lang="pug">
-eslinkv-base(:value="value" :customConfig="customConfig")
+widget-normal(:value="value", :customConfig="customConfig")
 	.fn-flex.flex-row.h-title-1(v-if="data")
 		.h-title-1-icon
 		h2(@click="__handleClick__(test)") {{ data.title }}
@@ -8,10 +8,10 @@ eslinkv-base(:value="value" :customConfig="customConfig")
 import widgetMixin from '../../../../mixins'
 import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
-import eslinkvBase from '../../eslinkvBase.vue'
+import widgetNormal from '@/controller/Widget/normal.vue'
 import { value, customConfig } from './index.component'
 
-@Component({ components: {eslinkvBase}})
+@Component({ components: { widgetNormal } })
 export default class extends mixins(widgetMixin) {
 	test = {
 		data: {

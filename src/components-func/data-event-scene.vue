@@ -2,7 +2,8 @@
 d-right-swiper-list(
 	title="场景事件",
 	@add-click="handleAddClick",
-	:list="item.config.event.scene",
+	:list="screen.chooseWidget.config.event.scene",
+	v-if="screen.chooseWidgetId",
 	@remove-click="handleRemoveClick")
 	template(v-slot="dataDefault")
 		.d-manage-modal-control
@@ -10,14 +11,14 @@ d-right-swiper-list(
 				i-select(
 					clearable,
 					:style="{ marginBottom: '10px' }",
-					v-model="item.config.event.scene[dataDefault.activeIndex].type",
+					v-model="screen.chooseWidget.config.event.scene[dataDefault.activeIndex].type",
 					placeholder="事件类型")
 					i-option(value="openScene") 打开场景
 					i-option(value="closeScene") 关闭场景
 					i-option(value="changeScene") 切换场景
 				i-select(
 					:style="{ marginBottom: '10px' }",
-					v-model="item.config.event.scene[dataDefault.activeIndex].id",
+					v-model="screen.chooseWidget.config.event.scene[dataDefault.activeIndex].id",
 					filterable,
 					placeholder="目标场景")
 					i-option(:value="0") 主场景
@@ -26,7 +27,7 @@ d-right-swiper-list(
 					clearable,
 					filterable,
 					placeholder="场景过度动画",
-					v-model="item.config.event.scene[dataDefault.activeIndex].animate")
+					v-model="screen.chooseWidget.config.event.scene[dataDefault.activeIndex].animate")
 					i-option(:value="k", v-for="(k, i) in animates", :key="i") {{ k }}
 </template>
 <script lang="ts">
@@ -40,14 +41,14 @@ export default class FuncData extends func {
 	animates = animates
 
 	handleAddClick() {
-		this.item.config.event.scene.push({
+		this.screen.chooseWidget.config.event.scene.push({
 			id: '',
 			type: '',
 			animate: '',
 		})
 	}
 	handleRemoveClick(index) {
-		this.item.config.event.scene.splice(index, 1)
+		this.screen.chooseWidget.config.event.scene.splice(index, 1)
 	}
 }
 </script>
