@@ -17,7 +17,6 @@
 		li(@click="handleDestroy(removeId)") 删除
 </template>
 <script>
-import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import { Component, Vue } from 'vue-property-decorator'
 import { rulerGuideMouseDown } from '@/events'
@@ -27,7 +26,6 @@ export default class Guide extends Vue {
 	menuLeft = 0
 	menuTop = 0
 	removeId = null
-	platform = platform.state
 	event = event.state
 	ruler = {}
 	rulerGuideMouseDown = rulerGuideMouseDown

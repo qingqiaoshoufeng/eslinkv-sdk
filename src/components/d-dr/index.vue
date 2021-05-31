@@ -33,11 +33,9 @@
 </template>
 <script>
 import { addEvent, removeEvent } from './dom'
-import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import { dDrMouseDown } from '@/events'
 import dDrKuang from '../d-dr-kuang/index.vue'
-import ScreenPc from '@/controller/Screen/pc'
 
 const events = {
 	mouse: {
@@ -131,7 +129,6 @@ export default {
 	data() {
 		return {
 			snapTolerance: 5, // 当调用对齐时，用来设置组件与组件之间的对齐距离，以像素为单位
-			platform: platform.state,
 			event: event.state,
 			rawWidth: this.w,
 			rawHeight: this.h,

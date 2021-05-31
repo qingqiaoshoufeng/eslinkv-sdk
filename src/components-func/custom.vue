@@ -16,12 +16,10 @@
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
-import platform from '../store/platform.store'
 import event from '../store/event.store'
 
 @Component
 export default class FuncCustom extends func {
-	platform = platform.state
 	event = event.state
 	versionList = []
 

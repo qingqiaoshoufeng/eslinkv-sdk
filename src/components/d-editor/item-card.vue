@@ -8,13 +8,13 @@ dr(
 	:draggable="widgetEditable(item)",
 	:resizable="widgetEditable(item)",
 	:scale="item.config.layout.scale",
-	:active="item.id === platform.chooseWidgetId && widgetEditable(item)",
+	:active="item.id === screen.chooseWidgetId && widgetEditable(item)",
 	:w="item.config.layout.size.width",
 	:h="item.config.layout.size.height",
 	:x="item.config.layout.position.left",
 	:y="item.config.layout.position.top",
 	:z="item.config.layout.zIndex",
-	:snap="platform.autoAlignGuide",
+	:snap="screen.autoAlignGuide",
 	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 	:snap-to-target="['.d-editor-line', '.dr-unactive']",
 	@resizestop="onResizeStop",
@@ -33,7 +33,6 @@ dr(
 import dr from '../../components/d-dr/index.vue'
 import dDrKuang from '../../components/d-dr-kuang/index.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import platform from '@/store/platform.store.js'
 import parts from '../d-widget-part/index.vue'
 import event from '@/store/event.store.js'
 @Component({
@@ -46,7 +45,6 @@ import event from '@/store/event.store.js'
 export default class ItemCard extends Vue {
 	ruler = {}
 	screen = {}
-	platform = platform.state
 	currentWidgetType = null
 	event = event.state
 
@@ -76,7 +74,7 @@ export default class ItemCard extends Vue {
 
 	showRightMenu(e, item) {
 		e.preventDefault()
-		this.handleActivated(this.platform.widgetAdded[item.id])
+		this.handleActivated(this.screen.screenWidgets[item.id])
 		const rightMenu = document.getElementById('right-menu')
 		rightMenu.classList.add('active')
 		if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
@@ -90,20 +88,20 @@ export default class ItemCard extends Vue {
 	onDragStop(left, top) {
 		const diffLeft =
 			left -
-			this.platform.widgetAdded[this.platform.chooseWidgetId].config
-				.layout.position.left
+			this.screen.screenWidgets[this.screen.chooseWidgetId].config.layout
+				.position.left
 		const diffTop =
 			top -
-			this.platform.widgetAdded[this.platform.chooseWidgetId].config
-				.layout.position.top
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
+			this.screen.screenWidgets[this.screen.chooseWidgetId].config.layout
+				.position.top
+		this.screen.screenWidgets[
+			this.screen.chooseWidgetId
 		].config.layout.position.left = left
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
+		this.screen.screenWidgets[
+			this.screen.chooseWidgetId
 		].config.layout.position.top = top
 		this.onGroupDragStop(
-			this.platform.widgetAdded[this.platform.chooseWidgetId],
+			this.screen.screenWidgets[this.screen.chooseWidgetId],
 			diffLeft,
 			diffTop,
 		)
@@ -121,11 +119,11 @@ export default class ItemCard extends Vue {
 
 	// @ts-ignore
 	onResizeStop(left, top, width, height) {
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
+		this.screen.screenWidgets[
+			this.screen.chooseWidgetId
 		].config.layout.size.width = width
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
+		this.screen.screenWidgets[
+			this.screen.chooseWidgetId
 		].config.layout.size.height = height
 	}
 
@@ -138,17 +136,17 @@ export default class ItemCard extends Vue {
 		if (config.widget.hide) {
 			return
 		}
-		platform.actions.chooseWidget(id)
-		if (children && this.platform.chooseWidgetChildId) {
-			platform.actions.setChooseWidgetCustomConfig(
-				children.find(v => v.id === this.platform.chooseWidgetChildId)
+		this.screen.setChooseWidget(id)
+		if (children && this.screen.chooseWidgetChildId) {
+			this.screen.setChooseWidgetCustomConfig(
+				children.find(v => v.id === this.screen.chooseWidgetChildId)
 					.config.customConfig,
 			)
 		} else {
-			platform.actions.setChooseWidgetCustomConfig(config.customConfig)
+			this.screen.setChooseWidgetCustomConfig(config.customConfig)
 		}
 		this.currentWidgetType = type
-		this.platform.chooseWidgetId = id
+		this.screen.chooseWidgetId = id
 	}
 
 	handleWidgetConfig({ value = {} }) {
@@ -158,7 +156,7 @@ export default class ItemCard extends Vue {
 	updateWidget(value) {
 		if (!value || !value.widget) return
 		const id = value.widget.id
-		const currentWidget = this.platform.widgetAdded[id]
+		const currentWidget = this.screen.screenWidgets[id]
 		if (!id || !currentWidget) return
 		this.$set(currentWidget, 'config', value)
 	}

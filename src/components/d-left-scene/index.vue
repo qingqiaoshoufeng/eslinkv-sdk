@@ -16,9 +16,7 @@
 			i-option(:value="key", v-for="(item, key) in screen.sceneObj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
-		draggable(
-			v-model="screen.sortByZIndexWidgetsList",
-			@change="sceneWidgetDragEnd")
+		draggable(v-model="screen.sortByZIndexWidgetsList", @change="sceneWidgetDragEnd")
 			transition-group
 				item-card(
 					v-for="item in screen.sortByZIndexWidgetsList",

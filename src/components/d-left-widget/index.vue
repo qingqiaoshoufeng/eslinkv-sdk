@@ -37,7 +37,6 @@
 import parts from '../d-widget-part/index.vue'
 import { Icon } from 'view-design'
 import custom from '../../store/custom.store'
-import platform from '../../store/platform.store'
 import itemCard from './item-card.vue'
 import { Component, Vue } from 'vue-property-decorator'
 
@@ -50,7 +49,6 @@ import { Component, Vue } from 'vue-property-decorator'
 })
 export default class DLeftWidget extends Vue {
 	custom = custom.state
-	platform = platform.state
 	ruler = {}
 	leftIndex = null
 	rightIndex = null

@@ -2,7 +2,6 @@
  * @description 实例化对象缓存
  */
 
-import platform from './platform.store'
 import Vue from 'vue'
 import { store } from './index'
 
@@ -17,24 +16,25 @@ const actions = {
 	updateComponentTarget: (id, target, value) => {
 		switch (target) {
 			case 'config.api.params':
-				platform.state.widgetAdded[id].config.api.params = {
-					...platform.state.widgetAdded[id].config.api.params,
+				Vue.prototype.$screen.screenWidgets[id].config.api.params = {
+					...Vue.prototype.$screen.screenWidgets[id].config.api
+						.params,
 					...value,
 				}
 				break
 			case 'config.api.data':
-				platform.state.widgetAdded[id].config.api.data = value
+				Vue.prototype.$screen.screenWidgets[id].config.api.data = value
 				break
 			case 'config.config':
-				platform.state.widgetAdded[id].config.config = {
-					...platform.state.widgetAdded[id].config.config,
+				Vue.prototype.$screen.screenWidgets[id].config.config = {
+					...Vue.prototype.$screen.screenWidgets[id].config.config,
 					...value,
 				}
 				break
 		}
 	},
 	updateComponent: (id, config) => {
-		const widgetConfig = platform.state.widgetAdded[id].config.api
+		const widgetConfig = Vue.prototype.$screen.screenWidgets[id].config.api
 		if (config.params) {
 			widgetConfig.params = JSON.stringify(config.params)
 		}
