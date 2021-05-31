@@ -15,14 +15,12 @@
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
 import instance from '../store/instance.store'
-import platform from '../store/platform.store'
 import { colorTheme } from '../../packages/config.default.js'
 
 @Component
 export default class FuncAnimation extends func {
 	instance = instance.state
-	platform = platform.state
-
+	screen = {}
 	get colorTheme() {
 		return this.item.config.config.colorTheme
 			? this.item.config.config.colorTheme
@@ -55,8 +53,11 @@ export default class FuncAnimation extends func {
 	}
 
 	handleSync() {
-		this.instance.kanboard.$refs[`${this.platform.chooseWidgetId}`][0]
+		this.instance.kanboard.$refs[`${this.screen.chooseWidgetId}`][0]
 			.$children[0].updateKey++
+	}
+	mounted() {
+		this.screen = this.$screen
 	}
 }
 </script>
