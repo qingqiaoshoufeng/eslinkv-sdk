@@ -1,10 +1,10 @@
 <template lang="pug">
-.d-left-widget.pos-a.fn-flex.flex-column(
+.d-left-component.pos-a.fn-flex.flex-column(
 	:style="{ width: `${ruler.xRoomL1}px` }")
 	.d-left-modal-title.text-center
 		span 组件区
 	.fn-flex.flex-row(:style="{ flex: 1, height: 'calc(100% - 40px)' }")
-		ul.d-left-widget-left
+		ul.d-left-component-left
 			li.fn-flex.pos-r.pointer(
 				v-for="item in custom.widgets",
 				:key="item.componentTypeId",
@@ -12,7 +12,7 @@
 				:title="item.componentTypeName",
 				:class="{ active: leftIndex === item.componentTypeId }")
 				p.ellipsis {{ item.componentTypeName }}
-		ul.d-left-widget-right.d-scrollbar(v-if="leftIndex")
+		ul.d-left-component-right.d-scrollbar(v-if="leftIndex")
 			li.pointer(
 				v-for="item in custom.widgets[leftIndex].children",
 				:class="{ active: openList[item.componentTypeId] }")
@@ -20,7 +20,7 @@
 					type="ios-arrow-down",
 					@click="handleCheckType(item.componentTypeId, item.market)")
 				label.pointer(@click="handleCheckType(item.componentTypeId, item.market)") {{ item.componentTypeName }}
-				.d-left-widget-list.fn-flex(
+				.d-left-component-list.fn-flex(
 					v-if="list[item.componentTypeId] && openList[item.componentTypeId]")
 					item-card(
 						v-for="widget in list[item.componentTypeId]",
@@ -31,7 +31,7 @@
 						:componentId="widget.componentId",
 						:componentAvatar="widget.componentAvatar",
 						:componentTitle="widget.componentTitle")
-		.d-left-widget-empty.fn-flex(v-else) 快来选择你心仪的组件了
+		.d-left-component-empty.fn-flex(v-else) 快来选择你心仪的组件了
 </template>
 <script lang="ts">
 import parts from '../d-widget-part/index.vue'
@@ -92,7 +92,7 @@ export default class DLeftWidget extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.d-left-widget-list {
+.d-left-component-list {
 	flex-wrap: wrap;
 	justify-content: space-between;
 	width: 100%;
@@ -100,7 +100,7 @@ export default class DLeftWidget extends Vue {
 	background: #0a0b0d;
 }
 
-.d-left-widget-empty {
+.d-left-component-empty {
 	align-items: center;
 	justify-content: center;
 	width: 100%;
@@ -110,7 +110,7 @@ export default class DLeftWidget extends Vue {
 	height: 100px;
 }
 
-.d-left-widget {
+.d-left-component {
 	top: 0;
 	left: 0;
 	height: 100%;
@@ -120,7 +120,7 @@ export default class DLeftWidget extends Vue {
 	transition: width 0.3s;
 }
 
-.d-left-widget-left {
+.d-left-component-left {
 	background-color: #22242b;
 
 	li {
@@ -152,7 +152,7 @@ export default class DLeftWidget extends Vue {
 	}
 }
 
-.d-left-widget-right {
+.d-left-component-right {
 	width: 100%;
 
 	li {

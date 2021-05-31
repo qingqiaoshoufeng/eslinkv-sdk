@@ -14,6 +14,7 @@ export default class DManageItem extends Vue {
 	@Prop() parentProp: any
 	@Prop() parentIndex: any
 	currentComponent: any = {}
+
 	created() {
 		const components = require.context(
 			`../../components-func`,

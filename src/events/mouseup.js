@@ -1,3 +1,4 @@
+import scene from '@/store/scene.store'
 import event from '@/store/event.store'
 import platform from '@/store/platform.store'
 import Vue from 'vue'
@@ -31,7 +32,7 @@ const mouseup = e => {
 		platform.state.chooseWidgetArray = []
 		Object.values(platform.state.widgetAdded).forEach(v => {
 			// 只能框选当前场景下的组件
-			if (v.scene === Vue.prototype.$screen.sceneIndex) {
+			if (v.scene === scene.state.index) {
 				const widgetStartX = v.config.layout.position.left
 				const widgetStartY = v.config.layout.position.top
 				const widgetEndX =

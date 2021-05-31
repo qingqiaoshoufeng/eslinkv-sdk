@@ -1,31 +1,32 @@
 <template lang="pug">
-.d-manage-modal-control-base(v-if="screen.chooseWidgetId")
+.d-manage-modal-control-base
 	d-right-swiper(title="基础属性", :show="true")
 		d-right-control(label="位置")
-			i-select(v-model="screen.chooseWidget.config.layout.position.value")
+			i-select(
+				v-model="item.config.layout.position.value")
 				i-option(value="absolute") 绝对定位
 				i-option(value="fixed") 浮动定位
 				i-option(value="relative") 相对定位
 		d-right-control
 			d-input(
 				append="X",
-				v-model="screen.chooseWidget.config.layout.position.left",
+				v-model="item.config.layout.position.left",
 				:style="{ width: '100px', marginRight: '10px' }")
 			d-input(
 				append="Y",
-				v-model="screen.chooseWidget.config.layout.position.top",
-				:style="{ width: '100px' }")
+				v-model="item.config.layout.position.top",
+				:style="{ width: '100px'}")
 		d-right-control(label="宽高")
 			d-input(
 				append="W",
-				v-model="screen.chooseWidget.config.layout.size.width",
+				v-model="item.config.layout.size.width",
 				:style="{ width: '100px', marginRight: '10px' }")
 			d-input(
 				append="H",
-				v-model="screen.chooseWidget.config.layout.size.height",
+				v-model="item.config.layout.size.height",
 				:style="{ width: '100px' }")
 		d-right-control(label="场景")
-			i-select(v-model="screen.chooseWidget.scene")
+			i-select(v-model="item.scene")
 				i-option(:value="0") 主场景
 				i-option(:value="key", v-for="(item, key) in screen.sceneObj", :key="key") {{ item.name }}
 				i-option(:value="-1") 回收站
@@ -37,21 +38,20 @@
 				:style="{ width: '100px' }")
 	d-right-swiper-eye(
 		title="载入动画",
-		@open-click="screen.chooseWidget.config.animation.transitionEnable = true",
-		@close-click="screen.chooseWidget.config.animation.transitionEnable = false",
-		:enable="screen.chooseWidget.config.animation.transitionEnable")
+		@open-click="item.config.animation.transitionEnable = true",
+		@close-click="item.config.animation.transitionEnable = false",
+		:enable="item.config.animation.transitionEnable")
 		d-right-control(label="动画形式")
-			i-select(v-model="screen.chooseWidget.config.animation.enter")
+			i-select(
+				v-model="item.config.animation.enter",)
 				i-option(
 					:value="k.value",
 					v-for="k in animationEnterNames",
 					:key="k.value") {{ k.label }}
 		d-right-control(label="延时时长")
-			d-input(append="ms", v-model="screen.chooseWidget.config.animation.delay")
+			d-input(append="ms", v-model="item.config.animation.delay")
 		d-right-control(label="动画时长")
-			d-input(
-				append="ms",
-				v-model="screen.chooseWidget.config.animation.duration")
+			d-input(append="ms", v-model="item.config.animation.duration")
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -75,22 +75,20 @@ export default class FuncBase extends func {
 	]
 
 	get scale() {
-		return `${Math.round(
-			this.screen.chooseWidget.config.layout.scale * 100,
-		)}%`
+		return `${Math.round(this.item.config.layout.scale * 100)}%`
 	}
 
 	set scale(val: any) {
 		if (!isNaN(val)) {
-			this.screen.chooseWidget.config.layout.scale = val
+			this.item.config.layout.scale = val
 		} else {
-			const back = this.screen.chooseWidget.config.layout.scale
+			const back = this.item.config.layout.scale
 			if (val.indexOf('%') !== -1) {
 				let v = val.replace('%', '') / 100
 				if (!isNaN(v)) {
-					this.screen.chooseWidget.config.layout.scale = v
+					this.item.config.layout.scale = v
 				} else {
-					this.screen.chooseWidget.config.layout.scale = back
+					this.item.config.layout.scale = back
 				}
 			}
 		}

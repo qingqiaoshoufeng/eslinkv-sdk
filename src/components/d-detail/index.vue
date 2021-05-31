@@ -35,9 +35,6 @@
 		li.fn-flex.flex-column.pointer(@click="importModal = true")
 			i-icon(type="ios-cloud-upload-outline", :size="24")
 			span 导入
-		li.fn-flex.flex-column.pointer(@click="handleSave('CUSTOM')")
-			i-icon(type="ios-cloud-done-outline", :size="24")
-			span 保存
 	load-mask(:show="loading") {{ loadingMsg }}
 	i-modal(v-model="importModal")
 		i-form
@@ -47,7 +44,6 @@
 					type="file",
 					accept="application/json",
 					@change="handleFile")
-	d-search(v-model="searchModal", :hide="() => (searchModal = false)")
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
@@ -60,16 +56,15 @@ import {
 	Input,
 	Tooltip,
 } from 'view-design'
+import copy from 'fast-copy'
 import { mixins } from 'vue-class-component'
-
+import platform from '../../store/platform.store'
+import commonConfigValue from '../../../common-config-value'
 import loadMask from '../load-mask/index.vue'
 import importMx from './import.mx'
 import exportMx from './export.mx'
-import saveMx from './save.mx'
+import detailMx from './detail.mx'
 import ScreenPc from '@/controller/Screen/pc'
-import { getQueryString } from '@/utils'
-import dSearch from '@/components/d-search/index.vue'
-
 @Component({
 	components: {
 		'i-icon': Icon,
@@ -80,24 +75,24 @@ import dSearch from '@/components/d-search/index.vue'
 		'i-form-item': FormItem,
 		'i-input': Input,
 		'i-tooltip': Tooltip,
-		dSearch,
 	},
 })
 export default class DDetail extends mixins(
 	// @ts-ignore
 	exportMx,
-	saveMx,
+	detailMx,
 	importMx,
 ) {
 	@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
 
+	platform = platform.state
 	ruler = {}
 	screen = {}
 	loadingMsg = 'loading…'
 	shareModal = false
-	searchModal = false
 	loading = false
 	isNew = true
+	screenType = 'CUSTOM' // 数据类型：0:看板, 1:小工具模板, 2:参考线模板
 
 	handleLeft1() {
 		this.ruler.xRoomL1 = this.ruler.xRoomL1 > 0 ? 0 : 238
@@ -115,7 +110,7 @@ export default class DDetail extends mixins(
 	}
 
 	search() {
-		this.searchModal = true
+		this.platform.searchModal = true
 	}
 
 	preview() {
@@ -127,21 +122,79 @@ export default class DDetail extends mixins(
 		)
 	}
 
+	getAttr(o, str) {
+		const arr = str.split('.')
+		let res = o
+		for (const v of arr) {
+			if (res[v] === undefined) {
+				res = {}
+				break
+			}
+			res = res[v]
+		}
+		return res
+	}
+
+	checkAttr(o, str = '', defaultConfig) {
+		for (const key in o) {
+			const prop = str ? str + '.' + key : key
+			if (Array.isArray(o[key]) && o[key].length > 0) {
+				if (
+					JSON.stringify(o[key]) ===
+					JSON.stringify(this.getAttr(defaultConfig, prop))
+				) {
+					o[key] = 'default'
+				}
+			} else if (
+				Object.prototype.toString.call(o[key]) === '[object Object]'
+			) {
+				if (
+					JSON.stringify(o[key]) ===
+					JSON.stringify(this.getAttr(defaultConfig, prop))
+				) {
+					o[key] = 'default'
+				} else {
+					this.checkAttr(o[key], prop, defaultConfig)
+				}
+			}
+		}
+	}
+
+	platFormData() {
+		const defaultConfig = commonConfigValue() // 读取默认配置
+		const widgetAdded = copy(this.platform.widgetAdded)
+		const widgets = Object.values(widgetAdded).map(
+			({ id, market = false, type, config, scene = 0 }) => {
+				const api = config.api
+				if (api && api.data) {
+					try {
+						api.data = JSON.stringify(JSON.parse(api.data))
+					} catch (e) {
+						console.warn(e)
+					}
+				}
+				this.checkAttr(config, '', defaultConfig)
+				return {
+					id,
+					scene,
+					type,
+					market,
+					value: { ...config },
+				}
+			},
+		)
+		return {
+			screenScene: this.screen.sceneObj,
+			screenWidgets: widgets,
+		}
+	}
+
 	created() {
-		const templateId = this.$route.query.templateId
-		const id = this.$route.params.id || templateId
+		const {
+			params: { id },
+		} = this.$route
 		this.isNew = !id
 		this.screen = ScreenPc.getInstance({ screenId: id })
-		const file = this.$route.params.file
-		if (file) {
-			this.$api.screen.detailFile(decodeURIComponent(file)).then(res => {
-				this.screen.serialize(res)
-			})
-		}
-		const sceneIndex = getQueryString('scene')
-		if (sceneIndex) {
-			this.screen.setSceneIndex(sceneIndex)
-		}
 	}
 	mounted() {
 		this.ruler = this.$ruler

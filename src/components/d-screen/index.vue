@@ -3,17 +3,17 @@
 	:style="{ height: `calc(100% - ${ruler.yRoom}px)` }",
 	@wheel="dScreenWheel")
 	.d-editor-box.pos-r.fn-flex
-		d-left-widget
+		d-left-component
 		d-left-scene
 		d-editor(ref="kanboardEditor")
-		d-right-manage(v-if="!screen.chooseWidgetId")
-		d-right-setting(v-if="screen.chooseWidgetId")
-		d-right-setting-more(
-			v-if="screen.chooseWidgetArray && screen.chooseWidgetArray.length > 1")
+		d-right-manage(v-if="!platform.chooseWidgetId")
+		d-right-setting(v-if="platform.chooseWidgetId")
+		d-right-setting-more(v-if="platform.chooseWidgetArray.length > 1")
 </template>
 <script lang="ts">
 import { Vue, Component, Provide } from 'vue-property-decorator'
-import dLeftWidget from '../d-left-widget/index.vue'
+import platform from '../../store/platform.store.js'
+import dLeftComponent from '../d-left-component/index.vue'
 import dLeftScene from '../d-left-scene/index.vue'
 import dEditor from '../d-editor/index.vue'
 import dRightManage from '../d-right-manage/index.vue'
@@ -23,7 +23,7 @@ import { dScreenWheel } from '@/events'
 
 @Component({
 	components: {
-		dLeftWidget,
+		dLeftComponent,
 		dLeftScene,
 		dRightManage,
 		dRightSetting,
@@ -32,14 +32,13 @@ import { dScreenWheel } from '@/events'
 	},
 })
 export default class dScreen extends Vue {
+	platform = platform.state
 	ruler = {}
-	screen = {}
 	dScreenWheel = dScreenWheel
 	@Provide('kanboardEditor') kanboardEditor = this.$refs.kanboardEditor
 
 	mounted() {
 		this.ruler = this.$ruler
-		this.screen = this.$screen
 	}
 }
 </script>

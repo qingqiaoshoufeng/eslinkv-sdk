@@ -1,16 +1,16 @@
 <template lang="pug">
-.d-manage-modal-control-base(v-if="screen.chooseWidgetId")
+.d-manage-modal-control-base
 	// START_PROD
 	d-right-control(label="组件市场")
 		i-select(
-			v-model="screen.chooseWidget.config.widget.componentVersion",
-			v-if="screen.chooseWidget.market",
+			v-model="item.config.widget.componentVersion",
+			v-if="item.market",
 			:style="{ marginRight: '10px', width: '156px' }")
 			i-option(
-				:value="screen.chooseWidget.componentVersion",
+				:value="item.componentVersion",
 				v-for="(item, i) in versionList",
 				:key="i") {{ item.componentVersion }}
-		i-switch(v-model="screen.chooseWidget.market")
+		i-switch(v-model="item.market")
 	// END_PROD
 </template>
 <script lang="ts">
@@ -28,13 +28,13 @@ export default class FuncCustom extends func {
 	// START_PROD
 	async getVersionList() {
 		const res = await this.$api.marketComponent.getVersionList({
-			componentEnTitle: this.screen.chooseWidget.type,
+			componentEnTitle: this.item.type,
 		})
 		this.versionList = res
 	}
 
-	mounted() {
-		if (this.screen.chooseWidget.market) {
+	created() {
+		if (this.item.market) {
 			this.getVersionList()
 		}
 	}

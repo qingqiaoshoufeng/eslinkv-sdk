@@ -1,12 +1,12 @@
 <template lang="pug">
-.widget-part(:style="styles")
+div(:styles="styles")
 	slot
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
-export default class widgetNormal extends Vue {
+export default class eslinkvBase extends Vue {
 	@Prop() value
 	@Prop() customConfig
 

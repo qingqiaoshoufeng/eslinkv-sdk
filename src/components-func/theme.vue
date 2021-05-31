@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-manage-modal-control-base(v-if="screen.chooseWidgetId")
+.d-manage-modal-control-base
 	d-right-control(label="色盘")
 		i-color-picker(
 			:alpha="true",
@@ -24,8 +24,8 @@ export default class FuncAnimation extends func {
 	platform = platform.state
 
 	get colorTheme() {
-		return this.screen.chooseWidget.config.config.colorTheme
-			? this.screen.chooseWidget.config.config.colorTheme
+		return this.item.config.config.colorTheme
+			? this.item.config.config.colorTheme
 			: colorTheme
 	}
 
@@ -39,18 +39,18 @@ export default class FuncAnimation extends func {
 	}
 
 	handleResetColor() {
-		this.screen.chooseWidget.config.config.colorTheme = colorTheme
+		this.item.config.config.colorTheme = colorTheme
 		this.handleSync()
 	}
 
 	colorDiskChange(val, index) {
-		if (!this.screen.chooseWidget.config.config.colorTheme) {
-			this.screen.chooseWidget.config.config.colorTheme = {}
+		if (!this.item.config.config.colorTheme) {
+			this.item.config.config.colorTheme = {}
 		}
-		if (!this.screen.chooseWidget.config.config.colorTheme.colorDisk) {
-			this.screen.chooseWidget.config.config.colorTheme.colorDisk = []
+		if (!this.item.config.config.colorTheme.colorDisk) {
+			this.item.config.config.colorTheme.colorDisk = []
 		}
-		this.screen.chooseWidget.config.config.colorTheme.colorDisk[index] = val
+		this.item.config.config.colorTheme.colorDisk[index] = val
 		this.handleSync()
 	}
 
