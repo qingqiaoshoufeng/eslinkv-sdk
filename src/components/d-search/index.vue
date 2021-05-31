@@ -1,6 +1,8 @@
 <template lang="pug">
-.container(:class="{ active: platform.searchModal }")
-	.d-detail-search.animated.searchFadeInDown(v-click-outside="close")
+.container(
+	:class="{ active: value }",
+	:style="{ width: `calc(100% - ${ruler.xRoomL1 + ruler.xRoomL2 + ruler.xRoomR1}px)`, left: `${ruler.xRoomL1 + ruler.xRoomL2}px` }")
+	.d-detail-search.animated.searchFadeInDown(v-click-outside="hide")
 		i-input.d-detail-input(
 			@on-focus="event.inputFocus = true",
 			@on-blur="event.inputFocus = false",
@@ -11,8 +13,7 @@
 			li(v-for="(k, i) in searchResult", :key="i", @click="check(k)") {{ k.config.widget.name }}
 </template>
 <script lang="ts">
-import platform from '../../store/platform.store'
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
 import event from '../../store/event.store'
@@ -26,10 +27,12 @@ import event from '../../store/event.store'
 })
 export default class DSearch extends Vue {
 	searchResult = []
-	platform = platform.state
 	event = event.state
 	keyword = ''
 	screen = {}
+	ruler = {}
+	@Prop() value
+	@Prop() hide
 
 	@Watch('keyword')
 	keywordChange(val) {
@@ -38,30 +41,27 @@ export default class DSearch extends Vue {
 			return
 		}
 		let arr = []
-		for (const key in this.platform.widgetAdded) {
+		for (const key in this.screen.screenWidgets) {
 			if (
-				this.platform.widgetAdded[key].config.widget.name.includes(val)
+				this.screen.screenWidgets[key].config.widget.name.includes(val)
 			) {
-				arr.push(this.platform.widgetAdded[key])
+				arr.push(this.screen.screenWidgets[key])
 			}
 		}
 		this.searchResult = arr
 	}
-
 	close() {
-		if (this.platform.searchModal) {
-			this.platform.searchModal = false
-		}
+		this.hide()
 	}
-
 	check(widget) {
 		this.screen.setSceneIndex(widget.scene)
-		this.platform.chooseWidgetId = widget.id
-		this.platform.searchModal = false
+		this.screen.chooseWidgetId = widget.id
+		this.searchModal = false
 	}
 
 	mounted() {
 		this.screen = this.$screen
+		this.ruler = this.$ruler
 	}
 }
 </script>
@@ -84,8 +84,8 @@ export default class DSearch extends Vue {
 	position: absolute;
 	top: 100px;
 	left: 50%;
-	width: 70%;
-	margin-left: calc(-35% + 18px);
+	width: 80%;
+	margin-left: -40%;
 	border-radius: 4px;
 
 	/deep/ {

@@ -1,33 +1,33 @@
 <template lang="pug">
-	.main
-		.child.fn-flex.flex-row(@click="handleChoose" :class="{active: platform.chooseWidgetChildId === child.id}")
-			.d-left-scene-left
-				h2 {{ child.config.widget.name }}
-			.d-left-scene-right
-		WidgetGroup(:childList="child.children" v-if="child.children")
+.main
+	.child.fn-flex.flex-row(
+		@click="handleChoose",
+		:class="{ active: screen.chooseWidgetChildId === child.id }")
+		.d-left-scene-left
+			h2 {{ child.config.widget.name }}
+		.d-left-scene-right
+	WidgetGroup(:childList="child.children", v-if="child.children")
 </template>
 <script>
-import platform from '../../store/platform.store'
-import { chooseWidget } from '@/utils'
-
 export default {
 	name: 'WidgetGroupItem',
 	components: { WidgetGroup: () => import('./widget-group.vue') },
 	props: ['child'],
 	data() {
 		return {
-			platform: platform.state,
 			childList: [],
+			screen: {},
 		}
 	},
 	methods: {
 		handleChoose() {
-			this.platform.chooseWidgetChildId = this.child.id
-			const target = chooseWidget()
-			platform.actions.setChooseWidgetCustomConfig(
-				target.config.customConfig,
-			)
+			this.screen.chooseWidgetChildId = this.child.id
+			const target = this.screen.chooseWidget
+			this.screen.setChooseWidgetCustomConfig(target.config.customConfig)
 		},
+	},
+	mounted() {
+		this.screen = this.$screen
 	},
 }
 </script>

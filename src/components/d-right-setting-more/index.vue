@@ -7,7 +7,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Button } from 'view-design'
-import platform from '@/store/platform.store.js'
 import { uuid, configMerge } from '@/utils/index.js'
 import commonConfigValue from '../../../common-config-value.js'
 
@@ -19,13 +18,12 @@ import commonConfigValue from '../../../common-config-value.js'
 export default class DRightSettingMore extends Vue {
 	ruler = {}
 	screen = {}
-	platform = platform.state
 
 	handleGroup() {
 		const children = []
-		this.platform.chooseWidgetArray.map(item => {
-			children.push(this.platform.widgetAdded[item])
-			this.$delete(this.platform.widgetAdded, item)
+		this.screen.chooseWidgetArray.map(item => {
+			children.push(this.screen.screenWidgets[item])
+			this.$delete(this.screen.screenWidgets, item)
 		})
 		const id = uuid()
 		const config = configMerge(
@@ -33,18 +31,18 @@ export default class DRightSettingMore extends Vue {
 				widget: { id, name: '分组' },
 				layout: {
 					size: {
-						width: this.platform.chooseWidgetArrayConfig.width,
-						height: this.platform.chooseWidgetArrayConfig.height,
+						width: this.screen.chooseWidgetArrayConfig.width,
+						height: this.screen.chooseWidgetArrayConfig.height,
 					},
 					position: {
-						left: this.platform.chooseWidgetArrayConfig.left,
-						top: this.platform.chooseWidgetArrayConfig.top,
+						left: this.screen.chooseWidgetArrayConfig.left,
+						top: this.screen.chooseWidgetArrayConfig.top,
 					},
 				},
 			},
 			commonConfigValue(),
 		)
-		this.$set(this.platform.widgetAdded, id, {
+		this.$set(this.screen.screenWidgets, id, {
 			config,
 			id,
 			market: false,
@@ -52,18 +50,18 @@ export default class DRightSettingMore extends Vue {
 			type: 'group',
 			children,
 		})
-		this.platform.chooseWidgetId = id
-		this.platform.chooseWidgetArray = []
+		this.screen.chooseWidgetId = id
+		this.screen.chooseWidgetArray = []
 	}
 	handleDelete() {
 		this.$Modal.confirm({
 			title: '提示',
 			content: '是否删除所选组件？',
 			onOk: () => {
-				this.platform.chooseWidgetArray.map(item => {
-					this.$delete(this.platform.widgetAdded, item)
+				this.screen.chooseWidgetArray.map(item => {
+					this.$delete(this.screen.screenWidgets, item)
 				})
-				this.platform.chooseWidgetArray = []
+				this.screen.chooseWidgetArray = []
 			},
 		})
 	}

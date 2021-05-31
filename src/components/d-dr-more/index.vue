@@ -4,7 +4,6 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import platform from '@/store/platform.store.js'
 import dDrKuang from '../../components/d-dr-kuang/index.vue'
 @Component({
 	components: {
@@ -12,14 +11,18 @@ import dDrKuang from '../../components/d-dr-kuang/index.vue'
 	},
 })
 export default class DDrMore extends Vue {
-	platform = platform.state
+	screen = {}
 	get style() {
+		if (!this.screen.chooseWidgetArrayConfig) return {}
 		return {
-			transform: `translate3d(${this.platform.chooseWidgetArrayConfig.left}px, ${this.platform.chooseWidgetArrayConfig.top}px,0)`,
-			width: this.platform.chooseWidgetArrayConfig.width + 'px',
-			height: this.platform.chooseWidgetArrayConfig.height + 'px',
-			zIndex: this.platform.chooseWidgetArrayConfig.z,
+			transform: `translate3d(${this.screen.chooseWidgetArrayConfig.left}px, ${this.screen.chooseWidgetArrayConfig.top}px,0)`,
+			width: this.screen.chooseWidgetArrayConfig.width + 'px',
+			height: this.screen.chooseWidgetArrayConfig.height + 'px',
+			zIndex: this.screen.chooseWidgetArrayConfig.z,
 		}
+	}
+	mounted() {
+		this.screen = this.$screen
 	}
 }
 </script>

@@ -16,9 +16,12 @@
 			i-option(:value="key", v-for="(item, key) in screen.sceneObj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
-		draggable(v-model="list", @change="sceneWidgetDragEnd")
+		draggable(v-model="screen.sortByZIndexWidgetsList", @change="sceneWidgetDragEnd")
 			transition-group
-				item-card(v-for="item in list", :key="item.id", :item="item")
+				item-card(
+					v-for="item in screen.sortByZIndexWidgetsList",
+					:key="item.id",
+					:item="item")
 	.d-left-scene-bottom.fn-flex.flex-row
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('copy')") 复制
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('create')") 新增
@@ -39,9 +42,8 @@
 				@on-search="handleCopy")
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { Icon, Input, Select, Option, Modal } from 'view-design'
-import platform from '../../store/platform.store'
 import { copyText } from '../../utils/index'
 import ItemCard from './item-card.vue'
 import draggable from 'vuedraggable'
@@ -59,37 +61,22 @@ import draggable from 'vuedraggable'
 })
 export default class DLeftScene extends Vue {
 	ruler = {}
-	platform: any = platform.state
 	editScene = false
 	copyModel = false
 	screen = {}
 	list = []
 
-	@Watch('platform.widgetAdded')
-	widgetAddedChange() {
-		this.$nextTick(() => {
-			this.getList()
-		})
-	}
-	@Watch('screen.sceneIndex')
-	sceneIndexChange() {
-		this.getList()
-		platform.actions.unChooseWidget()
-	}
+	// @Watch('screen.screenWidgets')
+	// widgetAddedChange() {
+	// 	this.$nextTick(() => {
+	// this.getList()
+	// })
+	// }
 
-	getList() {
-		const list = []
-		for (const key in this.platform.widgetAdded) {
-			const item = this.platform.widgetAdded[key]
-			if (item.scene === this.screen.sceneIndex) {
-				list.push(item)
-			}
-		}
-		list.sort((a, b) => {
-			return b.config.layout.zIndex - a.config.layout.zIndex
-		})
-		this.list = list
-	}
+	// @Watch('screen.sceneIndex')
+	// sceneIndexChange() {
+	// this.screen.unChooseWidget()
+	// }
 
 	handleSetScene(name) {
 		switch (name) {
@@ -135,7 +122,7 @@ export default class DLeftScene extends Vue {
 	}
 
 	mounted() {
-		this.getList()
+		// this.getList()
 		this.screen = this.$screen
 		this.ruler = this.$ruler
 	}

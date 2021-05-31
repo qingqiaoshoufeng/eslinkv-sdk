@@ -12,7 +12,6 @@
 </template>
 <script lang="ts">
 import { Component, Watch, Vue } from 'vue-property-decorator'
-import platform from '../../store/platform.store'
 import event from '../../store/event.store'
 import { rulerLineMouseUp, rulerLineMouseDown } from '@/events'
 
@@ -22,7 +21,6 @@ const bgImg = new Image()
 
 @Component
 export default class XLine extends Vue {
-	platform = platform.state
 	event = event.state
 	ruler = {}
 	showHelp = false

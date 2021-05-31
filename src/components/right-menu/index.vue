@@ -37,7 +37,6 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
-import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
 import copy from 'fast-copy'
 import { uuid } from '../../utils/index'
@@ -49,15 +48,14 @@ import { Icon } from 'view-design'
 	},
 })
 export default class rightMenu extends Vue {
-	platform = platform.state
 	instance = instance.state
 	isLock = false
 	zIndex = 10
 	minZIndex = 0
 	maxZIndex = 0
-
+	screen = {}
 	handleSync() {
-		this.instance.kanboard.$refs[`${this.platform.chooseWidgetId}`][0]
+		this.instance.kanboard.$refs[`${this.screen.chooseWidgetId}`][0]
 			.$children[0].updateKey++
 		this.hideRightMenu()
 	}
@@ -65,30 +63,30 @@ export default class rightMenu extends Vue {
 	handleZIndex(num) {
 		if (this.zIndex === 1 && num === -1) return
 		this.zIndex += num
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
+		this.screen.screenWidgets[
+			this.screen.chooseWidgetId
 		].config.layout.zIndex = this.zIndex
 		this.hideRightMenu()
 	}
 
 	handleZIndexTop() {
 		this.zIndex = this.maxZIndex
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
+		this.screen.screenWidgets[
+			this.screen.chooseWidgetId
 		].config.layout.zIndex = this.maxZIndex
 		this.hideRightMenu()
 	}
 
 	handleZIndexBottom() {
 		this.zIndex = this.minZIndex
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
+		this.screen.screenWidgets[
+			this.screen.chooseWidgetId
 		].config.layout.zIndex = this.minZIndex
 		this.hideRightMenu()
 	}
 
 	hideWidget() {
-		const widget = this.platform.widgetAdded[this.platform.chooseWidgetId]
+		const widget = this.screen.screenWidgets[this.screen.chooseWidgetId]
 			.config.widget
 		widget.hide = !widget.hide
 		this.handleUnActive()
@@ -99,8 +97,8 @@ export default class rightMenu extends Vue {
 			title: '提示',
 			content: '是否删除当前组件？',
 			onOk: () => {
-				const id = this.platform.chooseWidgetId
-				this.$delete(this.platform.widgetAdded, id)
+				const id = this.screen.chooseWidgetId
+				this.$delete(this.screen.screenWidgets, id)
 				this.handleUnActive()
 			},
 			onCancel: () => {
@@ -110,8 +108,8 @@ export default class rightMenu extends Vue {
 	}
 
 	copyWidget() {
-		const copyId = this.platform.chooseWidgetId
-		const widget = this.platform.widgetAdded[copyId]
+		const copyId = this.screen.chooseWidgetId
+		const widget = this.screen.screenWidgets[copyId]
 		if (!widget) return
 		const copiedWidget = copy(widget)
 		const id = uuid()
@@ -127,7 +125,7 @@ export default class rightMenu extends Vue {
 			layout.position.left += 10
 			layout.position.top += 10
 		}
-		platform.actions.setWidgetsAddedItem(
+		this.screen.setWidgetItem(
 			id,
 			widget.type,
 			widget.config,
@@ -143,31 +141,31 @@ export default class rightMenu extends Vue {
 	}
 
 	handleUnActive() {
-		platform.actions.unChooseWidget()
+		this.screen.unChooseWidget()
 	}
 
 	handleLock() {
 		this.isLock = !this.isLock
-		this.platform.widgetAdded[
-			this.platform.chooseWidgetId
+		this.screen.screenWidgets[
+			this.screen.chooseWidgetId
 		].config.widget.locked = this.isLock
 		this.hideRightMenu()
 	}
 
-	@Watch('platform.chooseWidgetId')
+	@Watch('screen.chooseWidgetId')
 	chooseIdChange(val) {
 		if (!val) return
-		this.isLock = this.platform.widgetAdded[val].config.widget.locked
-		this.zIndex = this.platform.widgetAdded[val].config.layout.zIndex
+		this.isLock = this.screen.screenWidgets[val].config.widget.locked
+		this.zIndex = this.screen.screenWidgets[val].config.layout.zIndex
 		let max = 0
 		let min = 9999
-		for (const key in this.platform.widgetAdded) {
+		for (const key in this.screen.screenWidgets) {
 			max = Math.max(
-				this.platform.widgetAdded[key].config.layout.zIndex,
+				this.screen.screenWidgets[key].config.layout.zIndex,
 				max,
 			)
 			min = Math.min(
-				this.platform.widgetAdded[key].config.layout.zIndex,
+				this.screen.screenWidgets[key].config.layout.zIndex,
 				min,
 			)
 		}
@@ -175,6 +173,9 @@ export default class rightMenu extends Vue {
 		min--
 		this.maxZIndex = max
 		this.minZIndex = Math.max(1, min)
+	}
+	mounted() {
+		this.screen = this.$screen
 	}
 }
 </script>

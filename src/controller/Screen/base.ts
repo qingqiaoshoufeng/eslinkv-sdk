@@ -20,7 +20,37 @@ export default class ScreenBase extends scene {
 	/* 大屏配置 */
 	public screenConfig: any = {}
 	/* 大屏组件配置 */
-	public screenWidgets: any = []
+	public screenWidgets: any = {}
+	/* 获取大屏组件配置——根据zIndex排序 */
+	get sortByZIndexWidgetsList() {
+		const list = []
+		for (const key in this.screenWidgets) {
+			const item = this.screenWidgets[key]
+			if (item.scene === this.sceneIndex) {
+				list.push(item)
+			}
+		}
+		list.sort((a, b) => {
+			return b.config.layout.zIndex - a.config.layout.zIndex
+		})
+		return list
+	}
+	/* 更新大屏组件配置 */
+	setWidgetItem(id, type, config, scene, market = false) {
+		Vue.set(this.screenWidgets, id, {
+			id,
+			type,
+			config,
+			scene,
+			market,
+		})
+	}
+	/* 更新大屏组件配置 */
+	updateWidgetConfig(id, config) {
+		if (this.screenWidgets[id])
+			Vue.set(this.screenWidgets[id], 'config', config)
+	}
+
 	/* 大屏类型 CUSTOM:大屏 TEMPLATE:模版 */
 	public screenType = ''
 	/* 已废弃 */
@@ -35,7 +65,6 @@ export default class ScreenBase extends scene {
 		this.screenAvatar = screenAvatar
 		this.updateScreen({ screenAvatar })
 	}
-
 	/* 大屏版本号 */
 	public screenVersion = ''
 	/* 大屏适配方式 */
@@ -104,7 +133,7 @@ export default class ScreenBase extends scene {
 	}
 	/* 大屏平台类型 PC:PC */
 	public screenPlatform: string
-
+	/* 更新大屏信息 防抖：1500ms */
 	updateScreen = debounce(1500, false, function (obj: any) {
 		if (this.screenId) {
 			update({
@@ -117,8 +146,15 @@ export default class ScreenBase extends scene {
 	})
 	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
 	status = 'inEdit'
-
 	setStatus(status) {
 		this.status = status
 	}
+	/* 大屏平台状态 是否Mac*/
+	isMac = /macintosh|mac os x/i.test(navigator.userAgent)
+	/* 大屏平台状态 是否移动端*/
+	isMobile = /android|iphone/i.test(navigator.userAgent)
+	/* 大屏平台状态 是否全屏*/
+	fullscreen = false
+	/* 大屏平台状态 是否自动贴靠参考线*/
+	autoAlignGuide = true
 }

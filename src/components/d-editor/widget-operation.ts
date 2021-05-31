@@ -1,21 +1,19 @@
 import { uuid } from '../../utils/index'
 import { Vue, Component } from 'vue-property-decorator'
-import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
 
 @Component
 class Mixins extends Vue {
 	currentWidgetType = null
-	platform = platform.state
 	scene = scene.state
 	screen = {}
 	initWidgetConfig(id, type, scene, market) {
-		platform.actions.setWidgetsAddedItem(id, type, null, scene, market)
+		this.screen.setWidgetItem(id, type, null, scene, market)
 	}
 	updateWidget(value) {
 		if (!value || !value.widget) return
 		const id = value.widget.id
-		const currentWidget = this.platform.widgetAdded[id]
+		const currentWidget = this.screen.screenWidgets[id]
 		if (!id || !currentWidget) return
 		this.$set(currentWidget, 'config', value)
 	}
@@ -55,10 +53,9 @@ class Mixins extends Vue {
 		if (config.widget.hide) {
 			return
 		}
-		platform.actions.chooseWidget(id)
-		platform.actions.setChooseWidgetCustomConfig(config.customConfig)
+		this.screen.setChooseWidget(id)
+		this.screen.setChooseWidgetCustomConfig(config.customConfig)
 		this.currentWidgetType = type
-		this.platform.chooseWidgetId = id
 	}
 
 	mounted() {

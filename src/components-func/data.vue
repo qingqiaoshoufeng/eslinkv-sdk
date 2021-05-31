@@ -98,7 +98,7 @@
 	data-event-component
 	data-event-scene
 	d-right-control(label="开启组件内部事件")
-		i-switch(v-model="event.componentsDisabled[platform.chooseWidgetId]")
+		i-switch(v-model="event.componentsDisabled[screen.chooseWidgetId]")
 	d-right-control(label="组件关联")
 		i-switch(v-model="item.config.api.bind.enable")
 		i-select(
@@ -189,7 +189,7 @@ export default class FuncData extends func {
 	}
 
 	get relateList() {
-		const list = Object.values(this.platform.widgetAdded)
+		const list = Object.values(this.screen.screenWidgets)
 			.filter(
 				(v: any) =>
 					v.config.api.bind.enable &&

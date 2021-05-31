@@ -1,20 +1,20 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999(:style="{ width: `${ruler.xRoomR1}px` }")
 	.d-right-modal-name.fn-flex.flex-row(v-click-outside="close")
-		span.widget-name-text(v-if="!editName") {{ chooseWidget.config.widget.name }}_{{ chooseWidget ? chooseWidget.id : '' }}
+		span.widget-name-text(v-if="!editName") {{ screen.chooseWidget.config.widget.name }}_{{ screen.chooseWidget ? screen.chooseWidget.id : '' }}
 		i-input.widget-name(
 			v-if="editName",
-			v-model="chooseWidget.config.widget.name")
+			v-model="screen.chooseWidget.config.widget.name")
 		i-icon.pointer.widget-name-icon(
 			type="ios-create-outline",
 			@click.stop="editName = true",
 			v-if="!editName")
 		i-icon.pointer.widget-name-icon(
-			:type="platform.widgetAdded[platform.chooseWidgetId].config.widget.locked ? 'md-lock' : 'md-unlock'",
+			:type="screen.screenWidgets[screen.chooseWidgetId].config.widget.locked ? 'md-lock' : 'md-unlock'",
 			@click.stop="handleLock",
 			v-if="!editName")
-	.d-right-modal-id.fn-flex.flex-column(v-if="platform.chooseWidgetId")
-		span {{ platform.widgetAdded[platform.chooseWidgetId].config.widget.componentVersion }} | {{ platform.widgetAdded[platform.chooseWidgetId].config.widget.name }}
+	.d-right-modal-id.fn-flex.flex-column(v-if="screen.chooseWidgetId")
+		span {{ screen.screenWidgets[screen.chooseWidgetId].config.widget.componentVersion }} | {{ screen.screenWidgets[screen.chooseWidgetId].config.widget.name }}
 	.d-right-modal-title.pointer.text-center.fn-flex.flex-row
 		span.pos-r(
 			v-for="(item, index) in title",
@@ -31,9 +31,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import itemList from './item-list.vue'
-import platform from '../../store/platform.store'
 import { Icon, Input } from 'view-design'
-import { chooseWidget } from '@/utils'
 import ClickOutside from 'vue-click-outside'
 
 @Component({
@@ -47,8 +45,8 @@ import ClickOutside from 'vue-click-outside'
 export default class DRightSetting extends Vue {
 	tabIndex = 0
 	editName = false
-	platform = platform.state
 	ruler = {}
+	screen = { screenWidgets: {} }
 	title = ['基础', '交互', '主题', '自定义']
 	chooseList: any = [
 		{
@@ -69,15 +67,7 @@ export default class DRightSetting extends Vue {
 		},
 	]
 
-	get staticName() {
-		return this.chooseWidget.config.widget.name
-	}
-
-	get chooseWidget() {
-		return chooseWidget()
-	}
-
-	@Watch('platform.chooseWidgetCustomConfig', { deep: true, immediate: true })
+	@Watch('screen.chooseWidgetCustomConfig', { deep: true, immediate: true })
 	changeChooseWidgetCustomConfig(val) {
 		this.chooseList[3].key = val
 	}
@@ -87,8 +77,8 @@ export default class DRightSetting extends Vue {
 	}
 
 	handleLock() {
-		this.chooseWidget.config.widget.locked = !this.chooseWidget.config
-			.widget.locked
+		this.screen.chooseWidget.config.widget.locked = !this.screen
+			.chooseWidget.config.widget.locked
 	}
 
 	handleClick(index) {
@@ -97,6 +87,7 @@ export default class DRightSetting extends Vue {
 
 	mounted() {
 		this.ruler = this.$ruler
+		this.screen = this.$screen
 	}
 }
 </script>

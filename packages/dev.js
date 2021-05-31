@@ -1,6 +1,5 @@
 import widgetMixin from '../mixins'
 import dEditor from '../src/components/d-editor/index.vue'
-import platform from '../src/store/platform.store.js'
 import dScreen from '../src/components/d-screen/index.vue'
 import dDetail from '../src/components/d-detail/index.vue'
 import dFooter from '../src/components/d-footer/index.vue'
@@ -17,7 +16,6 @@ import { colorTheme } from './config.default'
 
 const eslinkV = {
 	widgetMixin,
-	platform,
 	scene,
 	instance,
 	custom,
@@ -41,7 +39,6 @@ if (window !== undefined) {
 
 export {
 	widgetMixin,
-	platform,
 	scene,
 	instance,
 	custom,

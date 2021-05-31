@@ -1,6 +1,5 @@
 import scene from '@/store/scene.store'
 import event from '@/store/event.store'
-import platform from '@/store/platform.store'
 import Vue from 'vue'
 
 /**
@@ -29,8 +28,8 @@ const mouseup = e => {
 		const minPointerY = Math.min(startPointerY, endPointerY)
 		const maxPointerX = Math.max(startPointerX, endPointerX)
 		const maxPointerY = Math.max(startPointerY, endPointerY)
-		platform.state.chooseWidgetArray = []
-		Object.values(platform.state.widgetAdded).forEach(v => {
+		Vue.prototype.$screen.chooseWidgetArray = []
+		Object.values(Vue.prototype.$screen.screenWidgets).forEach(v => {
 			// 只能框选当前场景下的组件
 			if (v.scene === scene.state.index) {
 				const widgetStartX = v.config.layout.position.left
@@ -49,8 +48,8 @@ const mouseup = e => {
 					minPointerY < widgetEndY &&
 					widgetEndY < maxPointerY
 				) {
-					platform.state.chooseWidgetArray = [
-						...platform.state.chooseWidgetArray,
+					Vue.prototype.$screen.chooseWidgetArray = [
+						...Vue.prototype.$screen.chooseWidgetArray,
 						v.id,
 					]
 				}
@@ -62,12 +61,13 @@ const mouseup = e => {
 			height = 0,
 			minTop = null,
 			maxTop = null
-		if (platform.state.chooseWidgetArray.length === 1) {
-			platform.state.chooseWidgetId = platform.state.chooseWidgetArray[0]
-			platform.state.chooseWidgetArray = []
+		if (Vue.prototype.$screen.chooseWidgetArray.length === 1) {
+			Vue.prototype.$screen.chooseWidgetId =
+				Vue.prototype.$screen.chooseWidgetArray[0]
+			Vue.prototype.$screen.chooseWidgetArray = []
 		} else {
-			platform.state.chooseWidgetArray.map(item => {
-				const m = platform.state.widgetAdded[item]
+			Vue.prototype.$screen.chooseWidgetArray.map(item => {
+				const m = Vue.prototype.$screen.screenWidgets[item]
 				if (minLeft === null) {
 					minLeft = m.config.layout.position.left
 				}
@@ -95,11 +95,11 @@ const mouseup = e => {
 					height = m.config.layout.size.height
 				}
 			})
-			platform.state.chooseWidgetArrayConfig.left = minLeft
-			platform.state.chooseWidgetArrayConfig.top = minTop
-			platform.state.chooseWidgetArrayConfig.width =
+			Vue.prototype.$screen.chooseWidgetArrayConfig.left = minLeft
+			Vue.prototype.$screen.chooseWidgetArrayConfig.top = minTop
+			Vue.prototype.$screen.chooseWidgetArrayConfig.width =
 				width + (maxLeft - minLeft)
-			platform.state.chooseWidgetArrayConfig.height =
+			Vue.prototype.$screen.chooseWidgetArrayConfig.height =
 				height + (maxTop - minTop)
 		}
 	}
