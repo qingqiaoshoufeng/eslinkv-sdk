@@ -59,7 +59,6 @@ import {
 import copy from 'fast-copy'
 import { mixins } from 'vue-class-component'
 import platform from '../../store/platform.store'
-import scene from '../../store/scene.store'
 import commonConfigValue from '../../../common-config-value'
 import loadMask from '../load-mask/index.vue'
 import importMx from './import.mx'
@@ -88,7 +87,6 @@ export default class DDetail extends mixins(
 
 	platform = platform.state
 	ruler = {}
-	scene = scene.state
 	screen = {}
 	loadingMsg = 'loading…'
 	shareModal = false
@@ -186,10 +184,8 @@ export default class DDetail extends mixins(
 			},
 		)
 		return {
-			screenConfig: {
-				widgets, // 小工具配置
-				scene: this.scene.obj, // 场景
-			},
+			screenScene: this.screen.sceneObj,
+			screenWidgets: widgets,
 		}
 	}
 

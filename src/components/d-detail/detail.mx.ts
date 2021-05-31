@@ -67,9 +67,7 @@ export default {
 				.then(() => {
 					this.loading = false
 					platform.actions.setWidgetsAdded(obj)
-					if (res.screenConfig.scene) {
-						scene.actions.initScene(res.screenConfig)
-					}
+					screen.initScene(res)
 				})
 				.catch(() => {
 					this.loading = false
@@ -86,7 +84,6 @@ export default {
 			// 	.detail({ screenId: id })
 			// 	.then((res: platformInitResult) => {
 			// 		this.platform.screenType = res.screenType
-			// 		this.platform.screenVersion = res.screenVersion
 			// 		this.jianrong(res)
 			// 		this.refillConfig(res)
 			// 	})
@@ -103,7 +100,7 @@ export default {
 		 */
 		const sceneIndex = getQueryString('scene')
 		if (sceneIndex) {
-			scene.actions.setSceneIndex(sceneIndex)
+			screen.setSceneIndex(sceneIndex)
 		}
 	},
 }

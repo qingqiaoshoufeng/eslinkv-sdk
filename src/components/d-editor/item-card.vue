@@ -1,4 +1,4 @@
-<template lang="pug">
+﻿<template lang="pug">
 dr(
 	v-if="showParts(item)",
 	:key="item.id",
@@ -33,7 +33,6 @@ dr(
 import dr from '../../components/d-dr/index.vue'
 import dDrKuang from '../../components/d-dr-kuang/index.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import scene from '@/store/scene.store.js'
 import platform from '@/store/platform.store.js'
 import parts from '../d-widget-part/index.vue'
 import event from '@/store/event.store.js'
@@ -45,8 +44,8 @@ import event from '@/store/event.store.js'
 	},
 })
 export default class ItemCard extends Vue {
-	scene = scene.state
 	ruler = {}
+	screen = {}
 	platform = platform.state
 	currentWidgetType = null
 	event = event.state
@@ -68,7 +67,7 @@ export default class ItemCard extends Vue {
 			if (item.scene === 0) {
 				return true
 			}
-			if (item.scene === this.scene.index) {
+			if (item.scene === this.screen.sceneIndex) {
 				return true
 			}
 			return false
@@ -165,6 +164,7 @@ export default class ItemCard extends Vue {
 	}
 	mounted() {
 		this.ruler = this.$ruler
+		this.screen = this.$screen
 	}
 }
 </script>
@@ -175,6 +175,7 @@ export default class ItemCard extends Vue {
 		transform: translate3d(0, 0, 0) !important;
 	}
 }
+
 .dr-hide {
 	display: none;
 }

@@ -41,7 +41,6 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Icon, Input, Select, Option, Modal } from 'view-design'
-import scene from '../../store/scene.store'
 import platform from '../../store/platform.store'
 import { copyText } from '../../utils/index'
 import ItemCard from './item-card.vue'
@@ -59,7 +58,6 @@ import draggable from 'vuedraggable'
 	},
 })
 export default class DLeftScene extends Vue {
-	scene: any = scene.state
 	ruler = {}
 	platform: any = platform.state
 	editScene = false
@@ -115,7 +113,7 @@ export default class DLeftScene extends Vue {
 	}
 
 	handleSceneName(e) {
-		scene.actions.setSceneName(this.scene.index, e.target.value)
+		this.screen.setSceneName(e.target.value)
 	}
 
 	sceneWidgetDragEnd(e) {

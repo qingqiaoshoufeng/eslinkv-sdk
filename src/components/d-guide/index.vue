@@ -53,7 +53,6 @@ export default class Guide extends Vue {
 	}
 
 	updateHandle() {
-		// START_PROD
 		const id = this.$route.params.id
 		if (id) {
 			this.$api.screenShare.screenShareUpdate({
@@ -61,7 +60,6 @@ export default class Guide extends Vue {
 				screenGuide: this.ruler.guideLines,
 			})
 		}
-		// END_PROD
 	}
 
 	handleDestroy(id) {

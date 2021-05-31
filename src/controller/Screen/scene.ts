@@ -10,12 +10,16 @@ export default class SceneBase {
 	public sceneObj = {}
 	/* 大屏当前场景 */
 	public sceneIndex = 0
-	
+
 	public setSceneIndex(val) {
 		this.sceneIndex = val
 		let event = new CustomEvent('SceneIndex', { detail: { index: val } })
 		document.dispatchEvent(event)
 		event = null
+	}
+
+	public setSceneName(name) {
+		this.sceneObj[this.sceneIndex].name = name.replace(/ /g, '')
 	}
 
 	public initScene(res) {

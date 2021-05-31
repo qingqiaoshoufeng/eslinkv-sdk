@@ -42,7 +42,7 @@
 		v-if="screen.sceneList && screen.sceneList.length > 0")
 		i-select(filterable, v-model="screen.mainScene")
 			i-option(:value="0") 主场景
-			i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
+			i-option(:value="key", v-for="(item, key) in screen.sceneObj", :key="key") {{ item.name }}
 </template>
 <script lang="ts">
 import func from '@/components-func/func.mx'
@@ -51,7 +51,6 @@ import { Component } from 'vue-property-decorator'
 import html2canvas from 'html2canvas'
 // END_PROD
 import platform from '@/store/platform.store.js'
-import scene from '@/store/scene.store.js'
 import dUpload from '@/components-right/d-upload/index.vue'
 import { Tooltip } from 'view-design'
 @Component({
@@ -62,7 +61,6 @@ import { Tooltip } from 'view-design'
 })
 export default class FuncConfig extends func {
 	platform = platform.state
-	scene = scene.state
 	backGroundFormData = {
 		library: 'componentBackGround',
 	}

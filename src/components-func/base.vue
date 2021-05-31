@@ -28,7 +28,7 @@
 		d-right-control(label="场景")
 			i-select(v-model="item.scene")
 				i-option(:value="0") 主场景
-				i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
+				i-option(:value="key", v-for="(item, key) in screen.sceneObj", :key="key") {{ item.name }}
 				i-option(:value="-1") 回收站
 		d-right-control(label="缩放比例")
 			i-input(

@@ -115,4 +115,10 @@ export default class ScreenBase extends scene {
 			})
 		}
 	})
+	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
+	status = 'inEdit'
+
+	setStatus(status) {
+		this.status = status
+	}
 }

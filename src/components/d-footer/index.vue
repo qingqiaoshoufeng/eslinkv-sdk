@@ -33,7 +33,6 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
-import scene from '../../store/scene.store'
 import { Icon } from 'view-design'
 
 @Component({
@@ -43,7 +42,6 @@ import { Icon } from 'view-design'
 })
 export default class DFooter extends Vue {
 	platform = platform.state
-	scene = scene.state
 	showHotKey = false
 	hotKeys = []
 	screen = {}

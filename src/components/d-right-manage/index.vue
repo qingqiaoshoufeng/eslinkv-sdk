@@ -50,22 +50,24 @@ export default class DRightManage extends Vue {
 .screen-name-icon {
 	line-height: 32px;
 }
+
 .d-right-modal-name {
 	line-height: 32px;
 }
+
 .screen-name {
 	&::v-deep {
 		.ivu-input {
-			border: none;
-			border-bottom: 1px solid var(--borderGray);
-			border-radius: 0;
+			padding: 0;
 			font-size: 20px;
 			line-height: 20px;
 			color: #fff;
+			background-color: transparent;
+			border: none;
+			border-bottom: 1px solid var(--borderGray);
+			border-radius: 0;
 			outline: none;
 			box-shadow: none;
-			background-color: transparent;
-			padding: 0;
 		}
 	}
 }

@@ -56,7 +56,6 @@ import dSearch from '../d-search'
 import dGuide from '../d-guide'
 import platform from '../../store/platform.store'
 import instance from '../../store/instance.store'
-import scene from '../../store/scene.store'
 import ItemCard from './item-card.vue'
 import Ruler from '@/controller/Ruler'
 
@@ -79,8 +78,8 @@ export default {
 	data() {
 		return {
 			platform: platform.state,
-			scene: scene.state,
 			ruler: {},
+			screen: {},
 			vLine: [],
 			hLine: [],
 		}
@@ -140,8 +139,9 @@ export default {
 	},
 	mounted() {
 		platform.actions.initPlatformConfig()
+		this.screen = this.$screen
 		instance.actions.setInstance('kanboard', this)
-		scene.actions.setStatus('inEdit')
+		this.screen.setStatus('inEdit')
 	},
 }
 </script>
@@ -187,9 +187,10 @@ export default {
 }
 
 #screen {
+	background-size: contain;
 	box-shadow: rgba(0, 0, 0, 0.5) 0 0 30px 0;
 	transition: background-image 0.5s;
-	background-size: contain;
+
 	&::before {
 		display: flex;
 		content: '';

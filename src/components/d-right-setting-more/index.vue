@@ -8,7 +8,6 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Button } from 'view-design'
 import platform from '@/store/platform.store.js'
-import scene from '@/store/scene.store.js'
 import { uuid, configMerge } from '@/utils/index.js'
 import commonConfigValue from '../../../common-config-value.js'
 
@@ -19,8 +18,8 @@ import commonConfigValue from '../../../common-config-value.js'
 })
 export default class DRightSettingMore extends Vue {
 	ruler = {}
+	screen = {}
 	platform = platform.state
-	scene = scene.state
 
 	handleGroup() {
 		const children = []
@@ -49,7 +48,7 @@ export default class DRightSettingMore extends Vue {
 			config,
 			id,
 			market: false,
-			scene: this.scene.index,
+			scene: this.screen.sceneIndex,
 			type: 'group',
 			children,
 		})
@@ -70,14 +69,16 @@ export default class DRightSettingMore extends Vue {
 	}
 	mounted() {
 		this.ruler = this.$ruler
+		this.screen = this.$screen
 	}
 }
 </script>
 <style lang="scss" scoped>
 .d-right-modal-more-list {
-	margin: 20px;
 	align-items: center;
 	justify-content: center;
+	margin: 20px;
+
 	/deep/ .ivu-btn {
 		margin-bottom: 10px;
 	}

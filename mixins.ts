@@ -33,7 +33,8 @@ const mx: any = {
 			animateTimer: null,
 			animateActiveIndex: -1,
 			output: null,
-			inPreview: scene.state.status === 'inPreview',
+			screen: {},
+			inPreview: true,
 		}
 	},
 	beforeDestroy() {
@@ -58,7 +59,7 @@ const mx: any = {
 						scene.actions.destroyScene(sceneId, animate)
 						break
 					case 'changeScene':
-						scene.actions.setSceneIndex(sceneId)
+						screen.setSceneIndex(sceneId)
 						break
 					default:
 				}
@@ -225,6 +226,10 @@ const mx: any = {
 				})
 			}
 		},
+	},
+	mounted() {
+		this.screen = this.$screen
+		this.inPreview = this.$screen.status === 'inPreview'
 	},
 }
 export default mx

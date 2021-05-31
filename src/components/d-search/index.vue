@@ -15,7 +15,6 @@ import platform from '../../store/platform.store'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
-import scene from '../../store/scene.store'
 import event from '../../store/event.store'
 
 @Component({
@@ -28,9 +27,9 @@ import event from '../../store/event.store'
 export default class DSearch extends Vue {
 	searchResult = []
 	platform = platform.state
-	scene = scene.state
 	event = event.state
 	keyword = ''
+	screen = {}
 
 	@Watch('keyword')
 	keywordChange(val) {
@@ -56,9 +55,13 @@ export default class DSearch extends Vue {
 	}
 
 	check(widget) {
-		this.scene.index = widget.scene
+		this.screen.setSceneIndex(widget.scene)
 		this.platform.chooseWidgetId = widget.id
 		this.platform.searchModal = false
+	}
+
+	mounted() {
+		this.screen = this.$screen
 	}
 }
 </script>

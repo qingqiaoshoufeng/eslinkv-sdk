@@ -114,7 +114,6 @@ import func from './func.mx'
 import { Component } from 'vue-property-decorator'
 import databaseConfig from '../components/data-warehouse/index.vue'
 import dCode from '../components/d-code/index.vue'
-import scene from '../store/scene.store'
 import { animates } from './config.js'
 import DataEventComponent from './data-event-component.vue'
 import DataEventScene from './data-event-scene.vue'
@@ -127,7 +126,7 @@ export default class FuncData extends func {
 	eventModal = false
 	// START_PROD
 	showDatabaseConfigModal = false
-
+	screen = {}
 	get apiType() {
 		if (this.item.config.api.system.enable) {
 			return '数仓平台'
@@ -193,7 +192,8 @@ export default class FuncData extends func {
 		const list = Object.values(this.platform.widgetAdded)
 			.filter(
 				(v: any) =>
-					v.config.api.bind.enable && v.scene === scene.state.index,
+					v.config.api.bind.enable &&
+					v.scene === this.screen.sceneIndex,
 			)
 			.map((v: any) => {
 				const { id, name } = v.config.widget
@@ -212,6 +212,7 @@ export default class FuncData extends func {
 		const value = this.item.config
 		if (!value) return
 		this.showDatabaseConfigModal = true
+		this.screen = this.$screen
 		// @ts-ignore
 		this.$refs.dataBaseConfig.setQueryCond(value.api.system.params)
 	}

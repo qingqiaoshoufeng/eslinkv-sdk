@@ -2,7 +2,6 @@ import { uuid } from '../../utils/index'
 import { Vue, Component } from 'vue-property-decorator'
 import platform from '../../store/platform.store'
 import scene from '../../store/scene.store'
-import ScreenPc from '@/controller/Screen/pc'
 
 @Component
 class Mixins extends Vue {

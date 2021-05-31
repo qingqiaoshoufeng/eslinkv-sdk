@@ -24,7 +24,6 @@ li.pointer.pos-r.d-left-scene-list-li(
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'view-design'
-import scene from '../../store/scene.store'
 import platform from '../../store/platform.store'
 import WidgetGroup from './widget-group.vue'
 import { chooseWidget } from '@/utils'
@@ -36,7 +35,6 @@ import { chooseWidget } from '@/utils'
 	},
 })
 export default class DLeftSceneItem extends Vue {
-	scene: any = scene.state
 	platform: any = platform.state
 	editScene = false
 	copyModel = false
@@ -46,7 +44,7 @@ export default class DLeftSceneItem extends Vue {
 		const list = []
 		for (const key in this.platform.widgetAdded) {
 			const item = this.platform.widgetAdded[key]
-			if (item.scene === this.scene.index) {
+			if (item.scene === this.screen.sceneIndex) {
 				list.push(item)
 			}
 		}
@@ -158,11 +156,13 @@ export default class DLeftSceneItem extends Vue {
 .child {
 	padding: 10px 10px 10px 20px;
 	background: #282f3a;
+
 	&.active {
 		color: var(--white);
 		background-color: var(--themeColor);
 		border-color: var(--themeColor);
 	}
+
 	&:hover {
 		border-color: var(--themeColor);
 	}

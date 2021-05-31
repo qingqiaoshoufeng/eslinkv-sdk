@@ -8,7 +8,6 @@ const isMac = /macintosh|mac os x/i.test(navigator.userAgent)
 
 const state = Vue.observable({
 	version: '1.1.0',
-	screenVersion: 0,
 	widgetAdded: {},
 	screenType: 'CUSTOM', // CUSTOM 普通大屏 TEMPLATE 模版大屏
 	chooseWidgetCustomConfig: [], // 选中项的自定义配置
@@ -23,7 +22,6 @@ const state = Vue.observable({
 		z: 0,
 	}, // 选中项配置
 	isMobile: false,
-	mainScene: 0, // 设置进入场景
 
 	isMac, // 是否是mac
 	fullscreen: false, // 全屏

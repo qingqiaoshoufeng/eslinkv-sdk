@@ -6,6 +6,7 @@ export default class ScreenPc extends base {
 		super()
 		this.init(obj)
 	}
+	currentVersion = '1.1.0'
 
 	public static getInstance(obj: any): ScreenPc {
 		if (

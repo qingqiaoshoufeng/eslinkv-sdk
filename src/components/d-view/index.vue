@@ -15,10 +15,8 @@
 import parts from '../d-widget-part/index.vue'
 import loadMask from '../load-mask/index.vue'
 import platform from '../../store/platform.store'
-import scene from '../../store/scene.store'
 import instance from '../../store/instance.store'
 import { Component, Vue, Provide } from 'vue-property-decorator'
-import ScreenPc from '@/controller/Screen/pc'
 
 @Component({
 	components: {
@@ -30,7 +28,6 @@ export default class DView extends Vue {
 	@Provide('kanboardEditor') kanboardEditor = this
 
 	platform = platform.state
-	scene = scene.state
 	screen = {}
 	canvasStyle() {
 		const val = {
@@ -48,7 +45,7 @@ export default class DView extends Vue {
 	showParts(item) {
 		if (item.scene === 0) {
 			return true
-		} else if (item.scene === this.scene.index) {
+		} else if (item.scene === this.screen.sceneIndex) {
 			return true
 		}
 		return false
@@ -56,8 +53,8 @@ export default class DView extends Vue {
 
 	mounted() {
 		instance.actions.setInstance('kanboard', this)
-		scene.actions.setStatus('inPreview')
 		this.screen = this.$screen
+		this.screen.setStatus('inPreview')
 	}
 }
 </script>

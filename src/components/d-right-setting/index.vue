@@ -1,19 +1,17 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999(:style="{ width: `${ruler.xRoomR1}px` }")
-	.d-right-modal-name.fn-flex.flex-row
-		span(contenteditable="editName", @input="changeName") {{ staticName }}_{{ chooseWidget ? chooseWidget.id : '' }}
-		i-icon.pointer(
-			type="md-checkmark",
-			slot="suffix",
-			@click="editName = false",
-			v-if="editName")
-		i-icon.pointer(
+	.d-right-modal-name.fn-flex.flex-row(v-click-outside="close")
+		span.widget-name-text(v-if="!editName") {{ chooseWidget.config.widget.name }}_{{ chooseWidget ? chooseWidget.id : '' }}
+		i-input.widget-name(
+			v-if="editName",
+			v-model="chooseWidget.config.widget.name")
+		i-icon.pointer.widget-name-icon(
 			type="ios-create-outline",
-			@click="editName = true",
+			@click.stop="editName = true",
 			v-if="!editName")
-		i-icon.pointer(
+		i-icon.pointer.widget-name-icon(
 			:type="platform.widgetAdded[platform.chooseWidgetId].config.widget.locked ? 'md-lock' : 'md-unlock'",
-			@click="handleLock",
+			@click.stop="handleLock",
 			v-if="!editName")
 	.d-right-modal-id.fn-flex.flex-column(v-if="platform.chooseWidgetId")
 		span {{ platform.widgetAdded[platform.chooseWidgetId].config.widget.componentVersion }} | {{ platform.widgetAdded[platform.chooseWidgetId].config.widget.name }}
@@ -34,14 +32,17 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import itemList from './item-list.vue'
 import platform from '../../store/platform.store'
-import { Icon } from 'view-design'
+import { Icon, Input } from 'view-design'
 import { chooseWidget } from '@/utils'
+import ClickOutside from 'vue-click-outside'
 
 @Component({
 	components: {
 		itemList,
 		'i-icon': Icon,
+		'i-input': Input,
 	},
+	directives: { ClickOutside },
 })
 export default class DRightSetting extends Vue {
 	tabIndex = 0
@@ -81,8 +82,8 @@ export default class DRightSetting extends Vue {
 		this.chooseList[3].key = val
 	}
 
-	changeName(e) {
-		this.chooseWidget.config.widget.name = e.target.innerText.split('_')[0]
+	close() {
+		this.editName = false
 	}
 
 	handleLock() {
@@ -102,5 +103,30 @@ export default class DRightSetting extends Vue {
 <style lang="scss" scoped>
 .d-right-modal {
 	height: calc(100vh - 191px);
+}
+
+.widget-name-icon {
+	line-height: 32px;
+}
+
+.d-right-modal-name {
+	line-height: 32px;
+}
+
+.widget-name {
+	&::v-deep {
+		.ivu-input {
+			padding: 0;
+			font-size: 20px;
+			line-height: 20px;
+			color: #fff;
+			background-color: transparent;
+			border: none;
+			border-bottom: 1px solid var(--borderGray);
+			border-radius: 0;
+			outline: none;
+			box-shadow: none;
+		}
+	}
 }
 </style>
