@@ -7,7 +7,7 @@
 	:style="{ width: `calc(100% - ${ruler.xRoomL1 + ruler.xRoomL2 + ruler.xRoomR1}px)`, marginLeft: `${ruler.xRoomL1 + ruler.xRoomL2}px` }",
 	@contextmenu.stop.prevent)
 	// 标尺容器
-	ruler-canvas(ref="rulerCanvas")
+	d-ruler(ref="rulerCanvas")
 		// 大屏
 		#screen.canvas-wrapper.pos-r(
 			:style="canvasStyle",
@@ -44,99 +44,92 @@
 	right-menu
 	d-footer
 </template>
-<script>
-import rightMenu from '../right-menu/index'
-import rulerCanvas from '../d-ruler/index.vue'
-import drMore from '../../components/d-dr-more'
+<script lang="ts">
+import rightMenu from '../right-menu/index.vue'
+import dRuler from '../d-ruler/index.vue'
+import drMore from '../../components/d-dr-more/index.vue'
 import widgetOperation from './widget-operation'
-import dRightManage from '../d-right-manage'
-import dFooter from '../d-footer'
-import dGuide from '../d-guide'
+import dRightManage from '@/components-right/d-right-manage/index.vue'
+import dFooter from '../d-footer/index.vue'
+import dGuide from '../d-guide/index.vue'
 import instance from '../../store/instance.store'
 import ItemCard from './item-card.vue'
 import Ruler from '@/controller/Ruler'
+import { Component, Provide } from 'vue-property-decorator'
+import { mixins } from 'vue-class-component'
 
-export default {
-	name: 'd-editor',
-	mixins: [widgetOperation],
+@Component({
 	components: {
 		ItemCard,
-		rulerCanvas,
+		dRuler,
 		dFooter,
 		dGuide,
 		drMore,
 		dRightManage,
 		rightMenu,
 	},
-	provide() {
-		return { kanboardEditor: this }
-	},
-	data() {
+})
+export default class DEditor extends mixins(widgetOperation) {
+	ruler = {}
+	screen: ScreenV = {}
+	vLine = []
+	hLine = []
+	@Provide() kanboardEditor = this
+
+	get canvasStyle() {
 		return {
-			ruler: {},
-			screen: {},
-			vLine: [],
-			hLine: [],
+			width: `${this.screen.width}px`,
+			height: `${this.screen.height}px`,
+			'background-color': this.screen.backgroundColor,
+			'background-image': `url(${this.screen.backgroundImage})`,
 		}
-	},
-	methods: {
-		getRefLineParams(params, item) {
-			const { vLine, hLine } = params
-			this.vLine = vLine.map(child => {
-				child.w = item.config.layout.size.width
-				child.h = item.config.layout.size.height
-				return child
-			})
-			this.hLine = hLine.map(child => {
-				child.w = item.config.layout.size.width
-				child.h = item.config.layout.size.height
-				return child
-			})
-		},
-		showRightMenu(e, item) {
-			e.preventDefault()
-			this.handleActivated(this.screen.screenWidgets[item.id])
-			const rightMenu = document.getElementById('right-menu')
-			rightMenu.classList.add('active')
-			if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
-				rightMenu.style.top = e.clientY - rightMenu.scrollHeight + 'px'
-			} else {
-				rightMenu.style.top = e.clientY + 'px'
-			}
-			rightMenu.style.left = e.clientX + 'px'
-		},
-		drop(e) {
-			const widgetConfig = e.dataTransfer.getData('widget-config')
-			if (widgetConfig) {
-				this.handleWidgetDrop(e, widgetConfig)
-			}
-		},
-	},
-	computed: {
-		canvasStyle() {
-			return {
-				width: `${this.screen.width}px`,
-				height: `${this.screen.height}px`,
-				'background-color': this.screen.backgroundColor,
-				'background-image': `url(${this.screen.backgroundImage})`,
-			}
-		},
-		canvasSize() {
-			const { width, height } = this.screen
-			return { width, height }
-		},
-	},
+	}
+	get canvasSize() {
+		const { width, height } = this.screen
+		return { width, height }
+	}
+	getRefLineParams(params, item) {
+		const { vLine, hLine } = params
+		this.vLine = vLine.map(child => {
+			child.w = item.config.layout.size.width
+			child.h = item.config.layout.size.height
+			return child
+		})
+		this.hLine = hLine.map(child => {
+			child.w = item.config.layout.size.width
+			child.h = item.config.layout.size.height
+			return child
+		})
+	}
+	showRightMenu(e, item) {
+		e.preventDefault()
+		this.handleActivated(this.screen.screenWidgets[item.id])
+		const rightMenu = document.getElementById('right-menu')
+		rightMenu.classList.add('active')
+		if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
+			rightMenu.style.top = e.clientY - rightMenu.scrollHeight + 'px'
+		} else {
+			rightMenu.style.top = e.clientY + 'px'
+		}
+		rightMenu.style.left = e.clientX + 'px'
+	}
+	drop(e) {
+		const widgetConfig = e.dataTransfer.getData('widget-config')
+		if (widgetConfig) {
+			this.handleWidgetDrop(e, widgetConfig)
+		}
+	}
 	beforeDestroy() {
 		this.screen.fullscreen = false
-	},
+	}
 	created() {
 		this.ruler = Ruler.getInstance()
-	},
+	}
 	mounted() {
 		this.screen = this.$screen
 		instance.actions.setInstance('kanboard', this)
 		this.screen.setStatus('inEdit')
-	},
+	}
 }
 </script>
 <style lang="scss">
@@ -188,92 +181,6 @@ export default {
 	&::before {
 		display: flex;
 		content: '';
-	}
-}
-
-.config-panel-wrapper {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 2;
-	width: 340px;
-	height: 430px;
-	padding: 25px 0 0 0;
-	background-color: #2d8cf0;
-	filter: drop-shadow(#2d8cf094 0 4px 4px);
-	border: #2d8cf0 3px solid;
-	border-top-width: 0;
-	border-radius: 5px;
-	opacity: 1;
-	transition: transform 0.34s cubic-bezier(0.5, 0, 0.5, 1),
-		opacity 0.2s cubic-bezier(0.5, 0, 0.5, 1);
-	transform: translate3d(0, 0, 0);
-
-	/deep/ {
-		& > .config-panel {
-			width: 100% !important;
-			height: 100% !important;
-			padding: 5px;
-			border-radius: 0 0 3px 3px;
-		}
-	}
-
-	.top-toolbar {
-		position: absolute;
-		top: 0;
-		left: 0;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-		height: 25px;
-		color: white;
-
-		.fix-panel,
-		.close-panel {
-			flex-grow: 0;
-			flex-shrink: 0;
-			width: 18px;
-			height: 18px;
-			font-size: 12px;
-			font-weight: bold;
-			line-height: 20px;
-			color: #2d8cf0;
-			text-align: center;
-			letter-spacing: 0;
-			cursor: pointer;
-			background-color: white;
-			border-radius: 50%;
-			opacity: 0.5;
-			transition: 0.2s;
-
-			&:hover {
-				opacity: 1;
-			}
-		}
-
-		.drag-panel {
-			flex-grow: 1;
-			height: 25px;
-			padding: 8px 20px;
-			cursor: move;
-
-			&::before {
-				display: block;
-				width: 100%;
-				height: 100%;
-				content: ' ';
-				background-color: #e2e2e2;
-				border-radius: 5px;
-				transition: 0.2s;
-			}
-
-			&:hover {
-				&::before {
-					background-color: #e6e6e6;
-				}
-			}
-		}
 	}
 }
 </style>

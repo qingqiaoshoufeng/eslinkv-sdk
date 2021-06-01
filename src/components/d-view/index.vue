@@ -1,5 +1,5 @@
 <template lang="pug">
-#screen.canvas-wrapper(ref="canvas-wrapper", :style="canvasStyle()")
+#screen.canvas-wrapper(ref="canvas-wrapper", :style="screen.screenStyle")
 	template(v-for="item in screen.screenWidgets")
 		parts(
 			v-if="showParts(item)",
@@ -26,19 +26,7 @@ import { Component, Vue, Provide } from 'vue-property-decorator'
 export default class DView extends Vue {
 	@Provide('kanboardEditor') kanboardEditor = this
 
-	screen = {}
-	canvasStyle() {
-		const val = {
-			width: `${this.screen.width}px`,
-			height: `${this.screen.height}px`,
-			'background-color': this.screen.backgroundColor,
-			'background-image': `url(${this.screen.backgroundImage})`,
-		}
-		if (val) {
-			this.$emit('mounted', val)
-		}
-		return val
-	}
+	screen: ScreenV = {}
 
 	showParts(item) {
 		if (item.scene === 0) {

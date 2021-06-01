@@ -11,14 +11,14 @@
 		@wheel="rulerContentWheel",
 		@mousemove="rulerContentMouseMove",
 		:class="{ drag: event.contentMove }")
-		.content-body.pos-a(:id="ruler.dragId", :style="contentStyle")
+		.content-body.pos-a(:id="ruler.dragId", :style="ruler.rulerStyle")
 			slot
 </template>
 <script lang="ts">
 import xLine from './xLine.vue'
 import yLine from './yLine.vue'
 import event from '../../store/event.store'
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
+import { Component, Watch, Vue } from 'vue-property-decorator'
 import { Icon } from 'view-design'
 import {
 	rulerContentMouseDown,
@@ -33,13 +33,8 @@ import {
 	},
 })
 export default class DRuler extends Vue {
-	@Prop({ default: false }) isScaleRevise
-	@Prop({ default: false }) parent
-
 	event = event.state
-	ruler = {}
-	contentWidth = 0
-	contentHeight = 0
+	ruler: RulerV = {}
 	rulerContentMouseDown = rulerContentMouseDown
 	rulerContentMouseMove = rulerContentMouseMove
 	rulerContentWheel = rulerContentWheel
@@ -54,30 +49,17 @@ export default class DRuler extends Vue {
 		this.ruler.contentY += this.ruler.contentScrollTop
 	}
 
-	get contentStyle() {
-		return `transform:translate3d(${this.ruler.contentX}px, ${
-			this.ruler.contentY
-		}px, 0) scale(${this.ruler.zoom});width:${
-			(this as any).contentWidth + 18 * 2
-		} px;height:${(this as any).contentHeight + 18 * 2} px;`
-	}
-
 	windowResize() {
 		const id = this.ruler.dragId
-		const dragContent = document.getElementById(id)
-		// @ts-ignore
-		this.contentWidth = dragContent.firstChild.scrollWidth
-		// @ts-ignore
-		this.contentHeight = dragContent.firstChild.scrollHeight
+		const dragContent: any = document.getElementById(id).firstChild
+		this.ruler.width = dragContent.scrollWidth
+		this.ruler.height = dragContent.scrollHeight
 		this.ruler.resetZoom()
 	}
 
 	mounted() {
-		window.addEventListener('resize', this.windowResize)
 		this.ruler = this.$ruler
-		setTimeout(() => {
-			this.ruler.resetZoom()
-		})
+		window.addEventListener('resize', this.windowResize)
 	}
 }
 </script>

@@ -8,27 +8,24 @@
 		.d-left-scene-right
 	WidgetGroup(:childList="child.children", v-if="child.children")
 </template>
-<script>
-export default {
-	name: 'WidgetGroupItem',
-	components: { WidgetGroup: () => import('./widget-group.vue') },
-	props: ['child'],
-	data() {
-		return {
-			childList: [],
-			screen: {},
-		}
-	},
-	methods: {
-		handleChoose() {
-			this.screen.chooseWidgetChildId = this.child.id
-			const target = this.screen.chooseWidget
-			this.screen.setChooseWidgetCustomConfig(target.config.customConfig)
-		},
-	},
+<script lang="ts">
+import widgetGroup from './widget-group.vue'
+import { Vue, Component, Prop } from 'vue-property-decorator'
+@Component({
+	components: { widgetGroup },
+})
+export default class widgetGroupItem extends Vue {
+	childList = []
+	screen: ScreenV = {}
+	@Prop() child
+	handleChoose() {
+		this.screen.chooseWidgetChildId = this.child.id
+		const target = this.screen.chooseWidget
+		this.screen.setChooseWidgetCustomConfig(target.config.customConfig)
+	}
 	mounted() {
 		this.screen = this.$screen
-	},
+	}
 }
 </script>
 <style lang="scss" scoped>

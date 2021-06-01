@@ -66,7 +66,7 @@ export default class FuncConfig extends func {
 		library: 'screenAvatar',
 	}
 	screenAvatarLoading = false
-	screen = {}
+	screen: ScreenV = {}
 	get size() {
 		const width = this.screen.width
 		const height = this.screen.height

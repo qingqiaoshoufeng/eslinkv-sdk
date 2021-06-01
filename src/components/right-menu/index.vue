@@ -53,7 +53,7 @@ export default class rightMenu extends Vue {
 	zIndex = 10
 	minZIndex = 0
 	maxZIndex = 0
-	screen = {}
+	screen: ScreenV = {}
 	handleSync() {
 		this.instance.kanboard.$refs[`${this.screen.chooseWidgetId}`][0]
 			.$children[0].updateKey++

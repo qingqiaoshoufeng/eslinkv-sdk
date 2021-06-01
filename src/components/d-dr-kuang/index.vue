@@ -9,7 +9,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 @Component
 export default class DDrKuang extends Vue {
-	ruler = {}
+	ruler: RulerV = {}
 
 	get returnRatio() {
 		return this.ruler.zoom < 1 ? 1 / this.ruler.zoom : 1

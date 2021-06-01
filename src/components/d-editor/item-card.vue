@@ -44,7 +44,7 @@ import event from '@/store/event.store.js'
 })
 export default class ItemCard extends Vue {
 	ruler = {}
-	screen = {}
+	screen: ScreenV = {}
 	currentWidgetType = null
 	event = event.state
 
@@ -117,8 +117,7 @@ export default class ItemCard extends Vue {
 		}
 	}
 
-	// @ts-ignore
-	onResizeStop(left, top, width, height) {
+	onResizeStop(width, height) {
 		this.screen.screenWidgets[
 			this.screen.chooseWidgetId
 		].config.layout.size.width = width

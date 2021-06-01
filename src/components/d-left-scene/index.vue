@@ -65,7 +65,7 @@ export default class DLeftScene extends Vue {
 	ruler = {}
 	editScene = false
 	copyModel = false
-	screen = {}
+	screen: ScreenV = {}
 
 	handleSetScene(name) {
 		switch (name) {

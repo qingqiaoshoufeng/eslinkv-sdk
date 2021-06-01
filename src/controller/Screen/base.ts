@@ -6,6 +6,7 @@ import Vue from 'vue'
 import copy from 'fast-copy'
 import commonConfigValue from '../../../common-config-value'
 import { screenShareUpdate } from '@/api/screenShare.api'
+import { getQueryString } from '@/utils'
 
 export default class Screen extends scene {
 	/* 大屏ID */
@@ -41,14 +42,12 @@ export default class Screen extends scene {
 		})
 		return list
 	}
-
-	set sortByZIndexWidgetsList(val) {}
+	set sortByZIndexWidgetsList(val) {
+		console.log(val)
+	}
 
 	/* 更新大屏组件配置 */
 	setWidgetItem(id, type, config, scene, market = false) {
-		if (!config) config = {}
-		if (!config.layout) config.layout = {}
-		config.layout.zIndex = 100
 		Vue.set(this.screenWidgets, id, {
 			id,
 			type,
@@ -71,11 +70,9 @@ export default class Screen extends scene {
 	public screenPublish = ''
 	/* 大屏缩略图 */
 	public screenAvatar = ''
-
 	get avatar() {
 		return this.screenAvatar
 	}
-
 	set avatar(screenAvatar: string) {
 		this.screenAvatar = screenAvatar
 		this.updateScreenDebounce({ screenAvatar })
@@ -113,7 +110,7 @@ export default class Screen extends scene {
 	set width(screenWidth: number) {
 		this.screenWidth = screenWidth
 		Vue.prototype.$ruler.resetZoom()
-		this.updateScreenDebounce({ screenWidth })
+		if (this.screenId) this.updateScreenDebounce({ screenWidth })
 	}
 
 	/* 大屏高度 */
@@ -126,7 +123,7 @@ export default class Screen extends scene {
 	set height(screenHeight: number) {
 		this.screenHeight = screenHeight
 		Vue.prototype.$ruler.resetZoom()
-		this.updateScreenDebounce({ screenHeight })
+		if (this.screenId) this.updateScreenDebounce({ screenHeight })
 	}
 
 	/* 大屏背景颜色 */
@@ -178,6 +175,42 @@ export default class Screen extends scene {
 			})
 		}
 	})
+
+	/* 大屏样式 */
+	get screenStyle() {
+		let scaleX = 0,
+			scaleY = 1,
+			actualScaleRatio = 1,
+			scale = ''
+		const { clientWidth, clientHeight } = document.body
+		const layoutMode = getQueryString('layoutMode')
+		switch (layoutMode) {
+			case 'full-size':
+				scaleX = clientWidth / this.width
+				scaleY = clientHeight / this.height
+				break
+			case 'full-width':
+				actualScaleRatio = clientWidth / this.width
+				break
+			case 'full-height':
+				actualScaleRatio = clientHeight / this.height
+				break
+		}
+		if (layoutMode === 'full-size') {
+			scale = `${scaleX},${scaleY}`
+		} else {
+			scale = `${actualScaleRatio}`
+		}
+		return {
+			width: `${this.width}px`,
+			height: `${this.height}px`,
+			backgroundColor: this.backgroundColor,
+			backgroundImage: `url(${this.backgroundImage})`,
+			overflow: 'hidden',
+			transform: `scale(${scale}) translate3d(0, 0, 0)`,
+		}
+	}
+
 	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
 	status = 'inEdit'
 

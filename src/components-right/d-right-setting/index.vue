@@ -47,8 +47,8 @@ import ClickOutside from 'vue-click-outside'
 export default class DRightSetting extends Vue {
 	tabIndex = 0
 	editName = false
-	ruler = {}
-	screen = {}
+	ruler: RulerV = {}
+	screen: ScreenV = {}
 	title = ['基础', '交互', '主题', '自定义']
 	chooseList: any = [
 		{

@@ -372,10 +372,10 @@ export default {
 				this.$emit('refLineParams', refLine)
 				this.$emit(
 					'resizestop',
-					this.left,
-					this.top,
 					this.width,
 					this.height,
+					this.left,
+					this.top,
 				)
 			}
 			if (this.dragging) {

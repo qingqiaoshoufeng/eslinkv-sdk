@@ -20,7 +20,7 @@ import { colorTheme } from '../../packages/config.default.js'
 @Component
 export default class FuncAnimation extends func {
 	instance = instance.state
-	screen = {}
+	screen: ScreenV = {}
 	get colorTheme() {
 		return this.screen.chooseWidget.config.config.colorTheme
 			? this.screen.chooseWidget.config.config.colorTheme

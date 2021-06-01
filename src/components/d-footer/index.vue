@@ -42,8 +42,8 @@ import { Icon } from 'view-design'
 export default class DFooter extends Vue {
 	showHotKey = false
 	hotKeys = []
-	screen = {}
-	ruler = {}
+	screen: ScreenV = {}
+	ruler: RulerV = {}
 	get zoom() {
 		const zoom = this.ruler.zoom
 		return `${~~(zoom * 100)}%`

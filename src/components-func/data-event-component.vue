@@ -50,7 +50,7 @@ d-right-swiper-list(
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
-import dCode from '../components/d-code/index.vue'
+import dCode from '@/components-right/d-code/index.vue'
 
 @Component({ components: { dCode } })
 export default class FuncData extends func {

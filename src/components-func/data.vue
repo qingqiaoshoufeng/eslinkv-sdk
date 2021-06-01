@@ -118,7 +118,7 @@
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
 import databaseConfig from '../components/data-warehouse/index.vue'
-import dCode from '../components/d-code/index.vue'
+import dCode from '@/components-right/d-code/index.vue'
 import { animates } from './config.js'
 import DataEventComponent from './data-event-component.vue'
 import DataEventScene from './data-event-scene.vue'
@@ -131,7 +131,7 @@ export default class FuncData extends func {
 	eventModal = false
 	// START_PROD
 	showDatabaseConfigModal = false
-	screen = {}
+	screen: ScreenV = {}
 	get apiType() {
 		if (this.screen.chooseWidget.config.api.system.enable) {
 			return '数仓平台'
@@ -156,6 +156,7 @@ export default class FuncData extends func {
 	}
 	// END_PROD
 
+	// eslint-disable-next-line getter-return
 	get apiData() {
 		const req = this.getItemValue('config.api.data')
 		if (typeof req === 'object') {
@@ -218,8 +219,9 @@ export default class FuncData extends func {
 		if (!value) return
 		this.showDatabaseConfigModal = true
 		this.screen = this.$screen
-		// @ts-ignore
-		this.$refs.dataBaseConfig.setQueryCond(value.api.system.params)
+		;(this.$refs.dataBaseConfig as any).setQueryCond(
+			value.api.system.params,
+		)
 	}
 	// END_PROD
 }

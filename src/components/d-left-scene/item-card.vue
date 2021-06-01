@@ -7,14 +7,14 @@ li.pointer.pos-r.d-left-scene-list-li(
 			h2 {{ item.config.widget.name }}
 		.d-left-scene-right
 			i-icon(
-				v-if="item.config.widget.hide"
+				v-if="item.config.widget.hide",
 				type="md-eye-off",
 				title="显示",
 				@click="handleTaggerHide(item.id)",
 				@click.stop)
 			i-icon(
-				style="margin-left: 10px;"
-				v-if="item.config.widget.locked"
+				style="margin-left: 10px",
+				v-if="item.config.widget.locked",
 				type="md-unlock",
 				title="解锁",
 				@click="handleUnLock(item.id)",
@@ -36,7 +36,7 @@ export default class DLeftSceneItem extends Vue {
 	editScene = false
 	copyModel = false
 	childList = []
-	screen = {}
+	screen: ScreenV = {}
 	@Prop() item
 	get list() {
 		const list = []

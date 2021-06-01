@@ -16,7 +16,7 @@
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
-import DManageItem from '../components/d-right-setting/item.vue'
+import DManageItem from '@/components-right/d-right-setting/item.vue'
 
 @Component({ components: { DManageItem } })
 export default class FuncGroup extends func {

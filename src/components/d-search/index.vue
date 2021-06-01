@@ -29,7 +29,7 @@ export default class DSearch extends Vue {
 	searchResult = []
 	event = event.state
 	keyword = ''
-	screen = {}
+	screen: ScreenV = {}
 	ruler = {}
 	@Prop() value
 	@Prop() hide
@@ -56,7 +56,7 @@ export default class DSearch extends Vue {
 	check(widget) {
 		this.screen.setSceneIndex(widget.scene)
 		this.screen.chooseWidgetId = widget.id
-		this.searchModal = false
+		this.hide()
 	}
 
 	mounted() {

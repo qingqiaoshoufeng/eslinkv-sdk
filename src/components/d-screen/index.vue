@@ -16,9 +16,9 @@ import { Vue, Component, Provide } from 'vue-property-decorator'
 import dLeftWidget from '../d-left-widget/index.vue'
 import dLeftScene from '../d-left-scene/index.vue'
 import dEditor from '../d-editor/index.vue'
-import dRightManage from '../d-right-manage/index.vue'
-import dRightSetting from '../d-right-setting/index.vue'
-import dRightSettingMore from '../d-right-setting-more/index.vue'
+import dRightManage from '@/components-right/d-right-manage/index.vue'
+import dRightSetting from '@/components-right/d-right-setting/index.vue'
+import dRightSettingMore from '@/components-right/d-right-setting-more/index.vue'
 import { dScreenWheel } from '@/events'
 
 @Component({
@@ -33,7 +33,7 @@ import { dScreenWheel } from '@/events'
 })
 export default class dScreen extends Vue {
 	ruler = {}
-	screen = {}
+	screen: ScreenV = {}
 	dScreenWheel = dScreenWheel
 	@Provide('kanboardEditor') kanboardEditor = this.$refs.kanboardEditor
 

@@ -42,15 +42,15 @@
 	i-modal(v-model="importModal")
 		i-form
 			i-form-item
-				label.ivu-btn.ivu-btn-primary.d-detail-import-button(for="originFile") 选择导入文件
 				input#originFile.fn-hide(
 					type="file",
 					accept="application/json",
 					@change="handleFile")
+				label.ivu-btn.ivu-btn-primary.d-detail-import-button(for="originFile") 选择导入文件
 	d-search(v-model="searchModal", :hide="() => (searchModal = false)")
 </template>
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import {
 	Icon,
 	Button,
@@ -60,14 +60,9 @@ import {
 	Input,
 	Tooltip,
 } from 'view-design'
-import { mixins } from 'vue-class-component'
-
 import loadMask from '../load-mask/index.vue'
-import importMx from './import.mx'
-import exportMx from './export.mx'
-import saveMx from './save.mx'
 import ScreenPc from '@/controller/Screen/pc'
-import { getQueryString } from '@/utils'
+import { downloadFile, getQueryString } from '@/utils'
 import dSearch from '@/components/d-search/index.vue'
 
 @Component({
@@ -83,35 +78,30 @@ import dSearch from '@/components/d-search/index.vue'
 		dSearch,
 	},
 })
-export default class DDetail extends mixins(
-	// @ts-ignore
-	exportMx,
-	saveMx,
-	importMx,
-) {
-	@Prop({ default: true }) show: boolean // detail,full,local 隐藏该模块
-
-	ruler = {}
-	screen = {}
+export default class DDetail extends Vue {
+	@Prop({ default: true }) show: boolean
+	ruler: RulerV = {}
+	screen: ScreenV = {}
 	loadingMsg = 'loading…'
 	shareModal = false
 	searchModal = false
 	loading = false
+	importModal = false
 	isNew = true
 
 	handleLeft1() {
 		this.ruler.xRoomL1 = this.ruler.xRoomL1 > 0 ? 0 : 238
-		localStorage.setItem('xRoomL1', this.ruler.xRoomL1)
+		localStorage.setItem('xRoomL1', `${this.ruler.xRoomL1}`)
 	}
 
 	handleRight1() {
 		this.ruler.xRoomR1 = this.ruler.xRoomR1 > 0 ? 0 : 350
-		localStorage.setItem('xRoomR1', this.ruler.xRoomR1)
+		localStorage.setItem('xRoomR1', `${this.ruler.xRoomR1}`)
 	}
 
 	handleLeft2() {
 		this.ruler.xRoomL2 = this.ruler.xRoomL2 > 0 ? 0 : 238
-		localStorage.setItem('xRoomL2', this.ruler.xRoomL2)
+		localStorage.setItem('xRoomL2', `${this.ruler.xRoomL2}`)
 	}
 
 	search() {
@@ -143,6 +133,87 @@ export default class DDetail extends mixins(
 			this.screen.setSceneIndex(sceneIndex)
 		}
 	}
+
+	handleExport() {
+		const data = this.screen.screenData()
+		const fileName = `${this.screen.screenName}`
+		this.$Modal.confirm({
+			title: `导出文件：${fileName}.json`,
+			content: '可用于看板数据备份、迁移。',
+			onOk: () => {
+				const config = { ...data }
+				downloadFile(config, fileName, 'json')
+			},
+			okText: '确定',
+			cancelText: '取消',
+		})
+	}
+
+	handleSave(type) {
+		let isNew = false
+		if (this.screen.screenType === 'CUSTOM' && type === 'TEMPLATE') {
+			isNew = true
+		}
+		this.screen.screenType = type
+		this.$Modal.confirm({
+			title: `确定${this.isNew || isNew ? '创建' : '更新'}${
+				this.screen.screenType === 'TEMPLATE' ? '大屏模版' : '大屏'
+			}吗？`,
+			content: '回收站内的组件将被清除！',
+			okText: '确定',
+			cancelText: '取消',
+			onOk: () => {
+				this.loading = true
+				if (this.isNew || isNew) {
+					this.screen
+						.createScreen()
+						.then(() => {
+							this.loading = false
+							this.$router.back()
+						})
+						.catch(() => {
+							this.loading = false
+						})
+				} else {
+					this.screen
+						.updateScreen()
+						.then(() => {
+							this.loading = false
+						})
+						.catch(() => {
+							this.loading = false
+						})
+				}
+			},
+		})
+	}
+
+	handleFile(e) {
+		const file = e.target.files[0]
+		const reader = new FileReader()
+		reader.onload = e => {
+			try {
+				this.loading = true
+				const result = JSON.parse((e as any).target.result)
+				const { screenConfig, screenName, screenWidgets } = result
+				this.screen.serialize({
+					screenName,
+					screenConfig,
+					screenWidgets,
+				})
+				this.importModal = false
+				this.loading = false
+			} catch (e) {
+				console.error(e)
+				this.$Message.error('配置文件识别失败')
+			}
+		}
+		reader.onerror = () => {
+			this.$Message.error('配置文件识别失败')
+		}
+		reader.readAsText(file)
+	}
+
 	mounted() {
 		this.ruler = this.$ruler
 	}

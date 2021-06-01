@@ -1,10 +1,21 @@
 import Vue from 'vue'
 import event from '@/store/event.store'
-export default class Ruler {
+export default class Ruler implements RulerV {
+	public static getInstance(): Ruler {
+		if (
+			!Vue.prototype.$ruler ||
+			Object.keys(Vue.prototype.$ruler).length === 0
+		) {
+			Vue.prototype.$ruler = new Ruler()
+			return Vue.prototype.$ruler
+		}
+		return Vue.prototype.$ruler
+	}
+
 	dragId = `drag-content-${+new Date()}`
-	xRoomL1 = +localStorage.getItem('xRoomL1')
-	xRoomL2 = +localStorage.getItem('xRoomL2')
-	xRoomR1 = +localStorage.getItem('xRoomR1')
+	xRoomL1: number = +localStorage.getItem('xRoomL1')
+	xRoomL2: number = +localStorage.getItem('xRoomL2')
+	xRoomR1: number = +localStorage.getItem('xRoomR1')
 	yRoom = 60
 	/* 参考线 */
 	guideLines = []
@@ -32,14 +43,17 @@ export default class Ruler {
 	zoom = 1
 	/* 当前标尺zoom步长 */
 	zoomStep = 0.02
-	public static getInstance(): Ruler {
-		if (
-			!Vue.prototype.$ruler ||
-			Object.keys(Vue.prototype.$ruler).length === 0
-		) {
-			Vue.prototype.$ruler = new Ruler()
-			return Vue.prototype.$ruler
-		}
+	/* 当前画布大小宽 */
+	width = 0
+	/* 当前画布大小高 */
+	height = 0
+
+	get rulerStyle() {
+		return `transform:translate3d(${this.contentX}px, ${
+			this.contentY
+		}px, 0) scale(${this.zoom});width:${this.width + 18 * 2} px;height:${
+			this.height + 18 * 2
+		} px;`
 	}
 
 	public zoomIn(step = 2): void {
@@ -65,6 +79,7 @@ export default class Ruler {
 		this.contentX = Math.ceil(deltaX)
 		this.contentY = Math.ceil(deltaY)
 	}
+
 	getActualPointerX(num) {
 		return ~~(
 			(num - this.size - this.xRoomL1 - this.xRoomL2 - this.guideStartX) /

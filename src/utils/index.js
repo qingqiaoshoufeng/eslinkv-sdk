@@ -23,6 +23,7 @@ export const usePath = (path, data) => {
 	}
 	return data
 }
+
 /**
  * @description 合并对象 生成一个新的对象,用前面的覆盖后面的
  */

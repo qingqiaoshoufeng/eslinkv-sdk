@@ -1,15 +1,10 @@
-import { uuid } from '../../utils/index'
+import { uuid } from '@/utils'
 import { Vue, Component } from 'vue-property-decorator'
-import scene from '../../store/scene.store'
 
 @Component
 class Mixins extends Vue {
 	currentWidgetType = null
-	scene = scene.state
-	screen = {}
-	initWidgetConfig(id, type, scene, market) {
-		this.screen.setWidgetItem(id, type, null, scene, market)
-	}
+	screen: ScreenV = {}
 	updateWidget(value) {
 		if (!value || !value.widget) return
 		const id = value.widget.id
@@ -49,10 +44,15 @@ class Mixins extends Vue {
 			config,
 			api,
 		}
-		this.initWidgetConfig(id, type, this.screen.sceneIndex, market)
+		this.screen.setWidgetItem(
+			id,
+			type,
+			null,
+			this.screen.sceneIndex,
+			market,
+		)
 		this.updateWidget(value)
 		this.currentWidgetType = type
-		return id
 	}
 
 	handleActivated(obj) {

@@ -1,5 +1,4 @@
 import { uuid } from '@/utils'
-import { Modal } from 'view-design'
 import Vue from 'vue'
 
 export default class SceneBase {
@@ -10,7 +9,7 @@ export default class SceneBase {
 	/* 大屏场景数据序列化 */
 	public sceneObj = {}
 	/* 大屏当前场景 */
-	public sceneIndex = 0
+	public sceneIndex: number | string = 0
 	/* 大屏场景组件关联 */
 	public sceneWidgets = {}
 	/* 切换场景 */
@@ -40,15 +39,17 @@ export default class SceneBase {
 				}
 			})
 		} else {
-			this.sceneObj = this.screenScene
-			const arr = []
-			for (const key in this.screenScene) {
-				arr.push({ name: this.screenScene[key].name, key })
+			if (this.screenScene) {
+				this.sceneObj = this.screenScene
+				const arr = []
+				for (const key in this.screenScene) {
+					arr.push({ name: this.screenScene[key].name, key })
+				}
+				arr.sort(function (a, b) {
+					return a.name.localeCompare(b.name)
+				})
+				this.sceneList = arr.map(item => item.key)
 			}
-			arr.sort(function (a, b) {
-				return a.name.localeCompare(b.name)
-			})
-			this.sceneList = arr.map(item => item.key)
 		}
 	}
 	/* 创建场景 */
@@ -63,14 +64,13 @@ export default class SceneBase {
 		if (this.sceneIndex === 0) {
 			return false
 		}
-		Modal.confirm({
+		Vue.prototype.$Modal.confirm({
 			title: '是否删除当前场景？',
 			content: '该场景未删除的组件将自动进入回收站！',
 			onOk: () => {
 				const index = this.sceneIndex
 				this.setSceneIndex(0)
 				Vue.delete(this.sceneObj, index)
-				this.sceneList.splice(index, 1)
 				for (const key in Vue.prototype.$screen.screenWidgets) {
 					const item = Vue.prototype.$screen.screenWidgets[key]
 					if (item.scene === index) {

@@ -17,7 +17,7 @@ import commonConfigValue from '../../../common-config-value.js'
 })
 export default class DRightSettingMore extends Vue {
 	ruler = {}
-	screen = {}
+	screen: ScreenV = {}
 
 	handleGroup() {
 		const children = []

@@ -34,7 +34,7 @@ import ClickOutside from 'vue-click-outside'
 export default class DRightManage extends Vue {
 	editName = false
 	ruler = {}
-	screen = {}
+	screen: ScreenV = {}
 	close() {
 		this.editName = false
 	}

@@ -4,7 +4,7 @@ import { detail } from '@/api/screen.api'
 import { use } from '@/api/marketComponent.api'
 import { setDefault } from '@/utils'
 
-export default class ScreenPc extends base {
+export default class ScreenPc extends base implements ScreenV {
 	constructor(obj: any) {
 		super()
 		this.init(obj)
@@ -17,6 +17,7 @@ export default class ScreenPc extends base {
 			Vue.prototype.$screen = new ScreenPc(obj)
 			return Vue.prototype.$screen
 		}
+		return Vue.prototype.$screen
 	}
 	/* 当前系统版本 */
 	currentVersion = '1.1.0'
@@ -81,7 +82,7 @@ export default class ScreenPc extends base {
 		return widget
 	}
 	/* 配置序列化 */
-	private serialize(res) {
+	public serialize(res) {
 		this.screenName = res.screenName
 		this.screenAvatar = res.screenAvatar
 		this.screenPublish = res.screenPublish
@@ -92,11 +93,9 @@ export default class ScreenPc extends base {
 		this.createTime = res.createTime
 		this.updateTime = res.updateTime
 		this.screenConfig = res.screenConfig
-		this.screenWidth = res.screenWidth
-			? res.screenWidth
-			: res.screenConfig.width
+		this.width = res.screenWidth ? res.screenWidth : res.screenConfig.width
 		delete this.screenConfig.width
-		this.screenHeight = res.screenHeight
+		this.height = res.screenHeight
 			? res.screenHeight
 			: res.screenConfig.height
 		delete this.screenConfig.height

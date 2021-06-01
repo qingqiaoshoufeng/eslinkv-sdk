@@ -6,6 +6,7 @@ import instance from './src/store/instance.store'
 import { createSandbox } from './data-process'
 import { configMerge, usePath } from './src/utils'
 import Vue from 'vue'
+
 const mx: any = {
 	mixins: [fetch, dataProcess],
 	inject: ['kanboardEditor'],
@@ -57,7 +58,7 @@ const mx: any = {
 						scene.actions.destroyScene(sceneId, animate)
 						break
 					case 'changeScene':
-						screen.setSceneIndex(sceneId)
+						;(screen as ScreenV).setSceneIndex(sceneId)
 						break
 					default:
 				}

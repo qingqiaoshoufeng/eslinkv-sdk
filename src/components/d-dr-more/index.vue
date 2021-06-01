@@ -11,7 +11,7 @@ import dDrKuang from '../../components/d-dr-kuang/index.vue'
 	},
 })
 export default class DDrMore extends Vue {
-	screen = {}
+	screen: ScreenV = {}
 	get style() {
 		if (!this.screen.chooseWidgetArrayConfig) return {}
 		return {

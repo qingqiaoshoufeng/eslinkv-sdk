@@ -6,6 +6,7 @@ import {
 	Switch,
 	ColorPicker,
 	Collapse,
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	Panel,
 	Button,
@@ -16,12 +17,12 @@ import {
 	Modal,
 } from 'view-design'
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import event from '../store/event.store'
-import dRightSwiper from '../components-right/d-right-swiper/index.vue'
-import dRightSwiperList from '../components-right/d-right-swiper-list/index.vue'
-import dRightSwiperEye from '../components-right/d-right-swiper-eye/index.vue'
-import dRightControl from '../components-right/d-right-control/index.vue'
-import dInput from '../components/d-input/index.vue'
+import event from '@/store/event.store'
+import dRightSwiper from '@/components-right/d-right-swiper/index.vue'
+import dRightSwiperList from '@/components-right/d-right-swiper-list/index.vue'
+import dRightSwiperEye from '@/components-right/d-right-swiper-eye/index.vue'
+import dRightControl from '@/components-right/d-right-control/index.vue'
+import dInput from '@/components/d-input/index.vue'
 
 @Component({
 	components: {
@@ -48,7 +49,7 @@ import dInput from '../components/d-input/index.vue'
 })
 export default class Func extends Vue {
 	event = event.state
-	screen = {}
+	screen: ScreenV = {}
 	@Prop() config
 	@Prop() parentProp // group时会有
 	@Prop() parentIndex // group时会有

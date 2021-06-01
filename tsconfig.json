@@ -30,7 +30,9 @@
 		"src/**/*.vue",
 		"types/Screen.d.ts",
 		"types/Scene.d.ts",
-		"types/Widget.d.ts"
+		"types/Widget.d.ts",
+		"types/Ruler.d.ts",
+		"types/Common.d.ts"
 	],
 	"exclude": ["node_modules"]
 }
