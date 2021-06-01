@@ -14,11 +14,12 @@ export default {
 				try {
 					this.loading = true
 					const result = JSON.parse((e as any).target.result)
-					const { screenConfig, screenName } = result
-					screenConfig.widgets.forEach(v => {
-						setDefault(v.value)
+					const { screenConfig, screenName, screenWidgets } = result
+					this.screen.serialize({
+						screenName,
+						screenConfig,
+						screenWidgets,
 					})
-					this.screen.serialize({ screenName, screenConfig })
 					this.importModal = false
 					this.loading = false
 				} catch (e) {

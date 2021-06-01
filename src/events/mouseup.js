@@ -31,7 +31,7 @@ const mouseup = e => {
 		Vue.prototype.$screen.chooseWidgetArray = []
 		Object.values(Vue.prototype.$screen.screenWidgets).forEach(v => {
 			// 只能框选当前场景下的组件
-			if (v.scene === scene.state.index) {
+			if (v.scene === Vue.prototype.$screen.sceneIndex) {
 				const widgetStartX = v.config.layout.position.left
 				const widgetStartY = v.config.layout.position.top
 				const widgetEndX =

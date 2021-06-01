@@ -2,6 +2,7 @@ import base from './base'
 import Vue from 'vue'
 import { detail } from '@/api/screen.api'
 import { use } from '@/api/marketComponent.api'
+import { setDefault } from '@/utils'
 
 export default class ScreenPc extends base {
 	constructor(obj: any) {
@@ -119,11 +120,12 @@ export default class ScreenPc extends base {
 	/* 序列化组件数据 */
 	initWidget(res) {
 		let screenWidgets
-		if (res.screenWidgets) {
-			screenWidgets = res.screenWidgets
-		} else {
+		if (res.screenConfig.widgets) {
 			screenWidgets = res.screenConfig.widgets
+		} else {
+			screenWidgets = res.screenWidgets
 		}
+		screenWidgets.forEach(v => setDefault(v.value))
 		delete this.screenConfig.widgets
 		const obj: { [key: string]: widgetConfig } = {}
 		const marketComponents: { type: string; version: string }[] = []
