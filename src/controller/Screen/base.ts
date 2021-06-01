@@ -109,7 +109,8 @@ export default class Screen extends scene {
 
 	set width(screenWidth: number) {
 		this.screenWidth = screenWidth
-		Vue.prototype.$ruler.resetZoom()
+		if (Object.keys(Vue.prototype.$ruler).length)
+			Vue.prototype.$ruler.resetZoom()
 		if (this.screenId) this.updateScreenDebounce({ screenWidth })
 	}
 
@@ -122,7 +123,8 @@ export default class Screen extends scene {
 
 	set height(screenHeight: number) {
 		this.screenHeight = screenHeight
-		Vue.prototype.$ruler.resetZoom()
+		if (Object.keys(Vue.prototype.$ruler).length)
+			Vue.prototype.$ruler.resetZoom()
 		if (this.screenId) this.updateScreenDebounce({ screenHeight })
 	}
 
@@ -231,24 +233,27 @@ export default class Screen extends scene {
 		const defaultConfig = commonConfigValue() // 读取默认配置
 		const widgetAdded = copy(this.screenWidgets)
 		const widgets = Object.values(widgetAdded)
-			.map(({ id, market = false, type, config, scene = 0 }) => {
-				const api = config.api
-				if (api && api.data) {
-					try {
-						api.data = JSON.stringify(JSON.parse(api.data))
-					} catch (e) {
-						console.warn(e)
+			.map(
+				({ id, market = false, type, config, scene = 0, children }) => {
+					const api = config.api
+					if (api && api.data) {
+						try {
+							api.data = JSON.stringify(JSON.parse(api.data))
+						} catch (e) {
+							console.warn(e)
+						}
 					}
-				}
-				checkAttr(config, '', defaultConfig)
-				return {
-					id,
-					scene,
-					type,
-					market,
-					value: { ...config },
-				}
-			})
+					checkAttr(config, '', defaultConfig)
+					return {
+						id,
+						scene,
+						type,
+						market,
+						value: { ...config },
+						children,
+					}
+				},
+			)
 			.filter(item => item.scene !== -1)
 		return {
 			screenScene: this.sceneObj,

@@ -31,11 +31,7 @@ interface ScreenV {
 	fullscreen?: boolean
 	screenStyle?: any /* todo 完善 */
 	sceneObj?: any /* todo 完善 */
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	width?: number
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	height?: number
 	avatar?: string
 	layoutMode?: string

@@ -37,21 +37,6 @@ import event from '../../store/event.store'
 import { dDrMouseDown } from '@/events'
 import dDrKuang from '../d-dr-kuang/index.vue'
 
-const events = {
-	mouse: {
-		start: 'mousedown',
-		move: 'mousemove',
-		stop: 'mouseup',
-	},
-	touch: {
-		start: 'touchstart',
-		move: 'touchmove',
-		stop: 'touchend',
-	},
-}
-
-let eventsFor = events.mouse
-
 export default {
 	components: {
 		dDrKuang,
@@ -202,7 +187,6 @@ export default {
 		},
 		// 元素触摸按下
 		elementTouchDown(e) {
-			eventsFor = events.touch
 			this.elementDown(e)
 		},
 		// 元素按下
@@ -235,12 +219,8 @@ export default {
 				this.mouseClickPosition.top = this.top
 				this.mouseClickPosition.bottom = this.bottom
 
-				addEvent(document.documentElement, eventsFor.move, this.move)
-				addEvent(
-					document.documentElement,
-					eventsFor.stop,
-					this.handleUp,
-				)
+				addEvent(document.documentElement, 'mousemove', this.move)
+				addEvent(document.documentElement, 'mouseup', this.handleUp)
 			}
 		},
 		// 取消
@@ -255,7 +235,7 @@ export default {
 				}
 				removeEvent(
 					document.documentElement,
-					eventsFor.move,
+					'mousemove',
 					this.handleMove,
 				)
 			}
@@ -263,7 +243,6 @@ export default {
 		},
 		// 控制柄触摸按下
 		handleTouchDown(handle, e) {
-			eventsFor = events.touch
 			this.handleDown(handle, e)
 		},
 		// 控制柄按下
@@ -288,8 +267,8 @@ export default {
 			this.mouseClickPosition.right = this.right
 			this.mouseClickPosition.top = this.top
 			this.mouseClickPosition.bottom = this.bottom
-			addEvent(document.documentElement, eventsFor.move, this.handleMove)
-			addEvent(document.documentElement, eventsFor.stop, this.handleUp)
+			addEvent(document.documentElement, 'mousemove', this.handleMove)
+			addEvent(document.documentElement, 'mouseup', this.handleUp)
 		},
 		// 移动
 		move(e) {
@@ -384,11 +363,7 @@ export default {
 				this.$emit('dragstop', this.left, this.top)
 			}
 			this.resetBoundsAndMouseState()
-			removeEvent(
-				document.documentElement,
-				eventsFor.move,
-				this.handleMove,
-			)
+			removeEvent(document.documentElement, 'mousemove', this.handleMove)
 		},
 		// 检测对齐元素
 		async snapCheck() {

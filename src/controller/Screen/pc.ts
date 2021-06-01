@@ -126,7 +126,7 @@ export default class ScreenPc extends base implements ScreenV {
 		}
 		screenWidgets.forEach(v => setDefault(v.value))
 		delete this.screenConfig.widgets
-		const obj: { [key: string]: widgetConfig } = {}
+		const obj = {}
 		const marketComponents: { type: string; version: string }[] = []
 		const p = []
 		screenWidgets.forEach(item => {
@@ -136,6 +136,7 @@ export default class ScreenPc extends base implements ScreenV {
 				scene: item.scene,
 				type: item.type,
 				config: item.value,
+				children: item.children,
 			}
 			if (item.market) {
 				marketComponents.push({
@@ -180,7 +181,7 @@ export default class ScreenPc extends base implements ScreenV {
 				this.screenWidgets = obj
 				const widgets = Object.values(obj)
 				const list = this.sceneList
-				widgets.forEach(item => {
+				widgets.forEach((item: any) => {
 					const index = list.indexOf(item.scene)
 					if (index !== -1) {
 						if (!this.sceneWidgets[list[index]]) {

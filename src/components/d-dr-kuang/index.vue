@@ -8,7 +8,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 @Component
-export default class DDrKuang extends Vue {
+export default class Kuang extends Vue {
 	ruler: RulerV = {}
 
 	get returnRatio() {

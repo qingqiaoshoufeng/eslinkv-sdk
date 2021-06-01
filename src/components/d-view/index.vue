@@ -6,6 +6,7 @@
 			:key="item.id",
 			:type="item.type",
 			:config="item.config",
+			:children="item.children",
 			:ref="item.id",
 			:market="item.market",
 			:style="item.config.widget.hide ? 'display: none' : ''",

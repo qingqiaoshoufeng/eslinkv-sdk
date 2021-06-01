@@ -85,7 +85,7 @@ export default class ItemCard extends Vue {
 		rightMenu.style.left = e.clientX + 'px'
 	}
 
-	onDragStop(left, top) {
+	onDragStop(left: number, top: number) {
 		const diffLeft =
 			left -
 			this.screen.screenWidgets[this.screen.chooseWidgetId].config.layout
@@ -107,7 +107,7 @@ export default class ItemCard extends Vue {
 		)
 	}
 
-	onGroupDragStop(item, diffLeft, diffTop) {
+	onGroupDragStop(item, diffLeft: number, diffTop: number) {
 		if (item.children) {
 			item.children.map(child => {
 				child.config.layout.position.left += diffLeft
@@ -117,7 +117,7 @@ export default class ItemCard extends Vue {
 		}
 	}
 
-	onResizeStop(width, height) {
+	onResizeStop(width: number, height: number) {
 		this.screen.screenWidgets[
 			this.screen.chooseWidgetId
 		].config.layout.size.width = width
