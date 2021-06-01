@@ -3,8 +3,8 @@
 	i-icon.pos-a.d-ruler-guide-visible.pointer.z-index-999.text-center(
 		:type="ruler.guideVisible ? 'ios-eye-off-outline' : 'ios-eye-outline'",
 		@click="ruler.guideVisible = !ruler.guideVisible")
-	x-line(ref="xline")
-	y-line(ref="yline")
+	x-line
+	y-line
 	#ruler-content.d-ruler-content(
 		ref="rulerContent",
 		@mousedown="rulerContentMouseDown",

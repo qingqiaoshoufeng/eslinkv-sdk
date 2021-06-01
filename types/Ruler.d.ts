@@ -38,4 +38,6 @@ interface RulerV {
 	resetZoom?(): void
 	zoomOut?(zoom: number | string): void
 	zoomIn?(zoom: number | string): void
+
+	rulerStyle: any /* todo 完善 */
 }

@@ -70,7 +70,7 @@ import { mixins } from 'vue-class-component'
 	},
 })
 export default class DEditor extends mixins(widgetOperation) {
-	ruler = {}
+	ruler: RulerV = {}
 	screen: ScreenV = {}
 	vLine = []
 	hLine = []

@@ -1,4 +1,4 @@
-<template lang="pug">
+﻿<template lang="pug">
 .d-guide
 	.d-guide-wrapper.pos-a(:style="guideStyle")
 		.d-guide-line.z-index-9.pos-a.d-editor-line(
@@ -16,10 +16,11 @@
 		:style="`left: ${menuLeft}px; top:${menuTop - 10}px`")
 		li(@click="handleDestroy(removeId)") 删除
 </template>
-<script>
+<script lang="ts">
 import event from '../../store/event.store'
 import { Component, Vue } from 'vue-property-decorator'
 import { rulerGuideMouseDown } from '@/events'
+
 @Component
 export default class Guide extends Vue {
 	showGuideMenu = false
@@ -27,7 +28,7 @@ export default class Guide extends Vue {
 	menuTop = 0
 	removeId = null
 	event = event.state
-	ruler = {}
+	ruler: RulerV = {}
 	rulerGuideMouseDown = rulerGuideMouseDown
 
 	/**
@@ -74,7 +75,7 @@ export default class Guide extends Vue {
 	 * -参考线容器偏移量 ===> -参考线容器偏移量
 	 */
 	lineStyle({ type, site }) {
-		const style = {}
+		const style: any = {}
 		if (type === 'h') {
 			style.top = `${
 				this.ruler.guideStartY < 0

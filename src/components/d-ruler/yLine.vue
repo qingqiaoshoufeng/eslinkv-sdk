@@ -69,6 +69,7 @@ export default class YLine extends Vue {
 
 	clearRulerCanvas() {
 		const t = this.context.getTransform()
+		this.canvas.height = document.getElementById('d-editor').offsetHeight
 		this.context.clearRect(
 			-t.e,
 			0,
@@ -81,6 +82,8 @@ export default class YLine extends Vue {
 		this.clearRulerCanvas()
 		const t = this.context.getTransform()
 		let x = 0
+		this.context.font = '10px sans-serif'
+		this.context.fillStyle = '#999'
 		while (x < this.canvas.height - t.f) {
 			this.context.save()
 			this.context.drawImage(bgImg, 0, x)
