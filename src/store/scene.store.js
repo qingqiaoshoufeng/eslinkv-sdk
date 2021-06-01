@@ -16,8 +16,12 @@ const state = Vue.observable({
 	widgetLoaded: {},
 })
 const actions = {
+	// 兼容老组件后期会删除
+	setSceneIndex(index) {
+		Vue.prototype.$screen.setSceneIndex(index)
+	},
 	destroyScene(index, showAnimationStyle = 'fadeOut') {
-		if (state.status === 'inPreview') {
+		if (Vue.prototype.$screen.status === 'inPreview') {
 			if (state.showAnimationStyle) {
 				document
 					.getElementById(index)
@@ -42,11 +46,11 @@ const actions = {
 		showAnimationStyle = 'fadeIn',
 		pointerEvents = 'auto',
 	) {
-		if (state.status === 'inPreview') {
+		if (Vue.prototype.$screen.status === 'inPreview') {
 			const kanban = document.getElementById('screen')
 			const transform = kanban.style.transform
 			const canvasStyle = `position: relative;transition: all .3s;flex-shrink: 0;flex-grow: 0;width:${kanban.clientWidth}px;height:${kanban.clientHeight}px;overflow: hidden;background-color:transparent;z-index: 99999;`
-			const array = state.sceneObj[id].list
+			const array = Vue.prototype.$screen.sceneWidgets[id].list
 			const _self = instance.state.kanboard
 			state.showAnimationStyle = showAnimationStyle
 			const Comp = Vue.extend({

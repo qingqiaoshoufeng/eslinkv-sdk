@@ -16,7 +16,9 @@
 			i-option(:value="key", v-for="(item, key) in screen.sceneObj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
-		draggable(v-model="screen.sortByZIndexWidgetsList", @change="sceneWidgetDragEnd")
+		draggable(
+			v-model="screen.sortByZIndexWidgetsList",
+			@change="sceneWidgetDragEnd")
 			transition-group
 				item-card(
 					v-for="item in screen.sortByZIndexWidgetsList",
@@ -100,6 +102,8 @@ export default class DLeftScene extends Vue {
 		if (oldItem.config.layout.zIndex === newItem.config.layout.zIndex) {
 			if (e.moved.newIndex > e.moved.oldIndex) {
 				newItem.config.layout.zIndex++
+			} else {
+				oldItem.config.layout.zIndex++
 			}
 		} else {
 			let zIndex = newItem.config.layout.zIndex

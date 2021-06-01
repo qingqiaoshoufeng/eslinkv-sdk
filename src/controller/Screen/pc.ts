@@ -179,6 +179,20 @@ export default class ScreenPc extends base {
 			.then(() => {
 				this.widgetLoading = false
 				this.screenWidgets = obj
+				const widgets = Object.values(obj)
+				const list = this.sceneList
+				widgets.forEach(item => {
+					const index = list.indexOf(item.scene)
+					if (index !== -1) {
+						if (!this.sceneWidgets[list[index]]) {
+							this.sceneWidgets[list[index]] = {}
+						}
+						if (!this.sceneWidgets[list[index]].list) {
+							this.sceneWidgets[list[index]].list = []
+						}
+						this.sceneWidgets[list[index]].list.push(item)
+					}
+				})
 			})
 			.catch(() => {
 				this.widgetLoading = false

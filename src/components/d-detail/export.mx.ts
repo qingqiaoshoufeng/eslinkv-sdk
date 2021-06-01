@@ -2,13 +2,10 @@ import { downloadFile } from '../../utils/index'
 
 // todo 取消render
 export default {
-	data() {
-		return {}
-	},
 	methods: {
 		handleExport() {
 			const data = this.screen.screenData()
-			const fileName = `${data.screenName}`
+			const fileName = `${this.screen.screenName}`
 			this.$Modal.confirm({
 				title: '看板导出',
 				render: h => {

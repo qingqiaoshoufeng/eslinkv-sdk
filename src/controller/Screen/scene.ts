@@ -11,6 +11,8 @@ export default class SceneBase {
 	public sceneObj = {}
 	/* 大屏当前场景 */
 	public sceneIndex = 0
+	/* 大屏场景组件关联 */
+	public sceneWidgets = {}
 	/* 切换场景 */
 	public setSceneIndex(val) {
 		this.sceneIndex = val
@@ -48,21 +50,6 @@ export default class SceneBase {
 			})
 			this.sceneList = arr.map(item => item.key)
 		}
-		// todo
-		// const widgets = Object.values(Vue.prototype.$screen.screenWidgets)
-		// const list = this.list
-		// widgets.forEach(item => {
-		// 	const index = list.indexOf(item.scene)
-		// 	if (index !== -1) {
-		// 		if (!this.sceneObj[list[index]]) {
-		// 			this.sceneObj[list[index]] = {}
-		// 		}
-		// 		if (!this.sceneObj[list[index]].list) {
-		// 			this.sceneObj[list[index]].list = []
-		// 		}
-		// 		this.sceneObj[list[index]].list.push(item)
-		// 	}
-		// })
 	}
 	/* 创建场景 */
 	public createScene() {
