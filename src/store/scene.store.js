@@ -13,7 +13,6 @@ const state = Vue.observable({
 	obj: {},
 	showAnimationStyle: '',
 	sceneObj: {},
-	widgetLoaded: {},
 })
 const actions = {
 	// 兼容老组件后期会删除

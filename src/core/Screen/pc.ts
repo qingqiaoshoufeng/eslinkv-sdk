@@ -1,5 +1,4 @@
-import ScreenBase from './base'
-import { use } from '@/api/marketComponent.api'
+import ScreenBase from '@/core/Screen/base'
 import { setDefault } from '@/utils'
 
 export default class ScreenPc extends ScreenBase {
@@ -63,8 +62,9 @@ export default class ScreenPc extends ScreenBase {
 		}
 		return widget
 	}
-	/* 配置序列化 */
-	public init(res: any): void {
+	/* 初始化配置 */
+	public init(res: any): any {
+		this.screenId = res.screenId
 		this.screenName = res.screenName
 		this.screenAvatar = res.screenAvatar
 		this.screenPublish = res.screenPublish
@@ -96,12 +96,10 @@ export default class ScreenPc extends ScreenBase {
 			: res.screenConfig.mainScene
 		delete this.screenConfig.mainScene
 		this.screenPlatform = res.screenPlatform
-		this.initScene(res)
-		this.initWidget(res)
-		this.screenId = res.screenId
+		return this.initWidget(res)
 	}
 	/* 序列化组件数据 */
-	initWidget(res) {
+	initWidget(res: any) {
 		let screenWidgets
 		if (res.screenConfig.widgets) {
 			screenWidgets = res.screenConfig.widgets
@@ -129,61 +127,6 @@ export default class ScreenPc extends ScreenBase {
 				})
 			}
 		})
-		marketComponents.forEach(item => {
-			if (this.widgetLoaded[`${item.type}${item.version}`]) return
-			p.push(
-				new Promise<number>((resolve, reject) => {
-					use({
-						componentEnTitle: item.type,
-						componentVersion: item.version,
-					}).then((res: widgetUseResult) => {
-						const script = document.createElement('script')
-						script.onload = () => {
-							this.widgetLoaded[
-								`${item.type}${item.version}`
-							] = true
-							resolve(1)
-						}
-						script.onerror = () => {
-							reject(1)
-						}
-						if (res) {
-							script.src = res.componentJsUrl
-							document.head.appendChild(script)
-						} else {
-							console.error(
-								`${item.type}${item.version}加载组件失败`,
-							)
-						}
-					})
-				}),
-			)
-		})
-		Promise.all(p)
-			.then(() => {
-				this.widgetLoading = false
-				this.screenWidgets = obj
-				const widgets = Object.values(obj)
-				const list = this.sceneList
-				widgets.forEach((item: any) => {
-					const index = list.indexOf(item.scene)
-					if (index !== -1) {
-						if (!this.sceneWidgets[list[index]]) {
-							this.sceneWidgets[list[index]] = {}
-						}
-						if (!this.sceneWidgets[list[index]].list) {
-							this.sceneWidgets[list[index]].list = []
-						}
-						this.sceneWidgets[list[index]].list.push(item)
-					}
-				})
-			})
-			.catch(() => {
-				this.widgetLoading = false
-				console.error('组件初始化加载失败')
-			})
-		if (p.length === 0) {
-			this.widgetLoading = false
-		}
+		return { marketComponents, screenWidgets }
 	}
 }

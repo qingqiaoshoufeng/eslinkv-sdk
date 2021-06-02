@@ -1,11 +1,9 @@
-import { update, create } from '@/api/screen.api'
-import { Message } from 'view-design'
-import Vue from 'vue'
+﻿import Vue from 'vue'
 import copy from 'fast-copy'
 import commonConfigValue from '../../../common-config-value'
-import { screenShareUpdate } from '@/api/screenShare.api'
 import { getQueryString } from '@/utils'
 import Factory from '@/core/Base/factory'
+import Widget from '@/core/Widget/base'
 
 export default class Screen extends Factory<Screen> {
 	/* 当前系统版本 */
@@ -19,33 +17,11 @@ export default class Screen extends Factory<Screen> {
 	public screenConfig: any = {}
 	/* 大屏组件配置 */
 	public screenWidgets: any = {}
-	/* 获取大屏组件配置——根据zIndex排序 */
-	get sortByZIndexWidgetsList() {
-		const list = []
-		for (const key in this.screenWidgets) {
-			const item = this.screenWidgets[key]
-			if (item.scene === this.sceneIndex) {
-				list.push(item)
-			}
-		}
-		list.sort((a, b) => {
-			return b.config.layout.zIndex - a.config.layout.zIndex - 1
-		})
-		return list
-	}
-	set sortByZIndexWidgetsList(val) {
-		console.log(val)
-	}
 
 	/* 更新大屏组件配置 */
-	setWidgetItem(id, type, config, scene, market = false) {
-		Vue.set(this.screenWidgets, id, {
-			id,
-			type,
-			config,
-			scene,
-			market,
-		})
+	setWidgetItem(widget: Widget): void {
+		this.screenWidgets[widget.id] = widget
+		console.log(this.screenWidgets)
 	}
 
 	/* 更新大屏组件配置 */
@@ -135,8 +111,8 @@ export default class Screen extends Factory<Screen> {
 	fullscreen = false
 	/* 大屏平台状态 是否自动贴靠参考线*/
 	autoAlignGuide = true
-
-	screenData() {
+	/* 获取大屏数据 */
+	public screenData(): any {
 		const defaultConfig = commonConfigValue() // 读取默认配置
 		const widgetAdded = copy(this.screenWidgets)
 		const widgets = Object.values(widgetAdded)
@@ -163,46 +139,37 @@ export default class Screen extends Factory<Screen> {
 			)
 			.filter(item => item.scene !== -1)
 		return {
-			screenScene: this.sceneObj,
 			screenWidgets: widgets,
 			screenType: this.screenType,
 			screenConfig: this.screenConfig,
+			screenAvatar: this.screenAvatar,
+			screenBackGroundColor: this.screenBackGroundColor,
+			screenBackGroundImage: this.screenBackGroundImage,
+			screenHeight: this.screenHeight,
+			screenWidth: this.screenWidth,
+			screenName: this.screenName,
+			screenPlatform: this.screenPlatform,
+			screenVersion: this.screenVersion,
+			screenLayoutMode: this.screenLayoutMode,
+			screenMainScene: this.screenMainScene,
 		}
 	}
-
-	createScreen() {
-		return new Promise((resolve, reject) => {
-			const data = this.screenData()
-			create(data)
-				.then(res => {
-					Message.success('保存成功！')
-					resolve(1)
-					screenShareUpdate({
-						screenId: res.screenId,
-						screenGuide: Vue.prototype.$ruler.guideLines,
-					})
-				})
-				.catch(() => {
-					reject(1)
-				})
-		})
-	}
-
-	updateScreen() {
-		return new Promise((resolve, reject) => {
-			const data = this.screenData()
-			update({
-				...data,
-				screenId: this.screenId,
-			})
-				.then(() => {
-					Message.success('修改成功')
-					resolve(1)
-				})
-				.catch(() => {
-					reject(1)
-				})
-		})
+	/* 添加组件 */
+	createWidget(
+		e: any,
+		currentSceneIndex: number | string,
+		currentMaxZIndex: number,
+	): void {
+		const widgetConfig = e.dataTransfer.getData('widget-config')
+		if (widgetConfig) {
+			const widgetItem = new Widget(
+				e,
+				widgetConfig,
+				currentSceneIndex,
+				currentMaxZIndex,
+			)
+			this.setWidgetItem(widgetItem)
+		}
 	}
 }
 function getAttr(o, str) {

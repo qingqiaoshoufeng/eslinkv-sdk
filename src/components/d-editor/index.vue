@@ -1,9 +1,8 @@
 <template lang="pug">
 // 操作区
-// todo css 改造 适配组件嵌入式，非全屏
 #d-editor.d-editor.pos-r(
 	ref="canvas-wrapper",
-	:class="{ fullscreen: screen.fullscreen }",
+	:class="{ fullscreen: editor.fullscreen }",
 	:style="{ width: `calc(100% - ${editor.xRoomL1 + editor.xRoomL2 + editor.xRoomR1}px)`, marginLeft: `${editor.xRoomL1 + editor.xRoomL2}px` }",
 	@contextmenu.stop.prevent)
 	// 标尺容器
@@ -11,16 +10,16 @@
 		// 大屏
 		#screen.canvas-wrapper.pos-r(
 			:style="canvasStyle",
-			@drop="drop",
+			@drop="editor.createWidget($event)",
 			@click.stop,
 			@dragover.prevent)
 			// 小工具清单
 			item-card(
 				:item="item",
-				v-for="item in screen.screenWidgets",
+				v-for="item in editor.screenWidgets",
 				:getRefLineParams="getRefLineParams",
 				:ref="item.id")
-			dr-more(v-show="screen.chooseWidgetArray&&screen.chooseWidgetArray.length")
+			dr-more(v-show="editor.chooseWidgetArray&&editor.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(:data-top="`${editor.height}px`", data-left="0px")
 			.d-editor-line(
@@ -100,30 +99,17 @@ export default class DEditor extends mixins(widgetOperation) {
 			return child
 		})
 	}
-	showRightMenu(e, item) {
-		e.preventDefault()
-		this.handleActivated(this.screen.screenWidgets[item.id])
-		const rightMenu = document.getElementById('right-menu')
-		rightMenu.classList.add('active')
-		if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
-			rightMenu.style.top = e.clientY - rightMenu.scrollHeight + 'px'
-		} else {
-			rightMenu.style.top = e.clientY + 'px'
-		}
-		rightMenu.style.left = e.clientX + 'px'
-	}
-	drop(e) {
-		const widgetConfig = e.dataTransfer.getData('widget-config')
-		if (widgetConfig) {
-			this.handleWidgetDrop(e, widgetConfig)
-		}
+	fullscreenchange(): void {
+		this.editor.fullscreen = !this.editor.fullscreen
 	}
 	beforeDestroy() {
-		this.screen.fullscreen = false
+		this.editor.fullscreen = false
+		document.removeEventListener('fullscreenchange', this.fullscreenchange)
 	}
 	mounted() {
 		instance.actions.setInstance('kanboard', this)
 		this.editor.updateEditorStatus('inEdit')
+		document.addEventListener('fullscreenchange', this.fullscreenchange)
 	}
 }
 </script>

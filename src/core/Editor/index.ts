@@ -1,6 +1,7 @@
 import Factory from '@/core/Base/factory'
 import Ruler from '@/core/Ruler'
 import ScreenPc from '@/core/Screen/pc'
+import Scene from '@/core/Scene'
 import { Message } from 'view-design'
 import { debounce } from 'throttle-debounce'
 import { update } from '@/api/screen.api'
@@ -8,13 +9,16 @@ import { update } from '@/api/screen.api'
 export default class Editor extends Factory<Editor> {
 	private ruler: Ruler = Ruler.Instance()
 	private screen: ScreenPc = ScreenPc.Instance()
+	private scene: Scene = Scene.Instance()
 
 	/* 大屏ID */
 	public screenId: string
 
-	public init(res: any): void {
+	public init(res: any): any {
 		this.screenId = res.screenId
-		this.screen.init(res)
+		const screen = this.screen.init(res)
+		this.scene.init(res)
+		return { screen }
 	}
 
 	/* ---------------------------------------------------Ruler---------------------------------------------------*/
@@ -94,6 +98,18 @@ export default class Editor extends Factory<Editor> {
 	}
 
 	/* ---------------------------------------------------Screen---------------------------------------------------*/
+	get chooseWidgetArray(): any {
+		return this.screen.chooseWidgetArray
+	}
+	get fullscreen(): boolean {
+		return this.screen.fullscreen
+	}
+	set fullscreen(val: boolean) {
+		this.screen.fullscreen = val
+	}
+	get widgetLoaded(): any {
+		return this.screen.widgetLoaded
+	}
 	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
 	get editorStatus(): string {
 		return this.screen.editorStatus
@@ -166,6 +182,24 @@ export default class Editor extends Factory<Editor> {
 	public updateEditorStatus(status: string): void {
 		this.screen.updateEditorStatus(status)
 	}
+	/* 更新组件加载状态 */
+	public updateWidgetLoaded(key: string): void {
+		this.screen.widgetLoaded[key] = true
+	}
+	/* 获取大屏数据 */
+	public screenData(): any {
+		return this.screen.screenData()
+	}
+	/* 添加组件 */
+	public createWidget(e: any): void {
+		this.screen.createWidget(
+			e,
+			this.scene.sceneIndex,
+			this.sortByZIndexWidgetsList.length
+				? this.sortByZIndexWidgetsList[0].layout.zIndex + 1
+				: 10,
+		)
+	}
 	/* 更新大屏信息 防抖：1500ms */
 	updateScreenDebounce = debounce(1500, false, function (obj: any): void {
 		if (this.screenId) {
@@ -179,4 +213,34 @@ export default class Editor extends Factory<Editor> {
 	})
 
 	/* ---------------------------------------------------Scene---------------------------------------------------*/
+	/* 当前场景 */
+	get sceneIndex() {
+		return this.scene.sceneIndex
+	}
+	/* 切换场景 */
+	public setSceneIndex(val: number | string): void {
+		this.scene.setSceneIndex(val)
+	}
+	/* 获取场景数据 */
+	public sceneData(): any {
+		return this.scene.sceneData()
+	}
+	/* ---------------------------------------------------More---------------------------------------------------*/
+	/* 获取大屏组件配置——根据zIndex排序 */
+	get sortByZIndexWidgetsList() {
+		const list = []
+		for (const key in this.screen.screenWidgets) {
+			const item = this.screen.screenWidgets[key]
+			if (item.scene === this.scene.sceneIndex) {
+				list.push(item)
+			}
+		}
+		list.sort((a, b) => {
+			return b.config.layout.zIndex - a.config.layout.zIndex - 1
+		})
+		return list
+	}
+	set sortByZIndexWidgetsList(val) {
+		console.log(val)
+	}
 }

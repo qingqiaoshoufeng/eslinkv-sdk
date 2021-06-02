@@ -1,4 +1,4 @@
-import { uuid } from '@/utils'
+import { uuid } from '@/core/utils'
 import Vue from 'vue'
 import Factory from '@/core/Base/factory'
 
@@ -79,5 +79,11 @@ export default class SceneBase extends Factory<SceneBase> {
 				},
 			})
 		}
+	}
+	/* 初始化配置 */
+	public init(res: any): void {}
+	/* 获取场景数据 */
+	public sceneData(): any {
+		return { screenScene: this.sceneObj }
 	}
 }

@@ -51,7 +51,7 @@ export default class DFooter extends Vue {
 	}
 
 	handleFullscreen() {
-		if (this.screen.fullscreen) {
+		if (this.editor.fullscreen) {
 			document.exitFullscreen()
 		} else {
 			document.body.requestFullscreen()

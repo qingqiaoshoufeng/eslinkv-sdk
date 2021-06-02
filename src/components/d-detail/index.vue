@@ -39,7 +39,7 @@
 			i-icon(type="ios-cloud-done-outline", :size="24")
 			span 保存
 	load-mask(:show="loading") {{ loadingMsg }}
-	i-modal(v-model="importModal")
+	i-modal(v-model="importModal" :footer-hide="true")
 		i-form
 			i-form-item
 				input#originFile.fn-hide(
@@ -64,7 +64,9 @@ import loadMask from '../load-mask/index.vue'
 import { downloadFile, getQueryString } from '@/utils'
 import dSearch from '@/components/d-search/index.vue'
 import Editor from '@/core/Editor'
-import { detail } from '@/api/screen.api'
+import { detail, detailFile, create, update } from '@/api/screen.api'
+import { use } from '@/api/marketComponent.api'
+import { screenShareUpdate } from '@/api/screenShare.api'
 
 @Component({
 	components: {
@@ -90,48 +92,111 @@ export default class DDetail extends Vue {
 	importModal = false
 	isNew = true
 
-	search() {
+	search(): void {
 		this.searchModal = true
 	}
 
-	preview() {
-		const scene = this.screen.mainScene
-			? `&scene=${this.screen.mainScene}`
+	preview(): void {
+		const scene = this.editor.mainScene
+			? `&scene=${this.editor.mainScene}`
 			: ''
 		window.open(
-			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.screen.layoutMode}${scene}`,
+			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.editor.layoutMode}${scene}`,
 		)
 	}
 
-	created() {
+	loadMarketComponent(screen: any): void {
+		let p = []
+		this.loading = true
+		screen.marketComponents.forEach(item => {
+			if (this.editor.widgetLoaded[`${item.type}${item.version}`]) return
+			p.push(
+				new Promise((resolve, reject) => {
+					use({
+						componentEnTitle: item.type,
+						componentVersion: item.version,
+					}).then((res: any) => {
+						const script = document.createElement('script')
+						script.onload = () => {
+							this.editor.updateWidgetLoaded(
+								`${item.type}${item.version}`,
+							)
+							resolve(1)
+						}
+						script.onerror = () => {
+							reject(1)
+						}
+						if (res) {
+							script.src = res.componentJsUrl
+							document.head.appendChild(script)
+						} else {
+							console.error(
+								`${item.type}${item.version}加载组件失败`,
+							)
+						}
+					})
+				}),
+			)
+		})
+		Promise.all(p)
+			.then(() => {
+				this.loading = false
+				this.screenWidgets = screen.screenWidgets
+				const widgets = Object.values(screen.screenWidgets)
+				const list = this.sceneList
+				widgets.forEach((item: any) => {
+					const index = list.indexOf(item.scene)
+					if (index !== -1) {
+						if (!this.sceneWidgets[list[index]]) {
+							this.sceneWidgets[list[index]] = {}
+						}
+						if (!this.sceneWidgets[list[index]].list) {
+							this.sceneWidgets[list[index]].list = []
+						}
+						this.sceneWidgets[list[index]].list.push(item)
+					}
+				})
+			})
+			.catch(() => {
+				this.loading = false
+				console.error('组件初始化加载失败')
+			})
+		if (p.length === 0) {
+			this.loading = false
+		}
+	}
+
+	created(): void {
 		const templateId = this.$route.query.templateId
 		const id = this.$route.params.id || templateId
 		this.isNew = !id
 		if (id) {
 			detail({ screenId: id }).then(res => {
-				this.editor.init(res)
+				const result = this.editor.init(res)
+				this.loadMarketComponent(result.screen)
 			})
 		}
 		const file = this.$route.params.file
 		if (file) {
-			this.$api.screen.detailFile(decodeURIComponent(file)).then(res => {
-				this.screen.serialize(res)
+			detailFile(decodeURIComponent(file)).then(res => {
+				this.editor.init(res)
 			})
 		}
 		const sceneIndex = getQueryString('scene')
 		if (sceneIndex) {
-			this.screen.setSceneIndex(sceneIndex)
+			this.editor.setSceneIndex(sceneIndex)
 		}
 	}
 
-	handleExport() {
-		const data = this.screen.screenData()
-		const fileName = `${this.screen.screenName}`
+	handleExport(): void {
+		const screenData = this.editor.screenData()
+		const sceneData = this.editor.sceneData()
+		const fileName = `${this.editor.name}`
 		this.$Modal.confirm({
 			title: `导出文件：${fileName}.json`,
 			content: '可用于看板数据备份、迁移。',
 			onOk: () => {
-				const config = { ...data }
+				const config = { ...screenData, ...sceneData }
 				downloadFile(config, fileName, 'json')
 			},
 			okText: '确定',
@@ -139,7 +204,7 @@ export default class DDetail extends Vue {
 		})
 	}
 
-	handleSave(type) {
+	handleSave(type: string): void {
 		let isNew = false
 		if (this.screen.screenType === 'CUSTOM' && type === 'TEMPLATE') {
 			isNew = true
@@ -154,10 +219,16 @@ export default class DDetail extends Vue {
 			cancelText: '取消',
 			onOk: () => {
 				this.loading = true
+				const screenData = this.editor.screenData()
+				const sceneData = this.editor.sceneData()
 				if (this.isNew || isNew) {
-					this.screen
-						.createScreen()
-						.then(() => {
+					create({ ...screenData, ...sceneData })
+						.then(res => {
+							this.$Message.success('保存成功！')
+							screenShareUpdate({
+								screenId: res.screenId,
+								screenGuide: Vue.prototype.$ruler.guideLines,
+							})
 							this.loading = false
 							this.$router.back()
 						})
@@ -165,9 +236,9 @@ export default class DDetail extends Vue {
 							this.loading = false
 						})
 				} else {
-					this.screen
-						.updateScreen()
+					update({ ...screenData, ...sceneData })
 						.then(() => {
+							this.$Message.success('修改成功')
 							this.loading = false
 						})
 						.catch(() => {
@@ -178,19 +249,14 @@ export default class DDetail extends Vue {
 		})
 	}
 
-	handleFile(e) {
+	handleFile(e: any): void {
 		const file = e.target.files[0]
 		const reader = new FileReader()
 		reader.onload = e => {
 			try {
 				this.loading = true
 				const result = JSON.parse((e as any).target.result)
-				const { screenConfig, screenName, screenWidgets } = result
-				this.screen.serialize({
-					screenName,
-					screenConfig,
-					screenWidgets,
-				})
+				this.editor.init(result)
 				this.importModal = false
 				this.loading = false
 			} catch (e) {

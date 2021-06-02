@@ -57,7 +57,7 @@ export default {
 			if (this.ready) {
 				if (
 					this.market &&
-					this.screen.widgetLoaded[
+					this.editor.widgetLoaded[
 						`${this.type}${this.componentVersion}`
 					]
 				) {
@@ -105,7 +105,7 @@ export default {
 		loadMarket() {
 			this.componentVersion = this.config.widget.componentVersion
 			if (
-				this.screen.widgetLoaded[`${this.type}${this.componentVersion}`]
+				this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]
 			) {
 				this.ready = true
 			} else {
@@ -118,9 +118,9 @@ export default {
 						const script = document.createElement('script')
 						script.onload = () => {
 							this.ready = true
-							this.screen.widgetLoaded[
-								`${this.type}${this.componentVersion}`
-							] = true
+							this.editor.updateWidgetLoaded(
+								`${this.type}${this.componentVersion}`,
+							)
 						}
 						if (res) {
 							script.src = res.componentJsUrl
@@ -164,7 +164,7 @@ export default {
 			this.loadMarket()
 		} else {
 			if (
-				this.screen.widgetLoaded[`${this.type}${this.componentVersion}`]
+				this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]
 			) {
 				this.ready = true
 			} else {

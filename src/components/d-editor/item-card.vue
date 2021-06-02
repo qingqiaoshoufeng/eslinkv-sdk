@@ -47,7 +47,6 @@ import Editor from '@/core/Editor'
 export default class ItemCard extends Vue {
 	editor = Editor.Instance()
 	screen = this.$screen
-	currentWidgetType = null
 	event = event.state
 
 	@Prop() item
@@ -67,7 +66,7 @@ export default class ItemCard extends Vue {
 			if (item.scene === 0) {
 				return true
 			}
-			if (item.scene === this.screen.sceneIndex) {
+			if (item.scene === this.editor.sceneIndex) {
 				return true
 			}
 			return false
@@ -146,7 +145,6 @@ export default class ItemCard extends Vue {
 		} else {
 			this.screen.setChooseWidgetCustomConfig(config.customConfig)
 		}
-		this.currentWidgetType = type
 		this.screen.chooseWidgetId = id
 	}
 
