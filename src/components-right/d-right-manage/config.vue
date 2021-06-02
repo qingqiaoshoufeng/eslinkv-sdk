@@ -7,30 +7,30 @@
 			i-option(value="1024*768") web最小尺寸1024*768
 			i-option(value="other") 自定义
 	d-right-control
-		d-input(append="W", v-model="screen.width", :style="{ width: '100px' }")
+		d-input(append="W", v-model="editor.width", :style="{ width: '100px' }")
 		d-input(
 			append="H",
-			v-model="screen.height",
+			v-model="editor.height",
 			:style="{ marginLeft: '10px', width: '100px' }")
 	d-right-control(label="背景色")
 		i-color-picker(
 			:alpha="true",
-			v-model="screen.backgroundColor",
-			v-if="screen.backgroundColor")
+			v-model="editor.backgroundColor",
+			v-if="editor.backgroundColor")
 		i-input(
-			v-model="screen.backgroundColor",
+			v-model="editor.backgroundColor",
 			:disabled="true",
 			:style="{ width: '166px', marginLeft: '10px' }")
 	d-right-control(label="背景图", title="支持jpg，png，gif")
-		d-upload(v-model="screen.backgroundImage", :data="backGroundFormData")
+		d-upload(v-model="editor.backgroundImage", :data="backGroundFormData")
 	d-right-control(label="适配模式")
-		i-select(v-model="screen.layoutMode")
+		i-select(v-model="editor.layoutMode")
 			i-option(value="full-size") 充满页面
 			i-option(value="full-width") 100%宽度
 			i-option(value="full-height") 100%高度
 	// START_PROD
 	d-right-control(label="封面", title="支持jpg，png，gif")
-		d-upload(v-model="screen.avatar", :data="screenAvatarFormData")
+		d-upload(v-model="editor.avatar", :data="screenAvatarFormData")
 	d-right-control
 		i-button(
 			@click="screenAvatar",
@@ -52,6 +52,7 @@ import html2canvas from 'html2canvas'
 // END_PROD
 import dUpload from '@/components-right/d-upload/index.vue'
 import { Tooltip } from 'view-design'
+import Editor from '@/core/Editor'
 @Component({
 	components: {
 		dUpload,
@@ -66,10 +67,12 @@ export default class FuncConfig extends func {
 		library: 'screenAvatar',
 	}
 	screenAvatarLoading = false
-	screen: ScreenV = {}
-	get size() {
-		const width = this.screen.width
-		const height = this.screen.height
+	screen = this.$screen
+	editor = Editor.Instance()
+
+	get size(): string {
+		const width = this.editor.width
+		const height = this.editor.height
 		if (width !== 1920 && width !== 1366 && width !== 1024) {
 			return 'other'
 		}
@@ -176,8 +179,5 @@ export default class FuncConfig extends func {
 		})
 	}
 	// END_PROD
-	mounted() {
-		this.screen = this.$screen
-	}
 }
 </script>

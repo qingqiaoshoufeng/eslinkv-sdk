@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999(
-	:style="{ width: `${ruler.xRoomR1}px` }",
+	:style="{ width: `${editor.xRoomR1}px` }",
 	v-if="screen.chooseWidgetId")
 	.d-right-modal-name.fn-flex.flex-row(v-click-outside="close")
 		span.widget-name-text(v-if="!editName") {{ screen.chooseWidget.config.widget.name }}_{{ screen.chooseWidget ? screen.chooseWidget.id : '' }}
@@ -35,6 +35,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import itemList from './item-list.vue'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -47,8 +48,8 @@ import ClickOutside from 'vue-click-outside'
 export default class DRightSetting extends Vue {
 	tabIndex = 0
 	editName = false
-	ruler: RulerV = {}
-	screen: ScreenV = {}
+	editor = Editor.Instance()
+	screen = this.$screen
 	title = ['基础', '交互', '主题', '自定义']
 	chooseList: any = [
 		{
@@ -85,11 +86,6 @@ export default class DRightSetting extends Vue {
 
 	handleClick(index) {
 		this.tabIndex = index
-	}
-
-	mounted() {
-		this.ruler = this.$ruler
-		this.screen = this.$screen
 	}
 }
 </script>

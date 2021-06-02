@@ -16,15 +16,12 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 })
 export default class widgetGroupItem extends Vue {
 	childList = []
-	screen: ScreenV = {}
+	screen = this.$screen
 	@Prop() child
 	handleChoose() {
 		this.screen.chooseWidgetChildId = this.child.id
 		const target = this.screen.chooseWidget
 		this.screen.setChooseWidgetCustomConfig(target.config.customConfig)
-	}
-	mounted() {
-		this.screen = this.$screen
 	}
 }
 </script>

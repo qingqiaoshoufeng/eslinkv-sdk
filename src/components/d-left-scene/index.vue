@@ -1,6 +1,6 @@
 ﻿<template lang="pug">
 .d-left-scene.pos-a.fn-flex.flex-column(
-	:style="{ width: `${ruler.xRoomL2}px`, left: `${ruler.xRoomL1}px` }")
+	:style="{ width: `${editor.xRoomL2}px`, left: `${editor.xRoomL1}px` }")
 	.d-left-modal-title.text-center
 		span 场景区
 	header.fn-flex.flex-row
@@ -49,6 +49,7 @@ import { Icon, Input, Select, Option, Modal } from 'view-design'
 import { copyText } from '../../utils/index'
 import ItemCard from './item-card.vue'
 import draggable from 'vuedraggable'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -62,10 +63,10 @@ import draggable from 'vuedraggable'
 	},
 })
 export default class DLeftScene extends Vue {
-	ruler = {}
+	editor = Editor.Instance()
 	editScene = false
 	copyModel = false
-	screen: ScreenV = {}
+	screen = this.$screen
 
 	handleSetScene(name) {
 		switch (name) {
@@ -110,11 +111,6 @@ export default class DLeftScene extends Vue {
 			newItem.config.layout.zIndex = oldItem.config.layout.zIndex
 			oldItem.config.layout.zIndex = zIndex
 		}
-	}
-
-	mounted() {
-		this.screen = this.$screen
-		this.ruler = this.$ruler
 	}
 }
 </script>

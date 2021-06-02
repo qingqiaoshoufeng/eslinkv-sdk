@@ -17,13 +17,13 @@
 								v-if="child.type === 'img'",
 								:src="child.value")
 	.d-footer-bar.fn-flex(title="缩小", :style="{ marginLeft: 'auto' }")
-		d-svg.pointer(icon-class="zoomOut", @click="handleZoomOut")
+		d-svg.pointer(icon-class="zoomOut", @click.native="() => editor.zoomOut()")
 	.d-footer-bar.fn-flex
 		label {{ zoom }}
 	.d-footer-bar.fn-flex(title="放大")
-		d-svg.pointer(icon-class="zoomIn", @click="handleZoomIn")
+		d-svg.pointer(icon-class="zoomIn", @click.native="() => editor.zoomIn()")
 	.d-footer-bar.fn-flex(title="最佳比例")
-		d-svg.pointer(icon-class="smile", @click="handleResetZoom")
+		d-svg.pointer(icon-class="smile", @click.native="() => editor.resetZoom()")
 	.d-footer-bar.fn-flex(:style="{ marginRight: '0' }")
 		i-icon.pointer(
 			:type="screen.fullscreen ? 'md-contract' : 'md-expand'",
@@ -33,6 +33,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Icon } from 'view-design'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -42,10 +43,10 @@ import { Icon } from 'view-design'
 export default class DFooter extends Vue {
 	showHotKey = false
 	hotKeys = []
-	screen: ScreenV = {}
-	ruler: RulerV = {}
-	get zoom() {
-		const zoom = this.ruler.zoom
+	screen = this.$screen
+	editor = Editor.Instance()
+	get zoom(): string {
+		const zoom = this.editor.zoom
 		return `${~~(zoom * 100)}%`
 	}
 
@@ -57,21 +58,7 @@ export default class DFooter extends Vue {
 		}
 	}
 
-	handleResetZoom() {
-		this.ruler.resetZoom()
-	}
-
-	handleZoomIn() {
-		this.ruler.zoomIn(10)
-	}
-
-	handleZoomOut() {
-		this.ruler.zoomOut(10)
-	}
-
 	mounted() {
-		this.screen = this.$screen
-		this.ruler = this.$ruler
 		const alt = this.screen.isMac ? '⌥' : 'Alt'
 		const ctrl = this.screen.isMac ? '⌃' : 'Ctrl'
 		const shift = 'Shift'

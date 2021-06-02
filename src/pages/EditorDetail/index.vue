@@ -17,11 +17,7 @@ import dView from '../../components/d-view/index.vue'
 	},
 })
 export default class detail extends Vue {
-	screen: ScreenV = {}
-
-	mounted() {
-		this.screen = this.$screen
-	}
+	screen = this.$screen
 }
 </script>
 <style lang="scss">

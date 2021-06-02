@@ -36,7 +36,7 @@ export default class DLeftSceneItem extends Vue {
 	editScene = false
 	copyModel = false
 	childList = []
-	screen: ScreenV = {}
+	screen = this.$screen
 	@Prop() item
 	get list() {
 		const list = []
@@ -76,9 +76,6 @@ export default class DLeftSceneItem extends Vue {
 	handleTaggerHide(id) {
 		this.screen.screenWidgets[id].config.widget.hide = !this.screen
 			.screenWidgets[id].config.widget.hide
-	}
-	mounted() {
-		this.screen = this.$screen
 	}
 }
 </script>

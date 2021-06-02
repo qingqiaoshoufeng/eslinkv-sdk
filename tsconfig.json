@@ -11,7 +11,6 @@
 		"downlevelIteration": true, // 降级遍历器实现，如果目标源是es3/5，那么遍历器会有降级的实现
 		"noUnusedLocals": true, // 检查只声明、未使用的局部变量(只提示不报错)
 		"noUnusedParameters": true, // 检查未使用的函数参数(只提示不报错)
-		"removeComments": true, // 删除注释
 		"sourceMap": true,
 		"baseUrl": ".",
 		"typeRoots": ["./node_modules/@types/"], // 包含类型声明的文件列表
@@ -28,10 +27,8 @@
 		"src/**/*.ts",
 		"src/**/*.tsx",
 		"src/**/*.vue",
-		"types/Screen.d.ts",
 		"types/Scene.d.ts",
 		"types/Widget.d.ts",
-		"types/Ruler.d.ts",
 		"types/Common.d.ts"
 	],
 	"exclude": ["node_modules"]

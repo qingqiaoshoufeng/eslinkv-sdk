@@ -27,7 +27,7 @@ import { Component, Vue, Provide } from 'vue-property-decorator'
 export default class DView extends Vue {
 	@Provide('kanboardEditor') kanboardEditor = this
 
-	screen: ScreenV = {}
+	screen = this.$screen
 
 	showParts(item) {
 		if (item.scene === 0) {
@@ -40,8 +40,7 @@ export default class DView extends Vue {
 
 	mounted() {
 		instance.actions.setInstance('kanboard', this)
-		this.screen = this.$screen
-		this.screen.setStatus('inPreview')
+		this.editor.updateEditorStatus('inPreview')
 	}
 }
 </script>

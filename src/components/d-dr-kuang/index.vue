@@ -7,15 +7,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import Editor from '@/core/Editor'
+
 @Component
 export default class Kuang extends Vue {
-	ruler: RulerV = {}
+	editor = Editor.Instance()
 
-	get returnRatio() {
-		return this.ruler.zoom < 1 ? 1 / this.ruler.zoom : 1
-	}
-	mounted() {
-		this.ruler = this.$ruler
+	get returnRatio(): number {
+		return this.editor.zoom < 1 ? 1 / this.editor.zoom : 1
 	}
 }
 </script>

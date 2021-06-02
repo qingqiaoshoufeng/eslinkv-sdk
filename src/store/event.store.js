@@ -10,7 +10,6 @@ const state = Vue.observable({
 	componentsDisabled: {}, // 组件事件屏蔽
 	contentMove: false, // 是否按下了 空格 键，启动内容区拖动
 	contentDrag: false, // 是否按下了 空格 键，之后按下了左键
-	guideDrag: false, // 点击拖拽参考线
 	componentMove: false, // 组件点击开始拖拽
 	componentDrag: false, // 组件拖拽中
 	kuangMove: false, // 框选

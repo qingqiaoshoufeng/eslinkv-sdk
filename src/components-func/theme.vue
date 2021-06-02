@@ -20,7 +20,7 @@ import { colorTheme } from '../../packages/config.default.js'
 @Component
 export default class FuncAnimation extends func {
 	instance = instance.state
-	screen: ScreenV = {}
+	screen = this.$screen
 	get colorTheme() {
 		return this.screen.chooseWidget.config.config.colorTheme
 			? this.screen.chooseWidget.config.config.colorTheme
@@ -55,9 +55,6 @@ export default class FuncAnimation extends func {
 	handleSync() {
 		this.instance.kanboard.$refs[`${this.screen.chooseWidgetId}`][0]
 			.$children[0].updateKey++
-	}
-	mounted() {
-		this.screen = this.$screen
 	}
 }
 </script>

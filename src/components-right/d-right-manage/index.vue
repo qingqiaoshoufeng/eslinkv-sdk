@@ -1,15 +1,15 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999.fn-flex.flex-column(
-	:style="{ width: `${ruler.xRoomR1}px`, height: '100%', flex: 1 }")
+	:style="{ width: `${editor.xRoomR1}px`, height: '100%', flex: 1 }")
 	.d-right-modal-name.fn-flex.flex-row(
 		:style="{ marginBottom: '10px' }",
 		v-click-outside="close")
 		i-input.screen-name(
 			v-if="editName",
-			v-model="screen.name",
+			v-model="editor.name",
 			@on-click="editName = false",
 			:autofocus="true")
-		span.screen-name-text(v-if="!editName") {{ screen.name }}
+		span.screen-name-text(v-if="!editName") {{ editor.name }}
 		i-icon.pointer.screen-name-icon(
 			type="ios-create-outline",
 			@click.stop="editName = true",
@@ -22,6 +22,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import config from './config.vue'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -33,14 +34,10 @@ import ClickOutside from 'vue-click-outside'
 })
 export default class DRightManage extends Vue {
 	editName = false
-	ruler: RulerV = {}
-	screen: ScreenV = {}
+	editor = Editor.Instance()
+	screen = this.$screen
 	close() {
 		this.editName = false
-	}
-	mounted() {
-		this.screen = this.$screen
-		this.ruler = this.$ruler
 	}
 }
 </script>

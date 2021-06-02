@@ -1,17 +1,18 @@
 <template lang="pug">
 .d-ruler-wrapper.pos-r
 	i-icon.pos-a.d-ruler-guide-visible.pointer.z-index-999.text-center(
-		:type="ruler.guideVisible ? 'ios-eye-off-outline' : 'ios-eye-outline'",
-		@click="ruler.guideVisible = !ruler.guideVisible")
+		:type="editor.ruler.guideVisible ? 'ios-eye-off-outline' : 'ios-eye-outline'",
+		@click="editor.ruler.guideVisible = !editor.ruler.guideVisible")
 	x-line
 	y-line
 	#ruler-content.d-ruler-content(
-		ref="rulerContent",
 		@mousedown="rulerContentMouseDown",
-		@wheel="rulerContentWheel",
+		@wheel="editor.wheelRulerContentPosition($event)",
 		@mousemove="rulerContentMouseMove",
 		:class="{ drag: event.contentMove }")
-		.content-body.pos-a(:id="ruler.dragId", :style="ruler.rulerStyle")
+		.content-body.pos-a(
+			:id="editor.ruler.dragId",
+			:style="editor.ruler.rulerStyle")
 			slot
 </template>
 <script lang="ts">
@@ -20,11 +21,8 @@ import yLine from './yLine.vue'
 import event from '../../store/event.store'
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import { Icon } from 'view-design'
-import {
-	rulerContentMouseDown,
-	rulerContentMouseMove,
-	rulerContentWheel,
-} from '@/events'
+import { rulerContentMouseDown, rulerContentMouseMove } from '@/events'
+import Editor from '@/core/Editor'
 @Component({
 	components: {
 		xLine,
@@ -34,31 +32,29 @@ import {
 })
 export default class DRuler extends Vue {
 	event = event.state
-	ruler: RulerV = {}
+	editor = Editor.Instance()
 	rulerContentMouseDown = rulerContentMouseDown
 	rulerContentMouseMove = rulerContentMouseMove
-	rulerContentWheel = rulerContentWheel
 
-	@Watch('ruler.contentScrollLeft')
+	@Watch('editor.ruler.contentScrollLeft')
 	contentXChange() {
-		this.ruler.contentX += this.ruler.contentScrollLeft
+		this.editor.ruler.contentX += this.editor.ruler.contentScrollLeft
 	}
 
-	@Watch('ruler.contentScrollTop')
+	@Watch('editor.ruler.contentScrollTop')
 	contentYChange() {
-		this.ruler.contentY += this.ruler.contentScrollTop
+		this.editor.ruler.contentY += this.editor.ruler.contentScrollTop
 	}
 
 	windowResize() {
-		const id = this.ruler.dragId
+		const id = this.editor.ruler.dragId
 		const dragContent: any = document.getElementById(id).firstChild
-		this.ruler.width = dragContent.scrollWidth
-		this.ruler.height = dragContent.scrollHeight
-		this.ruler.resetZoom()
+		this.editor.ruler.width = dragContent.scrollWidth
+		this.editor.ruler.height = dragContent.scrollHeight
+		this.editor.resetZoom()
 	}
 
 	mounted() {
-		this.ruler = this.$ruler
 		window.addEventListener('resize', this.windowResize)
 	}
 }

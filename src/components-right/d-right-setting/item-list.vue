@@ -11,8 +11,5 @@ export default class DManageItemList extends Vue {
 	@Prop(Array) list: any[]
 	@Prop(Boolean) needChoose: boolean
 	screen = { screenWidgets: {} }
-	mounted() {
-		this.screen = this.$screen
-	}
 }
 </script>

@@ -49,7 +49,7 @@ export default {
 			ready: false,
 			animationClass: null,
 			custom: custom.state,
-			screen: {},
+			screen: this.$screen,
 		}
 	},
 	computed: {
@@ -160,7 +160,6 @@ export default {
 		},
 	},
 	mounted() {
-		this.screen = this.$screen
 		if (this.market) {
 			this.loadMarket()
 		} else {

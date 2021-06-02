@@ -1,7 +1,7 @@
 <template lang="pug">
 #d-screen.d-screen(
-	:style="{ height: `calc(100% - ${ruler.yRoom}px)` }",
-	@wheel="dScreenWheel")
+	:style="{ height: `calc(100% - ${editor.yRoom}px)` }",
+	@wheel="editor.wheelRulerContentZoom($event)")
 	.d-editor-box.pos-r.fn-flex
 		d-left-widget
 		d-left-scene
@@ -19,7 +19,7 @@ import dEditor from '../d-editor/index.vue'
 import dRightManage from '@/components-right/d-right-manage/index.vue'
 import dRightSetting from '@/components-right/d-right-setting/index.vue'
 import dRightSettingMore from '@/components-right/d-right-setting-more/index.vue'
-import { dScreenWheel } from '@/events'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -32,15 +32,9 @@ import { dScreenWheel } from '@/events'
 	},
 })
 export default class dScreen extends Vue {
-	ruler = {}
-	screen: ScreenV = {}
-	dScreenWheel = dScreenWheel
+	editor = Editor.Instance()
+	screen = this.$screen
 	@Provide('kanboardEditor') kanboardEditor = this.$refs.kanboardEditor
-
-	mounted() {
-		this.ruler = this.$ruler
-		this.screen = this.$screen
-	}
 }
 </script>
 <style lang="scss" scoped>

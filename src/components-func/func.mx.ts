@@ -49,7 +49,7 @@ import dInput from '@/components/d-input/index.vue'
 })
 export default class Func extends Vue {
 	event = event.state
-	screen: ScreenV = {}
+	screen = this.$screen
 	@Prop() config
 	@Prop() parentProp // group时会有
 	@Prop() parentIndex // group时会有
@@ -104,9 +104,5 @@ export default class Func extends Vue {
 			res = res[v]
 		})
 		return res
-	}
-
-	mounted() {
-		this.screen = this.$screen
 	}
 }

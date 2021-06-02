@@ -11,7 +11,7 @@ import dDrKuang from '../../components/d-dr-kuang/index.vue'
 	},
 })
 export default class DDrMore extends Vue {
-	screen: ScreenV = {}
+	screen = this.$screen
 	get style() {
 		if (!this.screen.chooseWidgetArrayConfig) return {}
 		return {
@@ -20,9 +20,6 @@ export default class DDrMore extends Vue {
 			height: this.screen.chooseWidgetArrayConfig.height + 'px',
 			zIndex: this.screen.chooseWidgetArrayConfig.z,
 		}
-	}
-	mounted() {
-		this.screen = this.$screen
 	}
 }
 </script>

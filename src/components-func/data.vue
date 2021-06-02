@@ -131,7 +131,7 @@ export default class FuncData extends func {
 	eventModal = false
 	// START_PROD
 	showDatabaseConfigModal = false
-	screen: ScreenV = {}
+	screen = this.$screen
 	get apiType() {
 		if (this.screen.chooseWidget.config.api.system.enable) {
 			return '数仓平台'

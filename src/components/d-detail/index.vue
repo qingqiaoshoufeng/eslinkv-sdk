@@ -5,23 +5,23 @@
 			i-tooltip(placement="bottom", content="组件区")
 				i-icon.pointer(
 					type="ios-cube-outline",
-					@click="handleLeft1",
+					@click.native="editor.taggerXRoomL1",
 					:size="18",
-					:class="{ active: ruler.xRoomL1 > 0 }")
+					:class="{ active: editor.xRoomL1 > 0 }")
 			i-tooltip(placement="bottom", content="场景区")
 				i-icon.pointer(
 					type="ios-photos-outline",
-					@click="handleLeft2",
+					@click.native="editor.taggerXRoomL2",
 					:size="18",
-					:class="{ active: ruler.xRoomL2 > 0 }")
+					:class="{ active: editor.xRoomL2 > 0 }")
 			i-tooltip(placement="bottom", content="设置区")
 				i-icon.pointer(
 					type="ios-archive-outline",
-					@click="handleRight1",
+					@click.native="editor.taggerXRoomR1",
 					:size="18",
-					:class="{ active: ruler.xRoomR1 > 0 }")
+					:class="{ active: editor.xRoomR1 > 0 }")
 	.d-detail-middle.fn-flex
-		span.d-detail-title {{ screen.name }}
+		span.d-detail-title {{ editor.name }}
 	ul.d-detail-right.fn-flex
 		li.fn-flex.flex-column.pointer(@click.stop="search")
 			i-icon(type="ios-search-outline", :size="24")
@@ -61,9 +61,10 @@ import {
 	Tooltip,
 } from 'view-design'
 import loadMask from '../load-mask/index.vue'
-import ScreenPc from '@/controller/Screen/pc'
 import { downloadFile, getQueryString } from '@/utils'
 import dSearch from '@/components/d-search/index.vue'
+import Editor from '@/core/Editor'
+import { detail } from '@/api/screen.api'
 
 @Component({
 	components: {
@@ -80,29 +81,14 @@ import dSearch from '@/components/d-search/index.vue'
 })
 export default class DDetail extends Vue {
 	@Prop({ default: true }) show: boolean
-	ruler: RulerV = {}
-	screen: ScreenV = {}
+	editor = Editor.Instance()
+	screen = this.$screen
 	loadingMsg = 'loading…'
 	shareModal = false
 	searchModal = false
 	loading = false
 	importModal = false
 	isNew = true
-
-	handleLeft1() {
-		this.ruler.xRoomL1 = this.ruler.xRoomL1 > 0 ? 0 : 238
-		localStorage.setItem('xRoomL1', `${this.ruler.xRoomL1}`)
-	}
-
-	handleRight1() {
-		this.ruler.xRoomR1 = this.ruler.xRoomR1 > 0 ? 0 : 350
-		localStorage.setItem('xRoomR1', `${this.ruler.xRoomR1}`)
-	}
-
-	handleLeft2() {
-		this.ruler.xRoomL2 = this.ruler.xRoomL2 > 0 ? 0 : 238
-		localStorage.setItem('xRoomL2', `${this.ruler.xRoomL2}`)
-	}
 
 	search() {
 		this.searchModal = true
@@ -121,7 +107,11 @@ export default class DDetail extends Vue {
 		const templateId = this.$route.query.templateId
 		const id = this.$route.params.id || templateId
 		this.isNew = !id
-		this.screen = ScreenPc.getInstance({ screenId: id })
+		if (id) {
+			detail({ screenId: id }).then(res => {
+				this.editor.init(res)
+			})
+		}
 		const file = this.$route.params.file
 		if (file) {
 			this.$api.screen.detailFile(decodeURIComponent(file)).then(res => {
@@ -212,10 +202,6 @@ export default class DDetail extends Vue {
 			this.$Message.error('配置文件识别失败')
 		}
 		reader.readAsText(file)
-	}
-
-	mounted() {
-		this.ruler = this.$ruler
 	}
 }
 </script>

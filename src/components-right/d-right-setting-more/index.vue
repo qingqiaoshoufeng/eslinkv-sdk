@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-right-modal-box.z-index-999(:style="{ width: `${ruler.xRoomR1}px` }")
+.d-right-modal-box.z-index-999(:style="{ width: `${editor.xRoomR1}px` }")
 	.d-right-modal-more-list.fn-flex.flex-column
 		i-button(@click="handleGroup", type="primary") 成组
 		i-button(@click="handleDelete", type="primary") 删除
@@ -9,6 +9,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Button } from 'view-design'
 import { uuid, configMerge } from '@/utils/index.js'
 import commonConfigValue from '../../../common-config-value.js'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -16,8 +17,8 @@ import commonConfigValue from '../../../common-config-value.js'
 	},
 })
 export default class DRightSettingMore extends Vue {
-	ruler = {}
-	screen: ScreenV = {}
+	editor = Editor.Instance()
+	screen = this.$screen
 
 	handleGroup() {
 		const children = []
@@ -64,10 +65,6 @@ export default class DRightSettingMore extends Vue {
 				this.screen.chooseWidgetArray = []
 			},
 		})
-	}
-	mounted() {
-		this.ruler = this.$ruler
-		this.screen = this.$screen
 	}
 }
 </script>

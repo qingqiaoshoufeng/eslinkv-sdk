@@ -2,18 +2,19 @@
 .d-ruler-wrapper-y(
 	@mouseenter="showHelp = true",
 	@mouseleave="showHelp = false",
-	@mousedown="rulerLineMouseDown($event, 'h', $route.params.id)",
-	@mouseup="rulerLineMouseUp($event, 'h', $route.params.id)")
+	@mousedown.stop="editor.createGuideLine('h', $route.params.id)",
+	@mouseup.stop="editor.createGuideLine('h', $route.params.id)")
 	canvas#ruler-v.pos-a(width="18", height="9999")
 	.d-ruler-mouse-y.pos-a(
-		:style="`transform: translateY(${event.clientY - ruler.size - ruler.yRoom}px)`",
+		:style="`transform: translateY(${event.clientY - editor.rulerSize - editor.yRoom}px)`",
 		v-if="showHelp")
 		.num {{ site }}
 </template>
 <script lang="ts">
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import event from '../../store/event.store'
-import { rulerLineMouseUp, rulerLineMouseDown } from '@/events'
+import Editor from '@/core/Editor'
+
 let i = 0
 let loadImg = false
 const bgImg = new Image()
@@ -21,24 +22,22 @@ const bgImg = new Image()
 @Component
 export default class YLine extends Vue {
 	event = event.state
-	ruler: RulerV = {}
+	editor = Editor.Instance()
 	showHelp = false
 	canvas: HTMLCanvasElement
 	context = null
-	screen: ScreenV = {}
-	rulerLineMouseDown = rulerLineMouseDown
-	rulerLineMouseUp = rulerLineMouseUp
+	screen = this.$screen
 
 	get site() {
-		return this.ruler.guideSite('h')
+		return this.editor.ruler.guideSite('h')
 	}
 
-	@Watch('ruler.zoom')
+	@Watch('editor.zoom')
 	zoomChange() {
 		this.init()
 	}
 
-	@Watch('ruler.contentY')
+	@Watch('editor.ruler.contentY')
 	contentXChange() {
 		this.init()
 	}
@@ -69,7 +68,9 @@ export default class YLine extends Vue {
 
 	clearRulerCanvas() {
 		const t = this.context.getTransform()
-		this.canvas.height = document.getElementById('d-editor').offsetHeight
+		this.canvas.height =
+			document.getElementById('d-editor').offsetHeight -
+			this.editor.rulerSize
 		this.context.clearRect(
 			-t.e,
 			0,
@@ -89,9 +90,9 @@ export default class YLine extends Vue {
 			this.context.drawImage(bgImg, 0, x)
 			this.context.translate(10, x)
 			this.context.rotate(-Math.PI / 2)
-			const num = ~~(x / this.ruler.zoom)
+			const num = ~~(x / this.editor.zoom)
 			this.context.fillText(num, -num.toString().length * 8, 0)
-			x = x + this.ruler.stepLength
+			x = x + this.editor.ruler.stepLength
 			this.context.restore()
 		}
 
@@ -99,11 +100,11 @@ export default class YLine extends Vue {
 			let xe = 0
 			while (xe < t.f) {
 				this.context.save()
-				xe = xe + this.ruler.stepLength
+				xe = xe + this.editor.ruler.stepLength
 				this.context.drawImage(bgImg, 0, -xe)
 				this.context.translate(10, -xe + 28)
 				this.context.rotate(-Math.PI / 2)
-				this.context.fillText(~~-(xe / this.ruler.zoom), 2, 0)
+				this.context.fillText(~~-(xe / this.editor.zoom), 2, 0)
 				this.context.restore()
 			}
 		}
@@ -119,13 +120,13 @@ export default class YLine extends Vue {
 	init() {
 		this.context.translate(
 			0,
-			(this.screen.height * (1 - this.ruler.zoom)) / 2 +
-				this.ruler.contentY -
-				this.ruler.guideStartY,
+			(this.screen.height * (1 - this.editor.zoom)) / 2 +
+				this.editor.ruler.contentY -
+				this.editor.ruler.guideStartY,
 		)
-		this.ruler.guideStartY =
-			(this.screen.height * (1 - this.ruler.zoom)) / 2 +
-			this.ruler.contentY
+		this.editor.ruler.guideStartY =
+			(this.screen.height * (1 - this.editor.zoom)) / 2 +
+			this.editor.ruler.contentY
 		if (loadImg) {
 			this.initDraw()
 		} else {
@@ -144,8 +145,6 @@ export default class YLine extends Vue {
 		this.context.font = '10px sans-serif'
 		this.context.fillStyle = '#999'
 		this.init()
-		this.screen = this.$screen
-		this.ruler = this.$ruler
 	}
 }
 </script>

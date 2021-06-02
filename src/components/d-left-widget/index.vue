@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-left-widget.pos-a.fn-flex.flex-column(
-	:style="{ width: `${ruler.xRoomL1}px` }")
+	:style="{ width: `${editor.xRoomL1}px` }")
 	.d-left-modal-title.text-center
 		span 组件区
 	.fn-flex.flex-row(:style="{ flex: 1, height: 'calc(100% - 40px)' }")
@@ -39,6 +39,7 @@ import { Icon } from 'view-design'
 import custom from '../../store/custom.store'
 import itemCard from './item-card.vue'
 import { Component, Vue } from 'vue-property-decorator'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -49,7 +50,7 @@ import { Component, Vue } from 'vue-property-decorator'
 })
 export default class DLeftWidget extends Vue {
 	custom = custom.state
-	ruler = {}
+	editor = Editor.Instance()
 	leftIndex = null
 	rightIndex = null
 	list = {}
@@ -83,9 +84,6 @@ export default class DLeftWidget extends Vue {
 				})
 			}
 		}
-	}
-	mounted() {
-		this.ruler = this.$ruler
 	}
 }
 </script>

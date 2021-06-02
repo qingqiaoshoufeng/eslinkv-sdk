@@ -1,4 +1,3 @@
-import scene from '@/store/scene.store'
 import event from '@/store/event.store'
 import Vue from 'vue'
 

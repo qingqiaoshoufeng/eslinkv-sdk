@@ -2,13 +2,13 @@
 .d-guide
 	.d-guide-wrapper.pos-a(:style="guideStyle")
 		.d-guide-line.z-index-9.pos-a.d-editor-line(
-			v-for="item in ruler.guideLines",
+			v-for="item in editor.ruler.guideLines",
 			:style="{ ...lineStyle(item) }",
 			:data-top="item.type === 'v' ? 0 : item.site",
 			:data-left="item.type === 'v' ? item.site : 0",
 			:key="item.site",
 			:class="[`d-guide-line-${item.type}`]",
-			@mousedown="rulerGuideMouseDown($event, item)",
+			@mousedown.stop="editor.dragGuideLine($event, item)",
 			@contextmenu="openGuideMenu(item.id, $event)")
 			.num.pos-a {{ item.site }}px
 	ul.d-guide-right-menu(
@@ -19,7 +19,7 @@
 <script lang="ts">
 import event from '../../store/event.store'
 import { Component, Vue } from 'vue-property-decorator'
-import { rulerGuideMouseDown } from '@/events'
+import Editor from '@/core/Editor'
 
 @Component
 export default class Guide extends Vue {
@@ -28,8 +28,7 @@ export default class Guide extends Vue {
 	menuTop = 0
 	removeId = null
 	event = event.state
-	ruler: RulerV = {}
-	rulerGuideMouseDown = rulerGuideMouseDown
+	editor = Editor.Instance()
 
 	/**
 	 * @description
@@ -39,31 +38,26 @@ export default class Guide extends Vue {
 	get guideStyle() {
 		return {
 			left: `${
-				this.ruler.guideStartX < 0
+				this.editor.guideStartX < 0
 					? 0
-					: this.ruler.guideStartX + this.ruler.size
+					: this.editor.guideStartX + this.editor.rulerSize
 			}px`,
 			top: `${
-				this.ruler.guideStartY < 0
+				this.editor.guideStartY < 0
 					? 0
-					: this.ruler.guideStartY + this.ruler.size
+					: this.editor.guideStartY + this.editor.rulerSize
 			}px`,
 		}
 	}
 
 	updateHandle() {
 		const id = this.$route.params.id
-		if (id) {
-			this.$api.screenShare.screenShareUpdate({
-				screenId: id,
-				screenGuide: this.ruler.guideLines,
-			})
-		}
+		this.editor.updateRuler(id)
 	}
 
 	handleDestroy(id) {
-		const index = this.ruler.guideLines.findIndex(v => v.id === id)
-		this.ruler.guideLines.splice(index, 1)
+		const index = this.editor.ruler.guideLines.findIndex(v => v.id === id)
+		this.editor.ruler.guideLines.splice(index, 1)
 		this.updateHandle()
 	}
 
@@ -78,30 +72,30 @@ export default class Guide extends Vue {
 		const style: any = {}
 		if (type === 'h') {
 			style.top = `${
-				this.ruler.guideStartY < 0
-					? site * this.ruler.zoom +
-					  this.ruler.guideStartY +
-					  this.ruler.size
-					: site * this.ruler.zoom
+				this.editor.ruler.guideStartY < 0
+					? site * this.editor.zoom +
+					  this.editor.ruler.guideStartY +
+					  this.editor.rulerSize
+					: site * this.editor.zoom
 			}px`
 			style.left = `-${
-				this.ruler.guideStartX < 0
+				this.editor.guideStartX < 0
 					? 0
-					: this.ruler.guideStartX + this.ruler.size
+					: this.editor.guideStartX + this.editor.rulerSize
 			}px`
 		}
 		if (type === 'v') {
 			style.left = `${
-				this.ruler.guideStartX < 0
-					? site * this.ruler.zoom +
-					  this.ruler.guideStartX +
-					  this.ruler.size
-					: site * this.ruler.zoom
+				this.editor.guideStartX < 0
+					? site * this.editor.zoom +
+					  this.editor.guideStartX +
+					  this.editor.rulerSize
+					: site * this.editor.zoom
 			}px`
 			style.top = `-${
-				this.ruler.guideStartY < 0
+				this.editor.ruler.guideStartY < 0
 					? 0
-					: this.ruler.guideStartY + this.ruler.size
+					: this.editor.ruler.guideStartY + this.editor.rulerSize
 			}px`
 		}
 		return style
@@ -129,13 +123,13 @@ export default class Guide extends Vue {
 	}
 
 	clearGuides() {
-		if (this.ruler.guideLines.length > 0)
+		if (this.editor.ruler.guideLines.length > 0)
 			this.$Modal.confirm({
 				title: '确定是否清空参考线？',
 				okText: '确定',
 				cancelText: '取消',
 				onOk: () => {
-					this.ruler.guideLines = []
+					this.editor.ruler.guideLines = []
 					this.updateHandle()
 				},
 			})
@@ -144,7 +138,6 @@ export default class Guide extends Vue {
 	mounted() {
 		document.addEventListener('keyup', this.dispatchHotKey)
 		document.addEventListener('click', this.closeGuideMenu)
-		this.ruler = this.$ruler
 	}
 
 	beforeDestroy() {

@@ -2,18 +2,19 @@
 .d-ruler-wrapper-x(
 	@mouseenter="showHelp = true",
 	@mouseleave="showHelp = false",
-	@mousedown="rulerLineMouseDown($event, 'v', $route.params.id)",
-	@mouseup="rulerLineMouseUp($event, 'v', $route.params.id)")
-	canvas#ruler-x.pos-a(width="9999", height="18")
+	@mousedown.stop="editor.createGuideLine('v', $route.params.id)",
+	@mouseup.stop="editor.createGuideLine('v', $route.params.id)")
+	.pos-a
+		canvas#ruler-x(width="9999", height="18")
 	.d-ruler-mouse-x.pos-a(
-		:style="`transform: translateX(${event.clientX - ruler.size - ruler.xRoomL1 - ruler.xRoomL2}px)`",
+		:style="`transform: translateX(${event.clientX - editor.rulerSize - editor.xRoomL1 - editor.xRoomL2}px)`",
 		v-if="showHelp")
 		.num {{ site }}
 </template>
 <script lang="ts">
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import event from '../../store/event.store'
-import { rulerLineMouseUp, rulerLineMouseDown } from '@/events'
+import Editor from '@/core/Editor'
 
 let i = 0
 let loadImg = false
@@ -22,24 +23,22 @@ const bgImg = new Image()
 @Component
 export default class XLine extends Vue {
 	event = event.state
-	ruler: RulerV = {}
+	editor = Editor.Instance()
 	showHelp = false
 	canvas: HTMLCanvasElement
 	context = null
-	screen: ScreenV = {}
-	rulerLineMouseDown = rulerLineMouseDown
-	rulerLineMouseUp = rulerLineMouseUp
+	screen = this.$screen
 
 	get site() {
-		return this.ruler.guideSite('v')
+		return this.editor.ruler.guideSite('v')
 	}
 
-	@Watch('ruler.zoom')
+	@Watch('editor.zoom')
 	zoomChange() {
 		this.init()
 	}
 
-	@Watch('ruler.contentX')
+	@Watch('editor.ruler.contentX')
 	contentXChange() {
 		this.init()
 	}
@@ -65,7 +64,9 @@ export default class XLine extends Vue {
 
 	clearRulerCanvas() {
 		const t = this.context.getTransform()
-		this.canvas.width = document.getElementById('d-editor').offsetWidth
+		this.canvas.width =
+			document.getElementById('d-editor').offsetWidth -
+			this.editor.rulerSize
 		this.context.clearRect(
 			-t.e,
 			0,
@@ -82,19 +83,19 @@ export default class XLine extends Vue {
 			this.context.drawImage(bgImg, x, 0)
 			this.context.font = '10px sans-serif'
 			this.context.fillStyle = '#999'
-			this.context.fillText(~~(x / this.ruler.zoom), x + 4, 10)
-			x = x + this.ruler.stepLength
+			this.context.fillText(~~(x / this.editor.zoom), x + 4, 10)
+			x = x + this.editor.ruler.stepLength
 		}
 
 		if (t.e > 0) {
 			let xe = 0
 			while (xe < t.e) {
-				xe = xe + this.ruler.stepLength
+				xe = xe + this.editor.ruler.stepLength
 				this.context.drawImage(bgImg, -xe, 0)
 				this.context.font = '10px sans-serif'
 				this.context.fillStyle = '#999'
 				this.context.fillText(
-					xe === 0 ? '0' : -~~(xe / this.ruler.zoom),
+					xe === 0 ? '0' : -~~(xe / this.editor.zoom),
 					-xe + 2,
 					10,
 				)
@@ -111,14 +112,14 @@ export default class XLine extends Vue {
 	 */
 	init() {
 		this.context.translate(
-			(this.screen.width * (1 - this.ruler.zoom)) / 2 +
-				this.ruler.contentX -
-				this.ruler.guideStartX,
+			(this.screen.width * (1 - this.editor.zoom)) / 2 +
+				this.editor.ruler.contentX -
+				this.editor.guideStartX,
 			0,
 		)
-		this.ruler.guideStartX =
-			(this.screen.width * (1 - this.ruler.zoom)) / 2 +
-			this.ruler.contentX
+		this.editor.ruler.guideStartX =
+			(this.screen.width * (1 - this.editor.zoom)) / 2 +
+			this.editor.ruler.contentX
 		if (loadImg) {
 			this.initDraw()
 		} else {
@@ -137,8 +138,6 @@ export default class XLine extends Vue {
 		this.context.font = '10px sans-serif'
 		this.context.fillStyle = '#999'
 		this.init()
-		this.screen = this.$screen
-		this.ruler = this.$ruler
 	}
 }
 </script>

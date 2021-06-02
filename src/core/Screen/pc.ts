@@ -1,26 +1,8 @@
-import base from './base'
-import Vue from 'vue'
-import { detail } from '@/api/screen.api'
+import ScreenBase from './base'
 import { use } from '@/api/marketComponent.api'
 import { setDefault } from '@/utils'
 
-export default class ScreenPc extends base implements ScreenV {
-	constructor(obj: any) {
-		super()
-		this.init(obj)
-	}
-	public static getInstance(obj: any): ScreenPc {
-		if (
-			!Vue.prototype.$screen ||
-			Object.keys(Vue.prototype.$screen).length === 0
-		) {
-			Vue.prototype.$screen = new ScreenPc(obj)
-			return Vue.prototype.$screen
-		}
-		return Vue.prototype.$screen
-	}
-	/* 当前系统版本 */
-	currentVersion = '1.1.0'
+export default class ScreenPc extends ScreenBase {
 	/* 当前组件加载状态 */
 	widgetLoaded = {}
 	/* 当前组件加载状态 */
@@ -82,7 +64,7 @@ export default class ScreenPc extends base implements ScreenV {
 		return widget
 	}
 	/* 配置序列化 */
-	public serialize(res) {
+	public init(res: any): void {
 		this.screenName = res.screenName
 		this.screenAvatar = res.screenAvatar
 		this.screenPublish = res.screenPublish
@@ -93,9 +75,11 @@ export default class ScreenPc extends base implements ScreenV {
 		this.createTime = res.createTime
 		this.updateTime = res.updateTime
 		this.screenConfig = res.screenConfig
-		this.width = res.screenWidth ? res.screenWidth : res.screenConfig.width
+		this.screenWidth = res.screenWidth
+			? res.screenWidth
+			: res.screenConfig.width
 		delete this.screenConfig.width
-		this.height = res.screenHeight
+		this.screenHeight = res.screenHeight
 			? res.screenHeight
 			: res.screenConfig.height
 		delete this.screenConfig.height
@@ -200,14 +184,6 @@ export default class ScreenPc extends base implements ScreenV {
 			})
 		if (p.length === 0) {
 			this.widgetLoading = false
-		}
-	}
-
-	public init(obj: any) {
-		if (obj.screenId) {
-			detail({ screenId: obj.screenId }).then(res => {
-				this.serialize(res)
-			})
 		}
 	}
 }

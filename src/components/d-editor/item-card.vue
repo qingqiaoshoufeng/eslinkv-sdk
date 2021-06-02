@@ -4,7 +4,7 @@ dr(
 	:key="item.id",
 	:ref="`widget_${item.id}`",
 	:id="item.id",
-	:scale-ratio="ruler.zoom",
+	:scale-ratio="editor.zoom",
 	:draggable="widgetEditable(item)",
 	:resizable="widgetEditable(item)",
 	:scale="item.config.layout.scale",
@@ -35,6 +35,8 @@ import dDrKuang from '../../components/d-dr-kuang/index.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import parts from '../d-widget-part/index.vue'
 import event from '@/store/event.store.js'
+import Editor from '@/core/Editor'
+
 @Component({
 	components: {
 		dr,
@@ -43,8 +45,8 @@ import event from '@/store/event.store.js'
 	},
 })
 export default class ItemCard extends Vue {
-	ruler = {}
-	screen: ScreenV = {}
+	editor = Editor.Instance()
+	screen = this.$screen
 	currentWidgetType = null
 	event = event.state
 
@@ -158,10 +160,6 @@ export default class ItemCard extends Vue {
 		const currentWidget = this.screen.screenWidgets[id]
 		if (!id || !currentWidget) return
 		this.$set(currentWidget, 'config', value)
-	}
-	mounted() {
-		this.ruler = this.$ruler
-		this.screen = this.$screen
 	}
 }
 </script>

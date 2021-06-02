@@ -1,28 +1,19 @@
 import { update, create } from '@/api/screen.api'
 import { Message } from 'view-design'
-import { debounce } from 'throttle-debounce'
-import scene from './scene'
 import Vue from 'vue'
 import copy from 'fast-copy'
 import commonConfigValue from '../../../common-config-value'
 import { screenShareUpdate } from '@/api/screenShare.api'
 import { getQueryString } from '@/utils'
+import Factory from '@/core/Base/factory'
 
-export default class Screen extends scene {
+export default class Screen extends Factory<Screen> {
+	/* 当前系统版本 */
+	currentVersion = '1.1.0'
 	/* 大屏ID */
-	public screenId = ''
+	public screenId: string
 	/* 大屏名 */
 	public screenName = '未命名'
-
-	get name() {
-		return this.screenName
-	}
-
-	set name(screenName: string) {
-		this.screenName = screenName
-		this.updateScreenDebounce({ screenName })
-	}
-
 	/* 已废弃 */
 	/* 大屏配置 */
 	public screenConfig: any = {}
@@ -70,28 +61,10 @@ export default class Screen extends scene {
 	public screenPublish = ''
 	/* 大屏缩略图 */
 	public screenAvatar = ''
-	get avatar() {
-		return this.screenAvatar
-	}
-	set avatar(screenAvatar: string) {
-		this.screenAvatar = screenAvatar
-		this.updateScreenDebounce({ screenAvatar })
-	}
-
 	/* 大屏版本号 */
 	public screenVersion = ''
-	/* 大屏适配方式 */
+	/* 大屏适配方式 full-size 充满页面 full-width 100%宽度 full-height 100%高度 */
 	public screenLayoutMode = ''
-
-	get layoutMode() {
-		return this.screenLayoutMode
-	}
-
-	set layoutMode(screenLayoutMode: string) {
-		this.screenLayoutMode = screenLayoutMode
-		this.updateScreenDebounce({ screenLayoutMode })
-	}
-
 	/* 备注 */
 	public remark = ''
 	/* 排序 */
@@ -102,81 +75,16 @@ export default class Screen extends scene {
 	public updateTime: string
 	/* 大屏宽度 */
 	public screenWidth = 1920
-
-	get width() {
-		return this.screenWidth
-	}
-
-	set width(screenWidth: number) {
-		this.screenWidth = screenWidth
-		if (Object.keys(Vue.prototype.$ruler).length)
-			Vue.prototype.$ruler.resetZoom()
-		if (this.screenId) this.updateScreenDebounce({ screenWidth })
-	}
-
 	/* 大屏高度 */
 	public screenHeight = 1080
-
-	get height() {
-		return this.screenHeight
-	}
-
-	set height(screenHeight: number) {
-		this.screenHeight = screenHeight
-		if (Object.keys(Vue.prototype.$ruler).length)
-			Vue.prototype.$ruler.resetZoom()
-		if (this.screenId) this.updateScreenDebounce({ screenHeight })
-	}
-
 	/* 大屏背景颜色 */
 	public screenBackGroundColor = 'rgba(24, 27, 36,1)'
-
-	get backgroundColor() {
-		return this.screenBackGroundColor
-	}
-
-	set backgroundColor(screenBackGroundColor: string) {
-		this.screenBackGroundColor = screenBackGroundColor
-		this.updateScreenDebounce({ screenBackGroundColor })
-	}
-
 	/* 大屏背景图片 */
 	public screenBackGroundImage = ''
-
-	get backgroundImage() {
-		return this.screenBackGroundImage
-	}
-
-	set backgroundImage(screenBackGroundImage: string) {
-		this.screenBackGroundImage = screenBackGroundImage
-		this.updateScreenDebounce({ screenBackGroundImage })
-	}
-
 	/* 大屏首屏场景 */
-	public screenMainScene: string
-
-	get mainScene() {
-		return this.screenMainScene
-	}
-
-	set mainScene(screenMainScene: string) {
-		this.screenMainScene = screenMainScene
-		this.updateScreenDebounce({ screenMainScene })
-	}
-
+	public screenMainScene: string | number
 	/* 大屏平台类型 PC:PC */
 	public screenPlatform: string
-	/* 更新大屏信息 防抖：1500ms */
-	updateScreenDebounce = debounce(1500, false, function (obj: any) {
-		if (this.screenId) {
-			update({
-				screenId: this.screenId,
-				...obj,
-			}).then(() => {
-				Message.success('修改成功')
-			})
-		}
-	})
 
 	/* 大屏样式 */
 	get screenStyle() {
@@ -214,10 +122,9 @@ export default class Screen extends scene {
 	}
 
 	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
-	status = 'inEdit'
-
-	setStatus(status) {
-		this.status = status
+	editorStatus = 'inEdit'
+	public updateEditorStatus(status: string): void {
+		this.editorStatus = status
 	}
 
 	/* 大屏平台状态 是否Mac*/

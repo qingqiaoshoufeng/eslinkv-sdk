@@ -4,7 +4,7 @@
 #d-editor.d-editor.pos-r(
 	ref="canvas-wrapper",
 	:class="{ fullscreen: screen.fullscreen }",
-	:style="{ width: `calc(100% - ${ruler.xRoomL1 + ruler.xRoomL2 + ruler.xRoomR1}px)`, marginLeft: `${ruler.xRoomL1 + ruler.xRoomL2}px` }",
+	:style="{ width: `calc(100% - ${editor.xRoomL1 + editor.xRoomL2 + editor.xRoomR1}px)`, marginLeft: `${editor.xRoomL1 + editor.xRoomL2}px` }",
 	@contextmenu.stop.prevent)
 	// 标尺容器
 	d-ruler(ref="rulerCanvas")
@@ -22,15 +22,15 @@
 				:ref="item.id")
 			dr-more(v-show="screen.chooseWidgetArray&&screen.chooseWidgetArray.length")
 			.d-editor-line(data-top="0px", data-left="0px")
-			.d-editor-line(:data-top="`${screen.height}px`", data-left="0px")
+			.d-editor-line(:data-top="`${editor.height}px`", data-left="0px")
 			.d-editor-line(
 				data-top="0px",
-				:style="{ width: 0, height: `${screen.height}px` }",
-				:data-left="`${screen.width}px`")
+				:style="{ width: 0, height: `${editor.height}px` }",
+				:data-left="`${editor.width}px`")
 			.d-editor-line(
 				data-top="0px",
 				data-left="0px",
-				:style="{ height: `${screen.height}px`, width: 0 }")
+				:style="{ height: `${editor.height}px`, width: 0 }")
 			// 参考线
 			span.ref-line.v-line.pos-a(
 				v-for="item in vLine",
@@ -54,9 +54,9 @@ import dFooter from '../d-footer/index.vue'
 import dGuide from '../d-guide/index.vue'
 import instance from '../../store/instance.store'
 import ItemCard from './item-card.vue'
-import Ruler from '@/controller/Ruler'
 import { Component, Provide } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -70,22 +70,21 @@ import { mixins } from 'vue-class-component'
 	},
 })
 export default class DEditor extends mixins(widgetOperation) {
-	ruler: RulerV = {}
-	screen: ScreenV = {}
+	editor = Editor.Instance()
 	vLine = []
 	hLine = []
 	@Provide() kanboardEditor = this
 
 	get canvasStyle() {
 		return {
-			width: `${this.screen.width}px`,
-			height: `${this.screen.height}px`,
-			'background-color': this.screen.backgroundColor,
-			'background-image': `url(${this.screen.backgroundImage})`,
+			width: `${this.editor.width}px`,
+			height: `${this.editor.height}px`,
+			'background-color': this.editor.backgroundColor,
+			'background-image': `url(${this.editor.backgroundImage})`,
 		}
 	}
 	get canvasSize() {
-		const { width, height } = this.screen
+		const { width, height } = this.editor
 		return { width, height }
 	}
 	getRefLineParams(params, item) {
@@ -122,13 +121,9 @@ export default class DEditor extends mixins(widgetOperation) {
 	beforeDestroy() {
 		this.screen.fullscreen = false
 	}
-	created() {
-		this.ruler = Ruler.getInstance()
-	}
 	mounted() {
-		this.screen = this.$screen
 		instance.actions.setInstance('kanboard', this)
-		this.screen.setStatus('inEdit')
+		this.editor.updateEditorStatus('inEdit')
 	}
 }
 </script>

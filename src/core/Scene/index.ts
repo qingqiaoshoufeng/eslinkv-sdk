@@ -1,7 +1,8 @@
 import { uuid } from '@/utils'
 import Vue from 'vue'
+import Factory from '@/core/Base/factory'
 
-export default class SceneBase {
+export default class SceneBase extends Factory<SceneBase> {
 	/* 大屏场景配置 */
 	public screenScene: any = {}
 	/* 大屏场景数据序列化 */
@@ -13,18 +14,18 @@ export default class SceneBase {
 	/* 大屏场景组件关联 */
 	public sceneWidgets = {}
 	/* 切换场景 */
-	public setSceneIndex(val) {
+	public setSceneIndex(val: number | string): void {
 		this.sceneIndex = val
 		let event = new CustomEvent('SceneIndex', { detail: { index: val } })
 		document.dispatchEvent(event)
 		event = null
 	}
 	/* 更新场景名称 */
-	public setSceneName(name) {
+	public setSceneName(name: string): void {
 		this.sceneObj[this.sceneIndex].name = name.replace(/ /g, '')
 	}
 	/* 序列化场景数据 */
-	public initScene(res) {
+	public initScene(res: any): void {
 		if (res.screenScene) {
 			this.screenScene = res.screenScene
 		} else {
@@ -53,31 +54,30 @@ export default class SceneBase {
 		}
 	}
 	/* 创建场景 */
-	public createScene() {
+	public createScene(): void {
 		const name = uuid()
 		Vue.set(this.sceneList, this.sceneList.length, name)
 		Vue.set(this.sceneObj, name, { name: `场景${name}` })
 		this.setSceneIndex(name)
 	}
 	/* 删除场景 */
-	public destroyScene() {
-		if (this.sceneIndex === 0) {
-			return false
-		}
-		Vue.prototype.$Modal.confirm({
-			title: '是否删除当前场景？',
-			content: '该场景未删除的组件将自动进入回收站！',
-			onOk: () => {
-				const index = this.sceneIndex
-				this.setSceneIndex(0)
-				Vue.delete(this.sceneObj, index)
-				for (const key in Vue.prototype.$screen.screenWidgets) {
-					const item = Vue.prototype.$screen.screenWidgets[key]
-					if (item.scene === index) {
-						item.scene = -1
+	public destroyScene(): void {
+		if (this.sceneIndex !== 0) {
+			Vue.prototype.$Modal.confirm({
+				title: '是否删除当前场景？',
+				content: '该场景未删除的组件将自动进入回收站！',
+				onOk: () => {
+					const index = this.sceneIndex
+					this.setSceneIndex(0)
+					Vue.delete(this.sceneObj, index)
+					for (const key in Vue.prototype.$screen.screenWidgets) {
+						const item = Vue.prototype.$screen.screenWidgets[key]
+						if (item.scene === index) {
+							item.scene = -1
+						}
 					}
-				}
-			},
-		})
+				},
+			})
+		}
 	}
 }

@@ -4,7 +4,7 @@ import { Vue, Component } from 'vue-property-decorator'
 @Component
 class Mixins extends Vue {
 	currentWidgetType = null
-	screen: ScreenV = {}
+	screen = this.$screen
 	updateWidget(value) {
 		if (!value || !value.widget) return
 		const id = value.widget.id
@@ -63,10 +63,6 @@ class Mixins extends Vue {
 		this.screen.setChooseWidget(id)
 		this.screen.setChooseWidgetCustomConfig(config.customConfig)
 		this.currentWidgetType = type
-	}
-
-	mounted() {
-		this.screen = this.$screen
 	}
 }
 

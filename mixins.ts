@@ -32,7 +32,7 @@ const mx: any = {
 			animateTimer: null,
 			animateActiveIndex: -1,
 			output: null,
-			screen: {},
+			screen: this.$screen,
 			inPreview: true,
 		}
 	},
@@ -230,7 +230,6 @@ const mx: any = {
 		},
 	},
 	mounted() {
-		this.screen = this.$screen
 		this.inPreview = this.$screen.status === 'inPreview'
 	},
 }

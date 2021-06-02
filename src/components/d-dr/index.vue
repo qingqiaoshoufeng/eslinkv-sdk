@@ -131,7 +131,7 @@ export default {
 			resizing: false,
 			dragging: false,
 			brotherNodes: [],
-			screen: {},
+			screen: this.$screen,
 		}
 	},
 	created() {
@@ -150,7 +150,6 @@ export default {
 			'touchend touchcancel',
 			this.deselect,
 		)
-		this.screen = this.$screen
 	},
 	beforeDestroy() {
 		removeEvent(

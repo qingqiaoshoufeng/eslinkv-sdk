@@ -1,7 +1,7 @@
 <template lang="pug">
 .container(
 	:class="{ active: value }",
-	:style="{ width: `calc(100% - ${ruler.xRoomL1 + ruler.xRoomL2 + ruler.xRoomR1}px)`, left: `${ruler.xRoomL1 + ruler.xRoomL2}px` }")
+	:style="{ width: `calc(100% - ${editor.xRoomL1 + editor.xRoomL2 + editor.xRoomR1}px)`, left: `${editor.xRoomL1 + editor.xRoomL2}px` }")
 	.d-detail-search.animated.searchFadeInDown(v-click-outside="hide")
 		i-input.d-detail-input(
 			@on-focus="event.inputFocus = true",
@@ -17,6 +17,7 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
 import event from '../../store/event.store'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -29,8 +30,8 @@ export default class DSearch extends Vue {
 	searchResult = []
 	event = event.state
 	keyword = ''
-	screen: ScreenV = {}
-	ruler = {}
+	screen = this.$screen
+	editor = Editor.Instance()
 	@Prop() value
 	@Prop() hide
 
@@ -57,11 +58,6 @@ export default class DSearch extends Vue {
 		this.screen.setSceneIndex(widget.scene)
 		this.screen.chooseWidgetId = widget.id
 		this.hide()
-	}
-
-	mounted() {
-		this.screen = this.$screen
-		this.ruler = this.$ruler
 	}
 }
 </script>
