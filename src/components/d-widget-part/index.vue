@@ -17,6 +17,7 @@ component.widget-part(
 <script>
 import Vue from 'vue'
 import custom from '../../store/custom.store'
+import Editor from '@/core/Editor'
 
 const prefix1 = 'market-'
 const prefix2 = 'eslinkv-'
@@ -49,7 +50,7 @@ export default {
 			ready: false,
 			animationClass: null,
 			custom: custom.state,
-			screen: this.$screen,
+			editor: Editor.Instance(),
 		}
 	},
 	computed: {

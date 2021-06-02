@@ -5,8 +5,6 @@ declare module 'vue/types/vue' {
 	interface Vue {
 		$api: any
 		$route: Route
-		$screen: any
-		$ruler: any
 		$Modal: ModalInstance
 	}
 }

@@ -6,6 +6,7 @@ import instance from './src/store/instance.store'
 import { createSandbox } from './data-process'
 import { configMerge, usePath } from './src/utils'
 import Vue from 'vue'
+import Editor from '@/core/Editor'
 
 const mx: any = {
 	mixins: [fetch, dataProcess],
@@ -32,8 +33,8 @@ const mx: any = {
 			animateTimer: null,
 			animateActiveIndex: -1,
 			output: null,
-			screen: this.$screen,
 			inPreview: true,
+			editor: Editor.Instance(),
 		}
 	},
 	beforeDestroy() {
@@ -58,7 +59,7 @@ const mx: any = {
 						scene.actions.destroyScene(sceneId, animate)
 						break
 					case 'changeScene':
-						;(screen as ScreenV).setSceneIndex(sceneId)
+						this.editor.setSceneIndex(sceneId)
 						break
 					default:
 				}
@@ -66,7 +67,7 @@ const mx: any = {
 			for (const item of this.configValue.event.component) {
 				if (item.type === 'update') {
 					const coms = Object.values(
-						this.screen.screenWidgets,
+						this.editor.screenWidgets,
 					).filter((v: any) => item.ids.includes(v.id))
 					let data = usePath(item.source.trim(), val)
 					const { enable, methodBody } = item.process
@@ -173,7 +174,7 @@ const mx: any = {
 				res.customConfig = customConfig
 			}
 			if (this.config.widget) {
-				Vue.prototype.$screen.updateWidgetConfig(
+				this.editor.updateWidgetConfig(
 					this.config.widget.id,
 					res,
 				)
@@ -230,7 +231,7 @@ const mx: any = {
 		},
 	},
 	mounted() {
-		this.inPreview = this.$screen.status === 'inPreview'
+		this.inPreview = this.editor.editorStatus === 'inPreview'
 	},
 }
 export default mx

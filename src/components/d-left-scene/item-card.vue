@@ -1,6 +1,6 @@
 <template lang="pug">
 li.pointer.pos-r.d-left-scene-list-li(
-	:class="[{ active: !screen.chooseWidgetChildId && screen.chooseWidgetId === item.id }]",
+	:class="[{ active: !editor.chooseWidgetChildId && editor.chooseWidgetId === item.id }]",
 	:key="item.id")
 	.parent(@click="handleChoose(item)")
 		.d-left-scene-left
@@ -19,12 +19,13 @@ li.pointer.pos-r.d-left-scene-list-li(
 				title="解锁",
 				@click="handleUnLock(item.id)",
 				@click.stop)
-	WidgetGroup(:childList="childList", v-if="screen.chooseWidgetId === item.id")
+	WidgetGroup(:childList="childList", v-if="editor.chooseWidgetId === item.id")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'view-design'
 import WidgetGroup from './widget-group.vue'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -36,13 +37,13 @@ export default class DLeftSceneItem extends Vue {
 	editScene = false
 	copyModel = false
 	childList = []
-	screen = this.$screen
+	editor = Editor.Instance()
 	@Prop() item
 	get list() {
 		const list = []
-		for (const key in this.screen.screenWidgets) {
-			const item = this.screen.screenWidgets[key]
-			if (item.scene === this.screen.sceneIndex) {
+		for (const key in this.editor.screenWidgets) {
+			const item = this.editor.screenWidgets[key]
+			if (item.scene === this.editor.sceneIndex) {
 				list.push(item)
 			}
 		}
@@ -50,31 +51,31 @@ export default class DLeftSceneItem extends Vue {
 	}
 
 	handleUpZIndex(id) {
-		this.screen.screenWidgets[id].config.layout.zIndex++
+		this.editor.screenWidgets[id].config.layout.zIndex++
 	}
 
 	handleDownZIndex(id) {
-		this.screen.screenWidgets[id].config.layout.zIndex--
+		this.editor.screenWidgets[id].config.layout.zIndex--
 	}
 
 	handleUnLock(id) {
-		this.screen.screenWidgets[id].config.widget.locked = false
+		this.editor.screenWidgets[id].config.widget.locked = false
 	}
 
 	handleFocusSceneName() {
-		this.screen.unChooseWidget()
+		this.editor.unChooseWidget()
 	}
 
 	handleChoose(item) {
-		this.screen.chooseWidgetId = item.id
-		this.screen.chooseWidgetChildId = null
+		this.editor.chooseWidgetId = item.id
+		this.editor.chooseWidgetChildId = null
 		if (item.children) {
 			this.childList = item.children
 		}
 	}
 
 	handleTaggerHide(id) {
-		this.screen.screenWidgets[id].config.widget.hide = !this.screen
+		this.editor.screenWidgets[id].config.widget.hide = !this.editor
 			.screenWidgets[id].config.widget.hide
 	}
 }

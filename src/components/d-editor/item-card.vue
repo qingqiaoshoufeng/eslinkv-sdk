@@ -8,13 +8,13 @@ dr(
 	:draggable="widgetEditable(item)",
 	:resizable="widgetEditable(item)",
 	:scale="item.config.layout.scale",
-	:active="item.id === screen.chooseWidgetId && widgetEditable(item)",
+	:active="item.id === editor.chooseWidgetId && widgetEditable(item)",
 	:w="item.config.layout.size.width",
 	:h="item.config.layout.size.height",
 	:x="item.config.layout.position.left",
 	:y="item.config.layout.position.top",
 	:z="item.config.layout.zIndex",
-	:snap="screen.autoAlignGuide",
+	:snap="editor.autoAlignGuide",
 	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 	:snap-to-target="['.d-editor-line', '.dr-unactive']",
 	@resizestop="onResizeStop",
@@ -46,7 +46,6 @@ import Editor from '@/core/Editor'
 })
 export default class ItemCard extends Vue {
 	editor = Editor.Instance()
-	screen = this.$screen
 	event = event.state
 
 	@Prop() item
@@ -62,7 +61,7 @@ export default class ItemCard extends Vue {
 		}
 	}
 	get showParts() {
-		return item => {
+		return (item: any) => {
 			if (item.scene === 0) {
 				return true
 			}
@@ -75,7 +74,7 @@ export default class ItemCard extends Vue {
 
 	showRightMenu(e, item) {
 		e.preventDefault()
-		this.handleActivated(this.screen.screenWidgets[item.id])
+		this.handleActivated(this.editor.screenWidgets[item.id])
 		const rightMenu = document.getElementById('right-menu')
 		rightMenu.classList.add('active')
 		if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
@@ -89,20 +88,20 @@ export default class ItemCard extends Vue {
 	onDragStop(left: number, top: number) {
 		const diffLeft =
 			left -
-			this.screen.screenWidgets[this.screen.chooseWidgetId].config.layout
+			this.editor.screenWidgets[this.editor.chooseWidgetId].config.layout
 				.position.left
 		const diffTop =
 			top -
-			this.screen.screenWidgets[this.screen.chooseWidgetId].config.layout
+			this.editor.screenWidgets[this.editor.chooseWidgetId].config.layout
 				.position.top
-		this.screen.screenWidgets[
-			this.screen.chooseWidgetId
+		this.editor.screenWidgets[
+			this.editor.chooseWidgetId
 		].config.layout.position.left = left
-		this.screen.screenWidgets[
-			this.screen.chooseWidgetId
+		this.editor.screenWidgets[
+			this.editor.chooseWidgetId
 		].config.layout.position.top = top
 		this.onGroupDragStop(
-			this.screen.screenWidgets[this.screen.chooseWidgetId],
+			this.editor.screenWidgets[this.editor.chooseWidgetId],
 			diffLeft,
 			diffTop,
 		)
@@ -119,11 +118,11 @@ export default class ItemCard extends Vue {
 	}
 
 	onResizeStop(width: number, height: number) {
-		this.screen.screenWidgets[
-			this.screen.chooseWidgetId
+		this.editor.screenWidgets[
+			this.editor.chooseWidgetId
 		].config.layout.size.width = width
-		this.screen.screenWidgets[
-			this.screen.chooseWidgetId
+		this.editor.screenWidgets[
+			this.editor.chooseWidgetId
 		].config.layout.size.height = height
 	}
 
@@ -136,16 +135,16 @@ export default class ItemCard extends Vue {
 		if (config.widget.hide) {
 			return
 		}
-		this.screen.setChooseWidget(id)
-		if (children && this.screen.chooseWidgetChildId) {
-			this.screen.setChooseWidgetCustomConfig(
-				children.find(v => v.id === this.screen.chooseWidgetChildId)
-					.config.customConfig,
-			)
-		} else {
-			this.screen.setChooseWidgetCustomConfig(config.customConfig)
-		}
-		this.screen.chooseWidgetId = id
+		// this.editor.setChooseWidget(id)
+		// if (children && this.screen.chooseWidgetChildId) {
+		// 	this.editor.setChooseWidgetCustomConfig(
+		// 		children.find(v => v.id === this.editor.chooseWidgetChildId)
+		// 			.config.customConfig,
+		// 	)
+		// } else {
+		// 	this.editor.setChooseWidgetCustomConfig(config.customConfig)
+		// }
+		// this.editor.chooseWidgetId = id
 	}
 
 	handleWidgetConfig({ value = {} }) {
@@ -155,7 +154,7 @@ export default class ItemCard extends Vue {
 	updateWidget(value) {
 		if (!value || !value.widget) return
 		const id = value.widget.id
-		const currentWidget = this.screen.screenWidgets[id]
+		const currentWidget = this.editor.screenWidgets[id]
 		if (!id || !currentWidget) return
 		this.$set(currentWidget, 'config', value)
 	}

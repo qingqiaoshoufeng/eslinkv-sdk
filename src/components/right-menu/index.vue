@@ -41,6 +41,7 @@ import instance from '../../store/instance.store'
 import copy from 'fast-copy'
 import { uuid } from '../../utils/index'
 import { Icon } from 'view-design'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -53,9 +54,9 @@ export default class rightMenu extends Vue {
 	zIndex = 10
 	minZIndex = 0
 	maxZIndex = 0
-	screen = this.$screen
+	editor = Editor.Instance()
 	handleSync() {
-		this.instance.kanboard.$refs[`${this.screen.chooseWidgetId}`][0]
+		this.instance.kanboard.$refs[`${this.editor.chooseWidgetId}`][0]
 			.$children[0].updateKey++
 		this.hideRightMenu()
 	}
@@ -63,30 +64,30 @@ export default class rightMenu extends Vue {
 	handleZIndex(num) {
 		if (this.zIndex === 1 && num === -1) return
 		this.zIndex += num
-		this.screen.screenWidgets[
-			this.screen.chooseWidgetId
+		this.editor.screenWidgets[
+			this.editor.chooseWidgetId
 		].config.layout.zIndex = this.zIndex
 		this.hideRightMenu()
 	}
 
 	handleZIndexTop() {
 		this.zIndex = this.maxZIndex
-		this.screen.screenWidgets[
-			this.screen.chooseWidgetId
+		this.editor.screenWidgets[
+			this.editor.chooseWidgetId
 		].config.layout.zIndex = this.maxZIndex
 		this.hideRightMenu()
 	}
 
 	handleZIndexBottom() {
 		this.zIndex = this.minZIndex
-		this.screen.screenWidgets[
-			this.screen.chooseWidgetId
+		this.editor.screenWidgets[
+			this.editor.chooseWidgetId
 		].config.layout.zIndex = this.minZIndex
 		this.hideRightMenu()
 	}
 
 	hideWidget() {
-		const widget = this.screen.screenWidgets[this.screen.chooseWidgetId]
+		const widget = this.editor.screenWidgets[this.editor.chooseWidgetId]
 			.config.widget
 		widget.hide = !widget.hide
 		this.handleUnActive()
@@ -97,8 +98,8 @@ export default class rightMenu extends Vue {
 			title: '提示',
 			content: '是否删除当前组件？',
 			onOk: () => {
-				const id = this.screen.chooseWidgetId
-				this.$delete(this.screen.screenWidgets, id)
+				const id = this.editor.chooseWidgetId
+				this.$delete(this.editor.screenWidgets, id)
 				this.handleUnActive()
 			},
 			onCancel: () => {
@@ -108,8 +109,8 @@ export default class rightMenu extends Vue {
 	}
 
 	copyWidget() {
-		const copyId = this.screen.chooseWidgetId
-		const widget = this.screen.screenWidgets[copyId]
+		const copyId = this.editor.chooseWidgetId
+		const widget = this.editor.screenWidgets[copyId]
 		if (!widget) return
 		const copiedWidget = copy(widget)
 		const id = uuid()
@@ -125,13 +126,13 @@ export default class rightMenu extends Vue {
 			layout.position.left += 10
 			layout.position.top += 10
 		}
-		this.screen.setWidgetItem(
-			id,
-			widget.type,
-			widget.config,
-			widget.scene,
-			widget.market,
-		)
+		// this.editor.setWidgetItem(
+		// 	id,
+		// 	widget.type,
+		// 	widget.config,
+		// 	widget.scene,
+		// 	widget.market,
+		// )
 		this.handleUnActive()
 	}
 
@@ -141,31 +142,31 @@ export default class rightMenu extends Vue {
 	}
 
 	handleUnActive() {
-		this.screen.unChooseWidget()
+		this.editor.unChooseWidget()
 	}
 
 	handleLock() {
 		this.isLock = !this.isLock
-		this.screen.screenWidgets[
-			this.screen.chooseWidgetId
+		this.editor.screenWidgets[
+			this.editor.chooseWidgetId
 		].config.widget.locked = this.isLock
 		this.hideRightMenu()
 	}
 
-	@Watch('screen.chooseWidgetId')
+	@Watch('editor.chooseWidgetId')
 	chooseIdChange(val) {
 		if (!val) return
-		this.isLock = this.screen.screenWidgets[val].config.widget.locked
-		this.zIndex = this.screen.screenWidgets[val].config.layout.zIndex
+		this.isLock = this.editor.screenWidgets[val].config.widget.locked
+		this.zIndex = this.editor.screenWidgets[val].config.layout.zIndex
 		let max = 0
 		let min = 9999
-		for (const key in this.screen.screenWidgets) {
+		for (const key in this.editor.screenWidgets) {
 			max = Math.max(
-				this.screen.screenWidgets[key].config.layout.zIndex,
+				this.editor.screenWidgets[key].config.layout.zIndex,
 				max,
 			)
 			min = Math.min(
-				this.screen.screenWidgets[key].config.layout.zIndex,
+				this.editor.screenWidgets[key].config.layout.zIndex,
 				min,
 			)
 		}

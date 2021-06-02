@@ -26,7 +26,6 @@ export default class YLine extends Vue {
 	showHelp = false
 	canvas: HTMLCanvasElement
 	context = null
-	screen = this.$screen
 
 	get site() {
 		return this.editor.ruler.guideSite('h')
@@ -42,7 +41,7 @@ export default class YLine extends Vue {
 		this.init()
 	}
 
-	@Watch('screen.height')
+	@Watch('editor.height')
 	heightChange() {
 		this.init()
 	}
@@ -120,12 +119,12 @@ export default class YLine extends Vue {
 	init() {
 		this.context.translate(
 			0,
-			(this.screen.height * (1 - this.editor.zoom)) / 2 +
+			(this.editor.height * (1 - this.editor.zoom)) / 2 +
 				this.editor.ruler.contentY -
 				this.editor.ruler.guideStartY,
 		)
 		this.editor.ruler.guideStartY =
-			(this.screen.height * (1 - this.editor.zoom)) / 2 +
+			(this.editor.height * (1 - this.editor.zoom)) / 2 +
 			this.editor.ruler.contentY
 		if (loadImg) {
 			this.initDraw()

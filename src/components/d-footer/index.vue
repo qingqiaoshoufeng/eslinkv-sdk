@@ -1,8 +1,8 @@
 <template lang="pug">
 .d-footer.fn-flex.flex-row.pos-r.z-index-999
 	.d-footer-bar.fn-flex.flex-row
-		.d-footer-bar-text.ellipsis(v-if="screen.sceneObj") {{ screen.sceneIndex === 0 ? '主场景' : screen.sceneIndex === -1 ? '回收站' : screen.sceneObj[screen.sceneIndex].name }}
-		.d-footer-bar-text {{ screen.width }}×{{ screen.height }}px
+		.d-footer-bar-text.ellipsis(v-if="editor.sceneObj") {{ editor.sceneIndex === 0 ? '主场景' : editor.sceneIndex === -1 ? '回收站' : editor.sceneObj[editor.sceneIndex].name }}
+		.d-footer-bar-text {{ editor.width }}×{{ editor.height }}px
 	.d-footer-bar.fn-flex
 		label.d-footer-hot-keys.pos-r.fn-flex.flex-row
 			.d-footer-bar-text.pointer.ellipsis(@click="showHotKey = !showHotKey") 快捷键
@@ -26,7 +26,7 @@
 		d-svg.pointer(icon-class="smile", @click.native="() => editor.resetZoom()")
 	.d-footer-bar.fn-flex(:style="{ marginRight: '0' }")
 		i-icon.pointer(
-			:type="screen.fullscreen ? 'md-contract' : 'md-expand'",
+			:type="editor.fullscreen ? 'md-contract' : 'md-expand'",
 			:size="18",
 			@click="handleFullscreen")
 </template>
@@ -43,7 +43,6 @@ import Editor from '@/core/Editor'
 export default class DFooter extends Vue {
 	showHotKey = false
 	hotKeys = []
-	screen = this.$screen
 	editor = Editor.Instance()
 	get zoom(): string {
 		const zoom = this.editor.zoom
@@ -59,8 +58,8 @@ export default class DFooter extends Vue {
 	}
 
 	mounted() {
-		const alt = this.screen.isMac ? '⌥' : 'Alt'
-		const ctrl = this.screen.isMac ? '⌃' : 'Ctrl'
+		const alt = this.editor.isMac ? '⌥' : 'Alt'
+		const ctrl = this.editor.isMac ? '⌃' : 'Ctrl'
 		const shift = 'Shift'
 		const space = '空格'
 		// const command = '⌘'

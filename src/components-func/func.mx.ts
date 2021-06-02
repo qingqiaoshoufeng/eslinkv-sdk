@@ -23,6 +23,7 @@ import dRightSwiperList from '@/components-right/d-right-swiper-list/index.vue'
 import dRightSwiperEye from '@/components-right/d-right-swiper-eye/index.vue'
 import dRightControl from '@/components-right/d-right-control/index.vue'
 import dInput from '@/components/d-input/index.vue'
+import Editor from "@/core/Editor";
 
 @Component({
 	components: {
@@ -49,7 +50,7 @@ import dInput from '@/components/d-input/index.vue'
 })
 export default class Func extends Vue {
 	event = event.state
-	screen = this.$screen
+	editor = Editor.Instance()
 	@Prop() config
 	@Prop() parentProp // group时会有
 	@Prop() parentIndex // group时会有
@@ -67,7 +68,7 @@ export default class Func extends Vue {
 
 	get obj() {
 		if (!this.fixedConfig.prop) return null
-		let res = this.screen.chooseWidget
+		let res = this.editor.chooseWidget
 		if (res) {
 			const props = this.fixedConfig.prop.split('.')
 			props.length = props.length - 1
@@ -88,7 +89,7 @@ export default class Func extends Vue {
 	}
 
 	getItemValue(keyString) {
-		let res = this.screen.chooseWidget
+		let res = this.editor.chooseWidget
 		const props = keyString.split('.')
 		props.forEach(v => {
 			res = res[v]
@@ -97,7 +98,7 @@ export default class Func extends Vue {
 	}
 
 	getItemObj(keyString) {
-		let res = this.screen.chooseWidget
+		let res = this.editor.chooseWidget
 		const props = keyString.split('.')
 		props.length = props.length - 1
 		props.forEach(v => {

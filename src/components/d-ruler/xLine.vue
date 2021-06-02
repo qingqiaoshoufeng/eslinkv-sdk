@@ -27,7 +27,6 @@ export default class XLine extends Vue {
 	showHelp = false
 	canvas: HTMLCanvasElement
 	context = null
-	screen = this.$screen
 
 	get site() {
 		return this.editor.ruler.guideSite('v')
@@ -112,13 +111,13 @@ export default class XLine extends Vue {
 	 */
 	init() {
 		this.context.translate(
-			(this.screen.width * (1 - this.editor.zoom)) / 2 +
+			(this.editor.width * (1 - this.editor.zoom)) / 2 +
 				this.editor.ruler.contentX -
 				this.editor.guideStartX,
 			0,
 		)
 		this.editor.ruler.guideStartX =
-			(this.screen.width * (1 - this.editor.zoom)) / 2 +
+			(this.editor.width * (1 - this.editor.zoom)) / 2 +
 			this.editor.ruler.contentX
 		if (loadImg) {
 			this.initDraw()

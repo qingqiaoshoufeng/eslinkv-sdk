@@ -1,5 +1,4 @@
-﻿import Vue from 'vue'
-import copy from 'fast-copy'
+﻿import copy from 'fast-copy'
 import commonConfigValue from '../../../common-config-value'
 import { getQueryString } from '@/utils'
 import Factory from '@/core/Base/factory'
@@ -26,8 +25,7 @@ export default class Screen extends Factory<Screen> {
 
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id, config) {
-		if (this.screenWidgets[id])
-			Vue.set(this.screenWidgets[id], 'config', config)
+		if (this.screenWidgets[id]) this.screenWidgets[id].config = config
 	}
 
 	/* 大屏类型 CUSTOM:大屏 TEMPLATE:模版 */

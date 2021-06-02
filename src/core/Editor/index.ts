@@ -98,6 +98,27 @@ export default class Editor extends Factory<Editor> {
 	}
 
 	/* ---------------------------------------------------Screen---------------------------------------------------*/
+	get screenWidgets(): any {
+		return this.screen.screenWidgets
+	}
+	get isMac(): any {
+		return this.screen.isMac
+	}
+	get chooseWidgetChildId(): string {
+		return this.screen.chooseWidgetChildId
+	}
+	get chooseWidgetArrayConfig(): any {
+		return this.screen.chooseWidgetArrayConfig
+	}
+	get autoAlignGuide(): boolean {
+		return this.screen.autoAlignGuide
+	}
+	get chooseWidget(): any {
+		return this.screen.chooseWidget
+	}
+	get chooseWidgetId(): string {
+		return this.screen.chooseWidgetId
+	}
 	get chooseWidgetArray(): any {
 		return this.screen.chooseWidgetArray
 	}
@@ -196,9 +217,17 @@ export default class Editor extends Factory<Editor> {
 			e,
 			this.scene.sceneIndex,
 			this.sortByZIndexWidgetsList.length
-				? this.sortByZIndexWidgetsList[0].layout.zIndex + 1
+				? this.sortByZIndexWidgetsList[0].config.layout.zIndex + 1
 				: 10,
 		)
+	}
+	/* 取消选中组件 */
+	public unChooseWidget(): void {
+		this.screen.unChooseWidget()
+	}
+	/* 更新大屏组件配置 */
+	public updateWidgetConfig(id, config): void {
+		this.screen.updateWidgetConfig(id, config)
 	}
 	/* 更新大屏信息 防抖：1500ms */
 	updateScreenDebounce = debounce(1500, false, function (obj: any): void {
@@ -217,6 +246,14 @@ export default class Editor extends Factory<Editor> {
 	get sceneIndex() {
 		return this.scene.sceneIndex
 	}
+	/* 场景数据 */
+	get sceneObj() {
+		return this.scene.sceneObj
+	}
+	/* 场景数据 */
+	get sceneList() {
+		return this.scene.sceneList
+	}
 	/* 切换场景 */
 	public setSceneIndex(val: number | string): void {
 		this.scene.setSceneIndex(val)
@@ -224,6 +261,18 @@ export default class Editor extends Factory<Editor> {
 	/* 获取场景数据 */
 	public sceneData(): any {
 		return this.scene.sceneData()
+	}
+	/* 更新场景名称 */
+	public setSceneName(name: string): void {
+		this.scene.setSceneName(name)
+	}
+	/* 创建场景 */
+	public createScene(): void {
+		this.scene.createScene()
+	}
+	/* 删除场景 */
+	public destroyScene(): void {
+		this.scene.destroyScene()
 	}
 	/* ---------------------------------------------------More---------------------------------------------------*/
 	/* 获取大屏组件配置——根据zIndex排序 */

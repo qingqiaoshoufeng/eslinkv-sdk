@@ -6,10 +6,10 @@
 		d-left-widget
 		d-left-scene
 		d-editor(ref="kanboardEditor")
-		d-right-manage(v-if="!screen.chooseWidgetId")
-		d-right-setting(v-if="screen.chooseWidgetId")
+		d-right-manage(v-if="!editor.chooseWidgetId")
+		d-right-setting(v-if="editor.chooseWidgetId")
 		d-right-setting-more(
-			v-if="screen.chooseWidgetArray && screen.chooseWidgetArray.length > 1")
+			v-if="editor.chooseWidgetArray && editor.chooseWidgetArray.length > 1")
 </template>
 <script lang="ts">
 import { Vue, Component, Provide } from 'vue-property-decorator'
@@ -33,7 +33,6 @@ import Editor from '@/core/Editor'
 })
 export default class dScreen extends Vue {
 	editor = Editor.Instance()
-	screen = this.$screen
 	@Provide('kanboardEditor') kanboardEditor = this.$refs.kanboardEditor
 }
 </script>

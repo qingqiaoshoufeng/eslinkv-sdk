@@ -47,14 +47,11 @@
 import rightMenu from '../right-menu/index.vue'
 import dRuler from '../d-ruler/index.vue'
 import drMore from '../../components/d-dr-more/index.vue'
-import widgetOperation from './widget-operation'
-import dRightManage from '@/components-right/d-right-manage/index.vue'
 import dFooter from '../d-footer/index.vue'
 import dGuide from '../d-guide/index.vue'
 import instance from '../../store/instance.store'
 import ItemCard from './item-card.vue'
-import { Component, Provide } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
+import { Component, Provide, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 
 @Component({
@@ -64,53 +61,50 @@ import Editor from '@/core/Editor'
 		dFooter,
 		dGuide,
 		drMore,
-		dRightManage,
 		rightMenu,
 	},
 })
-export default class DEditor extends mixins(widgetOperation) {
+export default class DEditor extends Vue {
 	editor = Editor.Instance()
 	vLine = []
 	hLine = []
 	@Provide() kanboardEditor = this
-
-	get canvasStyle() {
-		return {
-			width: `${this.editor.width}px`,
-			height: `${this.editor.height}px`,
-			'background-color': this.editor.backgroundColor,
-			'background-image': `url(${this.editor.backgroundImage})`,
+	get canvasStyle(): any {
+		if (this.editor) {
+			return {
+				width: `${this.editor.width}px`,
+				height: `${this.editor.height}px`,
+				'background-color': this.editor.backgroundColor,
+				'background-image': `url(${this.editor.backgroundImage})`,
+			}
 		}
+		return {}
 	}
-	get canvasSize() {
-		const { width, height } = this.editor
-		return { width, height }
-	}
-	getRefLineParams(params, item) {
+	getRefLineParams(params: any, item: any): void {
 		const { vLine, hLine } = params
-		this.vLine = vLine.map(child => {
+		this.vLine = vLine.map((child: any) => {
 			child.w = item.config.layout.size.width
 			child.h = item.config.layout.size.height
 			return child
 		})
-		this.hLine = hLine.map(child => {
+		this.hLine = hLine.map((child: any) => {
 			child.w = item.config.layout.size.width
 			child.h = item.config.layout.size.height
 			return child
 		})
 	}
-	fullscreenchange(): void {
-		this.editor.fullscreen = !this.editor.fullscreen
-	}
-	beforeDestroy() {
-		this.editor.fullscreen = false
-		document.removeEventListener('fullscreenchange', this.fullscreenchange)
-	}
-	mounted() {
-		instance.actions.setInstance('kanboard', this)
-		this.editor.updateEditorStatus('inEdit')
-		document.addEventListener('fullscreenchange', this.fullscreenchange)
-	}
+	// fullscreenchange(): void {
+	// 	this.editor.fullscreen = !this.editor.fullscreen
+	// }
+	// beforeDestroy(): void {
+	// 	this.editor.fullscreen = false
+	// 	document.removeEventListener('fullscreenchange', this.fullscreenchange)
+	// }
+	// mounted(): void {
+	// 	instance.actions.setInstance('kanboard', this)
+	// 	this.editor.updateEditorStatus('inEdit')
+	// 	document.addEventListener('fullscreenchange', this.fullscreenchange)
+	// }
 }
 </script>
 <style lang="scss">

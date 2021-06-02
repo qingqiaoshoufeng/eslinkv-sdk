@@ -6,8 +6,6 @@ import '@babel/polyfill'
 import '../packages/plugin.js'
 import './components-business'
 
-Vue.prototype.$ruler = {}
-Vue.prototype.$screen = {}
 Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal
 Vue.config.productionTip = false

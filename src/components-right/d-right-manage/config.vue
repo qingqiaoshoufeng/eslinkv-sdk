@@ -39,10 +39,10 @@
 	// END_PROD
 	d-right-control(
 		label="首场景",
-		v-if="screen.sceneList && screen.sceneList.length > 0")
-		i-select(filterable, v-model="screen.mainScene")
+		v-if="editor.sceneList && editor.sceneList.length > 0")
+		i-select(filterable, v-model="editor.mainScene")
 			i-option(:value="0") 主场景
-			i-option(:value="key", v-for="(item, key) in screen.sceneObj", :key="key") {{ item.name }}
+			i-option(:value="key", v-for="(item, key) in editor.sceneObj", :key="key") {{ item.name }}
 </template>
 <script lang="ts">
 import func from '@/components-func/func.mx'
@@ -67,7 +67,6 @@ export default class FuncConfig extends func {
 		library: 'screenAvatar',
 	}
 	screenAvatarLoading = false
-	screen = this.$screen
 	editor = Editor.Instance()
 
 	get size(): string {
@@ -85,8 +84,8 @@ export default class FuncConfig extends func {
 	set size(value) {
 		if (value !== 'other' && value) {
 			const [width, height] = value.split('*')
-			this.screen.width = +width
-			this.screen.height = +height
+			this.editor.width = +width
+			this.editor.height = +height
 		}
 	}
 
@@ -98,7 +97,7 @@ export default class FuncConfig extends func {
 		})
 			.then(res => {
 				this.screenAvatarLoading = false
-				this.screen.avatar = (res as any).url
+				this.editor.avatar = (res as any).url
 			})
 			.catch(e => {
 				console.warn(e)

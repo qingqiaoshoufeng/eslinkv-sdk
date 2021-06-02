@@ -5,20 +5,21 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import dDrKuang from '../../components/d-dr-kuang/index.vue'
+import Editor from '@/core/Editor'
 @Component({
 	components: {
 		dDrKuang,
 	},
 })
 export default class DDrMore extends Vue {
-	screen = this.$screen
+	editor = Editor.Instance()
 	get style() {
-		if (!this.screen.chooseWidgetArrayConfig) return {}
+		if (!this.editor.chooseWidgetArrayConfig) return {}
 		return {
-			transform: `translate3d(${this.screen.chooseWidgetArrayConfig.left}px, ${this.screen.chooseWidgetArrayConfig.top}px,0)`,
-			width: this.screen.chooseWidgetArrayConfig.width + 'px',
-			height: this.screen.chooseWidgetArrayConfig.height + 'px',
-			zIndex: this.screen.chooseWidgetArrayConfig.z,
+			transform: `translate3d(${this.editor.chooseWidgetArrayConfig.left}px, ${this.editor.chooseWidgetArrayConfig.top}px,0)`,
+			width: this.editor.chooseWidgetArrayConfig.width + 'px',
+			height: this.editor.chooseWidgetArrayConfig.height + 'px',
+			zIndex: this.editor.chooseWidgetArrayConfig.z,
 		}
 	}
 }

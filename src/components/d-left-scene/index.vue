@@ -5,23 +5,23 @@
 		span 场景区
 	header.fn-flex.flex-row
 		i-input(
-			:value="screen.sceneObj[screen.sceneIndex].name",
+			:value="editor.sceneObj[editor.sceneIndex].name",
 			@on-change="handleSceneName",
 			@on-focus="event.inputFocus = true",
 			@on-blur="event.inputFocus = false",
 			v-if="editScene")
 			i-icon(type="md-checkmark", slot="suffix", @click="editScene = false")
-		i-select(v-model="screen.sceneIndex", v-if="!editScene", filterable)
+		i-select(v-model="editor.sceneIndex", v-if="!editScene", filterable)
 			i-option(:value="0") 主场景
-			i-option(:value="key", v-for="(item, key) in screen.sceneObj", :key="key") {{ item.name }}
+			i-option(:value="key", v-for="(item, key) in editor.sceneObj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
 		draggable(
-			v-model="screen.sortByZIndexWidgetsList",
+			v-model="editor.sortByZIndexWidgetsList",
 			@change="sceneWidgetDragEnd")
 			transition-group
 				item-card(
-					v-for="item in screen.sortByZIndexWidgetsList",
+					v-for="item in editor.sortByZIndexWidgetsList",
 					:key="item.id",
 					:item="item")
 	.d-left-scene-bottom.fn-flex.flex-row
@@ -29,15 +29,15 @@
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('create')") 新增
 		.d-left-scene-bottom-btn.text-center(
 			@click="handleSetScene('edit')",
-			:class="{ disabled: screen.sceneIndex === 0 }") 编辑
+			:class="{ disabled: editor.sceneIndex === 0 }") 编辑
 		.d-left-scene-bottom-btn.text-center(
 			@click="handleSetScene('destroy')",
-			:class="{ disabled: screen.sceneIndex === 0 }") 删除
+			:class="{ disabled: editor.sceneIndex === 0 }") 删除
 	i-modal(v-model="copyModel", title="提示", :footer-hide="true")
 		.fn-flex.flex-row
-			span.fn-hide.copy-id {{ screen.sceneIndex }}
+			span.fn-hide.copy-id {{ editor.sceneIndex }}
 			i-input(
-				v-model="screen.sceneIndex",
+				v-model="editor.sceneIndex",
 				search,
 				readonly,
 				enter-button="复制",
@@ -66,18 +66,17 @@ export default class DLeftScene extends Vue {
 	editor = Editor.Instance()
 	editScene = false
 	copyModel = false
-	screen = this.$screen
 
 	handleSetScene(name) {
 		switch (name) {
 			case 'create':
-				this.screen.createScene()
+				this.editor.createScene()
 				break
 			case 'edit':
 				this.editScene = true
 				break
 			case 'destroy':
-				this.screen.destroyScene()
+				this.editor.destroyScene()
 				break
 			case 'copy':
 				this.copyModel = true
@@ -86,19 +85,19 @@ export default class DLeftScene extends Vue {
 	}
 
 	handleCopy() {
-		copyText(this.screen.sceneIndex)
+		copyText(this.editor.sceneIndex)
 	}
 
 	handleSceneName(e) {
-		this.screen.setSceneName(e.target.value)
+		this.editor.setSceneName(e.target.value)
 	}
 
 	sceneWidgetDragEnd(e) {
-		const oldItem = this.screen.screenWidgets[
-			this.screen.sortByZIndexWidgetsList[e.moved.oldIndex].id
+		const oldItem = this.editor.screenWidgets[
+			this.editor.sortByZIndexWidgetsList[e.moved.oldIndex].id
 		]
-		const newItem = this.screen.screenWidgets[
-			this.screen.sortByZIndexWidgetsList[e.moved.newIndex].id
+		const newItem = this.editor.screenWidgets[
+			this.editor.sortByZIndexWidgetsList[e.moved.newIndex].id
 		]
 		if (oldItem.config.layout.zIndex === newItem.config.layout.zIndex) {
 			if (e.moved.newIndex > e.moved.oldIndex) {
