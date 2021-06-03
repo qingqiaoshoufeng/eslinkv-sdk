@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-manage-modal-control-data(v-if="screen.chooseWidgetId")
+.d-manage-modal-control-data
 	d-right-swiper(title="数据请求", :show="true")
 		// START_PROD
 		d-right-control(label="数据类型")
@@ -15,15 +15,15 @@
 				icon="md-settings",
 				:style="{ marginLeft: '10px' }",
 				v-if="apiType === '数仓平台'",
-				:disabled="!screen.chooseWidget.config.api.system.enable") 配置
+				:disabled="!editor.chooseWidget.config.api.system.enable") 配置
 		d-right-control(label="接口地址", v-if="apiType === 'API接口'")
 			i-input(
-				v-model="screen.chooseWidget.config.api.url",
+				v-model="editor.chooseWidget.config.api.url",
 				@on-focus="event.inputFocus = true",
 				@on-blur="event.inputFocus = false")
 		d-right-control(v-if="apiType === 'API接口'")
 			i-select(
-				v-model="screen.chooseWidget.config.api.method",
+				v-model="editor.chooseWidget.config.api.method",
 				:style="{ marginRight: '10px', width: '100px' }")
 				i-option(value="GET") GET
 				i-option(value="POST") POST
@@ -31,20 +31,20 @@
 				i-option(value="DELETE") DELETE
 				i-option(value="PATCH") PATCH
 			i-input(
-				v-model="screen.chooseWidget.config.api.path",
+				v-model="editor.chooseWidget.config.api.path",
 				:style="{ width: '100px' }",
 				@on-focus="event.inputFocus = true",
 				@on-blur="event.inputFocus = false")
 		d-right-control(
 			label="接口地址",
-			v-if="screen.chooseWidget.config.api.system.enable")
+			v-if="editor.chooseWidget.config.api.system.enable")
 			i-input(
-				v-model="screen.chooseWidget.config.api.system.interface",
+				v-model="editor.chooseWidget.config.api.system.interface",
 				@on-focus="event.inputFocus = true",
 				@on-blur="event.inputFocus = false")
-		d-right-control(v-if="screen.chooseWidget.config.api.system.enable")
+		d-right-control(v-if="editor.chooseWidget.config.api.system.enable")
 			i-select(
-				v-model="screen.chooseWidget.config.api.system.method",
+				v-model="editor.chooseWidget.config.api.system.method",
 				:style="{ marginRight: '10px', width: '100px' }")
 				i-option(value="GET") GET
 				i-option(value="POST") POST
@@ -52,7 +52,7 @@
 				i-option(value="DELETE") DELETE
 				i-option(value="PATCH") PATCH
 			i-input(
-				v-model="screen.chooseWidget.config.api.system.path",
+				v-model="editor.chooseWidget.config.api.system.path",
 				:style="{ width: '100px' }",
 				@on-focus="event.inputFocus = true",
 				@on-blur="event.inputFocus = false")
@@ -65,8 +65,8 @@
 		d-code(
 			label="请求参数",
 			lang="json",
-			:code="typeof screen.chooseWidget.config.api.params === 'string' ? screen.chooseWidget.config.api.params : JSON.stringify(screen.chooseWidget.config.api.params)",
-			@update:code="value => (screen.chooseWidget.config.api.params = JSON.parse(value))")
+			:code="typeof editor.chooseWidget.config.api.params === 'string' ? editor.chooseWidget.config.api.params : JSON.stringify(editor.chooseWidget.config.api.params)",
+			@update:code="value => (editor.chooseWidget.config.api.params = JSON.parse(value))")
 		// END_PROD
 		d-code(
 			label="响应数据",
@@ -76,18 +76,18 @@
 	// START_PROD
 	d-right-swiper-eye(
 		title="数据过滤器",
-		:enable="screen.chooseWidget.config.api.process.enable",
-		@open-click="screen.chooseWidget.config.api.process.enable = true",
-		@close-click="screen.chooseWidget.config.api.process.enable = false")
+		:enable="editor.chooseWidget.config.api.process.enable",
+		@open-click="editor.chooseWidget.config.api.process.enable = true",
+		@close-click="editor.chooseWidget.config.api.process.enable = false")
 		d-code(
 			label="数据过滤器",
-			:code="screen.chooseWidget.config.api.process.methodBody",
-			@update:code="value => (screen.chooseWidget.config.api.process.methodBody = value)")
+			:code="editor.chooseWidget.config.api.process.methodBody",
+			@update:code="value => (editor.chooseWidget.config.api.process.methodBody = value)")
 	d-right-swiper-eye(
 		title="自动更新",
-		:enable="screen.chooseWidget.config.api.autoFetch.enable",
-		@open-click="screen.chooseWidget.config.api.autoFetch.enable = true",
-		@close-click="screen.chooseWidget.config.api.autoFetch.enable = false")
+		:enable="editor.chooseWidget.config.api.autoFetch.enable",
+		@open-click="editor.chooseWidget.config.api.autoFetch.enable = true",
+		@close-click="editor.chooseWidget.config.api.autoFetch.enable = false")
 		d-right-control
 			i-input-number(
 				:min="1",
@@ -95,22 +95,22 @@
 				@on-focus="event.inputFocus = true",
 				@on-blur="event.inputFocus = false",
 				:formatter="value => `${value} ms`",
-				v-model="screen.chooseWidget.config.api.autoFetch.duration")
+				v-model="editor.chooseWidget.config.api.autoFetch.duration")
 	// END_PROD
 	data-event-component
 	data-event-scene
 	d-right-control(label="开启组件内部事件")
-		i-switch(v-model="event.componentsDisabled[screen.chooseWidgetId]")
+		i-switch(v-model="event.componentsDisabled[editor.chooseWidgetId]")
 	d-right-control(label="组件关联")
-		i-switch(v-model="screen.chooseWidget.config.api.bind.enable")
+		i-switch(v-model="editor.chooseWidget.config.api.bind.enable")
 		i-select(
-			v-if="screen.chooseWidget.config.api.bind.enable",
-			v-model="screen.chooseWidget.config.api.bind.refIds",
+			v-if="editor.chooseWidget.config.api.bind.enable",
+			v-model="editor.chooseWidget.config.api.bind.refIds",
 			filterable,
 			multiple,
 			:style="{ width: '100px', marginLeft: '10px' }")
 			i-option(
-				:value="screen.chooseWidget.id",
+				:value="editor.chooseWidget.id",
 				v-for="(item, key) in relateList",
 				:key="key") {{ item.id }}
 </template>
@@ -131,11 +131,10 @@ export default class FuncData extends func {
 	eventModal = false
 	// START_PROD
 	showDatabaseConfigModal = false
-	screen = this.$screen
 	get apiType() {
-		if (this.screen.chooseWidget.config.api.system.enable) {
+		if (this.editor.chooseWidget.config.api.system.enable) {
 			return '数仓平台'
-		} else if (this.screen.chooseWidget.config.api.url) {
+		} else if (this.editor.chooseWidget.config.api.url) {
 			return 'API接口'
 		} else {
 			return '静态数据'
@@ -144,14 +143,14 @@ export default class FuncData extends func {
 
 	set apiType(val) {
 		if (val === '数仓平台') {
-			this.screen.chooseWidget.config.api.system.enable = true
-			this.screen.chooseWidget.config.api.url = ''
+			this.editor.chooseWidget.config.api.system.enable = true
+			this.editor.chooseWidget.config.api.url = ''
 		} else if (val === '静态数据') {
-			this.screen.chooseWidget.config.api.url = ''
-			this.screen.chooseWidget.config.api.system.enable = false
+			this.editor.chooseWidget.config.api.url = ''
+			this.editor.chooseWidget.config.api.system.enable = false
 		} else {
-			this.screen.chooseWidget.config.api.url = '/'
-			this.screen.chooseWidget.config.api.system.enable = false
+			this.editor.chooseWidget.config.api.url = '/'
+			this.editor.chooseWidget.config.api.system.enable = false
 		}
 	}
 	// END_PROD
@@ -185,7 +184,7 @@ export default class FuncData extends func {
 				data[prop] = JSON.stringify(JSON.parse(v))
 			} catch (err) {
 				console.log(
-					`${this.screen.chooseWidget.config.widget.name} ${this.screen.chooseWidget.config.widget.componentVersion} JSON 格式化 响应数据有错误信息！！！`,
+					`${this.editor.chooseWidget.config.widget.name} ${this.editor.chooseWidget.config.widget.componentVersion} JSON 格式化 响应数据有错误信息！！！`,
 				)
 				console.log(err.stack)
 			}
@@ -195,11 +194,11 @@ export default class FuncData extends func {
 	}
 
 	get relateList() {
-		const list = Object.values(this.screen.screenWidgets)
+		const list = Object.values(this.editor.screenWidgets)
 			.filter(
 				(v: any) =>
 					v.config.api.bind.enable &&
-					v.scene === this.screen.sceneIndex,
+					v.scene === this.editor.sceneIndex,
 			)
 			.map((v: any) => {
 				const { id, name } = v.config.widget
@@ -210,15 +209,14 @@ export default class FuncData extends func {
 
 	// START_PROD
 	updateApiSystem(value) {
-		Object.assign(this.screen.chooseWidget.config.api.system.params, value)
+		Object.assign(this.editor.chooseWidget.config.api.system.params, value)
 		this.showDatabaseConfigModal = false
 	}
 
 	openSystemConfig() {
-		const value = this.screen.chooseWidget.config
+		const value = this.editor.chooseWidget.config
 		if (!value) return
 		this.showDatabaseConfigModal = true
-		this.screen = this.$screen
 		;(this.$refs.dataBaseConfig as any).setQueryCond(
 			value.api.system.params,
 		)

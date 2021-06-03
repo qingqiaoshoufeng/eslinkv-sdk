@@ -23,7 +23,7 @@ import dRightSwiperList from '@/components-right/d-right-swiper-list/index.vue'
 import dRightSwiperEye from '@/components-right/d-right-swiper-eye/index.vue'
 import dRightControl from '@/components-right/d-right-control/index.vue'
 import dInput from '@/components/d-input/index.vue'
-import Editor from "@/core/Editor";
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {

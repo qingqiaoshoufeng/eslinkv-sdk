@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-manage-modal-control-base(v-if="screen.chooseWidgetId")
+.d-manage-modal-control-base
 	d-right-control(label="色盘")
 		i-color-picker(
 			:alpha="true",
@@ -20,10 +20,9 @@ import { colorTheme } from '../../packages/config.default.js'
 @Component
 export default class FuncAnimation extends func {
 	instance = instance.state
-	screen = this.$screen
 	get colorTheme() {
-		return this.screen.chooseWidget.config.config.colorTheme
-			? this.screen.chooseWidget.config.config.colorTheme
+		return this.editor.chooseWidget.config.config.colorTheme
+			? this.editor.chooseWidget.config.config.colorTheme
 			: colorTheme
 	}
 
@@ -37,23 +36,23 @@ export default class FuncAnimation extends func {
 	}
 
 	handleResetColor() {
-		this.screen.chooseWidget.config.config.colorTheme = colorTheme
+		this.editor.chooseWidget.config.config.colorTheme = colorTheme
 		this.handleSync()
 	}
 
 	colorDiskChange(val, index) {
-		if (!this.screen.chooseWidget.config.config.colorTheme) {
-			this.screen.chooseWidget.config.config.colorTheme = {}
+		if (!this.editor.chooseWidget.config.config.colorTheme) {
+			this.editor.chooseWidget.config.config.colorTheme = {}
 		}
-		if (!this.screen.chooseWidget.config.config.colorTheme.colorDisk) {
-			this.screen.chooseWidget.config.config.colorTheme.colorDisk = []
+		if (!this.editor.chooseWidget.config.config.colorTheme.colorDisk) {
+			this.editor.chooseWidget.config.config.colorTheme.colorDisk = []
 		}
-		this.screen.chooseWidget.config.config.colorTheme.colorDisk[index] = val
+		this.editor.chooseWidget.config.config.colorTheme.colorDisk[index] = val
 		this.handleSync()
 	}
 
 	handleSync() {
-		this.instance.kanboard.$refs[`${this.screen.chooseWidgetId}`][0]
+		this.instance.kanboard.$refs[`${this.editor.chooseWidgetId}`][0]
 			.$children[0].updateKey++
 	}
 }

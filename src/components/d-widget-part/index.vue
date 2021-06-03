@@ -4,7 +4,6 @@ component.widget-part(
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
 	v-bind="{ config, readonly, ...$attrs }",
-	@widget-config-update="data => $emit('widget-config-update', data)",
 	@query-start="querying = true",
 	@query-end="querying = false",
 	@query-failed="querying = true",

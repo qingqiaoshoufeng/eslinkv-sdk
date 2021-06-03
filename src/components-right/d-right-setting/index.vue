@@ -1,22 +1,20 @@
 <template lang="pug">
-.d-right-modal-box.z-index-999(
-	:style="{ width: `${editor.xRoomR1}px` }",
-	v-if="screen.chooseWidgetId")
+.d-right-modal-box.z-index-999(:style="{ width: `${editor.xRoomR1}px` }")
 	.d-right-modal-name.fn-flex.flex-row(v-click-outside="close")
-		span.widget-name-text(v-if="!editName") {{ screen.chooseWidget.config.widget.name }}_{{ screen.chooseWidget ? screen.chooseWidget.id : '' }}
+		span.widget-name-text(v-if="!editName") {{ editor.chooseWidget.config.widget.name }}_{{ editor.chooseWidget ? editor.chooseWidget.id : '' }}
 		i-input.widget-name(
 			v-if="editName",
-			v-model="screen.chooseWidget.config.widget.name")
+			v-model="editor.chooseWidget.config.widget.name")
 		i-icon.pointer.widget-name-icon(
 			type="ios-create-outline",
 			@click.stop="editName = true",
 			v-if="!editName")
 		i-icon.pointer.widget-name-icon(
-			:type="screen.screenWidgets[screen.chooseWidgetId].config.widget.locked ? 'md-lock' : 'md-unlock'",
+			:type="editor.screenWidgets[editor.chooseWidgetId].config.widget.locked ? 'md-lock' : 'md-unlock'",
 			@click.stop="handleLock",
 			v-if="!editName")
 	.d-right-modal-id.fn-flex.flex-column
-		span {{ screen.screenWidgets[screen.chooseWidgetId].config.widget.componentVersion }} | {{ screen.screenWidgets[screen.chooseWidgetId].config.widget.name }}
+		span {{ editor.screenWidgets[editor.chooseWidgetId].config.widget.componentVersion }} | {{ editor.screenWidgets[editor.chooseWidgetId].config.widget.name }}
 	.d-right-modal-title.pointer.text-center.fn-flex.flex-row
 		span.pos-r(
 			v-for="(item, index) in title",
@@ -49,7 +47,6 @@ export default class DRightSetting extends Vue {
 	tabIndex = 0
 	editName = false
 	editor = Editor.Instance()
-	screen = this.$screen
 	title = ['基础', '交互', '主题', '自定义']
 	chooseList: any = [
 		{
@@ -70,7 +67,7 @@ export default class DRightSetting extends Vue {
 		},
 	]
 
-	@Watch('screen.chooseWidgetCustomConfig', { deep: true, immediate: true })
+	@Watch('editor.chooseWidgetCustomConfig', { deep: true, immediate: true })
 	changeChooseWidgetCustomConfig(val) {
 		this.chooseList[3].key = val
 	}
@@ -80,7 +77,7 @@ export default class DRightSetting extends Vue {
 	}
 
 	handleLock() {
-		this.screen.chooseWidget.config.widget.locked = !this.screen
+		this.editor.chooseWidget.config.widget.locked = !this.editor
 			.chooseWidget.config.widget.locked
 	}
 

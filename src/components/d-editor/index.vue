@@ -16,6 +16,7 @@
 			// 小工具清单
 			item-card(
 				:item="item",
+				:key="item.id",
 				v-for="item in editor.screenWidgets",
 				:getRefLineParams="getRefLineParams",
 				:ref="item.id")
@@ -68,7 +69,7 @@ export default class DEditor extends Vue {
 	editor = Editor.Instance()
 	vLine = []
 	hLine = []
-	@Provide() kanboardEditor = this
+	// @Provide() kanboardEditor = this
 	get canvasStyle(): any {
 		if (this.editor) {
 			return {
@@ -93,18 +94,18 @@ export default class DEditor extends Vue {
 			return child
 		})
 	}
-	// fullscreenchange(): void {
-	// 	this.editor.fullscreen = !this.editor.fullscreen
-	// }
-	// beforeDestroy(): void {
-	// 	this.editor.fullscreen = false
-	// 	document.removeEventListener('fullscreenchange', this.fullscreenchange)
-	// }
-	// mounted(): void {
-	// 	instance.actions.setInstance('kanboard', this)
-	// 	this.editor.updateEditorStatus('inEdit')
-	// 	document.addEventListener('fullscreenchange', this.fullscreenchange)
-	// }
+	fullscreenchange(): void {
+		this.editor.fullscreen = !this.editor.fullscreen
+	}
+	beforeDestroy(): void {
+		this.editor.fullscreen = false
+		document.removeEventListener('fullscreenchange', this.fullscreenchange)
+	}
+	mounted(): void {
+		instance.actions.setInstance('kanboard', this)
+		this.editor.updateEditorStatus('inEdit')
+		document.addEventListener('fullscreenchange', this.fullscreenchange)
+	}
 }
 </script>
 <style lang="scss">

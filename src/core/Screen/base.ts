@@ -18,12 +18,6 @@ export default class Screen extends Factory<Screen> {
 	public screenWidgets: any = {}
 
 	/* 更新大屏组件配置 */
-	setWidgetItem(widget: Widget): void {
-		this.screenWidgets[widget.id] = widget
-		console.log(this.screenWidgets)
-	}
-
-	/* 更新大屏组件配置 */
 	updateWidgetConfig(id, config) {
 		if (this.screenWidgets[id]) this.screenWidgets[id].config = config
 	}
@@ -166,7 +160,10 @@ export default class Screen extends Factory<Screen> {
 				currentSceneIndex,
 				currentMaxZIndex,
 			)
-			this.setWidgetItem(widgetItem)
+			this.screenWidgets = {
+				...this.screenWidgets,
+				[widgetItem.id]: widgetItem,
+			}
 		}
 	}
 }

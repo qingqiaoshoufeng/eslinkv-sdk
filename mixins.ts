@@ -174,14 +174,14 @@ const mx: any = {
 				res.customConfig = customConfig
 			}
 			if (this.config.widget) {
-				this.editor.updateWidgetConfig(
-					this.config.widget.id,
-					res,
-				)
+				this.editor.updateWidgetConfig(this.config.widget.id, res)
 			}
 			const payload = { value: { ...this.configValue } }
 			this.configReady = true
-			this.$emit('widget-config-update', payload)
+			const id = payload.value.widget.id
+			const currentWidget = this.editor.screenWidgets[id]
+			if (!id || !currentWidget) return
+			this.$set(currentWidget, 'config', payload.value)
 			return res
 		},
 	},

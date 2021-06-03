@@ -26,8 +26,7 @@ dr(
 		:type="item.type",
 		:config="item.config",
 		:children="item.children",
-		:market="item.market",
-		@widget-config-update="data => handleWidgetConfig(data, item)")
+		:market="item.market",)
 </template>
 <script lang="ts">
 import dr from '../../components/d-dr/index.vue'
@@ -126,37 +125,24 @@ export default class ItemCard extends Vue {
 		].config.layout.size.height = height
 	}
 
-	widgetEditable({ config }) {
+	widgetEditable({ config }): boolean {
 		return !config.widget.locked && !config.widget.hide
 	}
 
-	handleActivated(obj) {
+	handleActivated(obj: any): void {
 		const { config, id, type, children } = obj
 		if (config.widget.hide) {
 			return
 		}
-		// this.editor.setChooseWidget(id)
-		// if (children && this.screen.chooseWidgetChildId) {
-		// 	this.editor.setChooseWidgetCustomConfig(
-		// 		children.find(v => v.id === this.editor.chooseWidgetChildId)
-		// 			.config.customConfig,
-		// 	)
-		// } else {
-		// 	this.editor.setChooseWidgetCustomConfig(config.customConfig)
-		// }
-		// this.editor.chooseWidgetId = id
-	}
-
-	handleWidgetConfig({ value = {} }) {
-		this.updateWidget(value)
-	}
-
-	updateWidget(value) {
-		if (!value || !value.widget) return
-		const id = value.widget.id
-		const currentWidget = this.editor.screenWidgets[id]
-		if (!id || !currentWidget) return
-		this.$set(currentWidget, 'config', value)
+		this.editor.setChooseWidget(id)
+		if (children && this.editor.chooseWidgetChildId) {
+			this.editor.setChooseWidgetCustomConfig(
+				children.find(v => v.id === this.editor.chooseWidgetChildId)
+					.config.customConfig,
+			)
+		} else {
+			this.editor.setChooseWidgetCustomConfig(config.customConfig)
+		}
 	}
 }
 </script>

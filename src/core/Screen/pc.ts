@@ -39,7 +39,7 @@ export default class ScreenPc extends ScreenBase {
 		return res
 	}
 	/* 选中组件 */
-	setChooseWidget(id) {
+	public setChooseWidget(id: string): void {
 		this.chooseWidgetId = id
 	}
 	/* 选中组件的自定义配置更新 */

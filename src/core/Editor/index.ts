@@ -243,6 +243,14 @@ export default class Editor extends Factory<Editor> {
 	public updateWidgetConfig(id, config): void {
 		this.screen.updateWidgetConfig(id, config)
 	}
+	/* 选中组件 */
+	public setChooseWidget(id: string): void {
+		this.screen.setChooseWidget(id)
+	}
+	/* 选中组件的自定义配置更新 */
+	public setChooseWidgetCustomConfig(value = []) {
+		this.screen.setChooseWidgetCustomConfig(value)
+	}
 	/* 更新大屏信息 防抖：1500ms */
 	updateScreenDebounce = debounce(1500, false, function (obj: any): void {
 		if (this.screenId) {

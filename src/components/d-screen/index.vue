@@ -5,14 +5,14 @@
 	.d-editor-box.pos-r.fn-flex
 		d-left-widget
 		d-left-scene
-		d-editor(ref="kanboardEditor")
+		d-editor
 		d-right-manage(v-if="!editor.chooseWidgetId")
 		d-right-setting(v-if="editor.chooseWidgetId")
 		d-right-setting-more(
 			v-if="editor.chooseWidgetArray && editor.chooseWidgetArray.length > 1")
 </template>
 <script lang="ts">
-import { Vue, Component, Provide } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 import dLeftWidget from '../d-left-widget/index.vue'
 import dLeftScene from '../d-left-scene/index.vue'
 import dEditor from '../d-editor/index.vue'
@@ -33,7 +33,6 @@ import Editor from '@/core/Editor'
 })
 export default class dScreen extends Vue {
 	editor = Editor.Instance()
-	@Provide('kanboardEditor') kanboardEditor = this.$refs.kanboardEditor
 }
 </script>
 <style lang="scss" scoped>

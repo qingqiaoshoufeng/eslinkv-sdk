@@ -20,7 +20,7 @@ import DManageItem from '@/components-right/d-right-setting/item.vue'
 
 @Component({ components: { DManageItem } })
 export default class FuncGroup extends func {
-	handleAddClick() {
+	handleAddClick(): void {
 		const child = {}
 		this.config.children.forEach(v => {
 			child[v.prop] = ''
@@ -28,7 +28,7 @@ export default class FuncGroup extends func {
 		this.obj[this.inputKey].push(child)
 	}
 
-	handleRemoveClick(index) {
+	handleRemoveClick(index): void {
 		this.obj[this.inputKey].splice(index, 1)
 	}
 }
