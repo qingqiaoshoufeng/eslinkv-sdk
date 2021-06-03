@@ -96,6 +96,20 @@ export default class Editor extends Factory<Editor> {
 		this.ruler.contentX = Math.ceil(deltaX)
 		this.ruler.contentY = Math.ceil(deltaY)
 	}
+	
+	public initX(el = '') {
+		this.ruler.initX({
+			el,
+			width: this.width
+		})
+	}
+	
+	public initY(el = '') {
+		this.ruler.initY({
+			el,
+			height: this.height
+		})
+	}
 
 	/* ---------------------------------------------------Screen---------------------------------------------------*/
 	get screenWidgets(): any {

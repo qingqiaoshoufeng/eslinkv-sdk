@@ -16,127 +16,19 @@ import { Component, Watch, Vue } from 'vue-property-decorator'
 import event from '../../store/event.store'
 import Editor from '@/core/Editor'
 
-let i = 0
-let loadImg = false
-const bgImg = new Image()
-
 @Component
 export default class XLine extends Vue {
 	event = event.state
 	editor = Editor.Instance()
 	showHelp = false
-	canvas: HTMLCanvasElement
 	context = null
 
 	get site() {
 		return this.editor.ruler.guideSite('v')
 	}
 
-	@Watch('editor.zoom')
-	zoomChange() {
-		this.init()
-	}
-
-	@Watch('editor.ruler.contentX')
-	contentXChange() {
-		this.init()
-	}
-
-	translateAnimation(num) {
-		const animation = requestAnimationFrame(() =>
-			this.translateAnimation(num),
-		)
-		if (i === num) {
-			cancelAnimationFrame(animation)
-			i = 0
-		}
-		this.handleTranslate(1)
-		if (num > 0) i++
-		if (num < 0) i--
-	}
-
-	handleTranslate(num) {
-		this.clearRulerCanvas()
-		this.context.translate(num, 0)
-		this.init()
-	}
-
-	clearRulerCanvas() {
-		const t = this.context.getTransform()
-		this.canvas.width =
-			document.getElementById('d-editor').offsetWidth -
-			this.editor.rulerSize
-		this.context.clearRect(
-			-t.e,
-			0,
-			this.canvas.width - t.e,
-			this.canvas.height,
-		)
-	}
-
-	initDraw() {
-		this.clearRulerCanvas()
-		const t = this.context.getTransform()
-		let x = 0
-		while (x < this.canvas.width - t.e) {
-			this.context.drawImage(bgImg, x, 0)
-			this.context.font = '10px sans-serif'
-			this.context.fillStyle = '#999'
-			this.context.fillText(~~(x / this.editor.zoom), x + 4, 10)
-			x = x + this.editor.ruler.stepLength
-		}
-
-		if (t.e > 0) {
-			let xe = 0
-			while (xe < t.e) {
-				xe = xe + this.editor.ruler.stepLength
-				this.context.drawImage(bgImg, -xe, 0)
-				this.context.font = '10px sans-serif'
-				this.context.fillStyle = '#999'
-				this.context.fillText(
-					xe === 0 ? '0' : -~~(xe / this.editor.zoom),
-					-xe + 2,
-					10,
-				)
-			}
-		}
-	}
-
-	/**
-	 * @description
-	 *
-	 * 画布高度 * （1-缩放比例）      ===》2边缩放距离
-	 * 2边缩放距离 / 2               ===》单边缩放距离
-	 * 单边缩放距离 + 面板拖动距离     ===》0点距离左侧边界像素值
-	 */
-	init() {
-		this.context.translate(
-			(this.editor.width * (1 - this.editor.zoom)) / 2 +
-				this.editor.ruler.contentX -
-				this.editor.guideStartX,
-			0,
-		)
-		this.editor.ruler.guideStartX =
-			(this.editor.width * (1 - this.editor.zoom)) / 2 +
-			this.editor.ruler.contentX
-		if (loadImg) {
-			this.initDraw()
-		} else {
-			bgImg.src =
-				'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAASCAIAAACW8RrQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3OEUyMEM3NzkyMTIxMUVCQkZGREJCREZEQzRBQUVFQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3OEUyMEM3ODkyMTIxMUVCQkZGREJCREZEQzRBQUVFQyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjc4RTIwQzc1OTIxMjExRUJCRkZEQkJERkRDNEFBRUVDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjc4RTIwQzc2OTIxMjExRUJCRkZEQkJERkRDNEFBRUVDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+r9C/twAAAENJREFUeNpilJBWYRh8gElSXHQwOothUIJRZ406a9RZo84adRY9nIW/aqKd7BAJrYEKHjTZ0SRPCmA0NLIchM4CCDAAtx4DyLnOl1UAAAAASUVORK5CYII='
-			bgImg.onload = () => {
-				loadImg = true
-				this.initDraw()
-			}
-		}
-	}
-
 	mounted() {
-		;(this.canvas as HTMLElement) = document.getElementById('ruler-x')
-		this.context = this.canvas.getContext('2d')
-		this.context.font = '10px sans-serif'
-		this.context.fillStyle = '#999'
-		this.init()
+		this.editor.initX('ruler-x')
 	}
 }
 </script>

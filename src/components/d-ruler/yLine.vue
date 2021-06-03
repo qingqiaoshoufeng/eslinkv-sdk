@@ -26,124 +26,19 @@ export default class YLine extends Vue {
 	showHelp = false
 	canvas: HTMLCanvasElement
 	context = null
+	screen = this.$screen
 
 	get site() {
 		return this.editor.ruler.guideSite('h')
 	}
 
-	@Watch('editor.zoom')
-	zoomChange() {
-		this.init()
-	}
-
-	@Watch('editor.ruler.contentY')
-	contentXChange() {
-		this.init()
-	}
-
-	@Watch('editor.height')
+	@Watch('screen.height')
 	heightChange() {
-		this.init()
-	}
-
-	translateAnimation(num) {
-		const animation = requestAnimationFrame(() =>
-			this.translateAnimation(num),
-		)
-		if (i === num) {
-			cancelAnimationFrame(animation)
-			i = 0
-		}
-		this.handleTranslate(1)
-		if (num > 0) i++
-		if (num < 0) i--
-	}
-
-	handleTranslate(num) {
-		this.clearRulerCanvas()
-		this.context.translate(0, num)
-		this.init()
-	}
-
-	clearRulerCanvas() {
-		const t = this.context.getTransform()
-		this.canvas.height =
-			document.getElementById('d-editor').offsetHeight -
-			this.editor.rulerSize
-		this.context.clearRect(
-			-t.e,
-			0,
-			this.canvas.width,
-			this.canvas.height - t.e,
-		)
-	}
-
-	initDraw() {
-		this.clearRulerCanvas()
-		const t = this.context.getTransform()
-		let x = 0
-		this.context.font = '10px sans-serif'
-		this.context.fillStyle = '#999'
-		while (x < this.canvas.height - t.f) {
-			this.context.save()
-			this.context.drawImage(bgImg, 0, x)
-			this.context.translate(10, x)
-			this.context.rotate(-Math.PI / 2)
-			const num = ~~(x / this.editor.zoom)
-			this.context.fillText(num, -num.toString().length * 8, 0)
-			x = x + this.editor.ruler.stepLength
-			this.context.restore()
-		}
-
-		if (t.f > 0) {
-			let xe = 0
-			while (xe < t.f) {
-				this.context.save()
-				xe = xe + this.editor.ruler.stepLength
-				this.context.drawImage(bgImg, 0, -xe)
-				this.context.translate(10, -xe + 28)
-				this.context.rotate(-Math.PI / 2)
-				this.context.fillText(~~-(xe / this.editor.zoom), 2, 0)
-				this.context.restore()
-			}
-		}
-	}
-
-	/**
-	 * @description
-	 *
-	 * 画布高度 * （1-缩放比例）      ===》2边缩放距离
-	 * 2边缩放距离 / 2               ===》单边缩放距离
-	 * 单边缩放距离 + 面板拖动距离     ===》0点距离上侧边界像素值
-	 */
-	init() {
-		this.context.translate(
-			0,
-			(this.editor.height * (1 - this.editor.zoom)) / 2 +
-				this.editor.ruler.contentY -
-				this.editor.ruler.guideStartY,
-		)
-		this.editor.ruler.guideStartY =
-			(this.editor.height * (1 - this.editor.zoom)) / 2 +
-			this.editor.ruler.contentY
-		if (loadImg) {
-			this.initDraw()
-		} else {
-			bgImg.src =
-				'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAyCAIAAADeABw2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkM4MjEwRjkyMTMxMUVCOTlBQUQyOTQ0REY2ODNDMSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkM4MjExMDkyMTMxMUVCOTlBQUQyOTQ0REY2ODNDMSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjFCQzgyMTBEOTIxMzExRUI5OUFBRDI5NDRERjY4M0MxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjFCQzgyMTBFOTIxMzExRUI5OUFBRDI5NDRERjY4M0MxIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+2HR8RgAAAE5JREFUeNpikZBWkRQXZSARsADx85evSdIDtIaJgSxAX20sJHmJHG3wkBtWQYKZjFhICozRVDKaSkZTyWgqGU0lo6lkNJWMphIiAECAAQCHcyGW+TXwowAAAABJRU5ErkJggg=='
-			bgImg.onload = () => {
-				loadImg = true
-				this.initDraw()
-			}
-		}
+		this.editor.initY()
 	}
 
 	mounted() {
-		;(this.canvas as HTMLElement) = document.getElementById('ruler-v')
-		this.context = this.canvas.getContext('2d')
-		this.context.font = '10px sans-serif'
-		this.context.fillStyle = '#999'
-		this.init()
+		this.editor.initY('ruler-v')
 	}
 }
 </script>
