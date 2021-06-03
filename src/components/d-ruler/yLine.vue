@@ -18,53 +18,10 @@ import Editor from '@/core/Editor'
 export default class YLine extends Vue {
 	editor = Editor.Instance()
 	showHelp = false
-	canvas: HTMLCanvasElement
-	context = null
-	screen = this.$screen
 
 	get site(): number {
 		return this.editor.eve.guideSite('h')
 	}
-
-	mounted(): void {
-		this.editor.initRuler('ruler-v', 'y')
-	}
 }
 </script>
-<style lang="scss" scoped>
-canvas {
-	left: 0;
-}
-
-.d-ruler-wrapper-y {
-	position: absolute;
-	top: 18px;
-	left: 0;
-	z-index: 9;
-	width: 18px;
-	height: calc(100% - 18px);
-	box-shadow: #111 0 0 1px;
-}
-
-.d-ruler-mouse-y {
-	top: 0;
-	left: 0;
-	z-index: 30;
-	width: 9999px;
-	height: 0;
-	pointer-events: none;
-	border-top: 1px dashed var(--lineRed);
-
-	.num {
-		position: absolute;
-		top: -22px;
-		left: 0;
-		padding: 4px;
-		font-size: 12px;
-		line-height: 14px;
-		color: var(--white);
-		background: var(--lineRed);
-		transform: rotate(-90deg);
-	}
-}
-</style>
+<style lang="scss" scoped></style>

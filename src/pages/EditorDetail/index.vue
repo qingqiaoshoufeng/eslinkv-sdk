@@ -1,7 +1,7 @@
 <template lang="pug">
 .detail-container
 	.preview-wrapper.fit-mode(
-		:style="{ backgroundColor: screen.backgroundColor }")
+		:style="{ backgroundColor: editor.backgroundColor }")
 		d-view
 		d-detail(:show="false")
 </template>
@@ -9,6 +9,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import dDetail from '../../components/d-detail/index.vue'
 import dView from '../../components/d-view/index.vue'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -17,7 +18,7 @@ import dView from '../../components/d-view/index.vue'
 	},
 })
 export default class detail extends Vue {
-	screen = this.$screen
+	editor = Editor.Instance()
 }
 </script>
 <style lang="scss">

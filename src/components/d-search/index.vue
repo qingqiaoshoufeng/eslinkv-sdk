@@ -26,7 +26,6 @@ import Editor from '@/core/Editor'
 export default class DSearch extends Vue {
 	searchResult = []
 	keyword = ''
-	screen = this.$screen
 	editor = Editor.Instance()
 	@Prop() value
 	@Prop() hide
@@ -38,11 +37,11 @@ export default class DSearch extends Vue {
 			return
 		}
 		let arr = []
-		for (const key in this.screen.screenWidgets) {
+		for (const key in this.editor.screenWidgets) {
 			if (
-				this.screen.screenWidgets[key].config.widget.name.includes(val)
+				this.editor.screenWidgets[key].config.widget.name.includes(val)
 			) {
-				arr.push(this.screen.screenWidgets[key])
+				arr.push(this.editor.screenWidgets[key])
 			}
 		}
 		this.searchResult = arr
@@ -51,8 +50,8 @@ export default class DSearch extends Vue {
 		this.hide()
 	}
 	check(widget) {
-		this.screen.setSceneIndex(widget.scene)
-		this.screen.chooseWidgetId = widget.id
+		this.editor.setSceneIndex(widget.scene)
+		this.editor.chooseWidgetId = widget.id
 		this.hide()
 	}
 }

@@ -193,7 +193,7 @@ export default {
 			const target = e.target || e.srcElement
 			if (this.$el.contains(target)) {
 				if (this.draggable) {
-					// dDrMouseDown(e)
+					this.editor.eve.widgetMove = true
 					this.dragging = true
 				}
 

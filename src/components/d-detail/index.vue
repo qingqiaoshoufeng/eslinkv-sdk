@@ -39,7 +39,7 @@
 			i-icon(type="ios-cloud-done-outline", :size="24")
 			span 保存
 	load-mask(:show="loading") {{ loadingMsg }}
-	i-modal(v-model="importModal" :footer-hide="true")
+	i-modal(v-model="importModal", :footer-hide="true")
 		i-form
 			i-form-item
 				input#originFile.fn-hide(
@@ -165,9 +165,10 @@ export default class DDetail extends Vue {
 		}
 	}
 
-	created(): void {
+	mounted(): void {
 		const templateId = this.$route.query.templateId
 		const id = this.$route.params.id || templateId
+		const file = this.$route.params.file
 		this.isNew = !id
 		if (id) {
 			detail({ screenId: id }).then(res => {
@@ -175,12 +176,12 @@ export default class DDetail extends Vue {
 				this.loadMarketComponent(result.screen)
 				this.editor.resetZoom()
 			})
-		}
-		const file = this.$route.params.file
-		if (file) {
+		} else if (file) {
 			detailFile(decodeURIComponent(file)).then(res => {
 				this.editor.init(res)
 			})
+		} else {
+			this.editor.init()
 		}
 		const sceneIndex = getQueryString('scene')
 		if (sceneIndex) {

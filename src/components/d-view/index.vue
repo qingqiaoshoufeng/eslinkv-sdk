@@ -1,6 +1,6 @@
 <template lang="pug">
-#screen.canvas-wrapper(ref="canvas-wrapper", :style="screen.screenStyle")
-	template(v-for="item in screen.screenWidgets")
+#screen.canvas-wrapper(ref="canvas-wrapper", :style="editor.screenStyle")
+	template(v-for="item in editor.screenWidgets")
 		parts(
 			v-if="showParts(item)",
 			:key="item.id",
@@ -17,6 +17,7 @@ import parts from '../d-widget-part/index.vue'
 import loadMask from '../load-mask/index.vue'
 import instance from '../../store/instance.store'
 import { Component, Vue, Provide } from 'vue-property-decorator'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {
@@ -26,13 +27,11 @@ import { Component, Vue, Provide } from 'vue-property-decorator'
 })
 export default class DView extends Vue {
 	@Provide('kanboardEditor') kanboardEditor = this
-
-	screen = this.$screen
-
+	editor = Editor.Instance()
 	showParts(item) {
 		if (item.scene === 0) {
 			return true
-		} else if (item.scene === this.screen.sceneIndex) {
+		} else if (item.scene === this.editor.sceneIndex) {
 			return true
 		}
 		return false

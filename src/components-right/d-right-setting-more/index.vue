@@ -18,13 +18,12 @@ import Editor from '@/core/Editor'
 })
 export default class DRightSettingMore extends Vue {
 	editor = Editor.Instance()
-	screen = this.$screen
 
 	handleGroup() {
 		const children = []
-		this.screen.chooseWidgetArray.map(item => {
-			children.push(this.screen.screenWidgets[item])
-			this.$delete(this.screen.screenWidgets, item)
+		this.editor.chooseWidgetArray.map(item => {
+			children.push(this.editor.screenWidgets[item])
+			this.$delete(this.editor.screenWidgets, item)
 		})
 		const id = uuid()
 		const config = configMerge(
@@ -32,37 +31,37 @@ export default class DRightSettingMore extends Vue {
 				widget: { id, name: '分组' },
 				layout: {
 					size: {
-						width: this.screen.chooseWidgetArrayConfig.width,
-						height: this.screen.chooseWidgetArrayConfig.height,
+						width: this.editor.chooseWidgetArrayConfig.width,
+						height: this.editor.chooseWidgetArrayConfig.height,
 					},
 					position: {
-						left: this.screen.chooseWidgetArrayConfig.left,
-						top: this.screen.chooseWidgetArrayConfig.top,
+						left: this.editor.chooseWidgetArrayConfig.left,
+						top: this.editor.chooseWidgetArrayConfig.top,
 					},
 				},
 			},
 			commonConfigValue(),
 		)
-		this.$set(this.screen.screenWidgets, id, {
+		this.$set(this.editor.screenWidgets, id, {
 			config,
 			id,
 			market: false,
-			scene: this.screen.sceneIndex,
+			scene: this.editor.sceneIndex,
 			type: 'group',
 			children,
 		})
-		this.screen.chooseWidgetId = id
-		this.screen.chooseWidgetArray = []
+		this.editor.chooseWidgetId = id
+		this.editor.chooseWidgetArray = []
 	}
 	handleDelete() {
 		this.$Modal.confirm({
 			title: '提示',
 			content: '是否删除所选组件？',
 			onOk: () => {
-				this.screen.chooseWidgetArray.map(item => {
-					this.$delete(this.screen.screenWidgets, item)
+				this.editor.chooseWidgetArray.map(item => {
+					this.$delete(this.editor.screenWidgets, item)
 				})
-				this.screen.chooseWidgetArray = []
+				this.editor.chooseWidgetArray = []
 			},
 		})
 	}

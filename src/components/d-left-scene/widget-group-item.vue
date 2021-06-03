@@ -2,7 +2,7 @@
 .main
 	.child.fn-flex.flex-row(
 		@click="handleChoose",
-		:class="{ active: screen.chooseWidgetChildId === child.id }")
+		:class="{ active: editor.chooseWidgetChildId === child.id }")
 		.d-left-scene-left
 			h2 {{ child.config.widget.name }}
 		.d-left-scene-right
@@ -11,17 +11,18 @@
 <script lang="ts">
 import widgetGroup from './widget-group.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import Editor from '@/core/Editor'
 @Component({
 	components: { widgetGroup },
 })
 export default class widgetGroupItem extends Vue {
 	childList = []
-	screen = this.$screen
+	editor = Editor.Instance()
 	@Prop() child
 	handleChoose() {
-		this.screen.chooseWidgetChildId = this.child.id
-		const target = this.screen.chooseWidget
-		this.screen.setChooseWidgetCustomConfig(target.config.customConfig)
+		this.editor.chooseWidgetChildId = this.child.id
+		const target = this.editor.chooseWidget
+		this.editor.setChooseWidgetCustomConfig(target.config.customConfig)
 	}
 }
 </script>

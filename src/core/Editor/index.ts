@@ -5,6 +5,7 @@ import { Message } from 'view-design'
 import { debounce } from 'throttle-debounce'
 import { update } from '@/api/screen.api'
 import Eve from '@/core/Eve'
+import Ruler from '@/core/ui/Ruler'
 
 const dragId = `drag-content-${+new Date()}`
 const contentId = `drag-content-${+new Date()}`
@@ -15,15 +16,26 @@ export default class Editor extends Factory<Editor> {
 	screenId: string
 	private screen: ScreenPc = ScreenPc.Instance()
 	private scene: Scene = Scene.Instance()
+	private ruler: Ruler | null
 	private eve: Eve = Eve.Instance({
 		contentId,
 	})
 
 	public init(res: any): any {
-		this.screenId = res.screenId
-		const screen = this.screen.init(res)
-		this.scene.init(res)
-		return { screen }
+		if (res) {
+			this.screenId = res.screenId
+			const screen = this.screen.init(res)
+			this.scene.init(res)
+			return { screen }
+		}
+		this.ruler = new Ruler()
+		this.ruler.draw({
+			screenHeight: this.screen.screenHeight,
+			screenWidth: this.screen.screenWidth,
+			zoom: this.eve.zoom,
+			offsetX: this.eve.offsetX,
+			offsetY: this.eve.offsetY,
+		})
 	}
 	/* ---------------------------------------------------Eve---------------------------------------------------*/
 	get guideLines(): any {
@@ -61,22 +73,23 @@ export default class Editor extends Factory<Editor> {
 	public zoomOut(step = 2): void {
 		this.eve.zoomOut(step)
 	}
-	public initRuler(el: string, type: string): void {
-		this.eve.initRuler({
-			el,
-			width: this.width,
-			height: this.height,
-			type,
+	public taggerXRoomL1(): void {
+		this.eve.xRoomL1 = this.eve.xRoomL1 > 0 ? 0 : 238
+		localStorage.setItem('xRoomL1', `${this.eve.xRoomL1}`)
+		this.ruler.draw({
+			xRoomL1: this.eve.xRoomL1,
 		})
 	}
-	public taggerXRoomL1(): void {
-		this.eve.taggerXRoomL1()
-	}
 	public taggerXRoomL2(): void {
-		this.eve.taggerXRoomL2()
+		this.eve.xRoomL2 = this.eve.xRoomL2 > 0 ? 0 : 238
+		localStorage.setItem('xRoomL2', `${this.eve.xRoomL2}`)
+		this.ruler.draw({
+			xRoomL2: this.eve.xRoomL2,
+		})
 	}
 	public taggerXRoomR1(): void {
-		this.eve.taggerXRoomR1()
+		this.eve.xRoomR1 = this.eve.xRoomR1 > 0 ? 0 : 350
+		localStorage.setItem('xRoomR1', `${this.eve.xRoomR1}`)
 	}
 	/* 画布还原最佳比例 */
 	public resetZoom(): void {
@@ -280,7 +293,7 @@ export default class Editor extends Factory<Editor> {
 	}
 	get rulerStyle(): any {
 		return {
-			transform: `translate3d(${this.eve.contentX}px, ${this.eve.contentY}px, 0) scale(${this.eve.zoom})`,
+			transform: `translate3d(${this.eve.offsetX}px, ${this.eve.offsetY}px, 0) scale(${this.eve.zoom})`,
 			width: `${this.width + 18 * 2}px`,
 			height: `${this.height + 18 * 2}px`,
 		}
@@ -289,15 +302,5 @@ export default class Editor extends Factory<Editor> {
 		if (width) this.screen.screenWidth = width
 		if (height) this.screen.screenHeight = height
 		this.resetZoom()
-		this.eve.initRuler({
-			width: this.width,
-			height: this.height,
-			type: 'x',
-		})
-		this.eve.initRuler({
-			width: this.width,
-			height: this.height,
-			type: 'y',
-		})
 	}
 }
