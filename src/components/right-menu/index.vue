@@ -38,8 +38,6 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import instance from '../../store/instance.store'
-import copy from 'fast-copy'
-import { uuid } from '../../utils/index'
 import { Icon } from 'view-design'
 import Editor from '@/core/Editor'
 
@@ -99,7 +97,7 @@ export default class rightMenu extends Vue {
 			content: '是否删除当前组件？',
 			onOk: () => {
 				const id = this.editor.chooseWidgetId
-				this.$delete(this.editor.screenWidgets, id)
+				this.editor.screen.deleteWidget(id)
 				this.handleUnActive()
 			},
 			onCancel: () => {
@@ -109,33 +107,10 @@ export default class rightMenu extends Vue {
 	}
 
 	copyWidget() {
-		const copyId = this.editor.chooseWidgetId
-		const widget = this.editor.screenWidgets[copyId]
-		if (!widget) return
-		const copiedWidget = copy(widget)
-		const id = uuid()
-		copiedWidget.id = id
-		this.initCopyWidget(id, copiedWidget)
-	}
-
-	initCopyWidget(id, widget, makeOffset = true) {
-		const config = widget.config
-		config.widget.id = id
-		const layout = config.layout
-		if (makeOffset) {
-			layout.position.left += 10
-			layout.position.top += 10
-		}
-		// this.editor.setWidgetItem(
-		// 	id,
-		// 	widget.type,
-		// 	widget.config,
-		// 	widget.scene,
-		// 	widget.market,
-		// )
+		this.editor.screen.copyWidget()
 		this.handleUnActive()
 	}
-
+	
 	hideRightMenu() {
 		const rightMenu = document.getElementById('right-menu')
 		rightMenu.classList.remove('active')

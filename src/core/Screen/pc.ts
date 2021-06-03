@@ -1,5 +1,7 @@
 import ScreenBase from '@/core/Screen/base'
 import { setDefault } from '@/utils'
+import copy from 'fast-copy'
+import { uuid } from '../../utils/index'
 
 export default class ScreenPc extends ScreenBase {
 	/* 当前组件加载状态 */
@@ -128,5 +130,21 @@ export default class ScreenPc extends ScreenBase {
 			}
 		})
 		return { marketComponents, screenWidgets }
+	}
+
+	/* 复制组件 */
+	copyWidget() {
+		const copyId = this.chooseWidgetId
+		const widget = this.screenWidgets[copyId]
+		if (!widget) return
+		const copiedWidget = copy(widget)
+		const id = uuid()
+		copiedWidget.id = id
+		const config = copiedWidget.config
+		config.widget.id = id
+		const layout = config.layout
+		layout.position.left += 10
+		layout.position.top += 10
+		this.screenWidgets[id] = copiedWidget
 	}
 }

@@ -23,7 +23,7 @@ export default class YLine extends Vue {
 	screen = this.$screen
 
 	get site(): number {
-		return this.editor.guideSite('h')
+		return this.editor.eve.guideSite('h')
 	}
 
 	mounted(): void {

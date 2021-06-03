@@ -166,6 +166,10 @@ export default class Screen extends Factory<Screen> {
 			}
 		}
 	}
+	
+	deleteWidget(id) {
+		delete this.screenWidgets[id]
+	}
 }
 function getAttr(o, str) {
 	const arr = str.split('.')

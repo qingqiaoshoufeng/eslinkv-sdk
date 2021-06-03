@@ -22,7 +22,7 @@ export default class XLine extends Vue {
 	context = null
 
 	get site(): number {
-		return this.editor.guideSite('v')
+		return this.editor.eve.guideSite('v')
 	}
 
 	mounted(): void {

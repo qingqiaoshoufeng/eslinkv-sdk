@@ -527,8 +527,8 @@ export default {
 				this.dragging &&
 				this.top > 0 &&
 				this.left > 0 &&
-				this.top < this.screen.height &&
-				this.left < this.screen.width
+				this.top < this.editor.height &&
+				this.left < this.editor.width
 			)
 		},
 		style() {
