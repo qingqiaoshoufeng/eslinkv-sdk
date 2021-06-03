@@ -84,7 +84,6 @@ import { screenShareUpdate } from '@/api/screenShare.api'
 export default class DDetail extends Vue {
 	@Prop({ default: true }) show: boolean
 	editor = Editor.Instance()
-	screen = this.$screen
 	loadingMsg = 'loading…'
 	shareModal = false
 	searchModal = false
@@ -174,6 +173,7 @@ export default class DDetail extends Vue {
 			detail({ screenId: id }).then(res => {
 				const result = this.editor.init(res)
 				this.loadMarketComponent(result.screen)
+				this.editor.resetZoom()
 			})
 		}
 		const file = this.$route.params.file
@@ -206,13 +206,13 @@ export default class DDetail extends Vue {
 
 	handleSave(type: string): void {
 		let isNew = false
-		if (this.screen.screenType === 'CUSTOM' && type === 'TEMPLATE') {
+		if (this.editor.screenType === 'CUSTOM' && type === 'TEMPLATE') {
 			isNew = true
 		}
-		this.screen.screenType = type
+		this.editor.screenType = type
 		this.$Modal.confirm({
 			title: `确定${this.isNew || isNew ? '创建' : '更新'}${
-				this.screen.screenType === 'TEMPLATE' ? '大屏模版' : '大屏'
+				this.editor.screenType === 'TEMPLATE' ? '大屏模版' : '大屏'
 			}吗？`,
 			content: '回收站内的组件将被清除！',
 			okText: '确定',

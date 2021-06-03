@@ -1,4 +1,3 @@
-import event from '@/store/event.store'
 import Vue from 'vue'
 
 /**
@@ -102,8 +101,8 @@ const mouseup = e => {
 				height + (maxTop - minTop)
 		}
 	}
-	if (event.state.componentMove) {
-		event.state.componentMove = false
+	if (event.state.widgetMove) {
+		event.state.widgetMove = false
 	}
 }
 export default mouseup

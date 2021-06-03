@@ -2,43 +2,32 @@
 .d-ruler-wrapper-y(
 	@mouseenter="showHelp = true",
 	@mouseleave="showHelp = false",
-	@mousedown.stop="editor.createGuideLine('h', $route.params.id)",
-	@mouseup.stop="editor.createGuideLine('h', $route.params.id)")
+	@mousedown.stop="editor.createGuideLine('h')",
+	@mouseup.stop="editor.createGuideLine('h')")
 	canvas#ruler-v.pos-a(width="18", height="9999")
 	.d-ruler-mouse-y.pos-a(
-		:style="`transform: translateY(${event.clientY - editor.rulerSize - editor.yRoom}px)`",
+		:style="`transform: translateY(${editor.eve.clientY - editor.rulerSize - editor.yRoom}px)`",
 		v-if="showHelp")
 		.num {{ site }}
 </template>
 <script lang="ts">
-import { Component, Watch, Vue } from 'vue-property-decorator'
-import event from '../../store/event.store'
+import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
-
-let i = 0
-let loadImg = false
-const bgImg = new Image()
 
 @Component
 export default class YLine extends Vue {
-	event = event.state
 	editor = Editor.Instance()
 	showHelp = false
 	canvas: HTMLCanvasElement
 	context = null
 	screen = this.$screen
 
-	get site() {
-		return this.editor.ruler.guideSite('h')
+	get site(): number {
+		return this.editor.guideSite('h')
 	}
 
-	@Watch('screen.height')
-	heightChange() {
-		this.editor.initY()
-	}
-
-	mounted() {
-		this.editor.initY('ruler-v')
+	mounted(): void {
+		this.editor.initRuler('ruler-v', 'y')
 	}
 }
 </script>

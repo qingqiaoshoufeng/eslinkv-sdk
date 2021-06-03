@@ -33,7 +33,6 @@ import dr from '../../components/d-dr/index.vue'
 import dDrKuang from '../../components/d-dr-kuang/index.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import parts from '../d-widget-part/index.vue'
-import event from '@/store/event.store.js'
 import Editor from '@/core/Editor'
 
 @Component({
@@ -45,7 +44,6 @@ import Editor from '@/core/Editor'
 })
 export default class ItemCard extends Vue {
 	editor = Editor.Instance()
-	event = event.state
 
 	@Prop() item
 	@Prop() getRefLineParams

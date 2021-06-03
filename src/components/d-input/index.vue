@@ -1,22 +1,18 @@
 <template lang="pug">
 i-input.d-input(
 	v-bind="{...$props,...$attrs}",
-	v-on="$listeners",
-	@on-focus="event.inputFocus = true",
-	@on-blur="event.inputFocus = false")
+	v-on="$listeners",)
 	span.d-input-append(slot="append", v-if="append") {{ append }}
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Input } from 'view-design'
-import event from '../../store/event.store.js'
 @Component({
 	components: {
 		'i-input': Input,
 	},
 })
 export default class DInput extends Vue {
-	event = event.state
 	@Prop() append
 }
 </script>

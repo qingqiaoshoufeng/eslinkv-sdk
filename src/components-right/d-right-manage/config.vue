@@ -7,11 +7,16 @@
 			i-option(value="1024*768") web最小尺寸1024*768
 			i-option(value="other") 自定义
 	d-right-control
-		d-input(append="W", v-model="editor.width", :style="{ width: '100px' }")
+		d-input(
+			append="W",
+			:value="editor.width",
+			:style="{ width: '100px' }",
+			@on-change="widthChange")
 		d-input(
 			append="H",
-			v-model="editor.height",
-			:style="{ marginLeft: '10px', width: '100px' }")
+			:value="editor.height",
+			:style="{ marginLeft: '10px', width: '100px' }",
+			@on-change="heightChange")
 	d-right-control(label="背景色")
 		i-color-picker(
 			:alpha="true",
@@ -81,14 +86,18 @@ export default class FuncConfig extends func {
 		return `${width}*${height}`
 	}
 
-	set size(value) {
+	set size(value: string) {
 		if (value !== 'other' && value) {
 			const [width, height] = value.split('*')
-			this.editor.width = +width
-			this.editor.height = +height
+			this.editor.screenSizeChange({ width: +width, height: +height })
 		}
 	}
-
+	widthChange(e: any): void {
+		this.editor.screenSizeChange({ width: +e.target.value })
+	}
+	heightChange(e: any): void {
+		this.editor.screenSizeChange({ height: +e.target.value })
+	}
 	// START_PROD
 	async screenAvatar() {
 		this.screenAvatarLoading = true

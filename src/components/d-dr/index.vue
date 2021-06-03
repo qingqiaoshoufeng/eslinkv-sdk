@@ -27,15 +27,14 @@
 		span.pos-a(
 			:style="{ fontSize: `${14 * returnRatio}px`, right: `${30 * returnRatio}px`, bottom: `${5 * returnRatio}px` }") {{ top }}
 	slot
-	.dr-disabled-event.pos-a(
-		:style="{ width: '100%', height: '100%', top: 0, left: 0 }",
-		v-if="!event.componentsDisabled[id]")
+	//.dr-disabled-event.pos-a(
+//		:style="{ width: '100%', height: '100%', top: 0, left: 0 }",
+//		v-if="!event.componentsDisabled[id]")
 </template>
 <script>
 import { addEvent, removeEvent } from './dom'
-import event from '../../store/event.store'
-import { dDrMouseDown } from '@/events'
 import dDrKuang from '../d-dr-kuang/index.vue'
+import Editor from '@/core/Editor'
 
 export default {
 	components: {
@@ -131,7 +130,7 @@ export default {
 			resizing: false,
 			dragging: false,
 			brotherNodes: [],
-			screen: this.$screen,
+			editor: Editor.Instance(),
 		}
 	},
 	created() {
@@ -190,11 +189,11 @@ export default {
 		},
 		// 元素按下
 		elementDown(e) {
-			if (!this.enabled || event.contentMove) return
+			if (!this.enabled || this.editor.eve.contentMove) return
 			const target = e.target || e.srcElement
 			if (this.$el.contains(target)) {
 				if (this.draggable) {
-					dDrMouseDown(e)
+					// dDrMouseDown(e)
 					this.dragging = true
 				}
 

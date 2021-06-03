@@ -18,9 +18,7 @@
 				:disabled="!editor.chooseWidget.config.api.system.enable") 配置
 		d-right-control(label="接口地址", v-if="apiType === 'API接口'")
 			i-input(
-				v-model="editor.chooseWidget.config.api.url",
-				@on-focus="event.inputFocus = true",
-				@on-blur="event.inputFocus = false")
+				v-model="editor.chooseWidget.config.api.url",)
 		d-right-control(v-if="apiType === 'API接口'")
 			i-select(
 				v-model="editor.chooseWidget.config.api.method",
@@ -32,16 +30,12 @@
 				i-option(value="PATCH") PATCH
 			i-input(
 				v-model="editor.chooseWidget.config.api.path",
-				:style="{ width: '100px' }",
-				@on-focus="event.inputFocus = true",
-				@on-blur="event.inputFocus = false")
+				:style="{ width: '100px' }")
 		d-right-control(
 			label="接口地址",
 			v-if="editor.chooseWidget.config.api.system.enable")
 			i-input(
-				v-model="editor.chooseWidget.config.api.system.interface",
-				@on-focus="event.inputFocus = true",
-				@on-blur="event.inputFocus = false")
+				v-model="editor.chooseWidget.config.api.system.interface")
 		d-right-control(v-if="editor.chooseWidget.config.api.system.enable")
 			i-select(
 				v-model="editor.chooseWidget.config.api.system.method",
@@ -53,9 +47,7 @@
 				i-option(value="PATCH") PATCH
 			i-input(
 				v-model="editor.chooseWidget.config.api.system.path",
-				:style="{ width: '100px' }",
-				@on-focus="event.inputFocus = true",
-				@on-blur="event.inputFocus = false")
+				:style="{ width: '100px' }")
 			database-config(
 				ref="dataBaseConfig",
 				:showModal="showDatabaseConfigModal",
@@ -92,15 +84,13 @@
 			i-input-number(
 				:min="1",
 				:step="1",
-				@on-focus="event.inputFocus = true",
-				@on-blur="event.inputFocus = false",
 				:formatter="value => `${value} ms`",
 				v-model="editor.chooseWidget.config.api.autoFetch.duration")
 	// END_PROD
 	data-event-component
 	data-event-scene
-	d-right-control(label="开启组件内部事件")
-		i-switch(v-model="event.componentsDisabled[editor.chooseWidgetId]")
+	//d-right-control(label="开启组件内部事件")
+	//	i-switch(v-model="event.componentsDisabled[editor.chooseWidgetId]")
 	d-right-control(label="组件关联")
 		i-switch(v-model="editor.chooseWidget.config.api.bind.enable")
 		i-select(

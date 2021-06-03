@@ -2,7 +2,7 @@
 .d-guide
 	.d-guide-wrapper.pos-a(:style="guideStyle")
 		.d-guide-line.z-index-9.pos-a.d-editor-line(
-			v-for="item in editor.ruler.guideLines",
+			v-for="item in editor.guideLines",
 			:style="{ ...lineStyle(item) }",
 			:data-top="item.type === 'v' ? 0 : item.site",
 			:data-left="item.type === 'v' ? item.site : 0",
@@ -17,7 +17,6 @@
 		li(@click="handleDestroy(removeId)") 删除
 </template>
 <script lang="ts">
-import event from '../../store/event.store'
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 
@@ -27,7 +26,6 @@ export default class Guide extends Vue {
 	menuLeft = 0
 	menuTop = 0
 	removeId = null
-	event = event.state
 	editor = Editor.Instance()
 
 	/**
@@ -56,8 +54,8 @@ export default class Guide extends Vue {
 	}
 
 	handleDestroy(id) {
-		const index = this.editor.ruler.guideLines.findIndex(v => v.id === id)
-		this.editor.ruler.guideLines.splice(index, 1)
+		const index = this.editor.guideLines.findIndex(v => v.id === id)
+		this.editor.guideLines.splice(index, 1)
 		this.updateHandle()
 	}
 
@@ -123,13 +121,13 @@ export default class Guide extends Vue {
 	}
 
 	clearGuides() {
-		if (this.editor.ruler.guideLines.length > 0)
+		if (this.editor.guideLines.length > 0)
 			this.$Modal.confirm({
 				title: '确定是否清空参考线？',
 				okText: '确定',
 				cancelText: '取消',
 				onOk: () => {
-					this.editor.ruler.guideLines = []
+					this.editor.guideLines = []
 					this.updateHandle()
 				},
 			})

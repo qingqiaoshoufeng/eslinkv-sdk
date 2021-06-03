@@ -22,7 +22,6 @@ div
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator'
 import { Icon, Modal, Tooltip } from 'view-design'
 import dRightControl from '../../components-right/d-right-control/index.vue'
-import event from '@/store/event.store'
 const editor = require('vue2-ace-editor')
 
 @Component({
@@ -36,7 +35,6 @@ const editor = require('vue2-ace-editor')
 })
 export default class DDcode extends Vue {
 	modal = false
-	event = event.state
 	@Prop({ default: '代码' }) label
 	@Prop({ default: 'javascript' }) lang
 	@Prop({ default: '全屏模式' }) title
@@ -59,10 +57,10 @@ export default class DDcode extends Vue {
 		// @ts-ignore
 		editor.forEach(item => {
 			item.onfocus = () => {
-				this.event.inputFocus = true
+				// this.event.inputFocus = true
 			}
 			item.onblur = () => {
-				this.event.inputFocus = true
+				// this.event.inputFocus = true
 			}
 		})
 	}

@@ -4,8 +4,6 @@
 	:style="{ width: `calc(100% - ${editor.xRoomL1 + editor.xRoomL2 + editor.xRoomR1}px)`, left: `${editor.xRoomL1 + editor.xRoomL2}px` }")
 	.d-detail-search.animated.searchFadeInDown(v-click-outside="hide")
 		i-input.d-detail-input(
-			@on-focus="event.inputFocus = true",
-			@on-blur="event.inputFocus = false",
 			suffix="ios-search",
 			placeholder="请输入组件名",
 			v-model="keyword")
@@ -16,7 +14,6 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
-import event from '../../store/event.store'
 import Editor from '@/core/Editor'
 
 @Component({
@@ -28,7 +25,6 @@ import Editor from '@/core/Editor'
 })
 export default class DSearch extends Vue {
 	searchResult = []
-	event = event.state
 	keyword = ''
 	screen = this.$screen
 	editor = Editor.Instance()

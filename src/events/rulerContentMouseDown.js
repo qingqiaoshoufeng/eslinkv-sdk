@@ -1,4 +1,3 @@
-import event from '@/store/event.store'
 import Vue from 'vue'
 /**
  * @description
@@ -9,7 +8,7 @@ const rulerContentMouseDown = e => {
 	/**
 	 * @description 取消选择组件
 	 */
-	if (!event.state.componentMove) {
+	if (!event.state.widgetMove) {
 		Vue.prototype.$screen.unChooseWidget()
 	}
 	// 判断是否为鼠标左键被按下
@@ -21,8 +20,8 @@ const rulerContentMouseDown = e => {
 	 */
 	if (
 		!event.state.contentMove &&
-		!event.state.componentDrag &&
-		!event.state.componentMove
+		!event.state.widgetDrag &&
+		!event.state.widgetMove
 	) {
 		event.state.kuangMove = true
 		let kuang = document.getElementById('d-kuang')

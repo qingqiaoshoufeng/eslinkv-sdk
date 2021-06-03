@@ -1,7 +1,6 @@
 <template lang="pug">
 #d-screen.d-screen(
-	:style="{ height: `calc(100% - ${editor.yRoom}px)` }",
-	@wheel="editor.wheelRulerContentZoom($event)")
+	:style="{ height: `calc(100% - ${editor.yRoom}px)` }",)
 	.d-editor-box.pos-r.fn-flex
 		d-left-widget
 		d-left-scene

@@ -7,7 +7,6 @@ import '../src/scss/index.scss'
 import '../src/scss/animate.min.scss'
 import '../src/scss/animate-widget.min.scss'
 import '../src/scss/font.scss'
-import { mouseup, keydown, mousemove, keyup } from '../src/events/index.js'
 import Vue from 'vue'
 import Hljs from 'highlight.js'
 import 'highlight.js/styles/tomorrow-night.css'
@@ -45,8 +44,3 @@ const filters = { toThousand }
 
 Vue.use(Highlight)
 Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
-
-document.documentElement.addEventListener('mouseup', mouseup)
-document.documentElement.addEventListener('keydown', keydown)
-document.documentElement.addEventListener('mousemove', mousemove)
-document.documentElement.addEventListener('keyup', keyup)
