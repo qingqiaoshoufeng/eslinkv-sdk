@@ -1,6 +1,5 @@
 ﻿<template lang="pug">
 dr(
-	v-if="showParts(item)",
 	:key="item.id",
 	:ref="`widget_${item.id}`",
 	:id="item.id",
@@ -55,17 +54,6 @@ export default class ItemCard extends Vue {
 			width: this.item.config.layout.size.width + 'px',
 			height: this.item.config.layout.size.height + 'px',
 			zIndex: this.item.config.layout.zIndex,
-		}
-	}
-	get showParts() {
-		return (item: any) => {
-			if (item.scene === 0) {
-				return true
-			}
-			if (item.scene === this.editor.sceneIndex) {
-				return true
-			}
-			return false
 		}
 	}
 

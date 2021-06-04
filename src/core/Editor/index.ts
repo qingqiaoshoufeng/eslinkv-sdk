@@ -236,6 +236,9 @@ export default class Editor extends Factory<Editor> {
 	get sceneIndex() {
 		return this.scene.sceneIndex
 	}
+	set sceneIndex(val) {
+		this.scene.sceneIndex = val
+	}
 	/* 场景数据 */
 	get sceneObj() {
 		return this.scene.sceneObj

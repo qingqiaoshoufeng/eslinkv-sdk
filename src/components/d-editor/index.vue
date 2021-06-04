@@ -17,7 +17,7 @@
 			item-card(
 				:item="item",
 				:key="item.id",
-				v-for="item in editor.screenWidgets",
+				v-for="item in showWidgets",
 				:getRefLineParams="getRefLineParams",
 				:ref="item.id")
 			dr-more(v-show="editor.chooseWidgetArray&&editor.chooseWidgetArray.length")
@@ -69,7 +69,7 @@ export default class DEditor extends Vue {
 	editor = Editor.Instance()
 	vLine = []
 	hLine = []
-	// @Provide() kanboardEditor = this
+	@Provide('kanboardEditor') kanboardEditor = this
 	get canvasStyle(): any {
 		if (this.editor) {
 			return {
@@ -81,6 +81,18 @@ export default class DEditor extends Vue {
 		}
 		return {}
 	}
+
+	get showWidgets () {
+		if (this.editor.scene.sceneIndex === 0) {
+			return this.editor.screen.sceneWidgets[0]
+		} else {
+			return [
+				...(this.editor.screen.sceneWidgets[this.editor.scene.sceneIndex] || []),
+				...this.editor.screen.sceneWidgets[0]
+			]
+		}
+	}
+	
 	getRefLineParams(params: any, item: any): void {
 		const { vLine, hLine } = params
 		this.vLine = vLine.map((child: any) => {

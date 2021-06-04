@@ -16,6 +16,15 @@ export default class Screen extends Factory<Screen> {
 	public screenConfig: any = {}
 	/* 大屏组件配置 */
 	public screenWidgets: any = {}
+	
+	get sceneWidgets () {
+		const res = { 0: [] }
+		for (const widgetId in this.screenWidgets) {
+			if (!res[this.screenWidgets[widgetId].scene]) res[this.screenWidgets[widgetId].scene] = []
+			res[this.screenWidgets[widgetId].scene].push(this.screenWidgets[widgetId])
+		}
+		return res
+	}
 
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id, config) {
