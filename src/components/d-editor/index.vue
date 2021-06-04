@@ -66,7 +66,6 @@ export default class DEditor extends Vue {
 	editor = Editor.Instance()
 	vLine = []
 	hLine = []
-	@Provide('kanboardEditor') kanboardEditor = this
 	get canvasStyle(): any {
 		if (this.editor) {
 			return {

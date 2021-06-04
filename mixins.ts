@@ -10,7 +10,6 @@ import Editor from '@/core/Editor'
 
 const mx: any = {
 	mixins: [fetch, dataProcess],
-	inject: ['kanboardEditor'],
 	props: {
 		config: {
 			type: Object,
@@ -102,21 +101,12 @@ const mx: any = {
 		},
 		/**
 		 * @description 组件间联动，被关联组件收动添加 updateComponent 方法
+		 * [id]
 		 */
 		emitComponentUpdate(data) {
 			if (this.configValue) {
 				this.configValue.api.bind.refIds.forEach((ref: any) => {
-					let dom: any
-					if (this.kanboardEditor.$refs[ref]) {
-						dom = this.kanboardEditor.$refs[ref][0].$refs.widgets
-					}
-					if (instance.state.createKanboard) {
-						if (instance.state.createKanboard.$refs[ref]) {
-							dom =
-								instance.state.createKanboard.$refs[ref][0]
-									.$refs.widgets
-						}
-					}
+					let dom = this.editor.screenWidgets[ref]
 					if (!dom) return
 					if (typeof dom.updateComponent === 'function')
 						dom.updateComponent(data)

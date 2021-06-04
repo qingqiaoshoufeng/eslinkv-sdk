@@ -25,7 +25,6 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DView extends Vue {
-	@Provide('kanboardEditor') kanboardEditor = this
 	editor = Editor.Instance()
 
 	mounted() {
