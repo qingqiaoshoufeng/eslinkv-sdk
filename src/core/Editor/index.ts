@@ -29,12 +29,13 @@ export default class Editor extends Factory<Editor> {
 			return { screen }
 		}
 		this.ruler = new Ruler()
-		this.ruler.draw({
+		this.eve.resetZoom({
 			screenHeight: this.screen.screenHeight,
 			screenWidth: this.screen.screenWidth,
-			zoom: this.eve.zoom,
-			offsetX: this.eve.offsetX,
-			offsetY: this.eve.offsetY,
+		})
+		this.ruler.resetZoom({
+			screenHeight: this.screen.screenHeight,
+			screenWidth: this.screen.screenWidth,
 		})
 	}
 	/* ---------------------------------------------------Eve---------------------------------------------------*/
@@ -84,7 +85,14 @@ export default class Editor extends Factory<Editor> {
 	}
 	/* 画布还原最佳比例 */
 	public resetZoom(): void {
-		this.eve.resetZoom(this.contentId, this.width, this.height)
+		this.eve.resetZoom({
+			screenHeight: this.screen.screenHeight,
+			screenWidth: this.screen.screenWidth,
+		})
+		this.ruler.resetZoom({
+			screenHeight: this.screen.screenHeight,
+			screenWidth: this.screen.screenWidth,
+		})
 	}
 	/* 创建参考线/更新参考线 */
 	public createGuideLine(type: string): any {

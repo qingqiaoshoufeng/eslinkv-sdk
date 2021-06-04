@@ -40,7 +40,6 @@
 				v-for="item in hLine",
 				v-show="item.display",
 				:style="{ top: item.position, left: item.origin, width: item.lineLength }")
-	d-guide
 	right-menu
 	d-footer
 </template>
@@ -49,7 +48,6 @@ import rightMenu from '../right-menu/index.vue'
 import dRuler from '../d-ruler/index.vue'
 import drMore from '../../components/d-dr-more/index.vue'
 import dFooter from '../d-footer/index.vue'
-import dGuide from '../d-guide/index.vue'
 import instance from '../../store/instance.store'
 import ItemCard from './item-card.vue'
 import { Component, Provide, Vue } from 'vue-property-decorator'
@@ -60,7 +58,6 @@ import Editor from '@/core/Editor'
 		ItemCard,
 		dRuler,
 		dFooter,
-		dGuide,
 		drMore,
 		rightMenu,
 	},

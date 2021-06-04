@@ -68,13 +68,13 @@ export default class Eve extends Factory<Screen> {
 		}
 	}
 	/* 画布还原最佳比例 */
-	public resetZoom(contentId: string, width: number, height: number): void {
-		const rulerContent = document.getElementById(contentId)
-		const rulerOffsetWidth = rulerContent.offsetWidth - this.ruler.rulerSize
-		this.zoom = ~~((rulerOffsetWidth / width) * 100) / 100 || this.zoomStep
-		const rulerOffsetHeight = rulerContent.offsetHeight
-		const deltaX = (rulerOffsetWidth - width) * 0.5
-		const deltaY = (rulerOffsetHeight - height) * 0.5
+	public resetZoom({ screenWidth, screenHeight }: any = {}): void {
+		const dom = document.getElementsByClassName('d-ruler-wrapper')[0]
+		const rulerOffsetWidth = dom.offsetWidth
+		this.zoom = ~~((rulerOffsetWidth / screenWidth) * 100) / 100
+		const rulerOffsetHeight = dom.offsetHeight
+		const deltaX = (rulerOffsetWidth - screenWidth) * 0.5
+		const deltaY = (rulerOffsetHeight - screenHeight) * 0.5
 		this.offsetX = Math.ceil(deltaX)
 		this.offsetY = Math.ceil(deltaY)
 	}

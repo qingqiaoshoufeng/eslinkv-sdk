@@ -174,7 +174,6 @@ export default class DDetail extends Vue {
 			detail({ screenId: id }).then(res => {
 				const result = this.editor.init(res)
 				this.loadMarketComponent(result.screen)
-				this.editor.resetZoom()
 			})
 		} else if (file) {
 			detailFile(decodeURIComponent(file)).then(res => {
