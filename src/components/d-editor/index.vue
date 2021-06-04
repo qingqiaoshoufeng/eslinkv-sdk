@@ -50,7 +50,7 @@ import drMore from '../../components/d-dr-more/index.vue'
 import dFooter from '../d-footer/index.vue'
 import instance from '../../store/instance.store'
 import ItemCard from './item-card.vue'
-import { Component, Provide, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 
 @Component({
@@ -77,7 +77,7 @@ export default class DEditor extends Vue {
 		}
 		return {}
 	}
-	
+
 	getRefLineParams(params: any, item: any): void {
 		const { vLine, hLine } = params
 		this.vLine = vLine.map((child: any) => {

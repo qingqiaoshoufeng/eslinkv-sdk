@@ -93,7 +93,6 @@ export default class Ruler {
 		const zoom = ~~((dom.offsetWidth / this.screenWidth) * 100) / 100
 		const offsetX = (dom.offsetWidth - this.screenWidth) * 0.5
 		const offsetY = (dom.offsetHeight - this.screenHeight) * 0.5
-		console.log(offsetX, offsetY, zoom, 'ruler')
 		this.draw({
 			screenWidth,
 			screenHeight,

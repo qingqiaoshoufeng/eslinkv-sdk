@@ -21,7 +21,7 @@ d-right-swiper-list(
 					filterable,
 					placeholder="目标场景")
 					i-option(:value="0") 主场景
-					i-option(:value="key", v-for="(item, key) in scene.obj", :key="key") {{ item.name }}
+					i-option(:value="key", v-for="(item, key) in editor.sceneObj", :key="key") {{ item.name }}
 				i-select(
 					clearable,
 					filterable,
@@ -39,14 +39,14 @@ import { animates } from './config.js'
 export default class FuncData extends func {
 	animates = animates
 
-	handleAddClick() {
+	handleAddClick(): void {
 		this.editor.chooseWidget.config.event.scene.push({
 			id: '',
 			type: '',
 			animate: '',
 		})
 	}
-	handleRemoveClick(index) {
+	handleRemoveClick(index: number): void {
 		this.editor.chooseWidget.config.event.scene.splice(index, 1)
 	}
 }

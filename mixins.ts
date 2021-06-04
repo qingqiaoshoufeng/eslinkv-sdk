@@ -5,7 +5,6 @@ import globalConfigValue from './common-config-value'
 import instance from './src/store/instance.store'
 import { createSandbox } from './data-process'
 import { configMerge, usePath } from './src/utils'
-import Vue from 'vue'
 import Editor from '@/core/Editor'
 
 const mx: any = {
@@ -48,7 +47,6 @@ const mx: any = {
 			if (!this.configValue) return
 			for (const item of this.configValue.event.scene) {
 				const sceneId = item.id
-				const animate = item.animate
 				switch (item.type) {
 					case 'openScene':
 						scene.state.activeWidgetId = this.config.widget.id
@@ -108,8 +106,6 @@ const mx: any = {
 				this.configValue.api.bind.refIds.forEach((ref: any) => {
 					let dom = this.editor.screenWidgets[ref]
 					if (!dom) return
-					if (typeof dom.updateComponent === 'function')
-						dom.updateComponent(data)
 					dom.updateAjax(data)
 				})
 			}
@@ -166,12 +162,11 @@ const mx: any = {
 			if (this.config.widget) {
 				this.editor.updateWidgetConfig(this.config.widget.id, res)
 			}
-			const payload = { value: { ...this.configValue } }
 			this.configReady = true
-			const id = payload.value.widget.id
-			const currentWidget = this.editor.screenWidgets[id]
-			if (!id || !currentWidget) return
-			this.$set(currentWidget, 'config', payload.value)
+			if (this.configValue) {
+				const id = this.configValue.widget.id
+				this.editor.screenWidgets[id].config = this.configValue
+			}
 			return res
 		},
 	},

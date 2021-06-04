@@ -4,17 +4,17 @@ li.pointer.pos-r.d-left-scene-list-li(
 	:key="item.id")
 	.parent(@click="handleChoose(item)")
 		.d-left-scene-left
-			h2 {{ item.config.widget.name }}
+			h2 {{ item.value.widget.name }}
 		.d-left-scene-right
 			i-icon(
-				v-if="item.config.widget.hide",
+				v-if="item.value.widget.hide",
 				type="md-eye-off",
 				title="显示",
 				@click="handleTaggerHide(item.id)",
 				@click.stop)
 			i-icon(
 				style="margin-left: 10px",
-				v-if="item.config.widget.locked",
+				v-if="item.value.widget.locked",
 				type="md-unlock",
 				title="解锁",
 				@click="handleUnLock(item.id)",
@@ -39,7 +39,7 @@ export default class DLeftSceneItem extends Vue {
 	childList = []
 	editor = Editor.Instance()
 	@Prop() item
-	get list() {
+	get list(): any {
 		const list = []
 		for (const key in this.editor.screenWidgets) {
 			const item = this.editor.screenWidgets[key]
@@ -50,23 +50,23 @@ export default class DLeftSceneItem extends Vue {
 		return list
 	}
 
-	handleUpZIndex(id) {
-		this.editor.screenWidgets[id].config.layout.zIndex++
+	handleUpZIndex(id: string): void {
+		this.editor.screenWidgets[id].value.layout.zIndex++
 	}
 
-	handleDownZIndex(id) {
-		this.editor.screenWidgets[id].config.layout.zIndex--
+	handleDownZIndex(id: string): void {
+		this.editor.screenWidgets[id].value.layout.zIndex--
 	}
 
-	handleUnLock(id) {
-		this.editor.screenWidgets[id].config.widget.locked = false
+	handleUnLock(id: string): void {
+		this.editor.screenWidgets[id].value.widget.locked = false
 	}
 
-	handleFocusSceneName() {
+	handleFocusSceneName(): void {
 		this.editor.unChooseWidget()
 	}
 
-	handleChoose(item) {
+	handleChoose(item: any): void {
 		this.editor.chooseWidgetId = item.id
 		this.editor.chooseWidgetChildId = null
 		if (item.children) {
@@ -75,8 +75,8 @@ export default class DLeftSceneItem extends Vue {
 	}
 
 	handleTaggerHide(id) {
-		this.editor.screenWidgets[id].config.widget.hide = !this.editor
-			.screenWidgets[id].config.widget.hide
+		this.editor.screenWidgets[id].value.widget.hide = !this.editor
+			.screenWidgets[id].value.widget.hide
 	}
 }
 </script>

@@ -53,7 +53,7 @@ import dCode from '@/components-right/d-code/index.vue'
 
 @Component({ components: { dCode } })
 export default class FuncData extends func {
-	handleAddClick() {
+	handleAddClick(): void {
 		this.editor.chooseWidget.config.event.component.push({
 			ids: [],
 			type: '',
@@ -65,7 +65,7 @@ export default class FuncData extends func {
 			},
 		})
 	}
-	handleRemoveClick(index) {
+	handleRemoveClick(index: number): void {
 		this.editor.chooseWidget.config.event.component.splice(index, 1)
 	}
 }

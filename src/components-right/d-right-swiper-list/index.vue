@@ -27,11 +27,11 @@ export default class FuncGroup extends Vue {
 		{ icon: 'md-trash', msg: '减一个' },
 	]
 
-	handleClickTab(index) {
+	handleClickTab(index: number): void {
 		this.index = index
 	}
 
-	handleClick(value) {
+	handleClick(value: string): void {
 		if (value === 'md-add-circle') {
 			this.$emit('add-click')
 		}

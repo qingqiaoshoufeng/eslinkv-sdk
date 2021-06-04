@@ -6,15 +6,15 @@ dr(
 	:scale-ratio="editor.zoom",
 	:draggable="widgetEditable(item)",
 	:resizable="widgetEditable(item)",
-	:scale="item.config.layout.scale",
+	:scale="item.value.layout.scale",
 	:active="item.id === editor.chooseWidgetId && widgetEditable(item)",
-	:w="item.config.layout.size.width",
-	:h="item.config.layout.size.height",
-	:x="item.config.layout.position.left",
-	:y="item.config.layout.position.top",
-	:z="item.config.layout.zIndex",
+	:w="item.value.layout.size.width",
+	:h="item.value.layout.size.height",
+	:x="item.value.layout.position.left",
+	:y="item.value.layout.position.top",
+	:z="item.value.layout.zIndex",
 	:snap="editor.autoAlignGuide",
-	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
+	:class="[{ locked: item.value.widget.locked, 'dr-hide': item.value.widget.hide }, `widget-${item.id}`]",
 	:snap-to-target="['.d-editor-line', '.dr-unactive']",
 	@resizestop="onResizeStop",
 	@refLineParams="params => getRefLineParams(params, item)",
@@ -23,9 +23,9 @@ dr(
 	@contextmenu.native="showRightMenu($event, item)")
 	parts(
 		:type="item.type",
-		:config="item.config",
+		:value="item.value",
 		:children="item.children",
-		:market="item.market",)
+		:market="item.market")
 </template>
 <script lang="ts">
 import dr from '../../components/d-dr/index.vue'
@@ -50,10 +50,10 @@ export default class ItemCard extends Vue {
 
 	get style() {
 		return {
-			transform: `translate3d(${this.item.config.layout.position.left}px, ${this.item.config.layout.position.top}px,0)`,
-			width: this.item.config.layout.size.width + 'px',
-			height: this.item.config.layout.size.height + 'px',
-			zIndex: this.item.config.layout.zIndex,
+			transform: `translate3d(${this.item.value.layout.position.left}px, ${this.item.value.layout.position.top}px,0)`,
+			width: this.item.value.layout.size.width + 'px',
+			height: this.item.value.layout.size.height + 'px',
+			zIndex: this.item.value.layout.zIndex,
 		}
 	}
 
@@ -73,18 +73,18 @@ export default class ItemCard extends Vue {
 	onDragStop(left: number, top: number) {
 		const diffLeft =
 			left -
-			this.editor.screenWidgets[this.editor.chooseWidgetId].config.layout
+			this.editor.screenWidgets[this.editor.chooseWidgetId].value.layout
 				.position.left
 		const diffTop =
 			top -
-			this.editor.screenWidgets[this.editor.chooseWidgetId].config.layout
+			this.editor.screenWidgets[this.editor.chooseWidgetId].value.layout
 				.position.top
 		this.editor.screenWidgets[
 			this.editor.chooseWidgetId
-		].config.layout.position.left = left
+		].value.layout.position.left = left
 		this.editor.screenWidgets[
 			this.editor.chooseWidgetId
-		].config.layout.position.top = top
+		].value.layout.position.top = top
 		this.onGroupDragStop(
 			this.editor.screenWidgets[this.editor.chooseWidgetId],
 			diffLeft,
@@ -95,8 +95,8 @@ export default class ItemCard extends Vue {
 	onGroupDragStop(item, diffLeft: number, diffTop: number) {
 		if (item.children) {
 			item.children.map(child => {
-				child.config.layout.position.left += diffLeft
-				child.config.layout.position.top += diffTop
+				child.value.layout.position.left += diffLeft
+				child.value.layout.position.top += diffTop
 				this.onGroupDragStop(child, diffLeft, diffTop)
 			})
 		}
@@ -105,29 +105,29 @@ export default class ItemCard extends Vue {
 	onResizeStop(width: number, height: number) {
 		this.editor.screenWidgets[
 			this.editor.chooseWidgetId
-		].config.layout.size.width = width
+		].value.layout.size.width = width
 		this.editor.screenWidgets[
 			this.editor.chooseWidgetId
-		].config.layout.size.height = height
+		].value.layout.size.height = height
 	}
 
-	widgetEditable({ config }): boolean {
-		return !config.widget.locked && !config.widget.hide
+	widgetEditable({ value }): boolean {
+		return !value.widget.locked && !value.widget.hide
 	}
 
 	handleActivated(obj: any): void {
-		const { config, id, type, children } = obj
-		if (config.widget.hide) {
+		const { value, id, type, children } = obj
+		if (value.widget.hide) {
 			return
 		}
 		this.editor.setChooseWidget(id)
 		if (children && this.editor.chooseWidgetChildId) {
 			this.editor.setChooseWidgetCustomConfig(
 				children.find(v => v.id === this.editor.chooseWidgetChildId)
-					.config.customConfig,
+					.value.customConfig,
 			)
 		} else {
-			this.editor.setChooseWidgetCustomConfig(config.customConfig)
+			this.editor.setChooseWidgetCustomConfig(value.customConfig)
 		}
 	}
 }

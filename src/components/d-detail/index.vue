@@ -35,7 +35,7 @@
 		li.fn-flex.flex-column.pointer(@click="importModal = true")
 			i-icon(type="ios-cloud-upload-outline", :size="24")
 			span 导入
-		li.fn-flex.flex-column.pointer(@click="handleSave('CUSTOM')")
+		li.fn-flex.flex-column.pointer(@click="handleSave")
 			i-icon(type="ios-cloud-done-outline", :size="24")
 			span 保存
 	load-mask(:show="loading") {{ loadingMsg }}
@@ -140,24 +140,23 @@ export default class DDetail extends Vue {
 		Promise.all(p)
 			.then(() => {
 				this.loading = false
-				this.screenWidgets = screen.screenWidgets
+				this.editor.screen.screenWidgets = screen.screenWidgets
 				const widgets = Object.values(screen.screenWidgets)
-				const list = this.sceneList
 				widgets.forEach((item: any) => {
-					const index = list.indexOf(item.scene)
-					if (index !== -1) {
-						if (!this.sceneWidgets[list[index]]) {
-							this.sceneWidgets[list[index]] = {}
+					if (item.scene !== 0) {
+						if (!this.sceneWidgets[item.scene]) {
+							this.sceneWidgets[item.scene] = {}
 						}
-						if (!this.sceneWidgets[list[index]].list) {
-							this.sceneWidgets[list[index]].list = []
+						if (!this.sceneWidgets[item.scene].list) {
+							this.sceneWidgets[item.scene].list = []
 						}
-						this.sceneWidgets[list[index]].list.push(item)
+						this.sceneWidgets[item.scene].list.push(item)
 					}
 				})
 			})
-			.catch(() => {
+			.catch(e => {
 				this.loading = false
+				console.error(e)
 				console.error('组件初始化加载失败')
 			})
 		if (p.length === 0) {
@@ -204,16 +203,10 @@ export default class DDetail extends Vue {
 		})
 	}
 
-	handleSave(type: string): void {
+	handleSave(): void {
 		let isNew = false
-		if (this.editor.screenType === 'CUSTOM' && type === 'TEMPLATE') {
-			isNew = true
-		}
-		this.editor.screenType = type
 		this.$Modal.confirm({
-			title: `确定${this.isNew || isNew ? '创建' : '更新'}${
-				this.editor.screenType === 'TEMPLATE' ? '大屏模版' : '大屏'
-			}吗？`,
+			title: `确定${this.isNew || isNew ? '创建' : '更新'}大屏吗？`,
 			content: '回收站内的组件将被清除！',
 			okText: '确定',
 			cancelText: '取消',
@@ -222,7 +215,10 @@ export default class DDetail extends Vue {
 				const screenData = this.editor.screenData()
 				const sceneData = this.editor.sceneData()
 				if (this.isNew || isNew) {
-					create({ ...screenData, ...sceneData })
+					create({
+						...screenData,
+						...sceneData,
+					})
 						.then(res => {
 							this.$Message.success('保存成功！')
 							screenShareUpdate({
@@ -236,7 +232,11 @@ export default class DDetail extends Vue {
 							this.loading = false
 						})
 				} else {
-					update({ ...screenData, ...sceneData })
+					update({
+						...screenData,
+						...sceneData,
+						screenId: this.editor.screenId,
+					})
 						.then(() => {
 							this.$Message.success('修改成功')
 							this.loading = false

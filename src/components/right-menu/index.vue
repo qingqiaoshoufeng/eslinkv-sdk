@@ -64,7 +64,7 @@ export default class rightMenu extends Vue {
 		this.zIndex += num
 		this.editor.screenWidgets[
 			this.editor.chooseWidgetId
-		].config.layout.zIndex = this.zIndex
+		].value.layout.zIndex = this.zIndex
 		this.hideRightMenu()
 	}
 
@@ -72,7 +72,7 @@ export default class rightMenu extends Vue {
 		this.zIndex = this.maxZIndex
 		this.editor.screenWidgets[
 			this.editor.chooseWidgetId
-		].config.layout.zIndex = this.maxZIndex
+		].value.layout.zIndex = this.maxZIndex
 		this.hideRightMenu()
 	}
 
@@ -80,13 +80,13 @@ export default class rightMenu extends Vue {
 		this.zIndex = this.minZIndex
 		this.editor.screenWidgets[
 			this.editor.chooseWidgetId
-		].config.layout.zIndex = this.minZIndex
+		].value.layout.zIndex = this.minZIndex
 		this.hideRightMenu()
 	}
 
 	hideWidget() {
 		const widget = this.editor.screenWidgets[this.editor.chooseWidgetId]
-			.config.widget
+			.value.widget
 		widget.hide = !widget.hide
 		this.handleUnActive()
 	}
@@ -110,7 +110,7 @@ export default class rightMenu extends Vue {
 		this.editor.screen.copyWidget()
 		this.handleUnActive()
 	}
-	
+
 	hideRightMenu() {
 		const rightMenu = document.getElementById('right-menu')
 		rightMenu.classList.remove('active')
@@ -124,24 +124,24 @@ export default class rightMenu extends Vue {
 		this.isLock = !this.isLock
 		this.editor.screenWidgets[
 			this.editor.chooseWidgetId
-		].config.widget.locked = this.isLock
+		].value.widget.locked = this.isLock
 		this.hideRightMenu()
 	}
 
 	@Watch('editor.chooseWidgetId')
 	chooseIdChange(val) {
 		if (!val) return
-		this.isLock = this.editor.screenWidgets[val].config.widget.locked
-		this.zIndex = this.editor.screenWidgets[val].config.layout.zIndex
+		this.isLock = this.editor.screenWidgets[val].value.widget.locked
+		this.zIndex = this.editor.screenWidgets[val].value.layout.zIndex
 		let max = 0
 		let min = 9999
 		for (const key in this.editor.screenWidgets) {
 			max = Math.max(
-				this.editor.screenWidgets[key].config.layout.zIndex,
+				this.editor.screenWidgets[key].value.layout.zIndex,
 				max,
 			)
 			min = Math.min(
-				this.editor.screenWidgets[key].config.layout.zIndex,
+				this.editor.screenWidgets[key].value.layout.zIndex,
 				min,
 			)
 		}

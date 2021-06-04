@@ -108,27 +108,25 @@ export default class Screen extends Factory<Screen> {
 		const defaultConfig = commonConfigValue() // 读取默认配置
 		const widgetAdded = copy(this.screenWidgets)
 		const widgets = Object.values(widgetAdded)
-			.map(
-				({ id, market = false, type, config, scene = 0, children }) => {
-					const api = config.api
-					if (api && api.data) {
-						try {
-							api.data = JSON.stringify(JSON.parse(api.data))
-						} catch (e) {
-							console.warn(e)
-						}
+			.map(({ id, market = false, type, value, scene = 0, children }) => {
+				const api = value.api
+				if (api && api.data) {
+					try {
+						api.data = JSON.stringify(JSON.parse(api.data))
+					} catch (e) {
+						console.warn(e)
 					}
-					checkAttr(config, '', defaultConfig)
-					return {
-						id,
-						scene,
-						type,
-						market,
-						value: { ...config },
-						children,
-					}
-				},
-			)
+				}
+				checkAttr(value, '', defaultConfig)
+				return {
+					id,
+					scene,
+					type,
+					market,
+					value,
+					children,
+				}
+			})
 			.filter(item => item.scene !== -1)
 		return {
 			screenWidgets: widgets,
@@ -166,7 +164,7 @@ export default class Screen extends Factory<Screen> {
 			}
 		}
 	}
-	
+
 	deleteWidget(id) {
 		delete this.screenWidgets[id]
 	}

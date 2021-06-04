@@ -2,14 +2,13 @@
 component.widget-part(
 	:is="currentComponent",
 	:class="animationClass",
-	:id="config.widget && config.widget.id",
-	v-bind="{ config, readonly, ...$attrs }",
+	:id="value.widget && value.widget.id",
+	v-bind="{ config:value, readonly, ...$attrs }",
 	@query-start="querying = true",
 	@query-end="querying = false",
 	@query-failed="querying = true",
-	@config-reset="$emit('config-reset')",
 	v-on="$listeners",
-	:key="`${config.widget.id}${updateKey}`",
+	:key="`${value.widget.id}${updateKey}`",
 	ref="widgets")
 	slot
 </template>
@@ -30,9 +29,8 @@ export default {
 			type: String,
 			required: true,
 		},
-		config: {
+		value: {
 			type: Object,
-			default: null,
 		},
 		readonly: {
 			type: Boolean,
@@ -68,8 +66,8 @@ export default {
 			return null
 		},
 		animation() {
-			if (this.config.animation) {
-				return this.config.animation
+			if (this.value && this.value.animation) {
+				return this.value.animation
 			}
 			return {}
 		},
@@ -103,7 +101,7 @@ export default {
 			this.animationClass = null
 		},
 		loadMarket() {
-			this.componentVersion = this.config.widget.componentVersion
+			this.componentVersion = this.value.widget.componentVersion
 			if (
 				this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]
 			) {
@@ -112,7 +110,7 @@ export default {
 				this.$api.marketComponent
 					.use({
 						componentEnTitle: this.type,
-						componentVersion: this.config.widget.componentVersion,
+						componentVersion: this.value.widget.componentVersion,
 					})
 					.then(res => {
 						const script = document.createElement('script')
@@ -140,7 +138,7 @@ export default {
 		},
 	},
 	watch: {
-		'config.widget.componentVersion': {
+		'value.widget.componentVersion': {
 			handler: function () {
 				if (this.market) {
 					this.ready = false

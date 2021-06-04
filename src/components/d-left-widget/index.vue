@@ -34,7 +34,6 @@
 		.d-left-widget-empty.fn-flex(v-else) 快来选择你心仪的组件了
 </template>
 <script lang="ts">
-import parts from '../d-widget-part/index.vue'
 import { Icon } from 'view-design'
 import custom from '../../store/custom.store'
 import itemCard from './item-card.vue'
@@ -43,7 +42,6 @@ import Editor from '@/core/Editor'
 
 @Component({
 	components: {
-		parts,
 		'i-icon': Icon,
 		itemCard,
 	},

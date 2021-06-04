@@ -6,7 +6,7 @@
 			part(
 				:ref="item.id",
 				:type="item.type",
-				:config="item.config",
+				:value="item.value",
 				:children="item.children",
 				:market="item.market",
 				v-else)

@@ -3,7 +3,7 @@ import { uuid } from '@/core/utils'
 export default class Widget {
 	id: string
 	type: string
-	config: any
+	value: any
 	scene: number | string
 	market: boolean
 	children = []
@@ -38,7 +38,7 @@ export default class Widget {
 		widget.id = this.id
 		widget.componentVersion = componentVersion
 		widget.componentId = componentId
-		this.config = {
+		this.value = {
 			layout,
 			widget,
 			config,

@@ -67,7 +67,7 @@ export default class DLeftScene extends Vue {
 	editScene = false
 	copyModel = false
 
-	handleSetScene(name) {
+	handleSetScene(name: string): void {
 		switch (name) {
 			case 'create':
 				this.editor.createScene()
@@ -84,15 +84,15 @@ export default class DLeftScene extends Vue {
 		}
 	}
 
-	handleCopy() {
+	handleCopy(): void {
 		copyText(this.editor.sceneIndex)
 	}
 
-	handleSceneName(e) {
+	handleSceneName(e): void {
 		this.editor.setSceneName(e.target.value)
 	}
 
-	sceneWidgetDragEnd(e) {
+	sceneWidgetDragEnd(e): void {
 		const oldItem = this.editor.screenWidgets[
 			this.editor.sortByZIndexWidgetsList[e.moved.oldIndex].id
 		]

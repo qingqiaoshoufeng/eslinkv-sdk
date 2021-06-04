@@ -96,30 +96,35 @@ export default class Editor extends Factory<Editor> {
 	get screenWidgets(): any {
 		return this.screen.screenWidgets
 	}
-	get sceneWidgets () {
+	get sceneWidgets() {
 		const res = { 0: [] }
 		for (const widgetId in this.screenWidgets) {
-			if (!res[this.screenWidgets[widgetId].scene]) res[this.screenWidgets[widgetId].scene] = []
-			res[this.screenWidgets[widgetId].scene].push(this.screenWidgets[widgetId])
+			if (!res[this.screenWidgets[widgetId].scene])
+				res[this.screenWidgets[widgetId].scene] = []
+			res[this.screenWidgets[widgetId].scene].push(
+				this.screenWidgets[widgetId],
+			)
 		}
 		return res
 	}
-	get showWidgets () {
+	get showWidgets() {
 		if (this.scene.sceneIndex === 0) {
 			return this.sceneWidgets[0]
 		} else {
 			return [
 				...(this.sceneWidgets[this.scene.sceneIndex] || []),
 				...this.sceneWidgets[0],
-				...this.scene.createSceneList.map(v => this.sceneWidgets[v]).flat()
+				...this.scene.createSceneList
+					.map(v => this.sceneWidgets[v])
+					.flat(),
 			]
 		}
 	}
-	openScene (id) {
+	openScene(id) {
 		this.scene.createSceneList.push(id)
 		this.scene.setSceneIndex(id)
 	}
-	closeScene (id) {
+	closeScene(id) {
 		const index = this.scene.createSceneList.findIndex(v => v === id)
 		this.scene.createSceneList.splice(index, 1)
 	}
@@ -225,7 +230,7 @@ export default class Editor extends Factory<Editor> {
 			e,
 			this.scene.sceneIndex,
 			this.sortByZIndexWidgetsList.length
-				? this.sortByZIndexWidgetsList[0].config.layout.zIndex + 1
+				? this.sortByZIndexWidgetsList[0].value.layout.zIndex + 1
 				: 10,
 		)
 	}
@@ -304,7 +309,7 @@ export default class Editor extends Factory<Editor> {
 			}
 		}
 		list.sort((a, b) => {
-			return b.config.layout.zIndex - a.config.layout.zIndex - 1
+			return b.value.layout.zIndex - a.value.layout.zIndex - 1
 		})
 		return list
 	}
