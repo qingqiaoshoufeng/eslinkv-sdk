@@ -53,10 +53,10 @@ const mx: any = {
 				switch (item.type) {
 					case 'openScene':
 						scene.state.activeWidgetId = this.config.widget.id
-						scene.actions.createSceneInstance(sceneId, animate)
+						this.editor.openScene(sceneId)
 						break
 					case 'closeScene':
-						scene.actions.destroyScene(sceneId, animate)
+						this.editor.closeScene(sceneId)
 						break
 					case 'changeScene':
 						this.editor.setSceneIndex(sceneId)

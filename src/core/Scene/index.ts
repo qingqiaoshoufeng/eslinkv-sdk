@@ -5,8 +5,10 @@ import Factory from '@/core/Base/factory'
 export default class SceneBase extends Factory<SceneBase> {
 	/* 大屏场景配置 */
 	public screenScene: any = {}
-	/* 大屏场景数据序列化 */
+	/* 所有场景的id数组 */
 	public sceneList = []
+	/* 通过create创建的场景 */
+	public createSceneList = []
 	/* 大屏场景数据序列化 */
 	public sceneObj = {}
 	/* 大屏当前场景 */

@@ -105,6 +105,33 @@ export default class Editor extends Factory<Editor> {
 	get screenWidgets(): any {
 		return this.screen.screenWidgets
 	}
+	get sceneWidgets () {
+		const res = { 0: [] }
+		for (const widgetId in this.screenWidgets) {
+			if (!res[this.screenWidgets[widgetId].scene]) res[this.screenWidgets[widgetId].scene] = []
+			res[this.screenWidgets[widgetId].scene].push(this.screenWidgets[widgetId])
+		}
+		return res
+	}
+	get showWidgets () {
+		if (this.scene.sceneIndex === 0) {
+			return this.sceneWidgets[0]
+		} else {
+			return [
+				...(this.sceneWidgets[this.scene.sceneIndex] || []),
+				...this.sceneWidgets[0],
+				...this.scene.createSceneList.map(v => this.sceneWidgets[v]).flat()
+			]
+		}
+	}
+	openScene (id) {
+		this.scene.createSceneList.push(id)
+		this.scene.setSceneIndex(id)
+	}
+	closeScene (id) {
+		const index = this.scene.createSceneList.findIndex(v => v === id)
+		this.scene.createSceneList.splice(index, 1)
+	}
 	get isMac(): any {
 		return this.screen.isMac
 	}

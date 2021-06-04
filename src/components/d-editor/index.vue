@@ -17,7 +17,7 @@
 			item-card(
 				:item="item",
 				:key="item.id",
-				v-for="item in showWidgets",
+				v-for="item in editor.showWidgets",
 				:getRefLineParams="getRefLineParams",
 				:ref="item.id")
 			dr-more(v-show="editor.chooseWidgetArray&&editor.chooseWidgetArray.length")
@@ -77,17 +77,6 @@ export default class DEditor extends Vue {
 			}
 		}
 		return {}
-	}
-
-	get showWidgets () {
-		if (this.editor.scene.sceneIndex === 0) {
-			return this.editor.screen.sceneWidgets[0]
-		} else {
-			return [
-				...(this.editor.screen.sceneWidgets[this.editor.scene.sceneIndex] || []),
-				...this.editor.screen.sceneWidgets[0]
-			]
-		}
 	}
 	
 	getRefLineParams(params: any, item: any): void {
