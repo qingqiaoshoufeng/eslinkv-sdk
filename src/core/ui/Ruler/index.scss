@@ -1,3 +1,14 @@
+.d-ruler-guide-visible {
+	position: absolute;
+	color: var(--white);
+	left: 0;
+	top: 0;
+	background-color: #111;
+	z-index: 999;
+	text-align: center;
+	cursor: pointer;
+}
+
 .d-ruler-wrapper-x {
 	position: absolute;
 	top: 0;

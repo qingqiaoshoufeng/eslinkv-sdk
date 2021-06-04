@@ -22,11 +22,11 @@ export default class Editor extends Factory<Editor> {
 	})
 
 	public init(res: any): any {
+		let screen
 		if (res) {
 			this.screenId = res.screenId
-			const screen = this.screen.init(res)
+			screen = this.screen.init(res)
 			this.scene.init(res)
-			return { screen }
 		}
 		this.ruler = new Ruler()
 		this.eve.resetZoom({
@@ -37,14 +37,9 @@ export default class Editor extends Factory<Editor> {
 			screenHeight: this.screen.screenHeight,
 			screenWidth: this.screen.screenWidth,
 		})
+		return { screen }
 	}
 	/* ---------------------------------------------------Eve---------------------------------------------------*/
-	get guideLines(): any {
-		return this.eve.guideLines
-	}
-	get guideVisible(): boolean {
-		return this.eve.guideVisible
-	}
 	get xRoomL1(): number {
 		return this.eve.xRoomL1
 	}
@@ -93,10 +88,6 @@ export default class Editor extends Factory<Editor> {
 			screenHeight: this.screen.screenHeight,
 			screenWidth: this.screen.screenWidth,
 		})
-	}
-	/* 创建参考线/更新参考线 */
-	public createGuideLine(type: string): any {
-		return this.eve.createGuideLine(type)
 	}
 	/* ---------------------------------------------------Screen---------------------------------------------------*/
 	get screenType(): any {

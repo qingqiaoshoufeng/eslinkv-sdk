@@ -10,8 +10,6 @@ export default class Eve extends Factory<Screen> {
 	startY = 0
 	clientX = 0
 	clientY = 0
-	/* 参考线可见 */
-	guideVisible = true
 	/* 是否按下了 空格 键，启动内容区拖动 */
 	contentMove = false
 	/* 是否按下了 空格 键，之后按下了左键 */
@@ -73,55 +71,7 @@ export default class Eve extends Factory<Screen> {
 		const rulerOffsetWidth = dom.offsetWidth
 		this.zoom = ~~((rulerOffsetWidth / screenWidth) * 100) / 100
 		const rulerOffsetHeight = dom.offsetHeight
-		const deltaX = (rulerOffsetWidth - screenWidth) * 0.5
-		const deltaY = (rulerOffsetHeight - screenHeight) * 0.5
-		this.offsetX = Math.ceil(deltaX)
-		this.offsetY = Math.ceil(deltaY)
-	}
-
-	/* ---------------------------------------------------Ruler---------------------------------------------------*/
-	get guideLines(): any {
-		return this.ruler.guideLines
-	}
-	/* 开始拖动参考线 */
-	public dragGuideLine(e: any, item: any): void {
-		this.ruler.dragGuideLine(e, item)
-	}
-	public guideSite(type: string): number {
-		if (type === 'h')
-			return this.ruler.getActualPointerY(
-				this.clientY,
-				this.yRoom,
-				this.zoom,
-			)
-		return this.ruler.getActualPointerX(
-			this.clientX,
-			this.xRoomL1,
-			this.xRoomL2,
-			this.zoom,
-		)
-	}
-
-	/* 创建参考线/更新参考线 */
-	public createGuideLine(type: string): any {
-		if (this.ruler.dragGuideId) {
-			const site = this.guideSite(type)
-			const guideIndex = this.ruler.guideLines.findIndex(
-				guide => guide.id === this.ruler.dragGuideId,
-			)
-			this.ruler.guideLines[guideIndex].site = site
-		} else {
-			const site = this.guideSite(type)
-			const line = this.ruler.guideLines
-			line.push({
-				id: `${type}_${this.ruler.guideLines.length}`,
-				type,
-				site,
-			})
-			this.ruler.guideLines = line
-		}
-		this.ruler.dragGuideId = ''
-		this.ruler.dragGuide = false
-		return this.ruler.guideLines
+		this.offsetX = (rulerOffsetWidth - screenWidth) * 0.5
+		this.offsetY = (rulerOffsetHeight - screenHeight) * 0.5
 	}
 }

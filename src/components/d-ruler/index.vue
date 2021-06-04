@@ -1,21 +1,12 @@
 <template lang="pug">
-.d-ruler-wrapper.pos-r
-	i-icon.pos-a.d-ruler-guide-visible.pointer.z-index-999.text-center(
-		:type="editor.guideVisible ? 'ios-eye-off-outline' : 'ios-eye-outline'",
-		@click="editor.guideVisible = !editor.guideVisible")
-	.d-ruler-content(:id="editor.contentId")
-		.content-body.pos-a(:id="editor.dragId", :style="editor.rulerStyle")
-			slot
+.d-ruler-wrapper.pos-r(:id="editor.contentId")
+	.content-body.pos-a(:id="editor.dragId", :style="editor.rulerStyle")
+		slot
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Icon } from 'view-design'
 import Editor from '@/core/Editor'
-@Component({
-	components: {
-		'i-icon': Icon,
-	},
-})
+@Component
 export default class DRuler extends Vue {
 	editor = Editor.Instance()
 
@@ -282,50 +273,22 @@ export default class DRuler extends Vue {
 	}
 }
 </script>
-
 <style lang="scss">
-.d-ruler-guide-visible {
-	position: absolute;
+.d-ruler-wrapper {
+	top: 0;
 	left: 0;
-	width: 18px;
-	height: 18px;
-	line-height: 18px;
-	color: var(--white);
-	background-color: #111;
-}
-
-.d-ruler {
-	&-wrapper {
+	z-index: 1;
+	width: 100%;
+	height: calc(100% - 32px);
+	overflow: hidden;
+	user-select: none;
+	.content-body {
 		top: 0;
 		left: 0;
-		z-index: 1;
-		width: 100%;
-		height: calc(100% - 32px);
-		overflow: hidden;
-		user-select: none;
-	}
-
-	&-content {
-		position: absolute;
-		top: 0;
-		left: 0;
-		z-index: 1;
-		width: 100%;
-		height: 100%;
-		overflow: hidden;
-
-		&.drag {
-			cursor: grab;
-		}
-
-		.content-body {
-			top: 0;
-			left: 0;
-			margin-top: 1px;
-			overflow: visible;
-			border: 18px transparent solid;
-			transition: all 0.3s;
-		}
+		margin-top: 1px;
+		overflow: visible;
+		border: 18px transparent solid;
+		transition: all 0.3s;
 	}
 }
 </style>

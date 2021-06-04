@@ -227,7 +227,7 @@ export default class DDetail extends Vue {
 							this.$Message.success('保存成功！')
 							screenShareUpdate({
 								screenId: res.screenId,
-								screenGuide: Vue.prototype.$ruler.guideLines,
+								screenGuide: this.editor.ruler.guideLines,
 							})
 							this.loading = false
 							this.$router.back()
