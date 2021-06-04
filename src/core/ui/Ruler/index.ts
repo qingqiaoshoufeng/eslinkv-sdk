@@ -13,10 +13,6 @@ bgImgX.src =
 bgImgY.src =
 	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAyCAIAAADeABw2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkM4MjEwRjkyMTMxMUVCOTlBQUQyOTQ0REY2ODNDMSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkM4MjExMDkyMTMxMUVCOTlBQUQyOTQ0REY2ODNDMSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjFCQzgyMTBEOTIxMzExRUI5OUFBRDI5NDRERjY4M0MxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjFCQzgyMTBFOTIxMzExRUI5OUFBRDI5NDRERjY4M0MxIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+2HR8RgAAAE5JREFUeNpikZBWkRQXZSARsADx85evSdIDtIaJgSxAX20sJHmJHG3wkBtWQYKZjFhICozRVDKaSkZTyWgqGU0lo6lkNJWMphIiAECAAQCHcyGW+TXwowAAAABJRU5ErkJggg=='
 export default class Ruler {
-	xRoomL1: number = +localStorage.getItem('xRoomL1')
-	xRoomL2: number = +localStorage.getItem('xRoomL2')
-	xRoomR1: number = +localStorage.getItem('xRoomR1')
-	yRoom = 60
 	rulerContainerClassName = 'd-ruler-wrapper'
 	rulerXContainerClassName = 'd-ruler-wrapper-x'
 	rulerYContainerClassName = 'd-ruler-wrapper-y'
@@ -41,10 +37,6 @@ export default class Ruler {
 	bgImgY = bgImgY
 	/* 标尺高度，容差 */
 	rulerSize = 18
-	/* 参考线开始移动的位置 */
-	guideStartX = 0
-	/* 参考线开始移动的位置 */
-	guideStartY = 0
 	/* 标尺步长 */
 	stepLength = 50
 
@@ -62,17 +54,17 @@ export default class Ruler {
 		window.addEventListener('resize', this.draw.bind(this))
 	}
 
-	windowResize() {
+	private windowResize() {
 		const dom: HTMLElement = document.getElementsByClassName(
 			this.rulerContainerClassName,
 		)[0]
-		this.width = dom.scrollWidth
-		this.height = dom.scrollHeight
+		this.width = dom.offsetWidth
+		this.height = dom.offsetHeight
 		this.canvasX.width = this.width
 		this.canvasY.height = this.height
 	}
 
-	createGuideLineX(): HTMLElement {
+	private createGuideLineX(): HTMLElement {
 		const dom = document.createElement('div')
 		dom.id = this.rulerXLineId
 		dom.style.display = 'none'
@@ -81,7 +73,7 @@ export default class Ruler {
 		return dom
 	}
 
-	createGuideLineY(): HTMLElement {
+	private createGuideLineY(): HTMLElement {
 		const dom = document.createElement('div')
 		dom.id = this.rulerYLineId
 		dom.style.display = 'none'
@@ -90,7 +82,7 @@ export default class Ruler {
 		return dom
 	}
 
-	createYCanvas(): HTMLCanvasElement {
+	private createYCanvas(): HTMLCanvasElement {
 		const canvas = document.createElement('canvas')
 		canvas.height = this.height
 		canvas.width = this.rulerSize
@@ -100,7 +92,7 @@ export default class Ruler {
 		return canvas
 	}
 
-	createXCanvas(): HTMLCanvasElement {
+	private createXCanvas(): HTMLCanvasElement {
 		const canvas = document.createElement('canvas')
 		canvas.width = this.width
 		canvas.id = this.rulerXId
@@ -110,7 +102,7 @@ export default class Ruler {
 		return canvas
 	}
 
-	createXFather(): HTMLElement {
+	private createXFather(): HTMLElement {
 		const dom = document.createElement('div')
 		dom.className = this.rulerXContainerClassName
 		dom.style.width = `calc(100% - ${this.rulerSize}px)`
@@ -120,14 +112,16 @@ export default class Ruler {
 		this.width = dom.offsetWidth
 		dom.onmouseenter = e => {
 			this.lineX.style.display = 'block'
-			this.lineX.style.transform = `translateX(${
-				e.clientX - this.rulerSize - this.xRoomL1 - this.xRoomL2
-			}px)`
+			this.lineX.style.transform = `translateX(${e.layerX}px)`
+			const t = this.contextX2d.getTransform()
+			const num = ~~((e.layerX - t.e) / this.zoom)
+			this.lineX.innerHTML = `<div class="d-ruler-line-x-num">${num}</div>`
 		}
 		dom.onmousemove = e => {
-			this.lineX.style.transform = `translateX(${
-				e.clientX - this.rulerSize - this.xRoomL1 - this.xRoomL2
-			}px)`
+			this.lineX.style.transform = `translateX(${e.layerX}px)`
+			const t = this.contextX2d.getTransform()
+			const num = ~~((e.layerX - t.e) / this.zoom)
+			this.lineX.innerHTML = `<div class="d-ruler-line-x-num">${num}</div>`
 		}
 		dom.onmouseleave = () => {
 			this.lineX.style.display = 'none'
@@ -138,7 +132,7 @@ export default class Ruler {
 		return dom
 	}
 
-	createYFather(): HTMLElement {
+	private createYFather(): HTMLElement {
 		const dom = document.createElement('div')
 		dom.className = this.rulerYContainerClassName
 		dom.style.height = `calc(100% - ${this.rulerSize}px)`
@@ -148,14 +142,16 @@ export default class Ruler {
 		this.height = dom.offsetHeight
 		dom.onmouseenter = e => {
 			this.lineY.style.display = 'block'
-			this.lineY.style.transform = `translateY(${
-				e.clientY - this.rulerSize - this.yRoom
-			}px)`
+			this.lineY.style.transform = `translateY(${e.layerY}px)`
+			const t = this.contextY2d.getTransform()
+			const num = ~~((e.layerY - t.f) / this.zoom)
+			this.lineY.innerHTML = `<div class="d-ruler-line-y-num">${num}</div>`
 		}
 		dom.onmousemove = e => {
-			this.lineY.style.transform = `translateY(${
-				e.clientY - this.rulerSize - this.yRoom
-			}px)`
+			this.lineY.style.transform = `translateY(${e.layerY}px)`
+			const t = this.contextY2d.getTransform()
+			const num = ~~((e.layerY - t.f) / this.zoom)
+			this.lineY.innerHTML = `<div class="d-ruler-line-y-num">${num}</div>`
 		}
 		dom.onmouseleave = () => {
 			this.lineY.style.display = 'none'
@@ -166,29 +162,23 @@ export default class Ruler {
 		return dom
 	}
 
-	draw({
+	public draw({
 		screenWidth,
 		screenHeight,
 		offsetY,
 		offsetX,
 		zoom,
-		xRoomL1,
-		xRoomL2,
-	}: any = {}) {
+	}: any = {}): void {
 		if (!isNaN(screenWidth)) this.screenWidth = screenWidth
 		if (!isNaN(screenHeight)) this.screenHeight = screenHeight
 		if (!isNaN(zoom)) this.zoom = zoom
 		if (!isNaN(offsetY)) this.offsetY = offsetY
 		if (!isNaN(offsetX)) this.offsetX = offsetX
-		if (!isNaN(xRoomL1)) this.xRoomL1 = xRoomL1
-		if (!isNaN(xRoomL2)) this.xRoomL2 = xRoomL2
 		this.windowResize()
 		const diffX = (this.screenWidth * (1 - this.zoom)) / 2 + this.offsetX
-		const diffY = (this.height * (1 - this.zoom)) / 2 + this.offsetY
-		this.contextX2d.translate(diffX - this.guideStartX, 0)
-		this.contextY2d.translate(0, diffY - this.guideStartY)
-		this.guideStartX = diffX
-		this.guideStartY = diffY
+		const diffY = (this.screenHeight * (1 - this.zoom)) / 2 + this.offsetY
+		this.contextX2d.translate(diffX, 0)
+		this.contextY2d.translate(0, diffY)
 		this.contextY2d.font = '10px sans-serif'
 		this.contextY2d.fillStyle = '#999'
 		this.contextX2d.font = '10px sans-serif'
@@ -198,7 +188,7 @@ export default class Ruler {
 		this.initDrawY()
 	}
 
-	public clearRulerCanvas(): void {
+	private clearRulerCanvas(): void {
 		const tx = this.contextX2d.getTransform()
 		const ty = this.contextY2d.getTransform()
 		const wx = this.canvasX.width - tx.e
@@ -208,7 +198,6 @@ export default class Ruler {
 		const hy = this.canvasY.height - ty.e
 		this.contextY2d.clearRect(-ty.e, 0, wy, hy)
 	}
-
 	private initDrawX(): void {
 		const t = this.contextX2d.getTransform()
 		let x = 0
@@ -231,7 +220,7 @@ export default class Ruler {
 			}
 		}
 	}
-	public initDrawY(): void {
+	private initDrawY(): void {
 		const t = this.contextY2d.getTransform()
 		let x = 0
 		while (x < this.canvasY.height - t.f) {

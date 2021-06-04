@@ -202,6 +202,7 @@ export default class DRuler extends Vue {
 				clientY - this.editor.eve.startY,
 			)
 			this.editor.eve.offsetY += this.editor.eve.contentScrollTop
+			console.log(this.editor.eve.offsetY, this.editor.eve.offsetX)
 			this.editor.ruler.draw({
 				offsetY: this.editor.eve.offsetY,
 				offsetX: this.editor.eve.offsetX,

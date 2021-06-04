@@ -74,22 +74,13 @@ export default class Editor extends Factory<Editor> {
 		this.eve.zoomOut(step)
 	}
 	public taggerXRoomL1(): void {
-		this.eve.xRoomL1 = this.eve.xRoomL1 > 0 ? 0 : 238
-		localStorage.setItem('xRoomL1', `${this.eve.xRoomL1}`)
-		this.ruler.draw({
-			xRoomL1: this.eve.xRoomL1,
-		})
+		this.eve.taggerXRoomL1()
 	}
 	public taggerXRoomL2(): void {
-		this.eve.xRoomL2 = this.eve.xRoomL2 > 0 ? 0 : 238
-		localStorage.setItem('xRoomL2', `${this.eve.xRoomL2}`)
-		this.ruler.draw({
-			xRoomL2: this.eve.xRoomL2,
-		})
+		this.eve.taggerXRoomL2()
 	}
 	public taggerXRoomR1(): void {
-		this.eve.xRoomR1 = this.eve.xRoomR1 > 0 ? 0 : 350
-		localStorage.setItem('xRoomR1', `${this.eve.xRoomR1}`)
+		this.eve.taggerXRoomR1()
 	}
 	/* 画布还原最佳比例 */
 	public resetZoom(): void {

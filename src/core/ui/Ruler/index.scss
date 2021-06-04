@@ -21,7 +21,7 @@
 	pointer-events: none;
 	border-left: 1px dashed var(--lineRed);
 
-	.d-ruler-line-num-x {
+	.d-ruler-line-x-num {
 		position: absolute;
 		top: 2px;
 		left: 3px;
@@ -30,6 +30,7 @@
 		line-height: 12px;
 		color: var(--white);
 		background: var(--lineRed);
+		opacity: 0.7;
 	}
 }
 
@@ -66,5 +67,6 @@
 		color: var(--white);
 		background: var(--lineRed);
 		transform: rotate(-90deg);
+		opacity: 0.7;
 	}
 }

@@ -45,6 +45,18 @@ export default class Eve extends Factory<Screen> {
 	set zoom(val: number) {
 		this._zoom = val
 	}
+	public taggerXRoomL1(): void {
+		this.xRoomL1 = this.xRoomL1 > 0 ? 0 : 238
+		localStorage.setItem('xRoomL1', `${this.xRoomL1}`)
+	}
+	public taggerXRoomL2(): void {
+		this.xRoomL2 = this.xRoomL2 > 0 ? 0 : 238
+		localStorage.setItem('xRoomL2', `${this.xRoomL2}`)
+	}
+	public taggerXRoomR1(): void {
+		this.xRoomR1 = this.xRoomR1 > 0 ? 0 : 350
+		localStorage.setItem('xRoomR1', `${this.xRoomR1}`)
+	}
 	/* 放大画布 */
 	public zoomIn(step = 2): void {
 		this.zoom = +((this.zoom * 100 + step) / 100).toFixed(2)
