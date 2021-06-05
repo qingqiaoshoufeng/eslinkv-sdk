@@ -42,11 +42,10 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class ItemCard extends Vue {
-	editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 
 	@Prop() item
 	@Prop() getRefLineParams
-	@Prop({ default: false }) inDr
 
 	get style() {
 		return {

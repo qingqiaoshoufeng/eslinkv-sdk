@@ -43,7 +43,7 @@ import Editor from '@/core/Editor'
 export default class DFooter extends Vue {
 	showHotKey = false
 	hotKeys = []
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	get zoom(): string {
 		const zoom = this.editor.zoom
 		return `${~~(zoom * 100)}%`

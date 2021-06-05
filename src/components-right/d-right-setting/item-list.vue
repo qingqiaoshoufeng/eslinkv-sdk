@@ -11,6 +11,6 @@ import Editor from '@/core/Editor'
 export default class DManageItemList extends Vue {
 	@Prop(Array) list: any[]
 	@Prop(Boolean) needChoose: boolean
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 }
 </script>

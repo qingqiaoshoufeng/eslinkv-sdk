@@ -48,7 +48,7 @@ import Editor from '@/core/Editor'
 })
 export default class DLeftWidget extends Vue {
 	custom = custom.state
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	leftIndex = null
 	rightIndex = null
 	list = {}

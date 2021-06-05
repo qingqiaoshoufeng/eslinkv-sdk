@@ -34,7 +34,7 @@ import Editor from '@/core/Editor'
 })
 export default class DRightManage extends Vue {
 	editName = false
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	close() {
 		this.editName = false
 	}

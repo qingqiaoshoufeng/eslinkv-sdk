@@ -63,7 +63,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DEditor extends Vue {
-	editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 	vLine = []
 	hLine = []
 	get canvasStyle(): any {

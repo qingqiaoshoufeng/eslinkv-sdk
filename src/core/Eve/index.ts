@@ -1,7 +1,7 @@
 import Factory from '@/core/Base/factory'
 
 export default class Eve extends Factory<Screen> {
-	contentId: string
+	rulerContentId: string
 	xRoomL1: number = +localStorage.getItem('xRoomL1')
 	xRoomL2: number = +localStorage.getItem('xRoomL2')
 	xRoomR1: number = +localStorage.getItem('xRoomR1')
@@ -34,7 +34,7 @@ export default class Eve extends Factory<Screen> {
 
 	constructor(obj: any) {
 		super()
-		this.contentId = obj.contentId
+		this.rulerContentId = obj.rulerContentId
 	}
 
 	get zoom(): number {
@@ -43,31 +43,33 @@ export default class Eve extends Factory<Screen> {
 	set zoom(val: number) {
 		this._zoom = val
 	}
-	public taggerXRoomL1(): void {
+	taggerXRoomL1(): void {
 		this.xRoomL1 = this.xRoomL1 > 0 ? 0 : 238
 		localStorage.setItem('xRoomL1', `${this.xRoomL1}`)
 	}
-	public taggerXRoomL2(): void {
+	taggerXRoomL2(): void {
 		this.xRoomL2 = this.xRoomL2 > 0 ? 0 : 238
 		localStorage.setItem('xRoomL2', `${this.xRoomL2}`)
 	}
-	public taggerXRoomR1(): void {
+	taggerXRoomR1(): void {
 		this.xRoomR1 = this.xRoomR1 > 0 ? 0 : 350
 		localStorage.setItem('xRoomR1', `${this.xRoomR1}`)
 	}
 	/* 放大画布 */
-	public zoomIn(step = 2): void {
+	zoomIn(step = 2): void {
 		this.zoom = +((this.zoom * 100 + step) / 100).toFixed(2)
 	}
 	/* 缩小画布 */
-	public zoomOut(step = 2): void {
+	zoomOut(step = 2): void {
 		if (this.zoom * 100 > step) {
 			this.zoom = +((this.zoom * 100 - step) / 100).toFixed(2)
 		}
 	}
 	/* 画布还原最佳比例 */
-	public resetZoom({ screenWidth, screenHeight }: any = {}): void {
-		const dom = document.getElementsByClassName('d-ruler-wrapper')[0]
+	resetZoom({ screenWidth, screenHeight }: any = {}): void {
+		const dom: HTMLElement = document.getElementsByClassName(
+			'd-ruler-wrapper',
+		)[0] as HTMLElement
 		const rulerOffsetWidth = dom.offsetWidth
 		this.zoom = ~~((rulerOffsetWidth / screenWidth) * 100) / 100
 		const rulerOffsetHeight = dom.offsetHeight

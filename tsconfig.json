@@ -27,8 +27,6 @@
 		"src/**/*.ts",
 		"src/**/*.tsx",
 		"src/**/*.vue",
-		"types/Scene.d.ts",
-		"types/Widget.d.ts",
 		"types/Common.d.ts"
 	],
 	"exclude": ["node_modules"]

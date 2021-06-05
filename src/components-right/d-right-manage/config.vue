@@ -72,7 +72,7 @@ export default class FuncConfig extends func {
 		library: 'screenAvatar',
 	}
 	screenAvatarLoading = false
-	editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 
 	get size(): string {
 		const width = this.editor.width

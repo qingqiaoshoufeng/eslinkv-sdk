@@ -17,7 +17,7 @@ const state = Vue.observable({
 const actions = {
 	// 兼容老组件后期会删除
 	setSceneIndex(index) {
-		Vue.prototype.$screen.setSceneIndex(index)
+		Editor.setSceneIndex(index)
 	},
 	destroyScene(index, showAnimationStyle = 'fadeOut') {
 		if (Vue.prototype.$screen.status === 'inPreview') {

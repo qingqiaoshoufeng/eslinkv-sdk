@@ -1,12 +1,7 @@
-/**
- * @description
- *
- * 画布高度 * （1-缩放比例）      ===》2边缩放距离
- * 2边缩放距离 / 2               ===》单边缩放距离
- * 单边缩放距离 + 面板拖动距离     ===》0点距离左侧边界像素值
- */
 import './index.scss'
 import Guide from '@/core/ui/Guide'
+import GuideTip from '@/core/ui/GuideTip'
+
 const bgImgX = new Image()
 const bgImgY = new Image()
 const see = new Image()
@@ -20,13 +15,14 @@ bgImgX.src =
 bgImgY.src =
 	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAyCAIAAADeABw2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkM4MjEwRjkyMTMxMUVCOTlBQUQyOTQ0REY2ODNDMSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkM4MjExMDkyMTMxMUVCOTlBQUQyOTQ0REY2ODNDMSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjFCQzgyMTBEOTIxMzExRUI5OUFBRDI5NDRERjY4M0MxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjFCQzgyMTBFOTIxMzExRUI5OUFBRDI5NDRERjY4M0MxIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+2HR8RgAAAE5JREFUeNpikZBWkRQXZSARsADx85evSdIDtIaJgSxAX20sJHmJHG3wkBtWQYKZjFhICozRVDKaSkZTyWgqGU0lo6lkNJWMphIiAECAAQCHcyGW+TXwowAAAABJRU5ErkJggg=='
 export default class Ruler {
-	rulerContainerClassName = 'd-ruler-wrapper'
-	rulerXContainerClassName = 'd-ruler-wrapper-x'
-	rulerYContainerClassName = 'd-ruler-wrapper-y'
-	rulerXId = 'ruler-x'
-	rulerYId = 'ruler-y'
-	rulerXLineId = 'd-ruler-line-x'
-	rulerYLineId = 'd-ruler-line-y'
+	private guideTip: GuideTip = GuideTip.Instance()
+	rulerContainerId: string
+	private rulerClassName = { x: 'd-ruler-wrapper-x', y: 'd-ruler-wrapper-y' }
+	private rulerId = { x: 'ruler-x', y: 'ruler-y' }
+	private rulerVisibleClassName = {
+		see: 'd-ruler-visible',
+		noSee: 'd-ruler-visible d-ruler-visible-hide',
+	}
 	/* div容器实际宽高，目前是body的宽高 */
 	width: number
 	height: number
@@ -42,54 +38,46 @@ export default class Ruler {
 	offsetY: number
 	offsetX: number
 	/* 标尺高度，容差 */
-	rulerSize = 18
+	private rulerSize = 18
 	/* 标尺步长 */
-	stepLength = 50
-	/* 参考线可见 */
-	guideVisible = true
+	private stepLength = 50
+	/* 标尺可见 */
+	rulerVisible = true
 	/* 参考线 */
 	guideLines = []
-	guideLinesXDom: HTMLElement | null
-	guideLinesYDom: HTMLElement | null
-	lineXDom: HTMLElement | null
-	lineYDom: HTMLElement | null
-	canvasX: HTMLCanvasElement | null
-	canvasY: HTMLCanvasElement | null
-	contextX2d = null
-	contextY2d = null
-	bgImgX = bgImgX
-	bgImgY = bgImgY
-
-	constructor() {
+	guideLinesDom: { x: HTMLElement | null; y: HTMLElement | null } = {
+		x: null,
+		y: null,
+	}
+	canvas: { x: HTMLCanvasElement | null; y: HTMLCanvasElement | null } = {
+		x: null,
+		y: null,
+	}
+	context2d = { x: null, y: null }
+	constructor(rulerContainerId: string) {
+		this.rulerContainerId = rulerContainerId
 		const fatherX = this.createXFather()
 		const fatherY = this.createYFather()
-		const canvasX = this.createXCanvas()
-		const canvasY = this.createYCanvas()
-		const lineXDom = this.createGuideLineX()
-		const lineYDom = this.createGuideLineY()
-		const guideX = this.createGuideXFather()
-		const guideY = this.createGuideYFather()
-		const guideVisible = this.createGuideVisible()
+		const canvasX = this.createCanvas('x')
+		const canvasY = this.createCanvas('y')
+		const guideX = this.createGuideFather('x')
+		const guideY = this.createGuideFather('y')
+		const rulerVisible = this.createRulerVisible()
 		fatherX.appendChild(canvasX)
-		fatherX.appendChild(lineXDom)
-		fatherX.appendChild(guideX)
 		fatherY.appendChild(canvasY)
-		fatherY.appendChild(lineYDom)
+		this.guideTip.init({ type: 'x', father: fatherX })
+		this.guideTip.init({ type: 'y', father: fatherY })
+		fatherX.appendChild(guideX)
 		fatherY.appendChild(guideY)
-		document
-			.getElementsByClassName(this.rulerContainerClassName)[0]
-			.appendChild(guideVisible)
+		document.getElementById(this.rulerContainerId).appendChild(rulerVisible)
 		window.addEventListener('keyup', this.keyup.bind(this))
 		window.addEventListener('resize', this.draw.bind(this))
 	}
-
-	/* 画布还原最佳比例 */
-	public resetZoom({ screenWidth, screenHeight }: any = {}): void {
+	/* 跟随画布还原最佳比例，标尺位移 */
+	resetZoom({ screenWidth, screenHeight }: any = {}): void {
 		if (!isNaN(screenWidth)) this.screenWidth = screenWidth
 		if (!isNaN(screenHeight)) this.screenHeight = screenHeight
-		const dom: HTMLElement = document.getElementsByClassName(
-			this.rulerContainerClassName,
-		)[0]
+		const dom: HTMLElement = document.getElementById(this.rulerContainerId)
 		const zoom = ~~((dom.offsetWidth / this.screenWidth) * 100) / 100
 		const offsetX = (dom.offsetWidth - this.screenWidth) * 0.5
 		const offsetY = (dom.offsetHeight - this.screenHeight) * 0.5
@@ -101,110 +89,102 @@ export default class Ruler {
 			offsetY,
 		})
 	}
+	/* 屏幕大小变化时，标尺整体宽高变化 */
 	private windowResize(): void {
 		const dom: HTMLElement = document.body
 		this.width = dom.offsetWidth
 		this.height = dom.offsetHeight
-		this.canvasX.width = this.width
-		this.canvasY.height = this.height
+		this.canvas.x.width = this.width
+		this.canvas.y.height = this.height
 	}
-	private createGuideVisible(): HTMLElement {
+	/* 创建，显示隐藏参考线按钮 */
+	private createRulerVisible(): HTMLElement {
 		const dom = document.createElement('img')
-		dom.className = 'd-ruler-guide-visible'
+		dom.className = this.rulerVisibleClassName.see
 		dom.style.width = `${this.rulerSize}px`
 		dom.style.height = `${this.rulerSize}px`
 		dom.src = see.src
 		dom.onclick = e => {
 			e.stopPropagation()
 			e.preventDefault()
-			this.guideVisible = !this.guideVisible
-			if (this.guideVisible) {
+			this.rulerVisible = !this.rulerVisible
+			if (this.rulerVisible) {
 				dom.src = see.src
+				dom.className = this.rulerVisibleClassName.see
 				this.initGuide()
+				this.canvas.x.style.display = 'block'
+				this.canvas.y.style.display = 'block'
 			} else {
 				dom.src = noSee.src
+				dom.className = this.rulerVisibleClassName.noSee
 				this.clearGuide()
+				this.canvas.x.style.display = 'none'
+				this.canvas.y.style.display = 'none'
 			}
 		}
 		return dom
 	}
-	private createGuideLineX(): HTMLElement {
-		const dom = document.createElement('div')
-		dom.id = this.rulerXLineId
-		dom.style.display = 'none'
-		dom.style.height = `${this.height + this.rulerSize}px`
-		this.lineXDom = dom
-		return dom
-	}
-	private createGuideLineY(): HTMLElement {
-		const dom = document.createElement('div')
-		dom.id = this.rulerYLineId
-		dom.style.display = 'none'
-		dom.style.width = `${this.width + this.rulerSize}px`
-		this.lineYDom = dom
-		return dom
-	}
-	private createYCanvas(): HTMLCanvasElement {
+	/* 创建，标尺canvas */
+	private createCanvas(type: string): HTMLCanvasElement {
 		const canvas = document.createElement('canvas')
 		canvas.height = this.height
-		canvas.width = this.rulerSize
-		canvas.id = this.rulerYId
-		this.canvasY = canvas
-		this.contextY2d = this.canvasY.getContext('2d')
+		canvas.id = this.rulerId[type]
+		if (type === 'x') {
+			canvas.height = this.rulerSize
+			canvas.width = this.width
+		} else {
+			canvas.width = this.rulerSize
+			canvas.height = this.height
+		}
+		this.canvas[type] = canvas
+		this.context2d[type] = this.canvas[type].getContext('2d')
 		return canvas
 	}
-	private createXCanvas(): HTMLCanvasElement {
-		const canvas = document.createElement('canvas')
-		canvas.width = this.width
-		canvas.id = this.rulerXId
-		canvas.height = this.rulerSize
-		this.canvasX = canvas
-		this.contextX2d = this.canvasX.getContext('2d')
-		return canvas
-	}
-	private createGuideXFather(): HTMLElement {
+	/* 创建，参考线父容器 */
+	private createGuideFather(type: string): HTMLElement {
 		const dom = document.createElement('div')
-		this.guideLinesXDom = dom
+		this.guideLinesDom[type] = dom
 		return dom
 	}
-	private createGuideYFather(): HTMLElement {
-		const dom = document.createElement('div')
-		this.guideLinesYDom = dom
-		return dom
-	}
+	/* 创建，x轴标尺容器 */
 	private createXFather(): HTMLElement {
 		const dom = document.createElement('div')
-		dom.className = this.rulerXContainerClassName
+		dom.className = this.rulerClassName.x
 		dom.style.width = `calc(100% - ${this.rulerSize}px)`
-		document
-			.getElementsByClassName(this.rulerContainerClassName)[0]
-			.appendChild(dom)
+		document.getElementById(this.rulerContainerId).appendChild(dom)
 		this.width = dom.offsetWidth
-		dom.onmouseenter = e => {
-			this.lineXDom.style.display = 'block'
-			this.lineXDom.style.transform = `translateX(${e.layerX}px)`
-			const t = this.contextX2d.getTransform()
+		dom.onmouseenter = (e: MyMouseEvent) => {
+			const t = this.context2d.x.getTransform()
 			const num = ~~((e.layerX - t.e) / this.zoom)
-			this.lineXDom.innerHTML = `<div class="d-ruler-line-x-num">${num}</div>`
+			this.guideTip.show({
+				rulerVisible: this.rulerVisible,
+				type: 'x',
+				num,
+				offset: e.layerX,
+			})
 		}
-		dom.onmousemove = e => {
-			this.lineXDom.style.transform = `translateX(${e.layerX}px)`
-			const t = this.contextX2d.getTransform()
+		dom.onmousemove = (e: MyMouseEvent) => {
+			const t = this.context2d.x.getTransform()
 			const num = ~~((e.layerX - t.e) / this.zoom)
-			this.lineXDom.innerHTML = `<div class="d-ruler-line-x-num">${num}</div>`
+			this.guideTip.show({
+				rulerVisible: this.rulerVisible,
+				type: 'x',
+				num,
+				offset: e.layerX,
+			})
 		}
 		dom.onmouseleave = () => {
-			this.lineXDom.style.display = 'none'
+			this.guideTip.hide({ rulerVisible: this.rulerVisible, type: 'x' })
 		}
-		dom.onmousedown = e => {
+		dom.onmousedown = (e: MyMouseEvent) => {
 			if (e.buttons !== 1 || e.which !== 1) return
-			if (this.guideVisible) {
-				const t = this.contextX2d.getTransform()
+			if (this.rulerVisible) {
+				const t = this.context2d.x.getTransform()
 				const num = ~~((e.layerX - t.e) / this.zoom)
 				const guide = new Guide({
 					num,
 					type: 'x',
-					father: this.guideLinesXDom,
+					father: this.guideLinesDom.x,
 					offset: this.diffX,
 					zoom: this.zoom,
 					width: this.width,
@@ -216,39 +196,45 @@ export default class Ruler {
 		}
 		return dom
 	}
+	/* 创建，y轴标尺容器 */
 	private createYFather(): HTMLElement {
 		const dom = document.createElement('div')
-		dom.className = this.rulerYContainerClassName
+		dom.className = this.rulerClassName.y
 		dom.style.height = `calc(100% - ${this.rulerSize}px)`
-		document
-			.getElementsByClassName(this.rulerContainerClassName)[0]
-			.appendChild(dom)
+		document.getElementById(this.rulerContainerId).appendChild(dom)
 		this.height = dom.offsetHeight
-		dom.onmouseenter = e => {
-			this.lineYDom.style.display = 'block'
-			this.lineYDom.style.transform = `translateY(${e.layerY}px)`
-			const t = this.contextY2d.getTransform()
+		dom.onmouseenter = (e: MyMouseEvent) => {
+			const t = this.context2d.y.getTransform()
 			const num = ~~((e.layerY - t.f) / this.zoom)
-			this.lineYDom.innerHTML = `<div class="d-ruler-line-y-num">${num}</div>`
+			this.guideTip.show({
+				rulerVisible: this.rulerVisible,
+				type: 'y',
+				num,
+				offset: e.layerY,
+			})
 		}
-		dom.onmousemove = e => {
-			this.lineYDom.style.transform = `translateY(${e.layerY}px)`
-			const t = this.contextY2d.getTransform()
+		dom.onmousemove = (e: MyMouseEvent) => {
+			const t = this.context2d.y.getTransform()
 			const num = ~~((e.layerY - t.f) / this.zoom)
-			this.lineYDom.innerHTML = `<div class="d-ruler-line-y-num">${num}</div>`
+			this.guideTip.show({
+				rulerVisible: this.rulerVisible,
+				type: 'y',
+				num,
+				offset: e.layerY,
+			})
 		}
 		dom.onmouseleave = () => {
-			this.lineYDom.style.display = 'none'
+			this.guideTip.hide({ rulerVisible: this.rulerVisible, type: 'y' })
 		}
-		dom.onmousedown = e => {
+		dom.onmousedown = (e: MyMouseEvent) => {
 			if (e.buttons !== 1 || e.which !== 1) return
-			if (this.guideVisible) {
-				const t = this.contextY2d.getTransform()
+			if (this.rulerVisible) {
+				const t = this.context2d.y.getTransform()
 				const num = ~~((e.layerY - t.f) / this.zoom)
 				const guide = new Guide({
 					num,
 					type: 'y',
-					father: this.guideLinesYDom,
+					father: this.guideLinesDom.y,
 					offset: this.diffY,
 					zoom: this.zoom,
 					width: this.width,
@@ -260,7 +246,8 @@ export default class Ruler {
 		}
 		return dom
 	}
-	public draw({
+	/* 绘制标尺+参考线 */
+	draw({
 		screenWidth,
 		screenHeight,
 		offsetY,
@@ -277,20 +264,21 @@ export default class Ruler {
 		const diffY = (this.screenHeight * (1 - this.zoom)) / 2 + this.offsetY
 		this.diffX = diffX
 		this.diffY = diffY
-		this.contextX2d.translate(diffX, 0)
-		this.contextY2d.translate(0, diffY)
-		this.contextY2d.font = '10px sans-serif'
-		this.contextY2d.fillStyle = '#999'
-		this.contextX2d.font = '10px sans-serif'
-		this.contextX2d.fillStyle = '#999'
+		this.context2d.x.translate(diffX, 0)
+		this.context2d.y.translate(0, diffY)
+		this.context2d.y.font = '10px sans-serif'
+		this.context2d.y.fillStyle = '#999'
+		this.context2d.x.font = '10px sans-serif'
+		this.context2d.x.fillStyle = '#999'
 		this.clearRulerCanvas()
 		this.clearGuide()
 		this.initDrawX()
 		this.initDrawY()
 		this.initGuide()
 	}
+	/* 初始化参考线 */
 	private initGuide(): void {
-		if (this.guideVisible)
+		if (this.rulerVisible)
 			this.guideLines.forEach(item => {
 				new Guide({
 					num: item.num,
@@ -304,6 +292,7 @@ export default class Ruler {
 				})
 			})
 	}
+	/* Alt+c 清空参考线 */
 	private keyup(e): void {
 		switch (e.keyCode) {
 			case 67: // c
@@ -317,26 +306,29 @@ export default class Ruler {
 				break
 		}
 	}
+	/* 清空参考线dom */
 	private clearGuide(): void {
-		this.guideLinesYDom.innerHTML = ''
-		this.guideLinesXDom.innerHTML = ''
+		this.guideLinesDom.y.innerHTML = ''
+		this.guideLinesDom.x.innerHTML = ''
 	}
+	/* 清空标尺canvas */
 	private clearRulerCanvas(): void {
-		const tx = this.contextX2d.getTransform()
-		const ty = this.contextY2d.getTransform()
-		const wx = this.canvasX.width - tx.e
-		const hx = this.canvasX.height
-		this.contextX2d.clearRect(-tx.e, 0, wx, hx)
-		const wy = this.canvasY.width
-		const hy = this.canvasY.height - ty.e
-		this.contextY2d.clearRect(-ty.e, 0, wy, hy)
+		const tx = this.context2d.x.getTransform()
+		const ty = this.context2d.y.getTransform()
+		const wx = this.canvas.x.width - tx.e
+		const hx = this.canvas.x.height
+		this.context2d.x.clearRect(-tx.e, 0, wx, hx)
+		const wy = this.canvas.y.width
+		const hy = this.canvas.y.height - ty.e
+		this.context2d.y.clearRect(-ty.e, 0, wy, hy)
 	}
+	/* 绘制x轴标尺 */
 	private initDrawX(): void {
-		const t = this.contextX2d.getTransform()
+		const t = this.context2d.x.getTransform()
 		let x = 0
-		while (x < this.canvasX.width - t.e) {
-			this.contextX2d.drawImage(this.bgImgX, x, 0)
-			this.contextX2d.fillText(~~(x / this.zoom), x + 4, 10)
+		while (x < this.canvas.x.width - t.e) {
+			this.context2d.x.drawImage(bgImgX, x, 0)
+			this.context2d.x.fillText(String(~~(x / this.zoom)), x + 4, 10)
 			x = x + this.stepLength
 		}
 
@@ -344,38 +336,43 @@ export default class Ruler {
 			let xe = 0
 			while (xe < t.e) {
 				xe = xe + this.stepLength
-				this.contextX2d.drawImage(this.bgImgX, -xe, 0)
-				this.contextX2d.fillText(
-					xe === 0 ? '0' : -~~(xe / this.zoom),
+				this.context2d.x.drawImage(bgImgX, -xe, 0)
+				this.context2d.x.fillText(
+					String(xe === 0 ? '0' : -~~(xe / this.zoom)),
 					-xe + 2,
 					10,
 				)
 			}
 		}
 	}
+	/* 绘制y轴标尺 */
 	private initDrawY(): void {
-		const t = this.contextY2d.getTransform()
-		let x = 0
-		while (x < this.canvasY.height - t.f) {
-			this.contextY2d.save()
-			this.contextY2d.drawImage(this.bgImgY, 0, x)
-			this.contextY2d.translate(10, x)
-			this.contextY2d.rotate(-Math.PI / 2)
-			const num = ~~(x / this.zoom)
-			this.contextY2d.fillText(num, -num.toString().length * 8, 0)
-			x = x + this.stepLength
-			this.contextY2d.restore()
+		const t = this.context2d.y.getTransform()
+		let y = 0
+		while (y < this.canvas.y.height - t.f) {
+			this.context2d.y.save()
+			this.context2d.y.drawImage(bgImgY, 0, y)
+			this.context2d.y.translate(10, y)
+			this.context2d.y.rotate(-Math.PI / 2)
+			const num = ~~(y / this.zoom)
+			this.context2d.y.fillText(
+				String(num),
+				-num.toString().length * 8,
+				0,
+			)
+			y = y + this.stepLength
+			this.context2d.y.restore()
 		}
 		if (t.f > 0) {
 			let xe = 0
 			while (xe < t.f) {
-				this.contextY2d.save()
+				this.context2d.y.save()
 				xe = xe + this.stepLength
-				this.contextY2d.drawImage(this.bgImgY, 0, -xe)
-				this.contextY2d.translate(10, -xe + 28)
-				this.contextY2d.rotate(-Math.PI / 2)
-				this.contextY2d.fillText(~~-(xe / this.zoom), 2, 0)
-				this.contextY2d.restore()
+				this.context2d.y.drawImage(bgImgY, 0, -xe)
+				this.context2d.y.translate(10, -xe + 28)
+				this.context2d.y.rotate(-Math.PI / 2)
+				this.context2d.y.fillText(String(~~-(xe / this.zoom)), 2, 0)
+				this.context2d.y.restore()
 			}
 		}
 	}

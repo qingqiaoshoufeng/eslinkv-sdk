@@ -2,11 +2,11 @@ import './index.scss'
 import { uuid } from '@/core/utils'
 
 export default class Guide {
-	guideXLineClassName = 'd-ruler-guide-x'
-	guideYLineClassName = 'd-ruler-guide-y'
+	guideLineClassName = { x: 'd-ruler-guide-x', y: 'd-ruler-guide-y' }
 	type: string
 	num: number
 	id: string
+	/* 标尺高度，容差 */
 	rulerSize: number
 	offset: number
 	height: number
@@ -27,18 +27,25 @@ export default class Guide {
 		this.init()
 	}
 
+	clear(){
+		
+	}
+	
+	initFather(){
+		
+	}
+	
 	init(): void {
 		const dom = document.createElement('div')
 		dom.id = this.id
+		dom.className = this.guideLineClassName[this.type]
 		if (this.type === 'x') {
-			dom.className = this.guideXLineClassName
 			dom.style.height = `${this.height + this.rulerSize}px`
 			dom.style.transform = `translateX(${
 				this.offset + this.num * this.zoom
 			}px)`
 			dom.innerHTML = `<div class="d-ruler-guide-x-num">${this.num}</div>`
 		} else {
-			dom.className = this.guideYLineClassName
 			dom.style.width = `${this.width + this.rulerSize}px`
 			dom.style.transform = `translateY(${
 				this.offset + this.num * this.zoom

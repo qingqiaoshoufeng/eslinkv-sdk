@@ -31,7 +31,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class dScreen extends Vue {
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 }
 </script>
 <style lang="scss" scoped>

@@ -52,7 +52,7 @@ export default class rightMenu extends Vue {
 	zIndex = 10
 	minZIndex = 0
 	maxZIndex = 0
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	handleSync() {
 		this.instance.kanboard.$refs[`${this.editor.chooseWidgetId}`][0]
 			.$children[0].updateKey++

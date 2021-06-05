@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-ruler-wrapper.pos-r(:id="editor.contentId")
+.d-ruler-wrapper.pos-r(:id="editor.rulerContentId")
 	.content-body.pos-a(:id="editor.dragId", :style="editor.rulerStyle")
 		slot
 </template>
@@ -8,7 +8,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 @Component
 export default class DRuler extends Vue {
-	editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 
 	windowResize(): void {
 		this.editor.resetZoom()
@@ -40,7 +40,7 @@ export default class DRuler extends Vue {
 		document.documentElement.addEventListener('wheel', this.wheel)
 	}
 
-	public mouseUp(e: any): void {
+	mouseUp(e: any): void {
 		if (this.editor.eve.contentDrag) {
 			this.editor.eve.contentDrag = false
 		}
@@ -50,103 +50,103 @@ export default class DRuler extends Vue {
 		if (this.editor.eve.kuangMove) {
 			document.getElementById('d-kuang').style.display = 'none'
 			this.editor.eve.kuangMove = false
-			const startPointerX = Vue.prototype.$ruler.getActualPointerX(
-				this.editor.eve.startX,
-			)
-			const startPointerY = Vue.prototype.$ruler.getActualPointerY(
-				this.editor.eve.startY,
-			)
-			const endPointerX = Vue.prototype.$ruler.getActualPointerX(
-				e.clientX,
-			)
-			const endPointerY = Vue.prototype.$ruler.getActualPointerY(
-				e.clientY,
-			)
-			if (startPointerX === endPointerX || startPointerY === endPointerY)
-				return
-			const minPointerX = Math.min(startPointerX, endPointerX)
-			const minPointerY = Math.min(startPointerY, endPointerY)
-			const maxPointerX = Math.max(startPointerX, endPointerX)
-			const maxPointerY = Math.max(startPointerY, endPointerY)
-			this.editor.screen.chooseWidgetArray = []
-			Object.values(this.editor.screen.screenWidgets).forEach(v => {
-				// 只能框选当前场景下的组件
-				if (v.scene === this.editor.screen.sceneIndex) {
-					const widgetStartX = v.config.layout.position.left
-					const widgetStartY = v.config.layout.position.top
-					const widgetEndX =
-						v.config.layout.position.left +
-						v.config.layout.size.width
-					const widgetEndY =
-						v.config.layout.position.top +
-						v.config.layout.size.height
-					if (
-						minPointerX < widgetStartX &&
-						widgetStartX < maxPointerX &&
-						minPointerY < widgetStartY &&
-						widgetStartY < maxPointerY &&
-						minPointerX < widgetEndX &&
-						widgetEndX < maxPointerX &&
-						minPointerY < widgetEndY &&
-						widgetEndY < maxPointerY
-					) {
-						this.editor.screen.chooseWidgetArray = [
-							...this.editor.screen.chooseWidgetArray,
-							v.id,
-						]
-					}
-				}
-			})
-			let minLeft = null,
-				maxLeft = null,
-				width = 0,
-				height = 0,
-				minTop = null,
-				maxTop = null
-			if (this.editor.screen.chooseWidgetArray.length === 1) {
-				this.editor.screen.chooseWidgetId = this.editor.screen.chooseWidgetArray[0]
-				this.editor.screen.chooseWidgetArray = []
-			} else {
-				this.editor.screen.chooseWidgetArray.map(item => {
-					const m = this.editor.screen.screenWidgets[item]
-					if (minLeft === null) {
-						minLeft = m.config.layout.position.left
-					}
-					if (maxLeft === null) {
-						maxLeft = m.config.layout.position.left
-						width = m.config.layout.size.width
-					}
-					if (minTop === null) {
-						minTop = m.config.layout.position.top
-					}
-					if (maxTop === null) {
-						maxTop = m.config.layout.position.top
-						height = m.config.layout.size.height
-					}
-					if (minLeft > m.config.layout.position.left)
-						minLeft = m.config.layout.position.left
-					if (maxLeft < m.config.layout.position.left) {
-						maxLeft = m.config.layout.position.left
-						width = m.config.layout.size.width
-					}
-					if (minTop > m.config.layout.position.top)
-						minTop = m.config.layout.position.top
-					if (maxTop < m.config.layout.position.top) {
-						maxTop = m.config.layout.position.top
-						height = m.config.layout.size.height
-					}
-				})
-				this.editor.screen.chooseWidgetArrayConfig.left = minLeft
-				this.editor.screen.chooseWidgetArrayConfig.top = minTop
-				this.editor.screen.chooseWidgetArrayConfig.width =
-					width + (maxLeft - minLeft)
-				this.editor.screen.chooseWidgetArrayConfig.height =
-					height + (maxTop - minTop)
-			}
+			// const startPointerX = Vue.prototype.$ruler.getActualPointerX(
+			// 	this.editor.eve.startX,
+			// )
+			// const startPointerY = Vue.prototype.$ruler.getActualPointerY(
+			// 	this.editor.eve.startY,
+			// )
+			// const endPointerX = Vue.prototype.$ruler.getActualPointerX(
+			// 	e.clientX,
+			// )
+			// const endPointerY = Vue.prototype.$ruler.getActualPointerY(
+			// 	e.clientY,
+			// )
+			// if (startPointerX === endPointerX || startPointerY === endPointerY)
+			// 	return
+			// const minPointerX = Math.min(startPointerX, endPointerX)
+			// const minPointerY = Math.min(startPointerY, endPointerY)
+			// const maxPointerX = Math.max(startPointerX, endPointerX)
+			// const maxPointerY = Math.max(startPointerY, endPointerY)
+			// this.editor.screen.chooseWidgetArray = []
+			// Object.values(this.editor.screen.screenWidgets).forEach(v => {
+			// 	// 只能框选当前场景下的组件
+			// 	if (v.scene === this.editor.screen.sceneIndex) {
+			// 		const widgetStartX = v.config.layout.position.left
+			// 		const widgetStartY = v.config.layout.position.top
+			// 		const widgetEndX =
+			// 			v.config.layout.position.left +
+			// 			v.config.layout.size.width
+			// 		const widgetEndY =
+			// 			v.config.layout.position.top +
+			// 			v.config.layout.size.height
+			// 		if (
+			// 			minPointerX < widgetStartX &&
+			// 			widgetStartX < maxPointerX &&
+			// 			minPointerY < widgetStartY &&
+			// 			widgetStartY < maxPointerY &&
+			// 			minPointerX < widgetEndX &&
+			// 			widgetEndX < maxPointerX &&
+			// 			minPointerY < widgetEndY &&
+			// 			widgetEndY < maxPointerY
+			// 		) {
+			// 			this.editor.screen.chooseWidgetArray = [
+			// 				...this.editor.screen.chooseWidgetArray,
+			// 				v.id,
+			// 			]
+			// 		}
+			// 	}
+			// })
+			// let minLeft = null,
+			// 	maxLeft = null,
+			// 	width = 0,
+			// 	height = 0,
+			// 	minTop = null,
+			// 	maxTop = null
+			// if (this.editor.screen.chooseWidgetArray.length === 1) {
+			// 	this.editor.screen.chooseWidgetId = this.editor.screen.chooseWidgetArray[0]
+			// 	this.editor.screen.chooseWidgetArray = []
+			// } else {
+			// 	this.editor.screen.chooseWidgetArray.map(item => {
+			// 		const m = this.editor.screen.screenWidgets[item]
+			// 		if (minLeft === null) {
+			// 			minLeft = m.config.layout.position.left
+			// 		}
+			// 		if (maxLeft === null) {
+			// 			maxLeft = m.config.layout.position.left
+			// 			width = m.config.layout.size.width
+			// 		}
+			// 		if (minTop === null) {
+			// 			minTop = m.config.layout.position.top
+			// 		}
+			// 		if (maxTop === null) {
+			// 			maxTop = m.config.layout.position.top
+			// 			height = m.config.layout.size.height
+			// 		}
+			// 		if (minLeft > m.config.layout.position.left)
+			// 			minLeft = m.config.layout.position.left
+			// 		if (maxLeft < m.config.layout.position.left) {
+			// 			maxLeft = m.config.layout.position.left
+			// 			width = m.config.layout.size.width
+			// 		}
+			// 		if (minTop > m.config.layout.position.top)
+			// 			minTop = m.config.layout.position.top
+			// 		if (maxTop < m.config.layout.position.top) {
+			// 			maxTop = m.config.layout.position.top
+			// 			height = m.config.layout.size.height
+			// 		}
+			// 	})
+			// 	this.editor.screen.chooseWidgetArrayConfig.left = minLeft
+			// 	this.editor.screen.chooseWidgetArrayConfig.top = minTop
+			// 	this.editor.screen.chooseWidgetArrayConfig.width =
+			// 		width + (maxLeft - minLeft)
+			// 	this.editor.screen.chooseWidgetArrayConfig.height =
+			// 		height + (maxTop - minTop)
+			// }
 		}
 	}
 
-	public mouseDown(e: any): void {
+	mouseDown(e: any): void {
 		// 判断是否为鼠标左键被按下
 		if (e.buttons !== 1 || e.which !== 1) return
 		this.editor.eve.startX = e.clientX
@@ -176,7 +176,7 @@ export default class DRuler extends Vue {
 		}
 	}
 
-	public mouseMove(e: any): void {
+	mouseMove(e: any): void {
 		const { clientX, clientY } = e
 		this.editor.eve.clientX = clientX
 		this.editor.eve.clientY = clientY
@@ -214,7 +214,7 @@ export default class DRuler extends Vue {
 	}
 
 	/* 滚动画布 */
-	public wheel(e: any): void {
+	wheel(e: any): void {
 		if (e.ctrlKey) {
 			e.preventDefault()
 			e.stopPropagation()
@@ -239,7 +239,7 @@ export default class DRuler extends Vue {
 
 	keyup(e: any): void {
 		this.editor.eve.contentMove = false
-		document.getElementById(this.editor.contentId).style.cursor = 'auto'
+		document.getElementById(this.editor.rulerContentId).style.cursor = 'auto'
 		// if (e.keyCode === 8 || e.keyCode === 46) {
 		// 	if (!this.editor.screen.chooseWidgetId || this.editor.eve.inputFocus) return
 		// 	Vue.prototype.$Modal.confirm({
@@ -268,7 +268,7 @@ export default class DRuler extends Vue {
 		}
 		if (e.keyCode === 32) {
 			this.editor.eve.contentMove = true
-			document.getElementById(this.editor.contentId).style.cursor = 'grab'
+			document.getElementById(this.editor.rulerContentId).style.cursor = 'grab'
 		}
 	}
 }

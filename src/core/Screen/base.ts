@@ -8,52 +8,49 @@ export default class Screen extends Factory<Screen> {
 	/* 当前系统版本 */
 	currentVersion = '1.1.0'
 	/* 大屏ID */
-	public screenId: string
+	screenId: string
 	/* 大屏名 */
-	public screenName = '未命名'
+	screenName = '未命名'
 	/* 已废弃 */
 	/* 大屏配置 */
-	public screenConfig: any = {}
+	screenConfig: any = {}
 	/* 大屏组件配置 */
-	public screenWidgets: any = {}
-
-	/* 更新大屏组件配置 */
-	updateWidgetConfig(id, config) {
-		if (this.screenWidgets[id]) this.screenWidgets[id].config = config
-	}
-
+	screenWidgets: any = {}
 	/* 大屏类型 CUSTOM:大屏 TEMPLATE:模版 */
-	public screenType = ''
+	screenType = ''
 	/* 已废弃 */
 	/* 大屏发布情况 EDIT:未发布 COMPLETE:已发布*/
-	public screenPublish = ''
+	screenPublish = ''
 	/* 大屏缩略图 */
-	public screenAvatar = ''
+	screenAvatar = ''
 	/* 大屏版本号 */
-	public screenVersion = ''
+	screenVersion = ''
 	/* 大屏适配方式 full-size 充满页面 full-width 100%宽度 full-height 100%高度 */
-	public screenLayoutMode = ''
+	screenLayoutMode = ''
 	/* 备注 */
-	public remark = ''
+	remark = ''
 	/* 排序 */
-	public sort = 1
+	sort = 1
 	/* 创建时间 */
-	public createTime: string
+	createTime: string
 	/* 更新时间 */
-	public updateTime: string
+	updateTime: string
 	/* 大屏宽度 */
-	public screenWidth = 1920
+	screenWidth = 1920
 	/* 大屏高度 */
-	public screenHeight = 1080
+	screenHeight = 1080
 	/* 大屏背景颜色 */
-	public screenBackGroundColor = 'rgba(24, 27, 36,1)'
+	screenBackGroundColor = 'rgba(24, 27, 36,1)'
 	/* 大屏背景图片 */
-	public screenBackGroundImage = ''
+	screenBackGroundImage = ''
 	/* 大屏首屏场景 */
-	public screenMainScene: string | number
+	screenMainScene: string | number
 	/* 大屏平台类型 PC:PC */
-	public screenPlatform: string
-
+	screenPlatform: string
+	/* 更新大屏组件配置 */
+	updateWidgetConfig(id, config):void {
+		if (this.screenWidgets[id]) this.screenWidgets[id].config = config
+	}
 	/* 大屏样式 */
 	get screenStyle() {
 		let scaleX = 0,
@@ -64,14 +61,14 @@ export default class Screen extends Factory<Screen> {
 		const layoutMode = getQueryString('layoutMode')
 		switch (layoutMode) {
 			case 'full-size':
-				scaleX = clientWidth / this.width
-				scaleY = clientHeight / this.height
+				scaleX = clientWidth / this.screenWidth
+				scaleY = clientHeight / this.screenHeight
 				break
 			case 'full-width':
-				actualScaleRatio = clientWidth / this.width
+				actualScaleRatio = clientWidth / this.screenWidth
 				break
 			case 'full-height':
-				actualScaleRatio = clientHeight / this.height
+				actualScaleRatio = clientHeight / this.screenHeight
 				break
 		}
 		if (layoutMode === 'full-size') {
@@ -80,10 +77,10 @@ export default class Screen extends Factory<Screen> {
 			scale = `${actualScaleRatio}`
 		}
 		return {
-			width: `${this.width}px`,
-			height: `${this.height}px`,
-			backgroundColor: this.backgroundColor,
-			backgroundImage: `url(${this.backgroundImage})`,
+			width: `${this.screenWidth}px`,
+			height: `${this.screenHeight}px`,
+			backgroundColor: this.screenBackGroundColor,
+			backgroundImage: `url(${this.screenBackGroundImage})`,
 			overflow: 'hidden',
 			transform: `scale(${scale}) translate3d(0, 0, 0)`,
 		}
@@ -91,7 +88,7 @@ export default class Screen extends Factory<Screen> {
 
 	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
 	editorStatus = 'inEdit'
-	public updateEditorStatus(status: string): void {
+	updateEditorStatus(status: string): void {
 		this.editorStatus = status
 	}
 
@@ -104,7 +101,7 @@ export default class Screen extends Factory<Screen> {
 	/* 大屏平台状态 是否自动贴靠参考线*/
 	autoAlignGuide = true
 	/* 获取大屏数据 */
-	public screenData(): any {
+	screenData(): any {
 		const defaultConfig = commonConfigValue() // 读取默认配置
 		const widgetAdded = copy(this.screenWidgets)
 		const widgets = Object.values(widgetAdded)

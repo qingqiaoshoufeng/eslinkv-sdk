@@ -41,7 +41,7 @@ export default class ScreenPc extends ScreenBase {
 		return res
 	}
 	/* 选中组件 */
-	public setChooseWidget(id: string): void {
+	setChooseWidget(id: string): void {
 		this.chooseWidgetId = id
 	}
 	/* 选中组件的自定义配置更新 */
@@ -65,7 +65,7 @@ export default class ScreenPc extends ScreenBase {
 		return widget
 	}
 	/* 初始化配置 */
-	public init(res: any): any {
+	init(res: any): any {
 		this.screenId = res.screenId
 		this.screenName = res.screenName
 		this.screenAvatar = res.screenAvatar
@@ -112,7 +112,6 @@ export default class ScreenPc extends ScreenBase {
 		delete this.screenConfig.widgets
 		const obj = {}
 		const marketComponents: { type: string; version: string }[] = []
-		const p = []
 		screenWidgets.forEach(item => {
 			obj[item.id] = {
 				id: item.id,

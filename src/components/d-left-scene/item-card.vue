@@ -37,7 +37,7 @@ export default class DLeftSceneItem extends Vue {
 	editScene = false
 	copyModel = false
 	childList = []
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	@Prop() item
 	get list(): any {
 		const list = []

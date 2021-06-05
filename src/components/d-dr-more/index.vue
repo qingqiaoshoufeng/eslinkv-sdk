@@ -12,7 +12,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DDrMore extends Vue {
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	get style() {
 		if (!this.editor.chooseWidgetArrayConfig) return {}
 		return {

@@ -1,7 +1,9 @@
+// @ts-ignore
 export class Singleton<T> {
 	private static instance: any = null
-	public static Instance<T>(obj?: any): T {
+	static Instance<T>(obj?: any): T {
 		if (this.instance == null) {
+			// @ts-ignore
 			this.instance = new this(obj)
 		}
 		return this.instance

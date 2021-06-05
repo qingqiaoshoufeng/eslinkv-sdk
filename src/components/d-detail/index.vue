@@ -83,7 +83,7 @@ import { screenShareUpdate } from '@/api/screenShare.api'
 })
 export default class DDetail extends Vue {
 	@Prop({ default: true }) show: boolean
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	loadingMsg = 'loading…'
 	shareModal = false
 	searchModal = false

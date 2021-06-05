@@ -17,7 +17,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DRightSettingMore extends Vue {
-	editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 
 	handleGroup() {
 		const children = []

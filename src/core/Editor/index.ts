@@ -1,34 +1,31 @@
 import Factory from '@/core/Base/factory'
 import ScreenPc from '@/core/Screen/pc'
 import Scene from '@/core/Scene'
-import { Message } from 'view-design'
-import { debounce } from 'throttle-debounce'
-import { update } from '@/api/screen.api'
 import Eve from '@/core/Eve'
 import Ruler from '@/core/ui/Ruler'
 
 const dragId = `drag-content-${+new Date()}`
-const contentId = `drag-content-${+new Date()}`
+const rulerContentId = `drag-content-${+new Date()}`
 export default class Editor extends Factory<Editor> {
 	dragId = dragId
-	contentId = contentId
+	rulerContentId = rulerContentId
 	/* 大屏ID */
 	screenId: string
 	private screen: ScreenPc = ScreenPc.Instance()
 	private scene: Scene = Scene.Instance()
 	private ruler: Ruler | null
 	private eve: Eve = Eve.Instance({
-		contentId,
+		rulerContentId,
 	})
 
-	public init(res: any): any {
+	init(res: any): any {
 		let screen
 		if (res) {
 			this.screenId = res.screenId
 			screen = this.screen.init(res)
 			this.scene.init(res)
 		}
-		this.ruler = new Ruler()
+		this.ruler = new Ruler(rulerContentId)
 		this.eve.resetZoom({
 			screenHeight: this.screen.screenHeight,
 			screenWidth: this.screen.screenWidth,
@@ -62,24 +59,30 @@ export default class Editor extends Factory<Editor> {
 		return this.eve.zoom
 	}
 	/* 放大画布 */
-	public zoomIn(step = 2): void {
+	zoomIn(step = 2): void {
 		this.eve.zoomIn(step)
+		this.ruler.draw({
+			zoom: this.eve.zoom,
+		})
 	}
 	/* 缩小画布 */
-	public zoomOut(step = 2): void {
+	zoomOut(step = 2): void {
 		this.eve.zoomOut(step)
+		this.ruler.draw({
+			zoom: this.eve.zoom,
+		})
 	}
-	public taggerXRoomL1(): void {
+	taggerXRoomL1(): void {
 		this.eve.taggerXRoomL1()
 	}
-	public taggerXRoomL2(): void {
+	taggerXRoomL2(): void {
 		this.eve.taggerXRoomL2()
 	}
-	public taggerXRoomR1(): void {
+	taggerXRoomR1(): void {
 		this.eve.taggerXRoomR1()
 	}
 	/* 画布还原最佳比例 */
-	public resetZoom(): void {
+	resetZoom(): void {
 		this.eve.resetZoom({
 			screenHeight: this.screen.screenHeight,
 			screenWidth: this.screen.screenWidth,
@@ -213,19 +216,19 @@ export default class Editor extends Factory<Editor> {
 		this.screen.screenMainScene = screenMainScene
 	}
 	/* 更新大屏状态 */
-	public updateEditorStatus(status: string): void {
+	updateEditorStatus(status: string): void {
 		this.screen.updateEditorStatus(status)
 	}
 	/* 更新组件加载状态 */
-	public updateWidgetLoaded(key: string): void {
+	updateWidgetLoaded(key: string): void {
 		this.screen.widgetLoaded[key] = true
 	}
 	/* 获取大屏数据 */
-	public screenData(): any {
+	screenData(): any {
 		return this.screen.screenData()
 	}
 	/* 添加组件 */
-	public createWidget(e: any): void {
+	createWidget(e: any): void {
 		this.screen.createWidget(
 			e,
 			this.scene.sceneIndex,
@@ -235,32 +238,21 @@ export default class Editor extends Factory<Editor> {
 		)
 	}
 	/* 取消选中组件 */
-	public unChooseWidget(): void {
+	unChooseWidget(): void {
 		this.screen.unChooseWidget()
 	}
 	/* 更新大屏组件配置 */
-	public updateWidgetConfig(id, config): void {
+	updateWidgetConfig(id, config): void {
 		this.screen.updateWidgetConfig(id, config)
 	}
 	/* 选中组件 */
-	public setChooseWidget(id: string): void {
+	setChooseWidget(id: string): void {
 		this.screen.setChooseWidget(id)
 	}
 	/* 选中组件的自定义配置更新 */
-	public setChooseWidgetCustomConfig(value = []): void {
+	setChooseWidgetCustomConfig(value = []): void {
 		this.screen.setChooseWidgetCustomConfig(value)
 	}
-	/* 更新大屏信息 防抖：1500ms */
-	updateScreenDebounce = debounce(1500, false, function (obj: any): void {
-		if (this.screenId) {
-			update({
-				screenId: this.screenId,
-				...obj,
-			}).then(() => {
-				Message.success('修改成功')
-			})
-		}
-	})
 
 	/* ---------------------------------------------------Scene---------------------------------------------------*/
 	/* 当前场景 */
@@ -279,23 +271,23 @@ export default class Editor extends Factory<Editor> {
 		return this.scene.sceneList
 	}
 	/* 切换场景 */
-	public setSceneIndex(val: number | string): void {
+	setSceneIndex(val: number | string): void {
 		this.scene.setSceneIndex(val)
 	}
 	/* 获取场景数据 */
-	public sceneData(): any {
+	sceneData(): any {
 		return this.scene.sceneData()
 	}
 	/* 更新场景名称 */
-	public setSceneName(name: string): void {
+	setSceneName(name: string): void {
 		this.scene.setSceneName(name)
 	}
 	/* 创建场景 */
-	public createScene(): void {
+	createScene(): void {
 		this.scene.createScene()
 	}
 	/* 删除场景 */
-	public destroyScene(): void {
+	destroyScene(): void {
 		this.scene.destroyScene()
 	}
 	/* ---------------------------------------------------More---------------------------------------------------*/
@@ -323,7 +315,7 @@ export default class Editor extends Factory<Editor> {
 			height: `${this.height + 18 * 2}px`,
 		}
 	}
-	public screenSizeChange({ width, height }): void {
+	screenSizeChange({ width, height }: any = {}): void {
 		if (width) this.screen.screenWidth = width
 		if (height) this.screen.screenHeight = height
 		this.resetZoom()

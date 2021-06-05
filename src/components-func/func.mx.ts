@@ -48,7 +48,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class Func extends Vue {
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	@Prop() config
 	@Prop() parentProp // group时会有
 	@Prop() parentIndex // group时会有

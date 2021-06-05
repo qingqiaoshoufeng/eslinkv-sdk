@@ -4,30 +4,30 @@ import Factory from '@/core/Base/factory'
 
 export default class SceneBase extends Factory<SceneBase> {
 	/* 大屏场景配置 */
-	public screenScene: any = {}
+	screenScene: any = {}
 	/* 所有场景的id数组 */
-	public sceneList = []
+	sceneList = []
 	/* 通过create创建的场景 */
-	public createSceneList = []
+	createSceneList = []
 	/* 大屏场景数据序列化 */
-	public sceneObj = {}
+	sceneObj = {}
 	/* 大屏当前场景 */
-	public sceneIndex: number | string = 0
+	sceneIndex: number | string = 0
 	/* 大屏场景组件关联 */
-	public sceneWidgets = {}
+	sceneWidgets = {}
 	/* 切换场景 */
-	public setSceneIndex(val: number | string): void {
+	setSceneIndex(val: number | string): void {
 		this.sceneIndex = val
 		let event = new CustomEvent('SceneIndex', { detail: { index: val } })
 		document.dispatchEvent(event)
 		event = null
 	}
 	/* 更新场景名称 */
-	public setSceneName(name: string): void {
+	setSceneName(name: string): void {
 		this.sceneObj[this.sceneIndex].name = name.replace(/ /g, '')
 	}
 	/* 序列化场景数据 */
-	public initScene(res: any): void {
+	initScene(res: any): void {
 		if (res.screenScene) {
 			this.screenScene = res.screenScene
 		} else {
@@ -56,14 +56,14 @@ export default class SceneBase extends Factory<SceneBase> {
 		}
 	}
 	/* 创建场景 */
-	public createScene(): void {
+	createScene(): void {
 		const name = uuid()
 		Vue.set(this.sceneList, this.sceneList.length, name)
 		Vue.set(this.sceneObj, name, { name: `场景${name}` })
 		this.setSceneIndex(name)
 	}
 	/* 删除场景 */
-	public destroyScene(): void {
+	destroyScene(): void {
 		if (this.sceneIndex !== 0) {
 			Vue.prototype.$Modal.confirm({
 				title: '是否删除当前场景？',
@@ -83,9 +83,9 @@ export default class SceneBase extends Factory<SceneBase> {
 		}
 	}
 	/* 初始化配置 */
-	public init(res: any): void {}
+	init(res: any): void {}
 	/* 获取场景数据 */
-	public sceneData(): any {
+	sceneData(): any {
 		return { screenScene: this.sceneObj }
 	}
 }

@@ -63,7 +63,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DLeftScene extends Vue {
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	editScene = false
 	copyModel = false
 

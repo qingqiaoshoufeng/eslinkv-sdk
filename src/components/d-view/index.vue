@@ -25,7 +25,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DView extends Vue {
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 
 	mounted() {
 		instance.actions.setInstance('kanboard', this)

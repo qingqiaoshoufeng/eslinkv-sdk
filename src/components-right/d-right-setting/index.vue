@@ -46,7 +46,7 @@ import Editor from '@/core/Editor'
 export default class DRightSetting extends Vue {
 	tabIndex = 0
 	editName = false
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	title = ['基础', '交互', '主题', '自定义']
 	chooseList: any = [
 		{

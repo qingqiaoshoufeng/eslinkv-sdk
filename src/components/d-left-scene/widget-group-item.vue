@@ -17,7 +17,7 @@ import Editor from '@/core/Editor'
 })
 export default class widgetGroupItem extends Vue {
 	childList = []
-	editor = Editor.Instance()
+	editor:Editor = Editor.Instance()
 	@Prop() child
 	handleChoose() {
 		this.editor.chooseWidgetChildId = this.child.id
