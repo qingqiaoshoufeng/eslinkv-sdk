@@ -48,7 +48,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class Func extends Vue {
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 	@Prop() config
 	@Prop() parentProp // group时会有
 	@Prop() parentIndex // group时会有
@@ -66,7 +66,7 @@ export default class Func extends Vue {
 
 	get obj() {
 		if (!this.fixedConfig.prop) return null
-		let res = this.editor.chooseWidget
+		let res = this.editor.currentWidget
 		if (res) {
 			const props = this.fixedConfig.prop.split('.')
 			props.length = props.length - 1
@@ -87,7 +87,7 @@ export default class Func extends Vue {
 	}
 
 	getItemValue(keyString) {
-		let res = this.editor.chooseWidget
+		let res = this.editor.currentWidget
 		const props = keyString.split('.')
 		props.forEach(v => {
 			res = res[v]
@@ -96,7 +96,7 @@ export default class Func extends Vue {
 	}
 
 	getItemObj(keyString) {
-		let res = this.editor.chooseWidget
+		let res = this.editor.currentWidget
 		const props = keyString.split('.')
 		props.length = props.length - 1
 		props.forEach(v => {

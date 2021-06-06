@@ -3,6 +3,7 @@ import ScreenPc from '@/core/Screen/pc'
 import Scene from '@/core/Scene'
 import Eve from '@/core/Eve'
 import Ruler from '@/core/ui/Ruler'
+import Widget from '@/core/Widget/normal'
 
 const dragId = `drag-content-${+new Date()}`
 const rulerContentId = `drag-content-${+new Date()}`
@@ -17,6 +18,29 @@ export default class Editor extends Factory<Editor> {
 	private eve: Eve = Eve.Instance({
 		rulerContentId,
 	})
+	/* 当前组件 */
+	currentWidgetId = ''
+	currentWidget: Widget | null
+	selectWidget(widget: Widget) {
+		if (widget.config.widget.hide) {
+			return
+		}
+		this.currentWidgetId = widget.id
+		this.currentWidget = widget
+		// if (children && this.editor.chooseWidgetChildId) {
+		// 	this.editor.setChooseWidgetCustomConfig(
+		// 		children.find(v => v.id === this.editor.chooseWidgetChildId)
+		// 			.value.customConfig,
+		// 	)
+		// } else {
+		// 	this.editor.setChooseWidgetCustomConfig(config.customConfig)
+		// }
+		// this.editor.setChooseWidgetCustomConfig(target.config.customConfig)
+	}
+	unSelectWidget() {
+		this.currentWidgetId = ''
+		this.currentWidget = null
+	}
 
 	init(res: any): any {
 		let screen
@@ -233,9 +257,13 @@ export default class Editor extends Factory<Editor> {
 			e,
 			this.scene.sceneIndex,
 			this.sortByZIndexWidgetsList.length
-				? this.sortByZIndexWidgetsList[0].value.layout.zIndex + 1
+				? this.sortByZIndexWidgetsList[0].config.layout.zIndex + 1
 				: 10,
 		)
+	}
+	deleteWidget(id: string): void {
+		if (id) this.screen.deleteWidget(id)
+		if (id === this.currentWidgetId) this.unSelectWidget()
 	}
 	/* 取消选中组件 */
 	unChooseWidget(): void {
@@ -301,7 +329,7 @@ export default class Editor extends Factory<Editor> {
 			}
 		}
 		list.sort((a, b) => {
-			return b.value.layout.zIndex - a.value.layout.zIndex - 1
+			return b.config.layout.zIndex - a.config.layout.zIndex - 1
 		})
 		return list
 	}

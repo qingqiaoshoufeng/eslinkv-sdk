@@ -36,7 +36,7 @@
 			span 删除
 </template>
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 import instance from '../../store/instance.store'
 import { Icon } from 'view-design'
 import Editor from '@/core/Editor'
@@ -52,7 +52,7 @@ export default class rightMenu extends Vue {
 	zIndex = 10
 	minZIndex = 0
 	maxZIndex = 0
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 	handleSync() {
 		this.instance.kanboard.$refs[`${this.editor.chooseWidgetId}`][0]
 			.$children[0].updateKey++
@@ -62,31 +62,24 @@ export default class rightMenu extends Vue {
 	handleZIndex(num) {
 		if (this.zIndex === 1 && num === -1) return
 		this.zIndex += num
-		this.editor.screenWidgets[
-			this.editor.chooseWidgetId
-		].value.layout.zIndex = this.zIndex
+		this.editor.currentWidget.config.layout.zIndex = this.zIndex
 		this.hideRightMenu()
 	}
 
 	handleZIndexTop() {
 		this.zIndex = this.maxZIndex
-		this.editor.screenWidgets[
-			this.editor.chooseWidgetId
-		].value.layout.zIndex = this.maxZIndex
+		this.editor.currentWidget.config.layout.zIndex = this.maxZIndex
 		this.hideRightMenu()
 	}
 
 	handleZIndexBottom() {
 		this.zIndex = this.minZIndex
-		this.editor.screenWidgets[
-			this.editor.chooseWidgetId
-		].value.layout.zIndex = this.minZIndex
+		this.editor.currentWidget.config.layout.zIndex = this.minZIndex
 		this.hideRightMenu()
 	}
 
 	hideWidget() {
-		const widget = this.editor.screenWidgets[this.editor.chooseWidgetId]
-			.value.widget
+		const widget = this.editor.currentWidget.config.widget
 		widget.hide = !widget.hide
 		this.handleUnActive()
 	}
@@ -96,9 +89,8 @@ export default class rightMenu extends Vue {
 			title: '提示',
 			content: '是否删除当前组件？',
 			onOk: () => {
-				const id = this.editor.chooseWidgetId
-				this.editor.screen.deleteWidget(id)
-				this.handleUnActive()
+				const id = this.editor.currentWidgetId
+				this.editor.deleteWidget(id)
 			},
 			onCancel: () => {
 				this.hideRightMenu()
@@ -117,38 +109,15 @@ export default class rightMenu extends Vue {
 	}
 
 	handleUnActive() {
-		this.editor.unChooseWidget()
+		this.editor.unSelectWidget()
 	}
 
 	handleLock() {
 		this.isLock = !this.isLock
 		this.editor.screenWidgets[
-			this.editor.chooseWidgetId
-		].value.widget.locked = this.isLock
+			this.editor.currentWidgetId
+		].config.widget.locked = this.isLock
 		this.hideRightMenu()
-	}
-
-	@Watch('editor.chooseWidgetId')
-	chooseIdChange(val) {
-		if (!val) return
-		this.isLock = this.editor.screenWidgets[val].value.widget.locked
-		this.zIndex = this.editor.screenWidgets[val].value.layout.zIndex
-		let max = 0
-		let min = 9999
-		for (const key in this.editor.screenWidgets) {
-			max = Math.max(
-				this.editor.screenWidgets[key].value.layout.zIndex,
-				max,
-			)
-			min = Math.min(
-				this.editor.screenWidgets[key].value.layout.zIndex,
-				min,
-			)
-		}
-		max++
-		min--
-		this.maxZIndex = max
-		this.minZIndex = Math.max(1, min)
 	}
 }
 </script>

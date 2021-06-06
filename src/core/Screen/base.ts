@@ -1,6 +1,4 @@
-﻿import copy from 'fast-copy'
-import commonConfigValue from '../../../common-config-value'
-import { getQueryString } from '@/utils'
+﻿import { getQueryString } from '@/utils'
 import Factory from '@/core/Base/factory'
 import Widget from '@/core/Widget/base'
 
@@ -48,7 +46,7 @@ export default class Screen extends Factory<Screen> {
 	/* 大屏平台类型 PC:PC */
 	screenPlatform: string
 	/* 更新大屏组件配置 */
-	updateWidgetConfig(id, config):void {
+	updateWidgetConfig(id, config): void {
 		if (this.screenWidgets[id]) this.screenWidgets[id].config = config
 	}
 	/* 大屏样式 */
@@ -102,31 +100,8 @@ export default class Screen extends Factory<Screen> {
 	autoAlignGuide = true
 	/* 获取大屏数据 */
 	screenData(): any {
-		const defaultConfig = commonConfigValue() // 读取默认配置
-		const widgetAdded = copy(this.screenWidgets)
-		const widgets = Object.values(widgetAdded)
-			.map(({ id, market = false, type, value, scene = 0, children }) => {
-				const api = value.api
-				if (api && api.data) {
-					try {
-						api.data = JSON.stringify(JSON.parse(api.data))
-					} catch (e) {
-						console.warn(e)
-					}
-				}
-				checkAttr(value, '', defaultConfig)
-				return {
-					id,
-					scene,
-					type,
-					market,
-					value,
-					children,
-				}
-			})
-			.filter(item => item.scene !== -1)
 		return {
-			screenWidgets: widgets,
+			screenWidgets: this.screenWidgets,
 			screenType: this.screenType,
 			screenConfig: this.screenConfig,
 			screenAvatar: this.screenAvatar,
@@ -164,41 +139,5 @@ export default class Screen extends Factory<Screen> {
 
 	deleteWidget(id) {
 		delete this.screenWidgets[id]
-	}
-}
-function getAttr(o, str) {
-	const arr = str.split('.')
-	let res = o
-	for (const v of arr) {
-		if (res[v] === undefined) {
-			res = {}
-			break
-		}
-		res = res[v]
-	}
-	return res
-}
-function checkAttr(o, str = '', defaultConfig) {
-	for (const key in o) {
-		const prop = str ? str + '.' + key : key
-		if (Array.isArray(o[key]) && o[key].length > 0) {
-			if (
-				JSON.stringify(o[key]) ===
-				JSON.stringify(getAttr(defaultConfig, prop))
-			) {
-				o[key] = 'default'
-			}
-		} else if (
-			Object.prototype.toString.call(o[key]) === '[object Object]'
-		) {
-			if (
-				JSON.stringify(o[key]) ===
-				JSON.stringify(getAttr(defaultConfig, prop))
-			) {
-				o[key] = 'default'
-			} else {
-				checkAttr(o[key], prop, defaultConfig)
-			}
-		}
 	}
 }

@@ -26,7 +26,7 @@ import Editor from '@/core/Editor'
 export default class DSearch extends Vue {
 	searchResult = []
 	keyword = ''
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 	@Prop() value
 	@Prop() hide
 

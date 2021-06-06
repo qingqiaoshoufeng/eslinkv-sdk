@@ -1,7 +1,7 @@
 <template lang="pug">
 .main
 	.child.fn-flex.flex-row(
-		@click="handleChoose",
+		@click="editor.selectWidget(child)",
 		:class="{ active: editor.chooseWidgetChildId === child.id }")
 		.d-left-scene-left
 			h2 {{ child.config.widget.name }}
@@ -16,14 +16,8 @@ import Editor from '@/core/Editor'
 	components: { widgetGroup },
 })
 export default class widgetGroupItem extends Vue {
-	childList = []
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 	@Prop() child
-	handleChoose() {
-		this.editor.chooseWidgetChildId = this.child.id
-		const target = this.editor.chooseWidget
-		this.editor.setChooseWidgetCustomConfig(target.config.customConfig)
-	}
 }
 </script>
 <style lang="scss" scoped>

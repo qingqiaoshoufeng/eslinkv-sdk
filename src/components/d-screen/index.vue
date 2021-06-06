@@ -1,12 +1,11 @@
 <template lang="pug">
-#d-screen.d-screen(
-	:style="{ height: `calc(100% - ${editor.yRoom}px)` }",)
+#d-screen.d-screen(:style="{ height: `calc(100% - ${editor.yRoom}px)` }")
 	.d-editor-box.pos-r.fn-flex
 		d-left-widget
 		d-left-scene
 		d-editor
-		d-right-manage(v-if="!editor.chooseWidgetId")
-		d-right-setting(v-if="editor.chooseWidgetId")
+		d-right-manage(v-if="!editor.currentWidgetId")
+		d-right-setting(v-if="editor.currentWidgetId")
 		d-right-setting-more(
 			v-if="editor.chooseWidgetArray && editor.chooseWidgetArray.length > 1")
 </template>
@@ -31,7 +30,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class dScreen extends Vue {
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 }
 </script>
 <style lang="scss" scoped>

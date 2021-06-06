@@ -1,5 +1,9 @@
 <template lang="pug">
-.d-ruler-wrapper.pos-r(:id="editor.rulerContentId")
+.d-ruler-wrapper.pos-r(
+	:id="editor.rulerContentId",
+	@mousedown="mouseDown",
+	@wheel="wheel",
+	@mousemove="mouseMove")
 	.content-body.pos-a(:id="editor.dragId", :style="editor.rulerStyle")
 		slot
 </template>
@@ -19,15 +23,6 @@ export default class DRuler extends Vue {
 		document.documentElement.removeEventListener('keydown', this.keydown)
 		document.documentElement.removeEventListener('keyup', this.keyup)
 		document.documentElement.removeEventListener('mouseup', this.mouseUp)
-		document.documentElement.removeEventListener(
-			'mousedown',
-			this.mouseDown,
-		)
-		document.documentElement.removeEventListener(
-			'mousemove',
-			this.mouseMove,
-		)
-		document.documentElement.removeEventListener('wheel', this.wheel)
 	}
 
 	mounted(): void {
@@ -35,17 +30,14 @@ export default class DRuler extends Vue {
 		document.documentElement.addEventListener('keydown', this.keydown)
 		document.documentElement.addEventListener('keyup', this.keyup)
 		document.documentElement.addEventListener('mouseup', this.mouseUp)
-		document.documentElement.addEventListener('mousedown', this.mouseDown)
-		document.documentElement.addEventListener('mousemove', this.mouseMove)
-		document.documentElement.addEventListener('wheel', this.wheel)
 	}
 
 	mouseUp(e: any): void {
 		if (this.editor.eve.contentDrag) {
 			this.editor.eve.contentDrag = false
 		}
-		if (this.editor.widgetMove) {
-			this.editor.widgetMove = false
+		if (this.editor.eve.widgetMove) {
+			this.editor.eve.widgetMove = false
 		}
 		if (this.editor.eve.kuangMove) {
 			document.getElementById('d-kuang').style.display = 'none'
@@ -239,7 +231,8 @@ export default class DRuler extends Vue {
 
 	keyup(e: any): void {
 		this.editor.eve.contentMove = false
-		document.getElementById(this.editor.rulerContentId).style.cursor = 'auto'
+		document.getElementById(this.editor.rulerContentId).style.cursor =
+			'auto'
 		// if (e.keyCode === 8 || e.keyCode === 46) {
 		// 	if (!this.editor.screen.chooseWidgetId || this.editor.eve.inputFocus) return
 		// 	Vue.prototype.$Modal.confirm({
@@ -268,7 +261,8 @@ export default class DRuler extends Vue {
 		}
 		if (e.keyCode === 32) {
 			this.editor.eve.contentMove = true
-			document.getElementById(this.editor.rulerContentId).style.cursor = 'grab'
+			document.getElementById(this.editor.rulerContentId).style.cursor =
+				'grab'
 		}
 	}
 }

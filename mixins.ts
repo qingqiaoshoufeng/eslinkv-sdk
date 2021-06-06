@@ -159,14 +159,8 @@ const mx: any = {
 				})
 				res.customConfig = customConfig
 			}
-			if (this.config.widget) {
-				this.editor.updateWidgetConfig(this.config.widget.id, res)
-			}
 			this.configReady = true
-			if (this.configValue) {
-				const id = this.configValue.widget.id
-				this.editor.screenWidgets[id].config = this.configValue
-			}
+			this.editor.updateWidgetConfig(this.config.widget.id, res)
 			return res
 		},
 	},

@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-mange-list(v-if="!needChoose || editor.screenWidgets[editor.chooseWidgetId]")
+.d-mange-list
 	DManageItem(:config="child", v-for="(child, i) in list", :key="i")
 </template>
 <script lang="ts">
@@ -10,7 +10,6 @@ import Editor from '@/core/Editor'
 @Component({ components: { DManageItem } })
 export default class DManageItemList extends Vue {
 	@Prop(Array) list: any[]
-	@Prop(Boolean) needChoose: boolean
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 }
 </script>

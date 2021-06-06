@@ -102,6 +102,7 @@ export default class DEditor extends Vue {
 		instance.actions.setInstance('kanboard', this)
 		this.editor.updateEditorStatus('inEdit')
 		document.addEventListener('fullscreenchange', this.fullscreenchange)
+		window.editor = this.editor
 	}
 }
 </script>

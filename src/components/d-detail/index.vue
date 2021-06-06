@@ -1,4 +1,4 @@
-﻿<template lang="pug">
+<template lang="pug">
 .d-detail.fn-flex(v-if="show")
 	.d-detail-left.fn-flex
 		.d-detail-left-icon-box.fn-flex
@@ -83,7 +83,7 @@ import { screenShareUpdate } from '@/api/screenShare.api'
 })
 export default class DDetail extends Vue {
 	@Prop({ default: true }) show: boolean
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 	loadingMsg = 'loading…'
 	shareModal = false
 	searchModal = false
@@ -140,19 +140,27 @@ export default class DDetail extends Vue {
 		Promise.all(p)
 			.then(() => {
 				this.loading = false
-				this.editor.screen.screenWidgets = screen.screenWidgets
-				const widgets = Object.values(screen.screenWidgets)
-				widgets.forEach((item: any) => {
-					if (item.scene !== 0) {
-						if (!this.sceneWidgets[item.scene]) {
-							this.sceneWidgets[item.scene] = {}
-						}
-						if (!this.sceneWidgets[item.scene].list) {
-							this.sceneWidgets[item.scene].list = []
-						}
-						this.sceneWidgets[item.scene].list.push(item)
+				for (let key in screen.screenWidgets) {
+					if (screen.screenWidgets[key].value) {
+						screen.screenWidgets[key].config =
+							screen.screenWidgets[key].value
+						delete screen.screenWidgets[key].value
 					}
-				})
+				}
+				console.log(screen.screenWidgets)
+				this.editor.screen.screenWidgets = screen.screenWidgets
+				// const widgets = Object.values(screen.screenWidgets)
+				// widgets.forEach((item: any) => {
+				// 	if (item.scene !== 0) {
+				// 		if (!this.sceneWidgets[item.scene]) {
+				// 			this.sceneWidgets[item.scene] = {}
+				// 		}
+				// 		if (!this.sceneWidgets[item.scene].list) {
+				// 			this.sceneWidgets[item.scene].list = []
+				// 		}
+				// 		this.sceneWidgets[item.scene].list.push(item)
+				// 	}
+				// })
 			})
 			.catch(e => {
 				this.loading = false
