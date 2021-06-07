@@ -8,12 +8,8 @@ export default class ScreenPc extends ScreenBase {
 	widgetLoaded = {}
 	/* 当前组件加载状态 */
 	widgetLoading = true
-	/* 当前选中组件 */
-	chooseWidgetId = null
 	/* 当前选中组件-子组件 */
 	chooseWidgetChildId: null
-	/* 当前选中组件-多组件 */
-	chooseWidgetArray = []
 	/* 当前选中组件-自定义配置 */
 	chooseWidgetCustomConfig = []
 	/* 当前选中组件-多组件配置 */
@@ -47,13 +43,6 @@ export default class ScreenPc extends ScreenBase {
 	/* 选中组件的自定义配置更新 */
 	setChooseWidgetCustomConfig(value = []) {
 		this.chooseWidgetCustomConfig = [...value, { type: 'custom' }]
-	}
-	/* 取消选中组件 */
-	unChooseWidget() {
-		this.chooseWidgetId = null
-		this.chooseWidgetChildId = null
-		this.chooseWidgetArray = []
-		document.getElementById('right-menu').classList.remove('active')
 	}
 	/* 选中的组件 */
 	get chooseWidget() {
@@ -106,28 +95,19 @@ export default class ScreenPc extends ScreenBase {
 		if (res.screenConfig.widgets) {
 			screenWidgets = res.screenConfig.widgets
 		} else {
-			screenWidgets = res.screenWidgets
+			screenWidgets = res.screenWidgets || {}
 		}
-		screenWidgets.forEach(v => setDefault(v.value))
-		delete this.screenConfig.widgets
-		const obj = {}
 		const marketComponents: { type: string; version: string }[] = []
-		screenWidgets.forEach(item => {
-			obj[item.id] = {
-				id: item.id,
-				market: item.market,
-				scene: item.scene,
-				type: item.type,
-				config: item.value,
-				children: item.children,
-			}
-			if (item.market) {
+		for (let key in screenWidgets) {
+			setDefault(screenWidgets[key].config)
+			if (screenWidgets[key].market) {
 				marketComponents.push({
-					type: item.type,
-					version: item.value.widget.componentVersion,
+					type: screenWidgets[key].type,
+					version: screenWidgets[key].config.widget.componentVersion,
 				})
 			}
-		})
+		}
+		delete this.screenConfig.widgets
 		return { marketComponents, screenWidgets }
 	}
 

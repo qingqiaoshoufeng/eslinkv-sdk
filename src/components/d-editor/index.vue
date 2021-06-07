@@ -20,7 +20,7 @@
 				v-for="item in editor.showWidgets",
 				:getRefLineParams="getRefLineParams",
 				:ref="item.id")
-			dr-more(v-show="editor.chooseWidgetArray&&editor.chooseWidgetArray.length")
+			dr-more(v-show="editor.currentWidgetList&&editor.currentWidgetList.length")
 			.d-editor-line(data-top="0px", data-left="0px")
 			.d-editor-line(:data-top="`${editor.height}px`", data-left="0px")
 			.d-editor-line(

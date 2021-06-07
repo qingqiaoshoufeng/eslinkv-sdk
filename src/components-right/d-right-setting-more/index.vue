@@ -21,9 +21,9 @@ export default class DRightSettingMore extends Vue {
 
 	handleGroup() {
 		const children = []
-		this.editor.chooseWidgetArray.map(item => {
-			children.push(this.editor.screenWidgets[item])
-			this.$delete(this.editor.screenWidgets, item)
+		this.editor.currentWidgetList.map(item => {
+			children.push(this.editor.screenWidgets[item.id])
+			this.$delete(this.editor.screenWidgets, item.id)
 		})
 		const id = uuid()
 		const config = configMerge(
@@ -50,18 +50,17 @@ export default class DRightSettingMore extends Vue {
 			type: 'group',
 			children,
 		})
-		this.editor.chooseWidgetId = id
-		this.editor.chooseWidgetArray = []
+		this.editor.unSelectWidget()
 	}
 	handleDelete() {
 		this.$Modal.confirm({
 			title: '提示',
 			content: '是否删除所选组件？',
 			onOk: () => {
-				this.editor.chooseWidgetArray.map(item => {
-					this.$delete(this.editor.screenWidgets, item)
+				this.editor.currentWidgetList.map(item => {
+					this.$delete(this.editor.screenWidgets, item.id)
 				})
-				this.editor.chooseWidgetArray = []
+				this.editor.unSelectWidget()
 			},
 		})
 	}

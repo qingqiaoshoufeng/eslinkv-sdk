@@ -147,7 +147,6 @@ export default class DDetail extends Vue {
 						delete screen.screenWidgets[key].value
 					}
 				}
-				console.log(screen.screenWidgets)
 				this.editor.screen.screenWidgets = screen.screenWidgets
 				// const widgets = Object.values(screen.screenWidgets)
 				// widgets.forEach((item: any) => {

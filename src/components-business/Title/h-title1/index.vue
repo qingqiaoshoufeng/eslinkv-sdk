@@ -2,7 +2,7 @@
 widget-normal(:value="value", :customConfig="customConfig")
 	.fn-flex.flex-row.h-title-1(v-if="data")
 		.h-title-1-icon
-		h2(@click="__handleClick__(test)") {{ data.title }}
+		h2(@click="__handleClick__(test)") {{ data.title }} {{ config.config.title }}
 </template>
 <script lang="ts">
 import widgetMixin from '../../../../mixins'

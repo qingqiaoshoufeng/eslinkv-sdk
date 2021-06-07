@@ -1,6 +1,9 @@
 <template lang="pug">
 .d-mange-list
-	DManageItem(:config="child", v-for="(child, i) in list", :key="i")
+	DManageItem(
+		:config="child",
+		v-for="(child, i) in list",
+		:key="`${i}-${editor.currentWidgetId}`")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'

@@ -7,7 +7,7 @@
 		d-right-manage(v-if="!editor.currentWidgetId")
 		d-right-setting(v-if="editor.currentWidgetId")
 		d-right-setting-more(
-			v-if="editor.chooseWidgetArray && editor.chooseWidgetArray.length > 1")
+			v-if="editor.currentWidgetList && editor.currentWidgetList.length > 1")
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'

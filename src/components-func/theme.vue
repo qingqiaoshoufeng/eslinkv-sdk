@@ -21,8 +21,8 @@ import { colorTheme } from '../../packages/config.default.js'
 export default class FuncAnimation extends func {
 	instance = instance.state
 	get colorTheme() {
-		return this.editor.chooseWidget.config.config.colorTheme
-			? this.editor.chooseWidget.config.config.colorTheme
+		return this.editor.currentWidget.config.config.colorTheme
+			? this.editor.currentWidget.config.config.colorTheme
 			: colorTheme
 	}
 
@@ -35,24 +35,26 @@ export default class FuncAnimation extends func {
 		return obj
 	}
 
-	handleResetColor() {
-		this.editor.chooseWidget.config.config.colorTheme = colorTheme
+	handleResetColor(): void {
+		this.editor.currentWidget.config.config.colorTheme = colorTheme
 		this.handleSync()
 	}
 
-	colorDiskChange(val, index) {
-		if (!this.editor.chooseWidget.config.config.colorTheme) {
-			this.editor.chooseWidget.config.config.colorTheme = {}
+	colorDiskChange(val: string, index: number): void {
+		if (!this.editor.currentWidget.config.config.colorTheme) {
+			this.editor.currentWidget.config.config.colorTheme = {}
 		}
-		if (!this.editor.chooseWidget.config.config.colorTheme.colorDisk) {
-			this.editor.chooseWidget.config.config.colorTheme.colorDisk = []
+		if (!this.editor.currentWidget.config.config.colorTheme.colorDisk) {
+			this.editor.currentWidget.config.config.colorTheme.colorDisk = []
 		}
-		this.editor.chooseWidget.config.config.colorTheme.colorDisk[index] = val
+		this.editor.currentWidget.config.config.colorTheme.colorDisk[
+			index
+		] = val
 		this.handleSync()
 	}
 
 	handleSync() {
-		this.instance.kanboard.$refs[`${this.editor.chooseWidgetId}`][0]
+		this.instance.kanboard.$refs[`${this.editor.currentWidgetId}`][0]
 			.$children[0].updateKey++
 	}
 }

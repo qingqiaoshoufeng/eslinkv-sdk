@@ -25,8 +25,7 @@
 		itemList(
 			v-for="(item, index) in chooseList",
 			:list="item.key",
-			v-if="tabIndex === index",
-			:needChoose="item.needChoose")
+			v-if="tabIndex === index")
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
@@ -48,25 +47,7 @@ export default class DRightSetting extends Vue {
 	editName = false
 	editor: Editor = Editor.Instance()
 	title = ['基础', '交互', '主题', '自定义']
-	chooseList: any = [
-		{
-			key: [{ type: 'base' }],
-		},
-		{
-			key: [{ type: 'data' }],
-		},
-		{
-			key: [{ type: 'theme' }],
-		},
-		{
-			key: [],
-		},
-	]
-
-	@Watch('editor.chooseWidgetCustomConfig', { deep: true, immediate: true })
-	changeChooseWidgetCustomConfig(val) {
-		this.chooseList[3].key = val
-	}
+	chooseList = []
 
 	close(): void {
 		this.editName = false
@@ -79,6 +60,23 @@ export default class DRightSetting extends Vue {
 
 	handleClick(index: number): void {
 		this.tabIndex = index
+	}
+
+	mounted(): void {
+		this.chooseList = [
+			{
+				key: [{ type: 'base' }],
+			},
+			{
+				key: [{ type: 'data' }],
+			},
+			{
+				key: [{ type: 'theme' }],
+			},
+			{
+				key: this.editor.currentWidget.config.customConfig,
+			},
+		]
 	}
 }
 </script>

@@ -6,6 +6,8 @@ export default class Eve extends Factory<Screen> {
 	xRoomL2: number = +localStorage.getItem('xRoomL2')
 	xRoomR1: number = +localStorage.getItem('xRoomR1')
 	yRoom = 60
+	startPointerX = 0
+	startPointerY = 0
 	startX = 0
 	startY = 0
 	clientX = 0

@@ -1,17 +1,14 @@
 <template lang="pug">
 .d-manage-modal-control-base
-	// START_PROD
-	d-right-control(label="组件市场")
+	d-right-control(label="组件市场", v-if="editor.currentWidget.market")
 		i-select(
-			v-model="editor.chooseWidget.config.widget.componentVersion",
-			v-if="editor.chooseWidget.market",
+			v-model="editor.currentWidget.config.widget.componentVersion",
 			:style="{ marginRight: '10px', width: '156px' }")
 			i-option(
-				:value="editor.chooseWidget.componentVersion",
+				:value="editor.currentWidget.componentVersion",
 				v-for="(item, i) in versionList",
 				:key="i") {{ item.componentVersion }}
-		i-switch(v-model="editor.chooseWidget.market")
-	// END_PROD
+		i-switch(v-model="editor.currentWidget.market")
 </template>
 <script lang="ts">
 import func from './func.mx'
@@ -21,19 +18,17 @@ import { Component } from 'vue-property-decorator'
 export default class FuncCustom extends func {
 	versionList = []
 
-	// START_PROD
 	async getVersionList() {
 		const res = await this.$api.marketComponent.getVersionList({
-			componentEnTitle: this.editor.chooseWidget.type,
+			componentEnTitle: this.editor.currentWidget.type,
 		})
 		this.versionList = res
 	}
 
 	mounted() {
-		if (this.editor.chooseWidget.market) {
+		if (this.editor.currentWidget.market) {
 			this.getVersionList()
 		}
 	}
-	// END_PROD
 }
 </script>

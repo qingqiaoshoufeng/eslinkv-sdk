@@ -32,7 +32,7 @@ export default class DRuler extends Vue {
 		document.documentElement.addEventListener('mouseup', this.mouseUp)
 	}
 
-	mouseUp(e: any): void {
+	mouseUp(e: MyMouseEvent): void {
 		if (this.editor.eve.contentDrag) {
 			this.editor.eve.contentDrag = false
 		}
@@ -42,112 +42,120 @@ export default class DRuler extends Vue {
 		if (this.editor.eve.kuangMove) {
 			document.getElementById('d-kuang').style.display = 'none'
 			this.editor.eve.kuangMove = false
-			// const startPointerX = Vue.prototype.$ruler.getActualPointerX(
-			// 	this.editor.eve.startX,
-			// )
-			// const startPointerY = Vue.prototype.$ruler.getActualPointerY(
-			// 	this.editor.eve.startY,
-			// )
-			// const endPointerX = Vue.prototype.$ruler.getActualPointerX(
-			// 	e.clientX,
-			// )
-			// const endPointerY = Vue.prototype.$ruler.getActualPointerY(
-			// 	e.clientY,
-			// )
-			// if (startPointerX === endPointerX || startPointerY === endPointerY)
-			// 	return
-			// const minPointerX = Math.min(startPointerX, endPointerX)
-			// const minPointerY = Math.min(startPointerY, endPointerY)
-			// const maxPointerX = Math.max(startPointerX, endPointerX)
-			// const maxPointerY = Math.max(startPointerY, endPointerY)
-			// this.editor.screen.chooseWidgetArray = []
-			// Object.values(this.editor.screen.screenWidgets).forEach(v => {
-			// 	// 只能框选当前场景下的组件
-			// 	if (v.scene === this.editor.screen.sceneIndex) {
-			// 		const widgetStartX = v.config.layout.position.left
-			// 		const widgetStartY = v.config.layout.position.top
-			// 		const widgetEndX =
-			// 			v.config.layout.position.left +
-			// 			v.config.layout.size.width
-			// 		const widgetEndY =
-			// 			v.config.layout.position.top +
-			// 			v.config.layout.size.height
-			// 		if (
-			// 			minPointerX < widgetStartX &&
-			// 			widgetStartX < maxPointerX &&
-			// 			minPointerY < widgetStartY &&
-			// 			widgetStartY < maxPointerY &&
-			// 			minPointerX < widgetEndX &&
-			// 			widgetEndX < maxPointerX &&
-			// 			minPointerY < widgetEndY &&
-			// 			widgetEndY < maxPointerY
-			// 		) {
-			// 			this.editor.screen.chooseWidgetArray = [
-			// 				...this.editor.screen.chooseWidgetArray,
-			// 				v.id,
-			// 			]
-			// 		}
-			// 	}
-			// })
-			// let minLeft = null,
-			// 	maxLeft = null,
-			// 	width = 0,
-			// 	height = 0,
-			// 	minTop = null,
-			// 	maxTop = null
-			// if (this.editor.screen.chooseWidgetArray.length === 1) {
-			// 	this.editor.screen.chooseWidgetId = this.editor.screen.chooseWidgetArray[0]
-			// 	this.editor.screen.chooseWidgetArray = []
-			// } else {
-			// 	this.editor.screen.chooseWidgetArray.map(item => {
-			// 		const m = this.editor.screen.screenWidgets[item]
-			// 		if (minLeft === null) {
-			// 			minLeft = m.config.layout.position.left
-			// 		}
-			// 		if (maxLeft === null) {
-			// 			maxLeft = m.config.layout.position.left
-			// 			width = m.config.layout.size.width
-			// 		}
-			// 		if (minTop === null) {
-			// 			minTop = m.config.layout.position.top
-			// 		}
-			// 		if (maxTop === null) {
-			// 			maxTop = m.config.layout.position.top
-			// 			height = m.config.layout.size.height
-			// 		}
-			// 		if (minLeft > m.config.layout.position.left)
-			// 			minLeft = m.config.layout.position.left
-			// 		if (maxLeft < m.config.layout.position.left) {
-			// 			maxLeft = m.config.layout.position.left
-			// 			width = m.config.layout.size.width
-			// 		}
-			// 		if (minTop > m.config.layout.position.top)
-			// 			minTop = m.config.layout.position.top
-			// 		if (maxTop < m.config.layout.position.top) {
-			// 			maxTop = m.config.layout.position.top
-			// 			height = m.config.layout.size.height
-			// 		}
-			// 	})
-			// 	this.editor.screen.chooseWidgetArrayConfig.left = minLeft
-			// 	this.editor.screen.chooseWidgetArrayConfig.top = minTop
-			// 	this.editor.screen.chooseWidgetArrayConfig.width =
-			// 		width + (maxLeft - minLeft)
-			// 	this.editor.screen.chooseWidgetArrayConfig.height =
-			// 		height + (maxTop - minTop)
-			// }
+			const startPointerX = this.editor.eve.startPointerX
+			const startPointerY = this.editor.eve.startPointerY
+
+			const diffX =
+				(this.editor.screen.screenWidth * (1 - this.editor.zoom)) / 2 +
+				this.editor.eve.offsetX
+			const diffY =
+				(this.editor.screen.screenHeight * (1 - this.editor.zoom)) / 2 +
+				this.editor.eve.offsetY
+			const endPointerX = (e.layerX - diffX) / this.editor.zoom
+			const endPointerY = (e.layerY - diffY) / this.editor.zoom
+			if (startPointerX === endPointerX || startPointerY === endPointerY)
+				return
+			const minPointerX = Math.min(startPointerX, endPointerX)
+			const minPointerY = Math.min(startPointerY, endPointerY)
+			const maxPointerX = Math.max(startPointerX, endPointerX)
+			const maxPointerY = Math.max(startPointerY, endPointerY)
+			this.editor.currentWidgetList = []
+			Object.values(this.editor.screen.screenWidgets).forEach(v => {
+				// 只能框选当前场景下的组件
+				if (v.scene === this.editor.scene.sceneIndex) {
+					const widgetStartX = v.config.layout.position.left
+					const widgetStartY = v.config.layout.position.top
+					const widgetEndX =
+						v.config.layout.position.left +
+						v.config.layout.size.width
+					const widgetEndY =
+						v.config.layout.position.top +
+						v.config.layout.size.height
+					if (
+						minPointerX < widgetStartX &&
+						widgetStartX < maxPointerX &&
+						minPointerY < widgetStartY &&
+						widgetStartY < maxPointerY &&
+						minPointerX < widgetEndX &&
+						widgetEndX < maxPointerX &&
+						minPointerY < widgetEndY &&
+						widgetEndY < maxPointerY
+					) {
+						this.editor.currentWidgetList = [
+							...this.editor.currentWidgetList,
+							v,
+						]
+					}
+				}
+			})
+			let minLeft = null,
+				maxLeft = null,
+				width = 0,
+				height = 0,
+				minTop = null,
+				maxTop = null
+			if (this.editor.currentWidgetList.length === 1) {
+				this.editor.currentWidgetId = this.editor.currentWidgetList[0].id
+				this.editor.currentWidget = this.editor.currentWidgetList[0]
+				this.editor.currentWidgetList = []
+			} else {
+				this.editor.currentWidgetList.map(item => {
+					const m = this.editor.screen.screenWidgets[item.id]
+					if (minLeft === null) {
+						minLeft = m.config.layout.position.left
+					}
+					if (maxLeft === null) {
+						maxLeft = m.config.layout.position.left
+						width = m.config.layout.size.width
+					}
+					if (minTop === null) {
+						minTop = m.config.layout.position.top
+					}
+					if (maxTop === null) {
+						maxTop = m.config.layout.position.top
+						height = m.config.layout.size.height
+					}
+					if (minLeft > m.config.layout.position.left)
+						minLeft = m.config.layout.position.left
+					if (maxLeft < m.config.layout.position.left) {
+						maxLeft = m.config.layout.position.left
+						width = m.config.layout.size.width
+					}
+					if (minTop > m.config.layout.position.top)
+						minTop = m.config.layout.position.top
+					if (maxTop < m.config.layout.position.top) {
+						maxTop = m.config.layout.position.top
+						height = m.config.layout.size.height
+					}
+				})
+				this.editor.screen.chooseWidgetArrayConfig.left = minLeft
+				this.editor.screen.chooseWidgetArrayConfig.top = minTop
+				this.editor.screen.chooseWidgetArrayConfig.width =
+					width + (maxLeft - minLeft)
+				this.editor.screen.chooseWidgetArrayConfig.height =
+					height + (maxTop - minTop)
+			}
 		}
 	}
 
-	mouseDown(e: any): void {
+	mouseDown(e: MyMouseEvent): void {
 		// 判断是否为鼠标左键被按下
 		if (e.buttons !== 1 || e.which !== 1) return
 		this.editor.eve.startX = e.clientX
 		this.editor.eve.startY = e.clientY
+		const diffX =
+			(this.editor.screen.screenWidth * (1 - this.editor.zoom)) / 2 +
+			this.editor.eve.offsetX
+		const diffY =
+			(this.editor.screen.screenHeight * (1 - this.editor.zoom)) / 2 +
+			this.editor.eve.offsetY
+		this.editor.eve.startPointerX = (e.layerX - diffX) / this.editor.zoom
+		this.editor.eve.startPointerY = (e.layerY - diffY) / this.editor.zoom
 		if (this.editor.eve.contentMove) {
 			this.editor.eve.contentDrag = true
 		}
 		if (!this.editor.eve.widgetMove) {
-			this.editor.unChooseWidget()
+			this.editor.unSelectWidget()
 		}
 		if (
 			!this.editor.eve.contentMove &&

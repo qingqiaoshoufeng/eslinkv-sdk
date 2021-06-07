@@ -15,13 +15,13 @@
 				icon="md-settings",
 				:style="{ marginLeft: '10px' }",
 				v-if="apiType === '数仓平台'",
-				:disabled="!editor.chooseWidget.config.api.system.enable") 配置
+				:disabled="!editor.currentWidget.config.api.system.enable") 配置
 		d-right-control(label="接口地址", v-if="apiType === 'API接口'")
 			i-input(
-				v-model="editor.chooseWidget.config.api.url",)
+				v-model="editor.currentWidget.config.api.url",)
 		d-right-control(v-if="apiType === 'API接口'")
 			i-select(
-				v-model="editor.chooseWidget.config.api.method",
+				v-model="editor.currentWidget.config.api.method",
 				:style="{ marginRight: '10px', width: '100px' }")
 				i-option(value="GET") GET
 				i-option(value="POST") POST
@@ -29,16 +29,16 @@
 				i-option(value="DELETE") DELETE
 				i-option(value="PATCH") PATCH
 			i-input(
-				v-model="editor.chooseWidget.config.api.path",
+				v-model="editor.currentWidget.config.api.path",
 				:style="{ width: '100px' }")
 		d-right-control(
 			label="接口地址",
-			v-if="editor.chooseWidget.config.api.system.enable")
+			v-if="editor.currentWidget.config.api.system.enable")
 			i-input(
-				v-model="editor.chooseWidget.config.api.system.interface")
-		d-right-control(v-if="editor.chooseWidget.config.api.system.enable")
+				v-model="editor.currentWidget.config.api.system.interface")
+		d-right-control(v-if="editor.currentWidget.config.api.system.enable")
 			i-select(
-				v-model="editor.chooseWidget.config.api.system.method",
+				v-model="editor.currentWidget.config.api.system.method",
 				:style="{ marginRight: '10px', width: '100px' }")
 				i-option(value="GET") GET
 				i-option(value="POST") POST
@@ -46,7 +46,7 @@
 				i-option(value="DELETE") DELETE
 				i-option(value="PATCH") PATCH
 			i-input(
-				v-model="editor.chooseWidget.config.api.system.path",
+				v-model="editor.currentWidget.config.api.system.path",
 				:style="{ width: '100px' }")
 			database-config(
 				ref="dataBaseConfig",
@@ -57,8 +57,8 @@
 		d-code(
 			label="请求参数",
 			lang="json",
-			:code="typeof editor.chooseWidget.config.api.params === 'string' ? editor.chooseWidget.config.api.params : JSON.stringify(editor.chooseWidget.config.api.params)",
-			@update:code="value => (editor.chooseWidget.config.api.params = JSON.parse(value))")
+			:code="typeof editor.currentWidget.config.api.params === 'string' ? editor.currentWidget.config.api.params : JSON.stringify(editor.currentWidget.config.api.params)",
+			@update:code="value => (editor.currentWidget.config.api.params = JSON.parse(value))")
 		// END_PROD
 		d-code(
 			label="响应数据",
@@ -68,39 +68,39 @@
 	// START_PROD
 	d-right-swiper-eye(
 		title="数据过滤器",
-		:enable="editor.chooseWidget.config.api.process.enable",
-		@open-click="editor.chooseWidget.config.api.process.enable = true",
-		@close-click="editor.chooseWidget.config.api.process.enable = false")
+		:enable="editor.currentWidget.config.api.process.enable",
+		@open-click="editor.currentWidget.config.api.process.enable = true",
+		@close-click="editor.currentWidget.config.api.process.enable = false")
 		d-code(
 			label="数据过滤器",
-			:code="editor.chooseWidget.config.api.process.methodBody",
-			@update:code="value => (editor.chooseWidget.config.api.process.methodBody = value)")
+			:code="editor.currentWidget.config.api.process.methodBody",
+			@update:code="value => (editor.currentWidget.config.api.process.methodBody = value)")
 	d-right-swiper-eye(
 		title="自动更新",
-		:enable="editor.chooseWidget.config.api.autoFetch.enable",
-		@open-click="editor.chooseWidget.config.api.autoFetch.enable = true",
-		@close-click="editor.chooseWidget.config.api.autoFetch.enable = false")
+		:enable="editor.currentWidget.config.api.autoFetch.enable",
+		@open-click="editor.currentWidget.config.api.autoFetch.enable = true",
+		@close-click="editor.currentWidget.config.api.autoFetch.enable = false")
 		d-right-control
 			i-input-number(
 				:min="1",
 				:step="1",
 				:formatter="value => `${value} ms`",
-				v-model="editor.chooseWidget.config.api.autoFetch.duration")
+				v-model="editor.currentWidget.config.api.autoFetch.duration")
 	// END_PROD
 	data-event-component
 	data-event-scene
 	//d-right-control(label="开启组件内部事件")
-	//	i-switch(v-model="event.componentsDisabled[editor.chooseWidgetId]")
+	//	i-switch(v-model="event.componentsDisabled[editor.currentWidgetId]")
 	d-right-control(label="组件关联")
-		i-switch(v-model="editor.chooseWidget.config.api.bind.enable")
+		i-switch(v-model="editor.currentWidget.config.api.bind.enable")
 		i-select(
-			v-if="editor.chooseWidget.config.api.bind.enable",
-			v-model="editor.chooseWidget.config.api.bind.refIds",
+			v-if="editor.currentWidget.config.api.bind.enable",
+			v-model="editor.currentWidget.config.api.bind.refIds",
 			filterable,
 			multiple,
 			:style="{ width: '100px', marginLeft: '10px' }")
 			i-option(
-				:value="editor.chooseWidget.id",
+				:value="editor.currentWidget.id",
 				v-for="(item, key) in relateList",
 				:key="key") {{ item.id }}
 </template>
@@ -122,9 +122,9 @@ export default class FuncData extends func {
 	// START_PROD
 	showDatabaseConfigModal = false
 	get apiType() {
-		if (this.editor.chooseWidget.config.api.system.enable) {
+		if (this.editor.currentWidget.config.api.system.enable) {
 			return '数仓平台'
-		} else if (this.editor.chooseWidget.config.api.url) {
+		} else if (this.editor.currentWidget.config.api.url) {
 			return 'API接口'
 		} else {
 			return '静态数据'
@@ -133,14 +133,14 @@ export default class FuncData extends func {
 
 	set apiType(val) {
 		if (val === '数仓平台') {
-			this.editor.chooseWidget.config.api.system.enable = true
-			this.editor.chooseWidget.config.api.url = ''
+			this.editor.currentWidget.config.api.system.enable = true
+			this.editor.currentWidget.config.api.url = ''
 		} else if (val === '静态数据') {
-			this.editor.chooseWidget.config.api.url = ''
-			this.editor.chooseWidget.config.api.system.enable = false
+			this.editor.currentWidget.config.api.url = ''
+			this.editor.currentWidget.config.api.system.enable = false
 		} else {
-			this.editor.chooseWidget.config.api.url = '/'
-			this.editor.chooseWidget.config.api.system.enable = false
+			this.editor.currentWidget.config.api.url = '/'
+			this.editor.currentWidget.config.api.system.enable = false
 		}
 	}
 	// END_PROD
@@ -174,7 +174,7 @@ export default class FuncData extends func {
 				data[prop] = JSON.stringify(JSON.parse(v))
 			} catch (err) {
 				console.log(
-					`${this.editor.chooseWidget.config.widget.name} ${this.editor.chooseWidget.config.widget.componentVersion} JSON 格式化 响应数据有错误信息！！！`,
+					`${this.editor.currentWidget.config.widget.name} ${this.editor.currentWidget.config.widget.componentVersion} JSON 格式化 响应数据有错误信息！！！`,
 				)
 				console.log(err.stack)
 			}
@@ -199,12 +199,12 @@ export default class FuncData extends func {
 
 	// START_PROD
 	updateApiSystem(value) {
-		Object.assign(this.editor.chooseWidget.config.api.system.params, value)
+		Object.assign(this.editor.currentWidget.config.api.system.params, value)
 		this.showDatabaseConfigModal = false
 	}
 
 	openSystemConfig() {
-		const value = this.editor.chooseWidget.config
+		const value = this.editor.currentWidget.config
 		if (!value) return
 		this.showDatabaseConfigModal = true
 		;(this.$refs.dataBaseConfig as any).setQueryCond(

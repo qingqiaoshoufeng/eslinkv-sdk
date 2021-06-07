@@ -53,38 +53,39 @@ export default class rightMenu extends Vue {
 	minZIndex = 0
 	maxZIndex = 0
 	editor: Editor = Editor.Instance()
-	handleSync() {
+
+	handleSync(): void {
 		this.instance.kanboard.$refs[`${this.editor.chooseWidgetId}`][0]
 			.$children[0].updateKey++
 		this.hideRightMenu()
 	}
 
-	handleZIndex(num) {
+	handleZIndex(num: number): void {
 		if (this.zIndex === 1 && num === -1) return
 		this.zIndex += num
 		this.editor.currentWidget.config.layout.zIndex = this.zIndex
 		this.hideRightMenu()
 	}
 
-	handleZIndexTop() {
+	handleZIndexTop(): void {
 		this.zIndex = this.maxZIndex
 		this.editor.currentWidget.config.layout.zIndex = this.maxZIndex
 		this.hideRightMenu()
 	}
 
-	handleZIndexBottom() {
+	handleZIndexBottom(): void {
 		this.zIndex = this.minZIndex
 		this.editor.currentWidget.config.layout.zIndex = this.minZIndex
 		this.hideRightMenu()
 	}
 
-	hideWidget() {
+	hideWidget(): void {
 		const widget = this.editor.currentWidget.config.widget
 		widget.hide = !widget.hide
 		this.handleUnActive()
 	}
 
-	deleteWidget() {
+	deleteWidget(): void {
 		this.$Modal.confirm({
 			title: '提示',
 			content: '是否删除当前组件？',
@@ -98,25 +99,23 @@ export default class rightMenu extends Vue {
 		})
 	}
 
-	copyWidget() {
+	copyWidget(): void {
 		this.editor.screen.copyWidget()
 		this.handleUnActive()
 	}
 
-	hideRightMenu() {
+	hideRightMenu(): void {
 		const rightMenu = document.getElementById('right-menu')
 		rightMenu.classList.remove('active')
 	}
 
-	handleUnActive() {
+	handleUnActive(): void {
 		this.editor.unSelectWidget()
 	}
 
-	handleLock() {
+	handleLock(): void {
 		this.isLock = !this.isLock
-		this.editor.screenWidgets[
-			this.editor.currentWidgetId
-		].config.widget.locked = this.isLock
+		this.editor.currentWidget.config.widget.locked = this.isLock
 		this.hideRightMenu()
 	}
 }

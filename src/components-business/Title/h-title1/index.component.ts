@@ -32,7 +32,7 @@ export const value = {
 		},
 	},
 	config: {
-		title: 'aaa',
+		title: 'aaaaa',
 		backgrounds: [
 			{
 				background: '/static/icons/s-progress1-1.svg',

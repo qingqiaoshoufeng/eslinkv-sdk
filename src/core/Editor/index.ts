@@ -21,12 +21,14 @@ export default class Editor extends Factory<Editor> {
 	/* 当前组件 */
 	currentWidgetId = ''
 	currentWidget: Widget | null
-	selectWidget(widget: Widget) {
+	/* 当前选中组件-多组件 */
+	currentWidgetList = []
+	selectWidget(widget: Widget): void {
 		if (widget.config.widget.hide) {
 			return
 		}
 		this.currentWidgetId = widget.id
-		this.currentWidget = widget
+		this.currentWidget = { ...widget }
 		// if (children && this.editor.chooseWidgetChildId) {
 		// 	this.editor.setChooseWidgetCustomConfig(
 		// 		children.find(v => v.id === this.editor.chooseWidgetChildId)
@@ -37,9 +39,12 @@ export default class Editor extends Factory<Editor> {
 		// }
 		// this.editor.setChooseWidgetCustomConfig(target.config.customConfig)
 	}
-	unSelectWidget() {
+	/* 取消选中组件 */
+	unSelectWidget(): void {
 		this.currentWidgetId = ''
 		this.currentWidget = null
+		this.currentWidgetList = []
+		document.getElementById('right-menu').classList.remove('active')
 	}
 
 	init(res: any): any {
@@ -170,12 +175,6 @@ export default class Editor extends Factory<Editor> {
 	get chooseWidget(): any {
 		return this.screen.chooseWidget
 	}
-	get chooseWidgetId(): string {
-		return this.screen.chooseWidgetId
-	}
-	get chooseWidgetArray(): any {
-		return this.screen.chooseWidgetArray
-	}
 	get fullscreen(): boolean {
 		return this.screen.fullscreen
 	}
@@ -264,10 +263,6 @@ export default class Editor extends Factory<Editor> {
 	deleteWidget(id: string): void {
 		if (id) this.screen.deleteWidget(id)
 		if (id === this.currentWidgetId) this.unSelectWidget()
-	}
-	/* 取消选中组件 */
-	unChooseWidget(): void {
-		this.screen.unChooseWidget()
 	}
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id, config): void {
