@@ -10,8 +10,10 @@ import '../src/scss/font.scss'
 import Vue from 'vue'
 import Hljs from 'highlight.js'
 import 'highlight.js/styles/tomorrow-night.css'
-import group from '../src/components/d-widget-part-group'
+import group from '../src/components/d-widget-group'
+import normal from '../src/components/d-widget-normal'
 Vue.component('eslinkv-group', group)
+Vue.component('eslinkv-normal', normal)
 const Highlight = {
 	install: function (Vue) {
 		Vue.directive('highlight', {

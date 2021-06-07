@@ -28,7 +28,7 @@
 			v-if="tabIndex === index")
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import itemList from './item-list.vue'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'

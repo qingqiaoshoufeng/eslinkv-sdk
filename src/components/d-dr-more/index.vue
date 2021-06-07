@@ -12,14 +12,14 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DDrMore extends Vue {
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 	get style() {
-		if (!this.editor.chooseWidgetArrayConfig) return {}
+		if (!this.editor.currentWidgetListConfig) return {}
 		return {
-			transform: `translate3d(${this.editor.chooseWidgetArrayConfig.left}px, ${this.editor.chooseWidgetArrayConfig.top}px,0)`,
-			width: this.editor.chooseWidgetArrayConfig.width + 'px',
-			height: this.editor.chooseWidgetArrayConfig.height + 'px',
-			zIndex: this.editor.chooseWidgetArrayConfig.z,
+			transform: `translate3d(${this.editor.currentWidgetListConfig.left}px, ${this.editor.currentWidgetListConfig.top}px,0)`,
+			width: this.editor.currentWidgetListConfig.width + 'px',
+			height: this.editor.currentWidgetListConfig.height + 'px',
+			zIndex: this.editor.currentWidgetListConfig.z,
 		}
 	}
 }

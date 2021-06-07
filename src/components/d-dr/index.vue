@@ -31,7 +31,7 @@
 //		:style="{ width: '100%', height: '100%', top: 0, left: 0 }",
 //		v-if="!event.componentsDisabled[id]")
 </template>
-<script>
+<script lang="ts">
 import { addEvent, removeEvent } from './dom'
 import dDrKuang from '../d-dr-kuang/index.vue'
 import Editor from '@/core/Editor'
@@ -133,10 +133,10 @@ export default {
 			editor: Editor.Instance(),
 		}
 	},
-	created() {
+	created(): void {
 		this.resetBoundsAndMouseState()
 	},
-	mounted() {
+	mounted(): void {
 		this.rawRight = -this.rawWidth - this.rawLeft
 		this.rawBottom = -this.rawHeight - this.rawTop
 		addEvent(

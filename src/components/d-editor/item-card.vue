@@ -21,7 +21,8 @@ dr(
 	@dragstop="onDragStop",
 	@activated="editor.selectWidget(item)",
 	@contextmenu.native="showRightMenu($event, item)")
-	parts(
+	eslinkv-normal(
+		:widget-type="item.widgetType",
 		:type="item.type",
 		:config="item.config",
 		:children="item.children",
@@ -31,13 +32,11 @@ dr(
 import dr from '../../components/d-dr/index.vue'
 import dDrKuang from '../../components/d-dr-kuang/index.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import parts from '../d-widget-part/index.vue'
 import Editor from '@/core/Editor'
 @Component({
 	components: {
 		dr,
 		dDrKuang,
-		parts,
 	},
 })
 export default class ItemCard extends Vue {
@@ -85,6 +84,7 @@ export default class ItemCard extends Vue {
 				child.config.layout.position.top += diffTop
 				this.onGroupDragStop(child, diffLeft, diffTop)
 			})
+			item.children = [...item.children]
 		}
 	}
 

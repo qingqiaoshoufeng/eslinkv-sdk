@@ -19,47 +19,15 @@ import Editor from '@/core/Editor'
 export default class DRightSettingMore extends Vue {
 	editor: Editor = Editor.Instance()
 
-	handleGroup() {
-		const children = []
-		this.editor.currentWidgetList.map(item => {
-			children.push(this.editor.screenWidgets[item.id])
-			this.$delete(this.editor.screenWidgets, item.id)
-		})
-		const id = uuid()
-		const config = configMerge(
-			{
-				widget: { id, name: '分组' },
-				layout: {
-					size: {
-						width: this.editor.chooseWidgetArrayConfig.width,
-						height: this.editor.chooseWidgetArrayConfig.height,
-					},
-					position: {
-						left: this.editor.chooseWidgetArrayConfig.left,
-						top: this.editor.chooseWidgetArrayConfig.top,
-					},
-				},
-			},
-			commonConfigValue(),
-		)
-		this.$set(this.editor.screenWidgets, id, {
-			config,
-			id,
-			market: false,
-			scene: this.editor.currentSceneIndex,
-			type: 'group',
-			children,
-		})
-		this.editor.unSelectWidget()
+	handleGroup(): void {
+		this.editor.createWidgetGroup()
 	}
-	handleDelete() {
+	handleDelete(): void {
 		this.$Modal.confirm({
 			title: '提示',
 			content: '是否删除所选组件？',
 			onOk: () => {
-				this.editor.currentWidgetList.map(item => {
-					this.$delete(this.editor.screenWidgets, item.id)
-				})
+				this.editor.deleteWidgets()
 				this.editor.unSelectWidget()
 			},
 		})

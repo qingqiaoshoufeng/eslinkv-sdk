@@ -21,9 +21,9 @@ import { Tooltip, Icon } from 'view-design'
 })
 export default class FuncWebm extends func {
 	get formData() {
-		if (this.editor.chooseWidget) {
+		if (this.editor.currentWidget) {
 			return {
-				library: `componentStatic/${this.editor.chooseWidget.type}/${this.editor.chooseWidget.config.widget.componentVersion}`,
+				library: `componentStatic/${this.editor.currentWidget.type}/${this.editor.currentWidget.config.widget.componentVersion}`,
 			}
 		}
 		return {}

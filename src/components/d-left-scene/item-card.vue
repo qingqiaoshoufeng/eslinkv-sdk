@@ -19,9 +19,7 @@ li.pointer.pos-r.d-left-scene-list-li(
 				title="解锁",
 				@click="handleUnLock(item.id)",
 				@click.stop)
-	WidgetGroup(
-		:childList="item.children",
-		v-if="editor.currentWidgetId === item.id")
+	WidgetGroup(:childList="item.children")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
@@ -57,9 +55,11 @@ export default class DLeftSceneItem extends Vue {
 	font-size: 12px;
 	border: 1px solid #393b4a;
 	transition: all 0.3s;
+
 	.parent {
 		padding: 10px;
 	}
+
 	/deep/ {
 		.ivu-input {
 			font-size: 12px;

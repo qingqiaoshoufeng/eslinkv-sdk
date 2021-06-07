@@ -1,28 +1,17 @@
 import ScreenBase from '@/core/Screen/base'
 import { setDefault } from '@/utils'
+import Widget from '@/core/Widget/normal'
 
 export default class ScreenPc extends ScreenBase {
 	/* 当前组件加载状态 */
 	widgetLoaded = {}
 	/* 当前组件加载状态 */
 	widgetLoading = true
-	/* 当前选中组件-子组件 */
-	chooseWidgetChildId: null
-	/* 当前选中组件-自定义配置 */
-	chooseWidgetCustomConfig = []
-	/* 当前选中组件-多组件配置 */
-	chooseWidgetArrayConfig = {
-		left: 0,
-		top: 0,
-		width: 0,
-		height: 0,
-		z: 0,
-	}
 	/* 递归查询组件 */
-	searchWidget(widget, id) {
+	searchWidget(widget: Widget, id: string): Widget {
 		let res
 		if (widget.children && id) {
-			res = widget.children.find(v => v.id === id)
+			res = widget.children.find((v: Widget) => v.id === id)
 		}
 		if (!res) {
 			for (const v of widget.children) {
@@ -71,7 +60,7 @@ export default class ScreenPc extends ScreenBase {
 		return this.initWidget(res)
 	}
 	/* 序列化组件数据 */
-	initWidget(res: any) {
+	initWidget(res: any): any {
 		let screenWidgets
 		if (res.screenConfig.widgets) {
 			screenWidgets = res.screenConfig.widgets
@@ -79,7 +68,7 @@ export default class ScreenPc extends ScreenBase {
 			screenWidgets = res.screenWidgets || {}
 		}
 		const marketComponents: { type: string; version: string }[] = []
-		for (let key in screenWidgets) {
+		for (const key in screenWidgets) {
 			setDefault(screenWidgets[key].config)
 			if (screenWidgets[key].market) {
 				marketComponents.push({

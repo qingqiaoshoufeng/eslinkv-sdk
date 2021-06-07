@@ -1,8 +1,8 @@
 <template lang="pug">
 .main
 	.child.fn-flex.flex-row(
-		@click="editor.selectWidget(child)",
-		:class="{ active: editor.chooseWidgetChildId === child.id }")
+		@click.stop="editor.selectWidget(child)",
+		:class="{ active: editor.currentWidgetId === child.id }")
 		.d-left-scene-left
 			h2 {{ child.config.widget.name }}
 		.d-left-scene-right

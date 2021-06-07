@@ -6,12 +6,12 @@ import Ruler from '@/core/ui/Ruler'
 import Widget from '@/core/Widget/normal'
 import Current from '@/core/Current'
 import { uuid } from '@/core/utils'
+import { configMerge } from '@/utils'
+import commonConfigValue from '../../../common-config-value'
 
-const dragId = `drag-content-${+new Date()}`
-const rulerContentId = `drag-content-${+new Date()}`
+const rulerContainerId = `drag-content-${+new Date()}`
 export default class Editor extends Factory<Editor> {
-	dragId = dragId
-	rulerContentId = rulerContentId
+	rulerContainerId = rulerContainerId
 	/* 大屏ID */
 	screenId: string
 	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
@@ -20,15 +20,15 @@ export default class Editor extends Factory<Editor> {
 	updateEditorStatus(status: string): void {
 		this.editorStatus = status
 	}
-	private screen: ScreenPc = ScreenPc.Instance()
-	private current: Current = Current.Instance()
-	private scene: Scene = Scene.Instance()
-	private ruler: Ruler | null
-	private eve: Eve = Eve.Instance({
-		rulerContentId,
+	screen: ScreenPc = ScreenPc.Instance()
+	current: Current = Current.Instance()
+	scene: Scene = Scene.Instance()
+	ruler: Ruler | null
+	eve: Eve = Eve.Instance({
+		rulerContainerId,
 	})
 
-	init(res: any): any {
+	init(res?: any): any {
 		let screen
 		if (res) {
 			this.screenId = res.screenId
@@ -39,6 +39,10 @@ export default class Editor extends Factory<Editor> {
 		return { screen }
 	}
 	/* ---------------------------------------------------Current---------------------------------------------------*/
+	/* 当前选中组件-多组件配置 */
+	get currentWidgetListConfig(): any {
+		return this.current.currentWidgetListConfig
+	}
 	/* 当前组件 */
 	get currentWidgetId(): string {
 		return this.current.currentWidgetId
@@ -63,8 +67,11 @@ export default class Editor extends Factory<Editor> {
 		this.current.unSelectWidgetList()
 	}
 	/* 添加到选中组件集合 */
-	selectWidgetList(list: Widget): void {
-		this.current.selectWidgetList(list)
+	addWidgetList(list: Widget): void {
+		this.current.addWidgetList(list)
+	}
+	selectWidgetList(config: any): void {
+		this.current.selectWidgetList(config)
 	}
 	/* 当前场景 */
 	get currentSceneIndex(): string | number {
@@ -73,6 +80,14 @@ export default class Editor extends Factory<Editor> {
 	/* 选中场景 */
 	selectSceneIndex(sceneIndex: string | number): void {
 		this.current.selectSceneIndex(sceneIndex)
+	}
+	/* 打开场景 */
+	openScene(id: string): void {
+		this.current.openScene(id)
+	}
+	/* 关闭场景 */
+	closeScene(id: string): void {
+		this.current.closeScene(id)
 	}
 
 	/* ---------------------------------------------------Eve---------------------------------------------------*/
@@ -123,7 +138,7 @@ export default class Editor extends Factory<Editor> {
 	/* 画布还原最佳比例 */
 	resetZoom(): void {
 		if (this.editorStatus === 'inEdit') {
-			if (!this.ruler) this.ruler = new Ruler(rulerContentId)
+			if (!this.ruler) this.ruler = new Ruler(rulerContainerId)
 			this.ruler.resetZoom({
 				screenHeight: this.screen.screenHeight,
 				screenWidth: this.screen.screenWidth,
@@ -160,28 +175,14 @@ export default class Editor extends Factory<Editor> {
 			return [
 				...(this.sceneWidgets[this.current.currentSceneIndex] || []),
 				...this.sceneWidgets[0],
-				...this.scene.createSceneList
+				...this.current.currentCreateSceneList
 					.map(v => this.sceneWidgets[v])
 					.flat(),
 			]
 		}
 	}
-	openScene(id) {
-		this.scene.createSceneList.push(id)
-		// this.scene.setSceneIndex(id)
-	}
-	closeScene(id) {
-		const index = this.scene.createSceneList.findIndex(v => v === id)
-		this.scene.createSceneList.splice(index, 1)
-	}
 	get isMac(): any {
 		return this.screen.isMac
-	}
-	get chooseWidgetChildId(): string {
-		return this.screen.chooseWidgetChildId
-	}
-	get chooseWidgetArrayConfig(): any {
-		return this.screen.chooseWidgetArrayConfig
 	}
 	get autoAlignGuide(): boolean {
 		return this.screen.autoAlignGuide
@@ -265,6 +266,47 @@ export default class Editor extends Factory<Editor> {
 			this.current.currentSceneIndex,
 			currentMaxZIndex,
 		)
+	}
+	createWidgetGroup(): void {
+		const children = []
+		this.current.currentWidgetList.map(item => {
+			children.push(this.screen.screenWidgets[item.id])
+			delete this.screen.screenWidgets[item.id]
+		})
+		const id = uuid()
+		const config = configMerge(
+			{
+				widgetType: 'group',
+				widget: { id, name: '分组' },
+				layout: {
+					size: {
+						width: this.current.currentWidgetListConfig.width,
+						height: this.current.currentWidgetListConfig.height,
+					},
+					position: {
+						left: this.current.currentWidgetListConfig.left,
+						top: this.current.currentWidgetListConfig.top,
+					},
+				},
+			},
+			commonConfigValue(),
+		)
+		this.screen.screenWidgets[id] = {
+			config,
+			id,
+			market: false,
+			scene: this.current.currentSceneIndex,
+			widgetType: 'group',
+			children,
+		}
+		this.current.unSelectWidget()
+	}
+	deleteWidgets(): void {
+		this.currentWidgetList.map(item => {
+			delete this.screen.screenWidgets[item.id]
+		})
+		this.current.unSelectWidget()
+		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 	}
 	/* 删除组件 */
 	deleteWidget(id: string): void {

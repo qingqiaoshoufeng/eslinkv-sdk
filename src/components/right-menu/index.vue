@@ -55,7 +55,7 @@ export default class rightMenu extends Vue {
 	editor: Editor = Editor.Instance()
 
 	handleSync(): void {
-		this.instance.kanboard.$refs[`${this.editor.chooseWidgetId}`][0]
+		this.instance.kanboard.$refs[`${this.editor.currentWidgetId}`][0]
 			.$children[0].updateKey++
 		this.hideRightMenu()
 	}
@@ -92,6 +92,7 @@ export default class rightMenu extends Vue {
 			onOk: () => {
 				const id = this.editor.currentWidgetId
 				this.editor.deleteWidget(id)
+				this.hideRightMenu()
 			},
 			onCancel: () => {
 				this.hideRightMenu()

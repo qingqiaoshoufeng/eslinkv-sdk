@@ -2,8 +2,8 @@
 .pos-a.widget-part-group(:style="styles")
 	.pos-a(:style="stylesR")
 		template(v-for="item in children")
-			eslinkv-group(v-bind="item", v-if="item.type === 'group'")
-			part(
+			eslinkv-group(v-bind="item", v-if="item.widgetType === 'group'")
+			eslinkv-normal(
 				:ref="item.id",
 				:type="item.type",
 				:config="item.config",
@@ -13,13 +13,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import part from '@/components/d-widget-part/index.vue'
-@Component({
-	components: {
-		part,
-	},
-})
-export default class DWidgetPartGroup extends Vue {
+@Component
+export default class WidgetGroup extends Vue {
 	@Prop() config
 	@Prop() children
 	get styles() {

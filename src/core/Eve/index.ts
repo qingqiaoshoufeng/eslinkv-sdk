@@ -1,7 +1,7 @@
 import Factory from '@/core/Base/factory'
 
 export default class Eve extends Factory<Screen> {
-	rulerContentId: string
+	rulerContainerId: string
 	xRoomL1: number = +localStorage.getItem('xRoomL1')
 	xRoomL2: number = +localStorage.getItem('xRoomL2')
 	xRoomR1: number = +localStorage.getItem('xRoomR1')
@@ -36,7 +36,7 @@ export default class Eve extends Factory<Screen> {
 
 	constructor(obj: any) {
 		super()
-		this.rulerContentId = obj.rulerContentId
+		this.rulerContainerId = obj.rulerContainerId
 	}
 
 	get zoom(): number {

@@ -78,7 +78,7 @@ export default class DEditor extends Vue {
 		return {}
 	}
 
-	createWidget(e: MouseEvent): void {
+	createWidget(e: any): void {
 		const widgetConfig = e.dataTransfer.getData('widget-config')
 		if (widgetConfig) {
 			this.editor.createWidget(

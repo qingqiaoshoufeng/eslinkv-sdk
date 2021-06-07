@@ -1,15 +1,17 @@
 <template lang="pug">
 .d-ruler-wrapper.pos-r(
-	:id="editor.rulerContentId",
+	:id="editor.rulerContainerId",
 	@mousedown="mouseDown",
 	@wheel="wheel",
 	@mousemove="mouseMove")
-	.content-body.pos-a(:id="editor.dragId", :style="editor.rulerStyle")
+	.content-body.pos-a(:style="editor.rulerStyle")
 		slot
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
+import Widget from '@/core/Widget/normal'
+
 @Component
 export default class DRuler extends Vue {
 	editor: Editor = Editor.Instance()
@@ -60,44 +62,46 @@ export default class DRuler extends Vue {
 			const maxPointerX = Math.max(startPointerX, endPointerX)
 			const maxPointerY = Math.max(startPointerY, endPointerY)
 			this.editor.unSelectWidgetList()
-			Object.values(this.editor.screen.screenWidgets).forEach(v => {
-				// 只能框选当前场景下的组件
-				if (v.scene === this.editor.currentSceneIndex) {
-					const widgetStartX = v.config.layout.position.left
-					const widgetStartY = v.config.layout.position.top
-					const widgetEndX =
-						v.config.layout.position.left +
-						v.config.layout.size.width
-					const widgetEndY =
-						v.config.layout.position.top +
-						v.config.layout.size.height
-					if (
-						minPointerX < widgetStartX &&
-						widgetStartX < maxPointerX &&
-						minPointerY < widgetStartY &&
-						widgetStartY < maxPointerY &&
-						minPointerX < widgetEndX &&
-						widgetEndX < maxPointerX &&
-						minPointerY < widgetEndY &&
-						widgetEndY < maxPointerY
-					) {
-						this.editor.selectWidgetList(v)
+			Object.values(this.editor.screen.screenWidgets).forEach(
+				(v: Widget) => {
+					// 只能框选当前场景下的组件
+					if (v.scene === this.editor.currentSceneIndex) {
+						const widgetStartX = v.config.layout.position.left
+						const widgetStartY = v.config.layout.position.top
+						const widgetEndX =
+							v.config.layout.position.left +
+							v.config.layout.size.width
+						const widgetEndY =
+							v.config.layout.position.top +
+							v.config.layout.size.height
+						if (
+							minPointerX < widgetStartX &&
+							widgetStartX < maxPointerX &&
+							minPointerY < widgetStartY &&
+							widgetStartY < maxPointerY &&
+							minPointerX < widgetEndX &&
+							widgetEndX < maxPointerX &&
+							minPointerY < widgetEndY &&
+							widgetEndY < maxPointerY
+						) {
+							this.editor.addWidgetList(v)
+						}
 					}
-				}
-			})
+				},
+			)
 			let minLeft = null,
 				maxLeft = null,
 				width = 0,
 				height = 0,
 				minTop = null,
-				maxTop = null
+				maxTop = null,
+				zIndex = 10
 			if (this.editor.currentWidgetList.length === 1) {
-				this.editor.currentWidgetId = this.editor.currentWidgetList[0].id
-				this.editor.currentWidget = this.editor.currentWidgetList[0]
-				this.editor.currentWidgetList = []
+				this.editor.selectWidget(this.editor.currentWidgetList[0])
 			} else {
 				this.editor.currentWidgetList.map(item => {
 					const m = this.editor.screen.screenWidgets[item.id]
+					zIndex = m.config.layout.zIndex
 					if (minLeft === null) {
 						minLeft = m.config.layout.position.left
 					}
@@ -125,12 +129,13 @@ export default class DRuler extends Vue {
 						height = m.config.layout.size.height
 					}
 				})
-				this.editor.screen.chooseWidgetArrayConfig.left = minLeft
-				this.editor.screen.chooseWidgetArrayConfig.top = minTop
-				this.editor.screen.chooseWidgetArrayConfig.width =
-					width + (maxLeft - minLeft)
-				this.editor.screen.chooseWidgetArrayConfig.height =
-					height + (maxTop - minTop)
+				this.editor.selectWidgetList({
+					left: minLeft,
+					top: minTop,
+					width: width + (maxLeft - minLeft),
+					height: height + (maxTop - minTop),
+					z: zIndex,
+				})
 			}
 		}
 	}
@@ -236,19 +241,10 @@ export default class DRuler extends Vue {
 
 	keyup(e: any): void {
 		this.editor.eve.contentMove = false
-		document.getElementById(this.editor.rulerContentId).style.cursor =
+		document.getElementById(this.editor.rulerContainerId).style.cursor =
 			'auto'
 		// if (e.keyCode === 8 || e.keyCode === 46) {
-		// 	if (!this.editor.screen.chooseWidgetId || this.editor.eve.inputFocus) return
-		// 	Vue.prototype.$Modal.confirm({
-		// 		title: '提示',
-		// 		content: '是否删除当前组件？',
-		// 		onOk: () => {
-		// 			const id = this.editor.screen.chooseWidgetId
-		// 			Vue.delete(this.editor.screen.screenWidgets, id)
-		// 			this.editor.screen.unChooseWidget()
-		// 		},
-		// 	})
+		// delete 键 删除
 		// }
 	}
 
@@ -266,7 +262,7 @@ export default class DRuler extends Vue {
 		}
 		if (e.keyCode === 32) {
 			this.editor.eve.contentMove = true
-			document.getElementById(this.editor.rulerContentId).style.cursor =
+			document.getElementById(this.editor.rulerContainerId).style.cursor =
 				'grab'
 		}
 	}
@@ -281,6 +277,7 @@ export default class DRuler extends Vue {
 	height: calc(100% - 32px);
 	overflow: hidden;
 	user-select: none;
+
 	.content-body {
 		top: 0;
 		left: 0;

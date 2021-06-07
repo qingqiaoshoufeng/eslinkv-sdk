@@ -1,7 +1,8 @@
 <template lang="pug">
 #screen(ref="canvas-wrapper", :style="editor.screen.screenStyle")
 	template(v-for="item in editor.showWidgets")
-		parts(
+		eslinkv-normal(
+			:widget-type="item.widgetType",
 			:key="item.id",
 			:type="item.type",
 			:config="item.config",
@@ -12,15 +13,13 @@
 			readonly)
 </template>
 <script lang="ts">
-import parts from '../d-widget-part/index.vue'
 import loadMask from '../load-mask/index.vue'
 import instance from '../../store/instance.store'
-import { Component, Vue, Provide } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 
 @Component({
 	components: {
-		parts,
 		loadMask,
 	},
 })

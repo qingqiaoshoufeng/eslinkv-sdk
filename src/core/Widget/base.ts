@@ -4,6 +4,7 @@ export default class Widget {
 	id: string
 	type: string
 	config: any
+	widgetType = 'normal'
 	scene: number | string
 	market: boolean
 	children = []
