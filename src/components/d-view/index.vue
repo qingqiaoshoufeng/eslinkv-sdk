@@ -1,5 +1,5 @@
 <template lang="pug">
-#screen.canvas-wrapper(ref="canvas-wrapper", :style="editor.screenStyle")
+#screen(ref="canvas-wrapper", :style="editor.screen.screenStyle")
 	template(v-for="item in editor.showWidgets")
 		parts(
 			:key="item.id",
@@ -25,22 +25,14 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DView extends Vue {
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 
-	mounted() {
+	mounted(): void {
 		instance.actions.setInstance('kanboard', this)
-		this.editor.updateEditorStatus('inPreview')
 	}
 }
 </script>
 <style lang="scss" scoped>
-.canvas-wrapper {
-	&::before {
-		display: flex;
-		content: '';
-	}
-}
-
 ::v-deep {
 	.load-mask {
 		position: fixed !important;

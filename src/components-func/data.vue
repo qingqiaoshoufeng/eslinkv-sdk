@@ -188,7 +188,7 @@ export default class FuncData extends func {
 			.filter(
 				(v: any) =>
 					v.config.api.bind.enable &&
-					v.scene === this.editor.sceneIndex,
+					v.scene === this.editor.currentSceneIndex,
 			)
 			.map((v: any) => {
 				const { id, name } = v.config.widget

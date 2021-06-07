@@ -4,6 +4,8 @@ import Scene from '@/core/Scene'
 import Eve from '@/core/Eve'
 import Ruler from '@/core/ui/Ruler'
 import Widget from '@/core/Widget/normal'
+import Current from '@/core/Current'
+import { uuid } from '@/core/utils'
 
 const dragId = `drag-content-${+new Date()}`
 const rulerContentId = `drag-content-${+new Date()}`
@@ -12,40 +14,19 @@ export default class Editor extends Factory<Editor> {
 	rulerContentId = rulerContentId
 	/* 大屏ID */
 	screenId: string
+	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
+	editorStatus = 'inPreview'
+	/* 更新大屏状态 */
+	updateEditorStatus(status: string): void {
+		this.editorStatus = status
+	}
 	private screen: ScreenPc = ScreenPc.Instance()
+	private current: Current = Current.Instance()
 	private scene: Scene = Scene.Instance()
 	private ruler: Ruler | null
 	private eve: Eve = Eve.Instance({
 		rulerContentId,
 	})
-	/* 当前组件 */
-	currentWidgetId = ''
-	currentWidget: Widget | null
-	/* 当前选中组件-多组件 */
-	currentWidgetList = []
-	selectWidget(widget: Widget): void {
-		if (widget.config.widget.hide) {
-			return
-		}
-		this.currentWidgetId = widget.id
-		this.currentWidget = { ...widget }
-		// if (children && this.editor.chooseWidgetChildId) {
-		// 	this.editor.setChooseWidgetCustomConfig(
-		// 		children.find(v => v.id === this.editor.chooseWidgetChildId)
-		// 			.value.customConfig,
-		// 	)
-		// } else {
-		// 	this.editor.setChooseWidgetCustomConfig(config.customConfig)
-		// }
-		// this.editor.setChooseWidgetCustomConfig(target.config.customConfig)
-	}
-	/* 取消选中组件 */
-	unSelectWidget(): void {
-		this.currentWidgetId = ''
-		this.currentWidget = null
-		this.currentWidgetList = []
-		document.getElementById('right-menu').classList.remove('active')
-	}
 
 	init(res: any): any {
 		let screen
@@ -54,17 +35,46 @@ export default class Editor extends Factory<Editor> {
 			screen = this.screen.init(res)
 			this.scene.init(res)
 		}
-		this.ruler = new Ruler(rulerContentId)
-		this.eve.resetZoom({
-			screenHeight: this.screen.screenHeight,
-			screenWidth: this.screen.screenWidth,
-		})
-		this.ruler.resetZoom({
-			screenHeight: this.screen.screenHeight,
-			screenWidth: this.screen.screenWidth,
-		})
+		this.resetZoom()
 		return { screen }
 	}
+	/* ---------------------------------------------------Current---------------------------------------------------*/
+	/* 当前组件 */
+	get currentWidgetId(): string {
+		return this.current.currentWidgetId
+	}
+	get currentWidget(): Widget | null {
+		return this.current.currentWidget
+	}
+	/* 当前选中组件-多组件 */
+	get currentWidgetList(): any {
+		return this.current.currentWidgetList
+	}
+	/* 选中组件 */
+	selectWidget(widget: Widget): void {
+		this.current.selectWidget(widget)
+	}
+	/* 取消选中组件 */
+	unSelectWidget(): void {
+		this.current.unSelectWidget()
+	}
+	/* 取消选中组件集合 */
+	unSelectWidgetList(): void {
+		this.current.unSelectWidgetList()
+	}
+	/* 添加到选中组件集合 */
+	selectWidgetList(list: Widget): void {
+		this.current.selectWidgetList(list)
+	}
+	/* 当前场景 */
+	get currentSceneIndex(): string | number {
+		return this.current.currentSceneIndex
+	}
+	/* 选中场景 */
+	selectSceneIndex(sceneIndex: string | number): void {
+		this.current.selectSceneIndex(sceneIndex)
+	}
+
 	/* ---------------------------------------------------Eve---------------------------------------------------*/
 	get xRoomL1(): number {
 		return this.eve.xRoomL1
@@ -112,14 +122,17 @@ export default class Editor extends Factory<Editor> {
 	}
 	/* 画布还原最佳比例 */
 	resetZoom(): void {
-		this.eve.resetZoom({
-			screenHeight: this.screen.screenHeight,
-			screenWidth: this.screen.screenWidth,
-		})
-		this.ruler.resetZoom({
-			screenHeight: this.screen.screenHeight,
-			screenWidth: this.screen.screenWidth,
-		})
+		if (this.editorStatus === 'inEdit') {
+			if (!this.ruler) this.ruler = new Ruler(rulerContentId)
+			this.ruler.resetZoom({
+				screenHeight: this.screen.screenHeight,
+				screenWidth: this.screen.screenWidth,
+			})
+			this.eve.resetZoom({
+				screenHeight: this.screen.screenHeight,
+				screenWidth: this.screen.screenWidth,
+			})
+		}
 	}
 	/* ---------------------------------------------------Screen---------------------------------------------------*/
 	get screenType(): any {
@@ -128,6 +141,7 @@ export default class Editor extends Factory<Editor> {
 	get screenWidgets(): any {
 		return this.screen.screenWidgets
 	}
+	/* 大屏场景组件关联 */
 	get sceneWidgets() {
 		const res = { 0: [] }
 		for (const widgetId in this.screenWidgets) {
@@ -140,11 +154,11 @@ export default class Editor extends Factory<Editor> {
 		return res
 	}
 	get showWidgets() {
-		if (this.scene.sceneIndex === 0) {
+		if (this.current.currentSceneIndex === 0) {
 			return this.sceneWidgets[0]
 		} else {
 			return [
-				...(this.sceneWidgets[this.scene.sceneIndex] || []),
+				...(this.sceneWidgets[this.current.currentSceneIndex] || []),
 				...this.sceneWidgets[0],
 				...this.scene.createSceneList
 					.map(v => this.sceneWidgets[v])
@@ -154,7 +168,7 @@ export default class Editor extends Factory<Editor> {
 	}
 	openScene(id) {
 		this.scene.createSceneList.push(id)
-		this.scene.setSceneIndex(id)
+		// this.scene.setSceneIndex(id)
 	}
 	closeScene(id) {
 		const index = this.scene.createSceneList.findIndex(v => v === id)
@@ -172,9 +186,6 @@ export default class Editor extends Factory<Editor> {
 	get autoAlignGuide(): boolean {
 		return this.screen.autoAlignGuide
 	}
-	get chooseWidget(): any {
-		return this.screen.chooseWidget
-	}
 	get fullscreen(): boolean {
 		return this.screen.fullscreen
 	}
@@ -183,10 +194,6 @@ export default class Editor extends Factory<Editor> {
 	}
 	get widgetLoaded(): any {
 		return this.screen.widgetLoaded
-	}
-	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
-	get editorStatus(): string {
-		return this.screen.editorStatus
 	}
 	/* 大屏名 */
 	get name(): string {
@@ -238,10 +245,6 @@ export default class Editor extends Factory<Editor> {
 	set mainScene(screenMainScene: string | number) {
 		this.screen.screenMainScene = screenMainScene
 	}
-	/* 更新大屏状态 */
-	updateEditorStatus(status: string): void {
-		this.screen.updateEditorStatus(status)
-	}
 	/* 更新组件加载状态 */
 	updateWidgetLoaded(key: string): void {
 		this.screen.widgetLoaded[key] = true
@@ -251,51 +254,35 @@ export default class Editor extends Factory<Editor> {
 		return this.screen.screenData()
 	}
 	/* 添加组件 */
-	createWidget(e: any): void {
+	createWidget(offsetX: number, offsetY: number, data: any): void {
+		const currentMaxZIndex = this.sortByZIndexWidgetsList.length
+			? this.sortByZIndexWidgetsList[0].config.layout.zIndex + 1
+			: 10
 		this.screen.createWidget(
-			e,
-			this.scene.sceneIndex,
-			this.sortByZIndexWidgetsList.length
-				? this.sortByZIndexWidgetsList[0].config.layout.zIndex + 1
-				: 10,
+			offsetX,
+			offsetY,
+			data,
+			this.current.currentSceneIndex,
+			currentMaxZIndex,
 		)
 	}
+	/* 删除组件 */
 	deleteWidget(id: string): void {
 		if (id) this.screen.deleteWidget(id)
-		if (id === this.currentWidgetId) this.unSelectWidget()
+		if (id === this.currentWidgetId) this.current.unSelectWidget()
+	}
+	copyWidget(): void {
+		this.screen.copyWidget(this.current.currentWidgetId)
 	}
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id, config): void {
 		this.screen.updateWidgetConfig(id, config)
 	}
-	/* 选中组件 */
-	setChooseWidget(id: string): void {
-		this.screen.setChooseWidget(id)
-	}
-	/* 选中组件的自定义配置更新 */
-	setChooseWidgetCustomConfig(value = []): void {
-		this.screen.setChooseWidgetCustomConfig(value)
-	}
 
 	/* ---------------------------------------------------Scene---------------------------------------------------*/
-	/* 当前场景 */
-	get sceneIndex() {
-		return this.scene.sceneIndex
-	}
-	set sceneIndex(val) {
-		this.scene.sceneIndex = val
-	}
 	/* 场景数据 */
 	get sceneObj() {
 		return this.scene.sceneObj
-	}
-	/* 场景数据 */
-	get sceneList() {
-		return this.scene.sceneList
-	}
-	/* 切换场景 */
-	setSceneIndex(val: number | string): void {
-		this.scene.setSceneIndex(val)
 	}
 	/* 获取场景数据 */
 	sceneData(): any {
@@ -303,23 +290,42 @@ export default class Editor extends Factory<Editor> {
 	}
 	/* 更新场景名称 */
 	setSceneName(name: string): void {
-		this.scene.setSceneName(name)
+		this.scene.setSceneName(this.current.currentSceneIndex, name)
 	}
 	/* 创建场景 */
 	createScene(): void {
-		this.scene.createScene()
+		const name = uuid()
+		this.scene.createScene(name)
+		this.current.selectSceneIndex(name)
 	}
 	/* 删除场景 */
 	destroyScene(): void {
-		this.scene.destroyScene()
+		if (this.current.currentSceneIndex !== 0) {
+			this.moveWaitingDeleteRoom()
+			this.scene.destroyScene(this.current.currentSceneIndex)
+			this.current.selectSceneIndex(0)
+			this.scene.sceneObj = { ...this.scene.sceneObj }
+		}
 	}
 	/* ---------------------------------------------------More---------------------------------------------------*/
+	moveWaitingDeleteRoom(): void {
+		for (const key in this.screen.screenWidgets) {
+			if (
+				this.screen.screenWidgets[key].scene ===
+				this.current.currentSceneIndex
+			) {
+				this.screen.screenWidgets[key].scene = -1
+			}
+		}
+		this.screen.screenWidgets = { ...this.screen.screenWidgets }
+	}
+
 	/* 获取大屏组件配置——根据zIndex排序 */
 	get sortByZIndexWidgetsList(): any {
 		const list = []
 		for (const key in this.screen.screenWidgets) {
 			const item = this.screen.screenWidgets[key]
-			if (item.scene === this.scene.sceneIndex) {
+			if (item.scene === this.current.currentSceneIndex) {
 				list.push(item)
 			}
 		}
@@ -327,9 +333,6 @@ export default class Editor extends Factory<Editor> {
 			return b.config.layout.zIndex - a.config.layout.zIndex - 1
 		})
 		return list
-	}
-	set sortByZIndexWidgetsList(val) {
-		console.log(val)
 	}
 	get rulerStyle(): any {
 		return {

@@ -8,12 +8,12 @@ export default class Widget {
 	market: boolean
 	children = []
 	constructor(
-		e: any,
+		offsetX: number,
+		offsetY: number,
 		data: any,
 		currentSceneIndex: number | string,
 		currentMaxZIndex: number,
 	) {
-		const { offsetX, offsetY } = e
 		const {
 			type,
 			config: inputConfig,
@@ -22,7 +22,7 @@ export default class Widget {
 			market = false,
 			componentVersion,
 			componentId,
-		} = JSON.parse(data)
+		} = data
 		this.type = type
 		this.market = market
 		this.scene = currentSceneIndex

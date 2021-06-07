@@ -1,7 +1,5 @@
 import ScreenBase from '@/core/Screen/base'
 import { setDefault } from '@/utils'
-import copy from 'fast-copy'
-import { uuid } from '../../utils/index'
 
 export default class ScreenPc extends ScreenBase {
 	/* 当前组件加载状态 */
@@ -35,23 +33,6 @@ export default class ScreenPc extends ScreenBase {
 			}
 		}
 		return res
-	}
-	/* 选中组件 */
-	setChooseWidget(id: string): void {
-		this.chooseWidgetId = id
-	}
-	/* 选中组件的自定义配置更新 */
-	setChooseWidgetCustomConfig(value = []) {
-		this.chooseWidgetCustomConfig = [...value, { type: 'custom' }]
-	}
-	/* 选中的组件 */
-	get chooseWidget() {
-		if (!this.chooseWidgetId) return null
-		const widget = this.screenWidgets[this.chooseWidgetId]
-		if (widget.children && this.chooseWidgetChildId) {
-			return this.searchWidget(widget, this.chooseWidgetChildId)
-		}
-		return widget
 	}
 	/* 初始化配置 */
 	init(res: any): any {
@@ -109,21 +90,5 @@ export default class ScreenPc extends ScreenBase {
 		}
 		delete this.screenConfig.widgets
 		return { marketComponents, screenWidgets }
-	}
-
-	/* 复制组件 */
-	copyWidget() {
-		const copyId = this.chooseWidgetId
-		const widget = this.screenWidgets[copyId]
-		if (!widget) return
-		const copiedWidget = copy(widget)
-		const id = uuid()
-		copiedWidget.id = id
-		const config = copiedWidget.config
-		config.widget.id = id
-		const layout = config.layout
-		layout.position.left += 10
-		layout.position.top += 10
-		this.screenWidgets[id] = copiedWidget
 	}
 }

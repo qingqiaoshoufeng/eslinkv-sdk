@@ -59,10 +59,10 @@ export default class DRuler extends Vue {
 			const minPointerY = Math.min(startPointerY, endPointerY)
 			const maxPointerX = Math.max(startPointerX, endPointerX)
 			const maxPointerY = Math.max(startPointerY, endPointerY)
-			this.editor.currentWidgetList = []
+			this.editor.unSelectWidgetList()
 			Object.values(this.editor.screen.screenWidgets).forEach(v => {
 				// 只能框选当前场景下的组件
-				if (v.scene === this.editor.scene.sceneIndex) {
+				if (v.scene === this.editor.currentSceneIndex) {
 					const widgetStartX = v.config.layout.position.left
 					const widgetStartY = v.config.layout.position.top
 					const widgetEndX =
@@ -81,10 +81,7 @@ export default class DRuler extends Vue {
 						minPointerY < widgetEndY &&
 						widgetEndY < maxPointerY
 					) {
-						this.editor.currentWidgetList = [
-							...this.editor.currentWidgetList,
-							v,
-						]
+						this.editor.selectWidgetList(v)
 					}
 				}
 			})

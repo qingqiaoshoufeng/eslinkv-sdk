@@ -46,7 +46,7 @@ export default class DRightSettingMore extends Vue {
 			config,
 			id,
 			market: false,
-			scene: this.editor.sceneIndex,
+			scene: this.editor.currentSceneIndex,
 			type: 'group',
 			children,
 		})

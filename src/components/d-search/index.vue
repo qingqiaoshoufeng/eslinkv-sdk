@@ -50,8 +50,8 @@ export default class DSearch extends Vue {
 		this.hide()
 	}
 	check(widget) {
-		this.editor.setSceneIndex(widget.scene)
-		this.editor.chooseWidgetId = widget.id
+		this.editor.selectSceneIndex(widget.scene)
+		this.editor.selectWidget(widget)
 		this.hide()
 	}
 }

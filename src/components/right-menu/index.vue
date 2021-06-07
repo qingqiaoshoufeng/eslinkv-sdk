@@ -100,7 +100,7 @@ export default class rightMenu extends Vue {
 	}
 
 	copyWidget(): void {
-		this.editor.screen.copyWidget()
+		this.editor.copyWidget()
 		this.handleUnActive()
 	}
 

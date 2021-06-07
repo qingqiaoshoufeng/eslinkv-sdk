@@ -8,9 +8,9 @@
 	// 标尺容器
 	d-ruler(ref="rulerCanvas")
 		// 大屏
-		#screen.canvas-wrapper.pos-r(
+		#screen.pos-r(
 			:style="canvasStyle",
-			@drop="editor.createWidget($event)",
+			@drop="createWidget",
 			@click.stop,
 			@dragover.prevent)
 			// 小工具清单
@@ -78,6 +78,17 @@ export default class DEditor extends Vue {
 		return {}
 	}
 
+	createWidget(e: MouseEvent): void {
+		const widgetConfig = e.dataTransfer.getData('widget-config')
+		if (widgetConfig) {
+			this.editor.createWidget(
+				e.offsetX,
+				e.offsetY,
+				JSON.parse(widgetConfig),
+			)
+		}
+	}
+
 	getRefLineParams(params: any, item: any): void {
 		const { vLine, hLine } = params
 		this.vLine = vLine.map((child: any) => {
@@ -102,7 +113,6 @@ export default class DEditor extends Vue {
 		instance.actions.setInstance('kanboard', this)
 		this.editor.updateEditorStatus('inEdit')
 		document.addEventListener('fullscreenchange', this.fullscreenchange)
-		window.editor = this.editor
 	}
 }
 </script>

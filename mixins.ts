@@ -56,7 +56,7 @@ const mx: any = {
 						this.editor.closeScene(sceneId)
 						break
 					case 'changeScene':
-						this.editor.setSceneIndex(sceneId)
+						this.editor.selectSceneIndex(sceneId)
 						break
 					default:
 				}

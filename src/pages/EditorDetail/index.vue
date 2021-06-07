@@ -18,7 +18,7 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class detail extends Vue {
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 }
 </script>
 <style lang="scss">

@@ -1,7 +1,7 @@
 <template lang="pug">
 .d-footer.fn-flex.flex-row.pos-r.z-index-999
 	.d-footer-bar.fn-flex.flex-row
-		.d-footer-bar-text.ellipsis(v-if="editor.sceneObj") {{ editor.sceneIndex === 0 ? '主场景' : editor.sceneIndex === -1 ? '回收站' : editor.sceneObj[editor.sceneIndex].name }}
+		.d-footer-bar-text.ellipsis(v-if="editor.sceneObj") {{ editor.currentSceneIndex === 0 ? '主场景' : editor.currentSceneIndex === -1 ? '回收站' : editor.sceneObj[editor.currentSceneIndex].name }}
 		.d-footer-bar-text {{ editor.width }}×{{ editor.height }}px
 	.d-footer-bar.fn-flex
 		label.d-footer-hot-keys.pos-r.fn-flex.flex-row
@@ -43,7 +43,7 @@ import Editor from '@/core/Editor'
 export default class DFooter extends Vue {
 	showHotKey = false
 	hotKeys = []
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 	get zoom(): string {
 		const zoom = this.editor.zoom
 		return `${~~(zoom * 100)}%`

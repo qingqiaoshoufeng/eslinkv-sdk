@@ -189,9 +189,7 @@ export default class DDetail extends Vue {
 			this.editor.init()
 		}
 		const sceneIndex = getQueryString('scene')
-		if (sceneIndex) {
-			this.editor.setSceneIndex(sceneIndex)
-		}
+		this.editor.selectSceneIndex(sceneIndex)
 	}
 
 	handleExport(): void {

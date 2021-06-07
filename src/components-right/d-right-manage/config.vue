@@ -42,9 +42,7 @@
 			type="primary",
 			:loading="screenAvatarLoading") 截屏
 	// END_PROD
-	d-right-control(
-		label="首场景",
-		v-if="editor.sceneList && editor.sceneList.length > 0")
+	d-right-control(label="首场景")
 		i-select(filterable, v-model="editor.mainScene")
 			i-option(:value="0") 主场景
 			i-option(:value="key", v-for="(item, key) in editor.sceneObj", :key="key") {{ item.name }}
@@ -168,7 +166,7 @@ export default class FuncConfig extends func {
 		})
 	}
 
-	saveSnapshot() {
+	saveSnapshot(): void {
 		const nodes = document.querySelectorAll('.widget-part')
 		nodes.forEach(node => {
 			html2canvas(node as HTMLElement, {

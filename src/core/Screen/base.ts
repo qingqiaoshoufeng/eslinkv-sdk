@@ -1,7 +1,8 @@
 ﻿import { getQueryString } from '@/utils'
 import Factory from '@/core/Base/factory'
 import Widget from '@/core/Widget/base'
-
+import copy from 'fast-copy'
+import { uuid } from '../../utils/index'
 export default class Screen extends Factory<Screen> {
 	/* 当前系统版本 */
 	currentVersion = '1.1.0'
@@ -84,12 +85,6 @@ export default class Screen extends Factory<Screen> {
 		}
 	}
 
-	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
-	editorStatus = 'inEdit'
-	updateEditorStatus(status: string): void {
-		this.editorStatus = status
-	}
-
 	/* 大屏平台状态 是否Mac*/
 	isMac = /macintosh|mac os x/i.test(navigator.userAgent)
 	/* 大屏平台状态 是否移动端*/
@@ -118,26 +113,41 @@ export default class Screen extends Factory<Screen> {
 	}
 	/* 添加组件 */
 	createWidget(
-		e: any,
+		offsetX: number,
+		offsetY: number,
+		data: any,
 		currentSceneIndex: number | string,
 		currentMaxZIndex: number,
 	): void {
-		const widgetConfig = e.dataTransfer.getData('widget-config')
-		if (widgetConfig) {
-			const widgetItem = new Widget(
-				e,
-				widgetConfig,
-				currentSceneIndex,
-				currentMaxZIndex,
-			)
-			this.screenWidgets = {
-				...this.screenWidgets,
-				[widgetItem.id]: widgetItem,
-			}
+		const widgetItem = new Widget(
+			offsetX,
+			offsetY,
+			data,
+			currentSceneIndex,
+			currentMaxZIndex,
+		)
+		this.screenWidgets = {
+			...this.screenWidgets,
+			[widgetItem.id]: widgetItem,
 		}
 	}
-
-	deleteWidget(id) {
+	/* 删除组件 */
+	deleteWidget(id: string): void {
 		delete this.screenWidgets[id]
+		this.screenWidgets = { ...this.screenWidgets }
+	}
+	/* 复制组件 */
+	copyWidget(copyId: string): void {
+		const widget = this.screenWidgets[copyId]
+		if (!widget) return
+		const newWidget = copy(widget)
+		const id = uuid()
+		newWidget.id = id
+		const config = newWidget.config
+		config.widget.id = id
+		const layout = config.layout
+		layout.position.left += 10
+		layout.position.top += 10
+		this.screenWidgets = { ...this.screenWidgets, [id]: newWidget }
 	}
 }
