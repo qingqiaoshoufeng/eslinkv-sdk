@@ -15,6 +15,7 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
 import Editor from '@/core/Editor'
+import Widget from '@/core/Widget/normal'
 
 @Component({
 	components: {
@@ -31,7 +32,7 @@ export default class DSearch extends Vue {
 	@Prop() hide
 
 	@Watch('keyword')
-	keywordChange(val) {
+	keywordChange(val: string): void {
 		if (!val) {
 			this.searchResult = []
 			return
@@ -46,10 +47,10 @@ export default class DSearch extends Vue {
 		}
 		this.searchResult = arr
 	}
-	close() {
+	close(): void {
 		this.hide()
 	}
-	check(widget) {
+	check(widget: Widget): void {
 		this.editor.selectSceneIndex(widget.scene)
 		this.editor.selectWidget(widget)
 		this.hide()

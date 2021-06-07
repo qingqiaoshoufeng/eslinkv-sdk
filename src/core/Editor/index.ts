@@ -317,8 +317,18 @@ export default class Editor extends Factory<Editor> {
 		this.screen.copyWidget(this.current.currentWidgetId)
 	}
 	/* 更新大屏组件配置 */
-	updateWidgetConfig(id, config): void {
-		this.screen.updateWidgetConfig(id, config)
+	updateWidgetConfig(
+		id: string,
+		localConfigValue: any,
+		config: any,
+		customConfig: any,
+	): any {
+		return this.screen.updateWidgetConfig(
+			id,
+			localConfigValue,
+			config,
+			customConfig,
+		)
 	}
 
 	/* ---------------------------------------------------Scene---------------------------------------------------*/

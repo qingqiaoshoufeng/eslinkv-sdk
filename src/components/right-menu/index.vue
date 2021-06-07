@@ -1,5 +1,8 @@
 <template lang="pug">
-#right-menu.right-menu.pos-f(ref="rightMenu", @contextmenu.stop.prevent)
+#right-menu.right-menu.pos-f(
+	ref="rightMenu",
+	@contextmenu.stop.prevent,
+	v-click-outside="hideRightMenu")
 	ul.list
 		li(@click="handleZIndexTop")
 			i-icon(type="md-arrow-round-up")
@@ -40,11 +43,13 @@ import { Vue, Component } from 'vue-property-decorator'
 import instance from '../../store/instance.store'
 import { Icon } from 'view-design'
 import Editor from '@/core/Editor'
+import ClickOutside from 'vue-click-outside'
 
 @Component({
 	components: {
 		'i-icon': Icon,
 	},
+	directives: { ClickOutside },
 })
 export default class rightMenu extends Vue {
 	instance = instance.state
@@ -53,7 +58,6 @@ export default class rightMenu extends Vue {
 	minZIndex = 0
 	maxZIndex = 0
 	editor: Editor = Editor.Instance()
-
 	handleSync(): void {
 		this.instance.kanboard.$refs[`${this.editor.currentWidgetId}`][0]
 			.$children[0].updateKey++

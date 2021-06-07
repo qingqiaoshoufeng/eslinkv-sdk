@@ -1,6 +1,6 @@
 import { colorTheme } from './packages/config.default.js'
 
-const commonConfigValue = useColorTheme =>
+const commonConfigValue = () =>
 	Object.freeze({
 		widget: {
 			name: '',
@@ -23,7 +23,7 @@ const commonConfigValue = useColorTheme =>
 			zIndex: 10,
 			scale: 1,
 		},
-		config: useColorTheme ? { colorTheme } : {},
+		config: { colorTheme },
 		api: {
 			url: '',
 			method: 'GET',

@@ -1,10 +1,9 @@
 import scene from './src/store/scene.store'
 import fetch from './fetch.js'
 import dataProcess from './data-process.js'
-import globalConfigValue from './common-config-value'
 import instance from './src/store/instance.store'
 import { createSandbox } from './data-process'
-import { configMerge, usePath } from './src/utils'
+import { usePath } from './src/utils'
 import Editor from '@/core/Editor'
 
 const mx: any = {
@@ -104,7 +103,7 @@ const mx: any = {
 		emitComponentUpdate(data) {
 			if (this.configValue) {
 				this.configValue.api.bind.refIds.forEach((ref: any) => {
-					let dom = this.editor.screenWidgets[ref]
+					const dom = this.editor.screenWidgets[ref]
 					if (!dom) return
 					dom.updateAjax(data)
 				})
@@ -132,36 +131,14 @@ const mx: any = {
 			}
 			this.config.api.params = params
 		},
-		/**
-		 * @description
-		 *
-		 */
-		parseConfigValue(
-			localConfigValue = null,
-			customConfig,
-			useColorTheme = false,
-		) {
-			const mergedValue = localConfigValue
-				? configMerge(
-						localConfigValue,
-						globalConfigValue(useColorTheme),
-				  )
-				: globalConfigValue(useColorTheme)
-			const inputConfig = Object.freeze(this.config || {})
-			const res = configMerge(inputConfig, mergedValue)
-			// 过滤可用属性
-			res.widget.name = res.widget.name || this.$parent.type
-			if (customConfig) {
-				customConfig.map(item => {
-					if (!item.prop.includes('config.config')) {
-						item.prop = `config.config.${item.prop}`
-					}
-				})
-				res.customConfig = customConfig
-			}
+		parseConfigValue(localConfigValue, customConfig) {
 			this.configReady = true
-			this.editor.updateWidgetConfig(this.config.widget.id, res)
-			return res
+			return this.editor.updateWidgetConfig(
+				this.config.widget.id,
+				localConfigValue,
+				this.config,
+				customConfig,
+			)
 		},
 	},
 	computed: {

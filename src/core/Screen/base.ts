@@ -3,6 +3,8 @@ import Factory from '@/core/Base/factory'
 import Widget from '@/core/Widget/base'
 import copy from 'fast-copy'
 import { uuid } from '../../utils/index'
+import globalConfigValue from '../../../common-config-value.js'
+import { configMerge } from '@/core/utils'
 export default class Screen extends Factory<Screen> {
 	/* 当前系统版本 */
 	currentVersion = '1.1.0'
@@ -47,8 +49,29 @@ export default class Screen extends Factory<Screen> {
 	/* 大屏平台类型 PC:PC */
 	screenPlatform: string
 	/* 更新大屏组件配置 */
-	updateWidgetConfig(id, config): void {
-		if (this.screenWidgets[id]) this.screenWidgets[id].config = config
+	updateWidgetConfig(
+		id: string,
+		localConfigValue: any,
+		config: any,
+		customConfig: any,
+	): any {
+		const mergedValue = localConfigValue
+			? configMerge(localConfigValue, globalConfigValue())
+			: globalConfigValue()
+		const inputConfig = Object.freeze(config || {})
+		const res = configMerge(inputConfig, mergedValue)
+		// 过滤可用属性
+		res.widget.name = res.widget.name || '未知组件'
+		if (customConfig) {
+			customConfig.map(item => {
+				if (!item.prop.includes('config.config')) {
+					item.prop = `config.config.${item.prop}`
+				}
+			})
+			res.customConfig = customConfig
+		}
+		if (this.screenWidgets[id]) this.screenWidgets[id].config = res
+		return res
 	}
 	/* 大屏样式 */
 	get screenStyle() {
