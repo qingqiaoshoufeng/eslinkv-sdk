@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import Factory from '@/core/Base/factory'
 import ScreenPc from '@/core/Screen/pc'
 import Scene from '@/core/Scene'
@@ -61,6 +62,14 @@ export default class Editor extends Factory<Editor> {
 	/* 取消选中组件 */
 	unSelectWidget(): void {
 		this.current.unSelectWidget()
+	}
+	/* 刷新当前组件 */
+	refreshWidget () {
+		const widgetConfig = this.screenWidgets[this.currentWidgetId]
+		Vue.delete(this.screenWidgets, this.currentWidgetId)
+		Vue.nextTick(() => {
+			Vue.set(this.screenWidgets, this.currentWidgetId, widgetConfig)
+		})
 	}
 	/* 取消选中组件集合 */
 	unSelectWidgetList(): void {

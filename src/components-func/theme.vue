@@ -54,11 +54,7 @@ export default class FuncAnimation extends func {
 	}
 
 	handleSync() {
-		const widgetConfig = this.editor.screenWidgets[this.editor.currentWidgetId]
-		this.$delete(this.editor.screenWidgets, this.editor.currentWidgetId)
-		this.$nextTick(() => {
-			this.$set(this.editor.screenWidgets, this.editor.currentWidgetId, widgetConfig)
-		})
+		this.editor.refreshWidget()
 	}
 }
 </script>

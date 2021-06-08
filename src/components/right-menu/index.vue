@@ -59,11 +59,7 @@ export default class rightMenu extends Vue {
 	maxZIndex = 0
 	editor: Editor = Editor.Instance()
 	handleSync(): void {
-		const widgetConfig = this.editor.screenWidgets[this.editor.currentWidgetId]
-		this.$delete(this.editor.screenWidgets, this.editor.currentWidgetId)
-		this.$nextTick(() => {
-			this.$set(this.editor.screenWidgets, this.editor.currentWidgetId, widgetConfig)
-		})
+		this.editor.refreshWidget()
 		this.hideRightMenu()
 	}
 
