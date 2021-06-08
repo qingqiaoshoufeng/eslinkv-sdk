@@ -52,13 +52,13 @@ export default class Screen extends Factory<Screen> {
 	updateWidgetConfig(
 		id: string,
 		localConfigValue: any,
-		config: any,
 		customConfig: any,
 	): any {
 		const mergedValue = localConfigValue
 			? configMerge(localConfigValue, globalConfigValue())
 			: globalConfigValue()
-		const inputConfig = Object.freeze(config || {})
+		console.log(this.screenWidgets[id], id)
+		const inputConfig = Object.freeze(this.screenWidgets[id].config || {})
 		const res = configMerge(inputConfig, mergedValue)
 		// 过滤可用属性
 		res.widget.name = res.widget.name || '未知组件'

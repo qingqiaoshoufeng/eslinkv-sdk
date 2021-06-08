@@ -62,5 +62,8 @@ export default class Current extends Factory<Current> {
 		const index = this.currentCreateSceneList.findIndex(v => v === id)
 		this.currentCreateSceneList.splice(index, 1)
 		this.currentCreateSceneList = [...this.currentCreateSceneList]
+		let event = new CustomEvent('DestroyScene', { detail: { index } })
+		document.dispatchEvent(event)
+		event = null
 	}
 }

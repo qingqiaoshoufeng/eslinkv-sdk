@@ -136,7 +136,6 @@ const mx: any = {
 			return this.editor.updateWidgetConfig(
 				this.config.widget.id,
 				localConfigValue,
-				this.config,
 				customConfig,
 			)
 		},

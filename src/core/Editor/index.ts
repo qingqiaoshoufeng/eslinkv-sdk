@@ -83,11 +83,11 @@ export default class Editor extends Factory<Editor> {
 	}
 	/* 打开场景 */
 	openScene(id: string): void {
-		this.current.openScene(id)
+		if (this.editorStatus === 'inPreview') this.current.openScene(id)
 	}
 	/* 关闭场景 */
 	closeScene(id: string): void {
-		this.current.closeScene(id)
+		if (this.editorStatus === 'inPreview') this.current.closeScene(id)
 	}
 
 	/* ---------------------------------------------------Eve---------------------------------------------------*/
@@ -170,7 +170,12 @@ export default class Editor extends Factory<Editor> {
 	}
 	get showWidgets() {
 		if (this.current.currentSceneIndex === 0) {
-			return this.sceneWidgets[0]
+			return [
+				...this.sceneWidgets[0],
+				...this.current.currentCreateSceneList
+					.map(v => this.sceneWidgets[v])
+					.flat(),
+			]
 		} else {
 			return [
 				...(this.sceneWidgets[this.current.currentSceneIndex] || []),
@@ -320,13 +325,11 @@ export default class Editor extends Factory<Editor> {
 	updateWidgetConfig(
 		id: string,
 		localConfigValue: any,
-		config: any,
 		customConfig: any,
 	): any {
 		return this.screen.updateWidgetConfig(
 			id,
 			localConfigValue,
-			config,
 			customConfig,
 		)
 	}
