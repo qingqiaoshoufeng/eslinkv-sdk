@@ -5,7 +5,6 @@ import dDetail from '../src/components/d-detail/index.vue'
 import dFooter from '../src/components/d-footer/index.vue'
 import scene from '../src/store/scene.store'
 import instance from '../src/store/instance.store'
-import custom from '../src/store/custom.store'
 import dView from '../src/components/d-view/index.vue'
 import loadMask from '../src/components/load-mask/index.vue'
 import commonConfigValue from '../common-config-value.js'
@@ -17,7 +16,6 @@ const eslinkV = {
 	widgetMixin,
 	scene,
 	instance,
-	custom,
 	colorTheme,
 	dEditor,
 	dScreen,
@@ -39,7 +37,6 @@ export {
 	widgetMixin,
 	scene,
 	instance,
-	custom,
 	colorTheme,
 	dEditor,
 	dScreen,

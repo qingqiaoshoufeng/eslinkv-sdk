@@ -6,7 +6,7 @@
 	.fn-flex.flex-row(:style="{ flex: 1, height: 'calc(100% - 40px)' }")
 		ul.d-left-widget-left
 			li.fn-flex.pos-r.pointer(
-				v-for="item in custom.widgets",
+				v-for="item in editor.local.widgets",
 				:key="item.componentTypeId",
 				@click="leftIndex = item.componentTypeId",
 				:title="item.componentTypeName",
@@ -14,7 +14,7 @@
 				p.ellipsis {{ item.componentTypeName }}
 		ul.d-left-widget-right.d-scrollbar(v-if="leftIndex")
 			li.pointer(
-				v-for="item in custom.widgets[leftIndex].children",
+				v-for="item in editor.local.widgets[leftIndex].children",
 				:class="{ active: openList[item.componentTypeId] }")
 				i-icon(
 					type="ios-arrow-down",
@@ -35,7 +35,6 @@
 </template>
 <script lang="ts">
 import { Icon } from 'view-design'
-import custom from '../../store/custom.store'
 import itemCard from './item-card.vue'
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
@@ -47,7 +46,6 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DLeftWidget extends Vue {
-	custom = custom.state
 	editor:Editor = Editor.Instance()
 	leftIndex = null
 	rightIndex = null
@@ -74,7 +72,7 @@ export default class DLeftWidget extends Vue {
 						this.$set(this.list, componentTypeId, res.list)
 					})
 			} else {
-				const list = this.custom.widgets[this.leftIndex].children
+				const list = this.editor.local.widgets[this.leftIndex].children
 				list.forEach(item => {
 					if (item.componentTypeId === componentTypeId) {
 						this.$set(this.list, componentTypeId, item.children)

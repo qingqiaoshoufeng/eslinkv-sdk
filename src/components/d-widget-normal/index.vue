@@ -20,7 +20,6 @@ eslinkv-group(
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import custom from '../../store/custom.store'
 import Editor from '@/core/Editor'
 
 const prefix1 = 'market-'
@@ -38,7 +37,6 @@ export default class WidgetNormal extends Vue {
 	replayAnimation = false
 	ready = false
 	animationClass = null
-	custom = custom.state
 	editor: Editor = Editor.Instance()
 	get currentComponent(): string | null {
 		if (this.ready) {
@@ -149,7 +147,7 @@ export default class WidgetNormal extends Vue {
 			} else {
 				Vue.component(
 					`${prefix2}${this.type}`,
-					this.custom.components[this.type],
+					this.editor.local.components[this.type],
 				)
 				this.ready = true
 			}

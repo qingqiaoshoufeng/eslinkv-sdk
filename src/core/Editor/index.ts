@@ -5,6 +5,7 @@ import Eve from '@/core/Eve'
 import Ruler from '@/core/ui/Ruler'
 import Widget from '@/core/Widget/normal'
 import Current from '@/core/Current'
+import Local from '@/core/Local'
 import { uuid } from '@/core/utils'
 import { configMerge } from '@/utils'
 import commonConfigValue from '../../../common-config-value'
@@ -23,6 +24,7 @@ export default class Editor extends Factory<Editor> {
 	screen: ScreenPc = ScreenPc.Instance()
 	current: Current = Current.Instance()
 	scene: Scene = Scene.Instance()
+	local: Local = Local.Instance()
 	ruler: Ruler | null
 	eve: Eve = Eve.Instance({
 		rulerContainerId,
