@@ -113,7 +113,6 @@ export default {
 	data() {
 		return {
 			snapTolerance: 5, // 当调用对齐时，用来设置组件与组件之间的对齐距离，以像素为单位
-			event: event.state,
 			rawWidth: this.w,
 			rawHeight: this.h,
 			rawLeft: this.x,
@@ -150,7 +149,7 @@ export default {
 			this.deselect,
 		)
 	},
-	beforeDestroy() {
+	beforeDestroy(): void {
 		removeEvent(
 			document.getElementById('ruler-content'),
 			'mousedown',
@@ -167,13 +166,13 @@ export default {
 		)
 	},
 	methods: {
-		elementEnable(e) {
+		elementEnable(): void {
 			if (this.enabled) return
 			this.enabled = true
 			this.$emit('activated')
 		},
 		// 重置边界和鼠标状态
-		resetBoundsAndMouseState() {
+		resetBoundsAndMouseState(): void {
 			this.mouseClickPosition = {
 				mouseX: 0,
 				mouseY: 0,
@@ -184,11 +183,11 @@ export default {
 			}
 		},
 		// 元素触摸按下
-		elementTouchDown(e) {
+		elementTouchDown(e): void {
 			this.elementDown(e)
 		},
 		// 元素按下
-		elementDown(e) {
+		elementDown(e): void {
 			if (!this.enabled || this.editor.eve.contentMove) return
 			const target = e.target || e.srcElement
 			if (this.$el.contains(target)) {
@@ -222,7 +221,7 @@ export default {
 			}
 		},
 		// 取消
-		deselect(e) {
+		deselect(e): void {
 			const target = e.target || e.srcElement
 			const regex = new RegExp(this.className + '-([trmbl]{2})', '')
 			if (!this.$el.contains(target) && !regex.test(target.className)) {
@@ -240,11 +239,11 @@ export default {
 			this.resetBoundsAndMouseState()
 		},
 		// 控制柄触摸按下
-		handleTouchDown(handle, e) {
+		handleTouchDown(handle, e): void {
 			this.handleDown(handle, e)
 		},
 		// 控制柄按下
-		handleDown(handle, e) {
+		handleDown(handle, e): void {
 			if (!this.enabled) return
 			if (e.stopPropagation) e.stopPropagation()
 			// Here we avoid a dangerous recursion by faking
@@ -269,7 +268,7 @@ export default {
 			addEvent(document.documentElement, 'mouseup', this.handleUp)
 		},
 		// 移动
-		move(e) {
+		move(e): void {
 			if (this.dragging) {
 				this.elementMove(e)
 				return
@@ -279,7 +278,7 @@ export default {
 			}
 		},
 		// 元素移动
-		elementMove(e) {
+		elementMove(e): void {
 			const axis = this.axis
 			const mouseClickPosition = this.mouseClickPosition
 			const tmpDeltaX =
@@ -302,7 +301,7 @@ export default {
 			// this.$emit('dragging', this.left, this.top)
 		},
 		// 控制柄移动
-		handleMove(e) {
+		handleMove(e): void {
 			const handle = this.handle
 			const mouseClickPosition = this.mouseClickPosition
 			const tmpDeltaX =
@@ -326,7 +325,7 @@ export default {
 			this.$emit('resizing', this.left, this.top, this.width, this.height)
 		},
 		// 从控制柄松开
-		async handleUp() {
+		handleUp(): void {
 			this.handle = null
 			this.rawTop = this.top
 			this.rawBottom = this.bottom
@@ -364,7 +363,7 @@ export default {
 			removeEvent(document.documentElement, 'mousemove', this.handleMove)
 		},
 		// 检测对齐元素
-		async snapCheck() {
+		snapCheck(): void {
 			let width = this.width
 			let height = this.height
 			let activeLeft = this.rawLeft
@@ -512,17 +511,17 @@ export default {
 			}
 			this.$emit('refLineParams', refLine)
 		},
-		calcLineValues(arr) {
+		calcLineValues(arr): any {
 			const length = Math.max(...arr) - Math.min(...arr) + 'px'
 			const origin = Math.min(...arr) + 'px'
 			return { length, origin }
 		},
 	},
 	computed: {
-		returnRatio() {
+		returnRatio(): number {
 			return this.scaleRatio < 1 ? 1 / this.scaleRatio : this.scaleRatio
 		},
-		tipShow() {
+		tipShow(): any {
 			return (
 				this.dragging &&
 				this.top > 0 &&
@@ -531,7 +530,7 @@ export default {
 				this.left < this.editor.width
 			)
 		},
-		style() {
+		style(): any {
 			return {
 				transform: `translate3d(${this.left}px, ${this.top}px,0) scale(${this.scale})`,
 				width: this.width + 'px',
@@ -539,23 +538,23 @@ export default {
 				zIndex: this.z,
 			}
 		},
-		actualHandles() {
+		actualHandles(): string[] {
 			if (!this.resizable) return [] // 控制柄显示与否
 			return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']
 		},
-		width() {
+		width(): number {
 			return -this.left - this.right
 		},
-		height() {
+		height(): number {
 			return -this.top - this.bottom
 		},
-		resizingOnX() {
+		resizingOnX(): any {
 			return (
 				Boolean(this.handle) &&
 				(this.handle.includes('l') || this.handle.includes('r'))
 			)
 		},
-		resizingOnY() {
+		resizingOnY(): any {
 			return (
 				Boolean(this.handle) &&
 				(this.handle.includes('t') || this.handle.includes('b'))
@@ -563,7 +562,7 @@ export default {
 		},
 	},
 	watch: {
-		active(val) {
+		active(val: boolean): void {
 			this.enabled = val
 			if (val) {
 				this.$emit('activated')
@@ -571,7 +570,7 @@ export default {
 				this.$emit('deactivated')
 			}
 		},
-		rawLeft(newLeft) {
+		rawLeft(newLeft: number): void {
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
 			const left = this.left
@@ -581,7 +580,7 @@ export default {
 			}
 			this.left = newLeft
 		},
-		rawRight(newRight) {
+		rawRight(newRight: number): void {
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
 			const right = this.right
@@ -593,7 +592,7 @@ export default {
 
 			this.right = newRight
 		},
-		rawTop(newTop) {
+		rawTop(newTop: number): void {
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
 			const left = this.left
@@ -605,7 +604,7 @@ export default {
 
 			this.top = newTop
 		},
-		rawBottom(newBottom) {
+		rawBottom(newBottom: number): void {
 			const aspectFactor = this.aspectFactor
 			const lockAspectRatio = this.lockAspectRatio
 			const right = this.right
@@ -617,7 +616,7 @@ export default {
 
 			this.bottom = newBottom
 		},
-		x() {
+		x(): void {
 			if (this.resizing || this.dragging) {
 				return
 			}
@@ -625,7 +624,7 @@ export default {
 			this.rawLeft = this.x
 			this.rawRight = this.right - delta
 		},
-		y() {
+		y(): void {
 			if (this.resizing || this.dragging) {
 				return
 			}
@@ -633,21 +632,21 @@ export default {
 			this.rawTop = this.y
 			this.rawBottom = this.bottom - delta
 		},
-		lockAspectRatio(val) {
+		lockAspectRatio(val: boolean): void {
 			if (val) {
 				this.aspectFactor = this.width / this.height
 			} else {
 				this.aspectFactor = undefined
 			}
 		},
-		w() {
+		w(): void {
 			if (this.resizing || this.dragging) {
 				return
 			}
 			const delta = this.width - this.w
 			this.rawRight = this.right + delta
 		},
-		h() {
+		h(): void {
 			if (this.resizing || this.dragging) {
 				return
 			}

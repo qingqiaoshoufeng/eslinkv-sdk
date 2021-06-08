@@ -7,8 +7,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Button } from 'view-design'
-import { uuid, configMerge } from '@/utils/index.js'
-import commonConfigValue from '../../../common-config-value.js'
 import Editor from '@/core/Editor'
 
 @Component({

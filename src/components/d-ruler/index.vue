@@ -239,7 +239,7 @@ export default class DRuler extends Vue {
 		})
 	}
 
-	keyup(e: any): void {
+	keyup(): void {
 		this.editor.eve.contentMove = false
 		document.getElementById(this.editor.rulerContainerId).style.cursor =
 			'auto'
