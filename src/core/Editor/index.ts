@@ -268,6 +268,16 @@ export default class Editor extends Factory<Editor> {
 	screenData(): any {
 		return this.screen.screenData()
 	}
+	/* 刷新组件 */
+	refreshWidget() {
+		const item = this.screen.screenWidgets[this.current.currentWidgetId]
+		delete this.screen.screenWidgets[this.current.currentWidgetId]
+		this.screen.screenWidgets = { ...this.screen.screenWidgets }
+		setTimeout(() => {
+			this.screen.screenWidgets[item.id] = item
+			this.screen.screenWidgets = { ...this.screen.screenWidgets }
+		})
+	}
 	/* 添加组件 */
 	createWidget(offsetX: number, offsetY: number, data: any): void {
 		const currentMaxZIndex = this.sortByZIndexWidgetsList.length

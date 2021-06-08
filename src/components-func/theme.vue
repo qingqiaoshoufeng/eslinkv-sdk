@@ -53,7 +53,7 @@ export default class FuncAnimation extends func {
 		this.handleSync()
 	}
 
-	handleSync() {
+	handleSync(): void {
 		this.editor.refreshWidget()
 	}
 }

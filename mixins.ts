@@ -119,28 +119,6 @@ const mx: any = {
 				})
 			}
 		},
-		/**
-		 * @description 组件间联动后的 ajax 数据重新请求
-		 */
-		updateAjax(data) {
-			if (!this.config) {
-				return
-			}
-			if (!this.config.api) {
-				return
-			}
-			let params = this.config.api.params
-			if (params) {
-				if (typeof params === 'string') {
-					params = { ...JSON.parse(params), ...data }
-				} else {
-					params = { ...params, ...data }
-				}
-			} else {
-				params = data
-			}
-			this.config.api.params = params
-		},
 		parseConfigValue(localConfigValue, customConfig) {
 			this.configReady = true
 			return this.editor.updateWidgetConfig(

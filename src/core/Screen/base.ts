@@ -57,7 +57,6 @@ export default class Screen extends Factory<Screen> {
 		const mergedValue = localConfigValue
 			? configMerge(localConfigValue, globalConfigValue())
 			: globalConfigValue()
-		console.log(this.screenWidgets[id], id)
 		const inputConfig = Object.freeze(this.screenWidgets[id].config || {})
 		const res = configMerge(inputConfig, mergedValue)
 		// 过滤可用属性
