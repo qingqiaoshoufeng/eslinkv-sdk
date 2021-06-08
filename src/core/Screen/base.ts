@@ -69,8 +69,25 @@ export default class Screen extends Factory<Screen> {
 			})
 			res.customConfig = customConfig
 		}
-		if (this.screenWidgets[id]) this.screenWidgets[id].config = res
+		if (this.screenWidgets[id]) {
+			this.screenWidgets[id].config = res
+		} else {
+			Object.values(this.screenWidgets).forEach((v: Widget) => {
+				this.findWidget(v, id, res)
+			})
+		}
 		return res
+	}
+	findWidget (widget, id, res) {
+		if (widget.children) {
+			widget.children.forEach((v2: Widget) => {
+				if (v2.id === id) {
+					v2.config = res
+				} else if (v2.children) {
+					this.findWidget(v2, id, res)
+				}
+			})
+		}
 	}
 	/* 大屏样式 */
 	get screenStyle() {
