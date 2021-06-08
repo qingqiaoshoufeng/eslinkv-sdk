@@ -26,7 +26,7 @@ const mx: any = {
 			data: null,
 			configReady: false,
 			time: Date.now(),
-			instance: null,
+			instance: instance.state,
 			animateTimer: null,
 			animateActiveIndex: -1,
 			output: null,
@@ -103,7 +103,10 @@ const mx: any = {
 		emitComponentUpdate(data) {
 			if (this.configValue) {
 				this.configValue.api.bind.refIds.forEach((ref: any) => {
-					const dom = this.editor.screenWidgets[ref]
+					let dom
+					if (this.instance.kanboard.$refs[ref]) {
+						dom = this.instance.kanboard.$refs[ref][0].$refs.widgets
+					}
 					if (!dom) return
 					dom.updateAjax(data)
 				})
