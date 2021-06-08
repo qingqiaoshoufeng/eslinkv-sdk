@@ -25,10 +25,6 @@ import Editor from '@/core/Editor'
 })
 export default class DView extends Vue {
 	editor: Editor = Editor.Instance()
-
-	mounted(): void {
-		instance.actions.setInstance('kanboard', this)
-	}
 }
 </script>
 <style lang="scss" scoped>

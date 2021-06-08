@@ -5,14 +5,8 @@
 import Vue from 'vue'
 import { store } from './index'
 
-const state = Vue.observable({
-	kanboard: null,
-	createKanboard: null,
-})
+const state = Vue.observable({})
 const actions = {
-	setInstance(key, value) {
-		state[key] = value
-	},
 	updateComponentTarget: (id, target, value) => {
 		switch (target) {
 			case 'config.api.params':

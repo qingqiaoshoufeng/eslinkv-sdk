@@ -54,8 +54,11 @@ export default class FuncAnimation extends func {
 	}
 
 	handleSync() {
-		this.instance.kanboard.$refs[`${this.editor.currentWidgetId}`][0]
-			.$children[0].updateKey++
+		const widgetConfig = this.editor.screenWidgets[this.editor.currentWidgetId]
+		this.$delete(this.editor.screenWidgets, this.editor.currentWidgetId)
+		this.$nextTick(() => {
+			this.$set(this.editor.screenWidgets, this.editor.currentWidgetId, widgetConfig)
+		})
 	}
 }
 </script>

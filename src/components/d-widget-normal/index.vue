@@ -9,7 +9,6 @@ component.widget-part(
 	@query-failed="querying = true",
 	v-on="$listeners",
 	v-if="widgetType !== 'group'",
-	:key="`${config.widget.id}${updateKey}`",
 	ref="widgets")
 	slot
 eslinkv-group(
@@ -17,8 +16,7 @@ eslinkv-group(
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
 	v-bind="{ config, readonly, ...$attrs }",
-	v-on="$listeners",
-	:key="`${config.widget.id}${updateKey}`")
+	v-on="$listeners")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
@@ -34,7 +32,6 @@ export default class WidgetNormal extends Vue {
 	@Prop() type
 	@Prop() config
 	@Prop({ default: false }) readonly
-	updateKey = 0
 	componentVersion = ''
 	querying = false
 	queryFailed = false
