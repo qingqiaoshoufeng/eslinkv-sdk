@@ -6,8 +6,8 @@ import Widget from '@/core/Widget/normal'
 import Current from '@/core/Current'
 import Local from '@/core/Local'
 import { uuid } from '@/core/utils'
-import { configMerge } from '@/utils'
-import commonConfigValue from '../../../common-config-value'
+import { configMerge } from '@/core/utils'
+import commonConfigValue from '@/core/common-config-value'
 
 const rulerContainerId = `drag-content-${+new Date()}`
 export default class Editor extends Factory<Editor> {
@@ -430,7 +430,9 @@ export default class Editor extends Factory<Editor> {
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 if (!window.eslinkV) window.eslinkV = {}
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 window.eslinkV.Editor = Editor

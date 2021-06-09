@@ -1,5 +1,5 @@
 import ScreenBase from '@/core/Screen/base'
-import { setDefault } from '@/utils'
+import { setDefault } from '@/core/utils'
 import Widget from '@/core/Widget/normal'
 
 export default class ScreenPc extends ScreenBase {

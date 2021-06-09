@@ -1,9 +1,8 @@
-﻿import { getQueryString } from '@/utils'
+﻿import { getQueryString, uuid } from '@/core/utils'
 import Factory from '@/core/Base/factory'
 import Widget from '@/core/Widget/base'
 import copy from 'fast-copy'
-import { uuid } from '../../utils/index'
-import globalConfigValue from '../../../common-config-value.js'
+import globalConfigValue from '@/core/common-config-value.js'
 import { configMerge, versionToNum } from '@/core/utils'
 export default class Screen extends Factory<Screen> {
 	/* 当前系统版本 */
