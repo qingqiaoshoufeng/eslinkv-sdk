@@ -188,11 +188,11 @@ export default {
 		},
 		// 元素按下
 		elementDown(e): void {
-			if (!this.enabled || this.editor.eve.contentMove) return
+			if (!this.enabled || this.editor.contentMove) return
 			const target = e.target || e.srcElement
 			if (this.$el.contains(target)) {
 				if (this.draggable) {
-					this.editor.eve.widgetMove = true
+					this.editor.widgetMove = true
 					this.dragging = true
 				}
 

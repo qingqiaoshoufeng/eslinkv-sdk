@@ -15,7 +15,20 @@ import Widget from '@/core/Widget/normal'
 @Component
 export default class DRuler extends Vue {
 	editor: Editor = Editor.Instance()
-
+	startX = 0
+	startY = 0
+	clientX = 0
+	clientY = 0
+	startPointerX = 0
+	startPointerY = 0
+	/* 滚动左右距离 */
+	contentScrollLeft = 0
+	/* 滚动上下距离 */
+	contentScrollTop = 0
+	/* 是否按下了 空格 键，之后按下了左键 */
+	contentDrag = false
+	/* 框移动 */
+	kuangMove = false
 	windowResize(): void {
 		this.editor.resetZoom()
 	}
@@ -35,60 +48,58 @@ export default class DRuler extends Vue {
 	}
 
 	mouseUp(e: MyMouseEvent): void {
-		if (this.editor.eve.contentDrag) {
-			this.editor.eve.contentDrag = false
+		if (this.contentDrag) {
+			this.contentDrag = false
 		}
-		if (this.editor.eve.widgetMove) {
-			this.editor.eve.widgetMove = false
+		if (this.editor.widgetMove) {
+			this.editor.widgetMove = false
 		}
-		if (this.editor.eve.kuangMove) {
+		if (this.kuangMove) {
 			document.getElementById('d-kuang').style.display = 'none'
-			this.editor.eve.kuangMove = false
-			const startPointerX = this.editor.eve.startPointerX
-			const startPointerY = this.editor.eve.startPointerY
-
+			this.kuangMove = false
 			const diffX =
-				(this.editor.screen.screenWidth * (1 - this.editor.zoom)) / 2 +
-				this.editor.eve.offsetX
+				(this.editor.width * (1 - this.editor.zoom)) / 2 +
+				this.editor.offsetX
 			const diffY =
-				(this.editor.screen.screenHeight * (1 - this.editor.zoom)) / 2 +
-				this.editor.eve.offsetY
+				(this.editor.height * (1 - this.editor.zoom)) / 2 +
+				this.editor.offsetY
 			const endPointerX = (e.layerX - diffX) / this.editor.zoom
 			const endPointerY = (e.layerY - diffY) / this.editor.zoom
-			if (startPointerX === endPointerX || startPointerY === endPointerY)
-				return
-			const minPointerX = Math.min(startPointerX, endPointerX)
-			const minPointerY = Math.min(startPointerY, endPointerY)
-			const maxPointerX = Math.max(startPointerX, endPointerX)
-			const maxPointerY = Math.max(startPointerY, endPointerY)
-			this.editor.unSelectWidgetList()
-			Object.values(this.editor.screen.screenWidgets).forEach(
-				(v: Widget) => {
-					// 只能框选当前场景下的组件
-					if (v.scene === this.editor.currentSceneIndex) {
-						const widgetStartX = v.config.layout.position.left
-						const widgetStartY = v.config.layout.position.top
-						const widgetEndX =
-							v.config.layout.position.left +
-							v.config.layout.size.width
-						const widgetEndY =
-							v.config.layout.position.top +
-							v.config.layout.size.height
-						if (
-							minPointerX < widgetStartX &&
-							widgetStartX < maxPointerX &&
-							minPointerY < widgetStartY &&
-							widgetStartY < maxPointerY &&
-							minPointerX < widgetEndX &&
-							widgetEndX < maxPointerX &&
-							minPointerY < widgetEndY &&
-							widgetEndY < maxPointerY
-						) {
-							this.editor.addWidgetList(v)
-						}
-					}
-				},
+			if (
+				this.startPointerX === endPointerX ||
+				this.startPointerY === endPointerY
 			)
+				return
+			const minPointerX = Math.min(this.startPointerX, endPointerX)
+			const minPointerY = Math.min(this.startPointerY, endPointerY)
+			const maxPointerX = Math.max(this.startPointerX, endPointerX)
+			const maxPointerY = Math.max(this.startPointerY, endPointerY)
+			this.editor.unSelectWidgetList()
+			Object.values(this.editor.screenWidgets).forEach((v: Widget) => {
+				// 只能框选当前场景下的组件
+				if (v.scene === this.editor.currentSceneIndex) {
+					const widgetStartX = v.config.layout.position.left
+					const widgetStartY = v.config.layout.position.top
+					const widgetEndX =
+						v.config.layout.position.left +
+						v.config.layout.size.width
+					const widgetEndY =
+						v.config.layout.position.top +
+						v.config.layout.size.height
+					if (
+						minPointerX < widgetStartX &&
+						widgetStartX < maxPointerX &&
+						minPointerY < widgetStartY &&
+						widgetStartY < maxPointerY &&
+						minPointerX < widgetEndX &&
+						widgetEndX < maxPointerX &&
+						minPointerY < widgetEndY &&
+						widgetEndY < maxPointerY
+					) {
+						this.editor.addWidgetList(v)
+					}
+				}
+			})
 			let minLeft = null,
 				maxLeft = null,
 				width = 0,
@@ -100,7 +111,7 @@ export default class DRuler extends Vue {
 				this.editor.selectWidget(this.editor.currentWidgetList[0])
 			} else {
 				this.editor.currentWidgetList.map(item => {
-					const m = this.editor.screen.screenWidgets[item.id]
+					const m = this.editor.screenWidgets[item.id]
 					zIndex = m.config.layout.zIndex
 					if (minLeft === null) {
 						minLeft = m.config.layout.position.left
@@ -143,28 +154,26 @@ export default class DRuler extends Vue {
 	mouseDown(e: MyMouseEvent): void {
 		// 判断是否为鼠标左键被按下
 		if (e.buttons !== 1 || e.which !== 1) return
-		this.editor.eve.startX = e.clientX
-		this.editor.eve.startY = e.clientY
+		this.startX = e.clientX
+		this.startY = e.clientY
 		const diffX =
-			(this.editor.screen.screenWidth * (1 - this.editor.zoom)) / 2 +
-			this.editor.eve.offsetX
+			(this.editor.width * (1 - this.editor.zoom)) / 2 +
+			this.editor.offsetX
 		const diffY =
-			(this.editor.screen.screenHeight * (1 - this.editor.zoom)) / 2 +
-			this.editor.eve.offsetY
-		this.editor.eve.startPointerX = (e.layerX - diffX) / this.editor.zoom
-		this.editor.eve.startPointerY = (e.layerY - diffY) / this.editor.zoom
-		if (this.editor.eve.contentMove) {
-			this.editor.eve.contentDrag = true
+			(this.editor.height * (1 - this.editor.zoom)) / 2 +
+			this.editor.offsetY
+		this.startPointerX = (e.layerX - diffX) / this.editor.zoom
+		this.startPointerY = (e.layerY - diffY) / this.editor.zoom
+		if (this.editor.contentMove) {
+			this.contentDrag = true
 		}
-		if (!this.editor.eve.widgetMove) {
+		if (!this.editor.widgetMove) {
 			this.editor.unSelectWidget()
+			const rightMenu = document.getElementById('right-menu')
+			rightMenu.classList.remove('active')
 		}
-		if (
-			!this.editor.eve.contentMove &&
-			!this.editor.eve.widgetDrag &&
-			!this.editor.eve.widgetMove
-		) {
-			this.editor.eve.kuangMove = true
+		if (!this.editor.contentMove && !this.editor.widgetMove) {
+			this.kuangMove = true
 			let kuang = document.getElementById('d-kuang')
 			if (!kuang) {
 				kuang = document.createElement('div')
@@ -173,45 +182,41 @@ export default class DRuler extends Vue {
 				kuang.id = 'd-kuang'
 				document.body.appendChild(kuang)
 			}
-			kuang.style.left = this.editor.eve.startX + 'px'
-			kuang.style.top = this.editor.eve.startY + 'px'
+			kuang.style.left = this.startX + 'px'
+			kuang.style.top = this.startY + 'px'
 		}
 	}
 
 	mouseMove(e: any): void {
 		const { clientX, clientY } = e
-		this.editor.eve.clientX = clientX
-		this.editor.eve.clientY = clientY
-		if (this.editor.eve.contentDrag) {
-			if (!this.editor.eve.startX) {
-				this.editor.eve.clientX = clientX
-				this.editor.eve.clientY = clientY
+		this.clientX = clientX
+		this.clientY = clientY
+		if (this.contentDrag) {
+			if (!this.startX) {
+				this.clientX = clientX
+				this.clientY = clientY
 			}
-			this.editor.eve.contentScrollLeft = Math.ceil(
-				clientX - this.editor.eve.startX,
-			)
-			this.editor.eve.offsetX += this.editor.eve.contentScrollLeft
-			this.editor.eve.contentScrollTop = Math.ceil(
-				clientY - this.editor.eve.startY,
-			)
-			this.editor.eve.offsetY += this.editor.eve.contentScrollTop
+			this.contentScrollLeft = Math.ceil(clientX - this.startX)
+			this.editor.offsetX += this.contentScrollLeft
+			this.contentScrollTop = Math.ceil(clientY - this.startY)
+			this.editor.offsetY += this.contentScrollTop
 			this.editor.ruler.draw({
-				offsetY: this.editor.eve.offsetY,
-				offsetX: this.editor.eve.offsetX,
+				offsetY: this.editor.offsetY,
+				offsetX: this.editor.offsetX,
 			})
-			this.editor.eve.startX = clientX
-			this.editor.eve.startY = clientY
+			this.startX = clientX
+			this.startY = clientY
 		}
-		if (this.editor.eve.kuangMove) {
+		if (this.kuangMove) {
 			e.stopPropagation()
 			const _x = e.clientX
 			const _y = e.clientY
 			const selDiv = document.getElementById('d-kuang')
 			selDiv.style.display = 'block'
-			selDiv.style.left = Math.min(_x, this.editor.eve.startX) + 'px'
-			selDiv.style.top = Math.min(_y, this.editor.eve.startY) + 'px'
-			selDiv.style.width = Math.abs(_x - this.editor.eve.startX) + 'px'
-			selDiv.style.height = Math.abs(_y - this.editor.eve.startY) + 'px'
+			selDiv.style.left = Math.min(_x, this.startX) + 'px'
+			selDiv.style.top = Math.min(_y, this.startY) + 'px'
+			selDiv.style.width = Math.abs(_x - this.startX) + 'px'
+			selDiv.style.height = Math.abs(_y - this.startY) + 'px'
 		}
 	}
 
@@ -227,20 +232,20 @@ export default class DRuler extends Vue {
 			}
 		} else {
 			if (e.shiftKey) {
-				this.editor.eve.offsetX += e.wheelDelta > 0 ? 10 : -10
+				this.editor.offsetX += e.wheelDelta > 0 ? 10 : -10
 			} else {
-				this.editor.eve.offsetY += e.wheelDelta > 0 ? 10 : -10
+				this.editor.offsetY += e.wheelDelta > 0 ? 10 : -10
 			}
 		}
 		this.editor.ruler.draw({
-			offsetY: this.editor.eve.offsetY,
-			offsetX: this.editor.eve.offsetX,
-			zoom: this.editor.eve.zoom,
+			offsetY: this.editor.offsetY,
+			offsetX: this.editor.offsetX,
+			zoom: this.editor.zoom,
 		})
 	}
 
 	keyup(): void {
-		this.editor.eve.contentMove = false
+		this.editor.contentMove = false
 		document.getElementById(this.editor.rulerContainerId).style.cursor =
 			'auto'
 		// if (e.keyCode === 8 || e.keyCode === 46) {
@@ -261,7 +266,7 @@ export default class DRuler extends Vue {
 			e.preventDefault()
 		}
 		if (e.keyCode === 32) {
-			this.editor.eve.contentMove = true
+			this.editor.contentMove = true
 			document.getElementById(this.editor.rulerContainerId).style.cursor =
 				'grab'
 		}

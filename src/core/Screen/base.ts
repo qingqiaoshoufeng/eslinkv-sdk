@@ -4,7 +4,7 @@ import Widget from '@/core/Widget/base'
 import copy from 'fast-copy'
 import { uuid } from '../../utils/index'
 import globalConfigValue from '../../../common-config-value.js'
-import { configMerge } from '@/core/utils'
+import { configMerge, versionToNum } from '@/core/utils'
 export default class Screen extends Factory<Screen> {
 	/* 当前系统版本 */
 	currentVersion = '1.1.0'
@@ -78,7 +78,7 @@ export default class Screen extends Factory<Screen> {
 		}
 		return res
 	}
-	findWidget(widget, id, res) {
+	findWidget(widget, id, res): void {
 		if (widget.children) {
 			widget.children.forEach((v2: Widget) => {
 				if (v2.id === id) {
@@ -124,14 +124,6 @@ export default class Screen extends Factory<Screen> {
 		}
 	}
 
-	/* 大屏平台状态 是否Mac*/
-	isMac = /macintosh|mac os x/i.test(navigator.userAgent)
-	/* 大屏平台状态 是否移动端*/
-	isMobile = /android|iphone/i.test(navigator.userAgent)
-	/* 大屏平台状态 是否全屏*/
-	fullscreen = false
-	/* 大屏平台状态 是否自动贴靠参考线*/
-	autoAlignGuide = true
 	/* 获取大屏数据 */
 	screenData(): any {
 		return {
@@ -145,7 +137,7 @@ export default class Screen extends Factory<Screen> {
 			screenWidth: this.screenWidth,
 			screenName: this.screenName,
 			screenPlatform: this.screenPlatform,
-			screenVersion: this.screenVersion,
+			screenVersion: versionToNum(this.currentVersion),
 			screenLayoutMode: this.screenLayoutMode,
 			screenMainScene: this.screenMainScene,
 		}

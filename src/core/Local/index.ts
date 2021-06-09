@@ -4,10 +4,10 @@ export default class Local extends Factory<Local> {
 	widgets = {}
 	components = {}
 
-	private setCustomComponents(value) {
+	private setLocalComponents(value) {
 		this.components = { ...this.components, ...value }
 	}
-	setCustomWidgets(value: any): void {
+	setLocalWidgets(value: any): void {
 		this.widgets = { ...value, ...this.widgets }
 	}
 
@@ -76,7 +76,7 @@ export default class Local extends Factory<Local> {
 				children: widgetsObject,
 			},
 		}
-		this.setCustomComponents(components)
-		this.setCustomWidgets(result)
+		this.setLocalComponents(components)
+		this.setLocalWidgets(result)
 	}
 }

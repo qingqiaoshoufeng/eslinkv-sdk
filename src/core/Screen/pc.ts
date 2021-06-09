@@ -3,10 +3,6 @@ import { setDefault } from '@/utils'
 import Widget from '@/core/Widget/normal'
 
 export default class ScreenPc extends ScreenBase {
-	/* 当前组件加载状态 */
-	widgetLoaded = {}
-	/* 当前组件加载状态 */
-	widgetLoading = true
 	/* 递归查询组件 */
 	searchWidget(widget: Widget, id: string): Widget {
 		let res

@@ -1,4 +1,4 @@
-import './index.scss'
+﻿import './index.scss'
 import Guide from '@/core/ui/Guide'
 import GuideTip from '@/core/ui/GuideTip'
 
@@ -54,8 +54,14 @@ export default class Ruler {
 		y: null,
 	}
 	context2d = { x: null, y: null }
+	ready = false
+
 	constructor(rulerContainerId: string) {
 		this.rulerContainerId = rulerContainerId
+		this.init()
+	}
+	init(): void {
+		if (this.ready) return
 		const fatherX = this.createXFather()
 		const fatherY = this.createYFather()
 		const canvasX = this.createCanvas('x')
@@ -70,6 +76,7 @@ export default class Ruler {
 		fatherX.appendChild(guideX)
 		fatherY.appendChild(guideY)
 		document.getElementById(this.rulerContainerId).appendChild(rulerVisible)
+		this.ready = true
 		window.addEventListener('keyup', this.keyup.bind(this))
 		window.addEventListener('resize', this.draw.bind(this))
 	}
@@ -259,22 +266,26 @@ export default class Ruler {
 		if (!isNaN(zoom)) this.zoom = zoom
 		if (!isNaN(offsetY)) this.offsetY = offsetY
 		if (!isNaN(offsetX)) this.offsetX = offsetX
-		this.windowResize()
-		const diffX = (this.screenWidth * (1 - this.zoom)) / 2 + this.offsetX
-		const diffY = (this.screenHeight * (1 - this.zoom)) / 2 + this.offsetY
-		this.diffX = diffX
-		this.diffY = diffY
-		this.context2d.x.translate(diffX, 0)
-		this.context2d.y.translate(0, diffY)
-		this.context2d.y.font = '10px sans-serif'
-		this.context2d.y.fillStyle = '#999'
-		this.context2d.x.font = '10px sans-serif'
-		this.context2d.x.fillStyle = '#999'
-		this.clearRulerCanvas()
-		this.clearGuide()
-		this.initDrawX()
-		this.initDrawY()
-		this.initGuide()
+		if (this.ready) {
+			this.windowResize()
+			const diffX =
+				(this.screenWidth * (1 - this.zoom)) / 2 + this.offsetX
+			const diffY =
+				(this.screenHeight * (1 - this.zoom)) / 2 + this.offsetY
+			this.diffX = diffX
+			this.diffY = diffY
+			this.context2d.x.translate(diffX, 0)
+			this.context2d.y.translate(0, diffY)
+			this.context2d.y.font = '10px sans-serif'
+			this.context2d.y.fillStyle = '#999'
+			this.context2d.x.font = '10px sans-serif'
+			this.context2d.x.fillStyle = '#999'
+			this.clearRulerCanvas()
+			this.clearGuide()
+			this.initDrawX()
+			this.initDrawY()
+			this.initGuide()
+		}
 	}
 	/* 初始化参考线 */
 	private initGuide(): void {

@@ -11,7 +11,7 @@ import Editor from '@/core/Editor'
 
 @Component
 export default class Kuang extends Vue {
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 
 	get returnRatio(): number {
 		return this.editor.zoom < 1 ? 1 / this.editor.zoom : 1

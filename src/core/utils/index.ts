@@ -30,3 +30,19 @@ export const configMerge = function (from: any, to: any): any {
 	})
 	return output
 }
+
+/**
+ * @description 1.0.0 --->100000
+ * 每一位限两位数
+ */
+export function versionToNum(version: string): number {
+	let num = version.split('.')
+	num = num.map(item => {
+		if (Number(item) >= 99) item = '99'
+		if (Number(item) < 10) {
+			item = '0' + item
+		}
+		return item
+	})
+	return Number(num.join(''))
+}

@@ -58,8 +58,9 @@ export default class DFooter extends Vue {
 	}
 
 	mounted() {
-		const alt = this.editor.isMac ? '⌥' : 'Alt'
-		const ctrl = this.editor.isMac ? '⌃' : 'Ctrl'
+		const isMac = /macintosh|mac os x/i.test(navigator.userAgent)
+		const alt = isMac ? '⌥' : 'Alt'
+		const ctrl = isMac ? '⌃' : 'Ctrl'
 		const shift = 'Shift'
 		const space = '空格'
 		// const command = '⌘'

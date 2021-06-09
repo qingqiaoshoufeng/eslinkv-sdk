@@ -27,14 +27,10 @@ export default class Guide {
 		this.init()
 	}
 
-	clear(){
-		
-	}
-	
-	initFather(){
-		
-	}
-	
+	clear() {}
+
+	initFather() {}
+
 	init(): void {
 		const dom = document.createElement('div')
 		dom.id = this.id
