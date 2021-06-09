@@ -296,6 +296,10 @@ export default class Editor extends Factory<Editor> {
 			currentMaxZIndex,
 		)
 	}
+	/* 更新组件 */
+	updateComponentTarget(id, target, value): void {
+		this.screen.updateComponentTarget(id, target, value)
+	}
 	/* 给组件打组 */
 	createWidgetGroup(): void {
 		const children = []

@@ -143,11 +143,11 @@ export default class Screen extends Factory<Screen> {
 	}
 	/* 添加组件 */
 	createWidget(
-		offsetX: number,
-		offsetY: number,
+		offsetX = 0,
+		offsetY = 0,
 		data: any,
-		currentSceneIndex: number | string,
-		currentMaxZIndex: number,
+		currentSceneIndex: number | string = 0,
+		currentMaxZIndex = 10,
 	): void {
 		const widgetItem = new Widget(
 			offsetX,
@@ -181,12 +181,11 @@ export default class Screen extends Factory<Screen> {
 		this.screenWidgets = { ...this.screenWidgets, [id]: newWidget }
 	}
 	/* 更新组件 */
-	updateComponentTarget(id, target, value) {
+	updateComponentTarget(id, target, value): void {
 		switch (target) {
 			case 'config.api.params':
 				this.screenWidgets[id].config.api.params = {
-					...this.screenWidgets[id].config.api
-						.params,
+					...this.screenWidgets[id].config.api.params,
 					...value,
 				}
 				break

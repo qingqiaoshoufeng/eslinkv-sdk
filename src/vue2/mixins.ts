@@ -69,7 +69,7 @@ const mx: any = {
 							const processor = createSandbox(methodBody)
 							data = processor({ data })
 							coms.forEach((v: any) => {
-								this.editor.screen.updateComponentTarget(
+								this.editor.updateComponentTarget(
 									v.id,
 									item.target,
 									data,
@@ -83,7 +83,7 @@ const mx: any = {
 						}
 					} else {
 						coms.forEach((v: any) => {
-							this.editor.screen.updateComponentTarget(
+							this.editor.updateComponentTarget(
 								v.id,
 								item.target,
 								data,

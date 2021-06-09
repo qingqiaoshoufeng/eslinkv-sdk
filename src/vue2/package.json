@@ -24,6 +24,7 @@
 	},
 	"files": [
 		"lib/v2.css",
-		"lib/v2.umd.min.js"
+		"lib/v2.umd.min.js",
+		"lib/fonts"
 	]
 }
