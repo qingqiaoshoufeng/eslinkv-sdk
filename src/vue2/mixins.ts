@@ -1,7 +1,6 @@
 import scene from '@/core/store/scene.store.js'
 import fetch from '@/vue2/fetch.js'
 import dataProcess from '@/vue2/data-process.js'
-import instance from '@/core/store/instance.store'
 import { createSandbox } from '@/vue2/data-process'
 import { usePath } from '@/vue2/utils'
 import Editor from '@/core/Editor'
@@ -72,7 +71,7 @@ const mx: any = {
 							const processor = createSandbox(methodBody)
 							data = processor({ data })
 							coms.forEach((v: any) => {
-								instance.actions.updateComponentTarget(
+								this.editor.screen.updateComponentTarget(
 									v.id,
 									item.target,
 									data,
@@ -86,7 +85,7 @@ const mx: any = {
 						}
 					} else {
 						coms.forEach((v: any) => {
-							instance.actions.updateComponentTarget(
+							this.editor.screen.updateComponentTarget(
 								v.id,
 								item.target,
 								data,

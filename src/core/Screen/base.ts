@@ -180,4 +180,44 @@ export default class Screen extends Factory<Screen> {
 		layout.position.top += 10
 		this.screenWidgets = { ...this.screenWidgets, [id]: newWidget }
 	}
+	/* 更新组件 */
+	updateComponentTarget(id, target, value) {
+		switch (target) {
+			case 'config.api.params':
+				this.screenWidgets[id].config.api.params = {
+					...this.screenWidgets[id].config.api
+						.params,
+					...value,
+				}
+				break
+			case 'config.api.data':
+				this.screenWidgets[id].config.api.data = value
+				break
+			case 'config.config':
+				this.screenWidgets[id].config.config = {
+					...this.screenWidgets[id].config.config,
+					...value,
+				}
+				break
+		}
+	}
+	/* 更新组件 */
+	updateComponent(id, config) {
+		const widgetConfig = this.screenWidgets[id].config.api
+		if (config.params) {
+			widgetConfig.params = JSON.stringify(config.params)
+		}
+		if (config.data) {
+			widgetConfig.data = JSON.stringify(config.data)
+		}
+		if (config.url) {
+			widgetConfig.url = config.url
+		}
+		if (config.path) {
+			widgetConfig.path = config.path
+		}
+		if (config.method) {
+			widgetConfig.method = config.method
+		}
+	}
 }
