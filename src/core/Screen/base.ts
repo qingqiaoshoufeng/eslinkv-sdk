@@ -78,7 +78,7 @@ export default class Screen extends Factory<Screen> {
 		}
 		return res
 	}
-	findWidget (widget, id, res) {
+	findWidget(widget, id, res) {
 		if (widget.children) {
 			widget.children.forEach((v2: Widget) => {
 				if (v2.id === id) {

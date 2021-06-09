@@ -11,8 +11,10 @@ import commonConfigValue from '../common-config-value.js'
 import { configMerge } from '../src/utils'
 import './plugin.js'
 import { colorTheme } from './config.default'
+import Editor from '../src/core/Editor/index.ts'
 
 const eslinkV = {
+	Editor,
 	widgetMixin,
 	scene,
 	instance,
@@ -34,6 +36,7 @@ if (window !== undefined) {
 }
 
 export {
+	Editor,
 	widgetMixin,
 	scene,
 	instance,

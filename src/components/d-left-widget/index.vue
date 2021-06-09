@@ -46,13 +46,13 @@ import Editor from '@/core/Editor'
 	},
 })
 export default class DLeftWidget extends Vue {
-	editor:Editor = Editor.Instance()
+	editor: Editor = Editor.Instance()
 	leftIndex = null
 	rightIndex = null
 	list = {}
 	openList = {}
 
-	handleCheckType(componentTypeId, market) {
+	handleCheckType(componentTypeId: string, market: boolean): void {
 		if (this.openList[componentTypeId]) {
 			this.$set(this.openList, componentTypeId, false)
 		} else {

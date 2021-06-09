@@ -14,7 +14,6 @@
 </template>
 <script lang="ts">
 import loadMask from '../load-mask/index.vue'
-import instance from '../../store/instance.store'
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 

@@ -40,6 +40,13 @@ export default class Editor extends Factory<Editor> {
 		this.resetZoom()
 		return { screen }
 	}
+	/* ---------------------------------------------------Local---------------------------------------------------*/
+	localInit(obj: any): void {
+		this.local.init(obj)
+	}
+	setCustomWidgets(obj: any): void {
+		this.local.setCustomWidgets(obj)
+	}
 	/* ---------------------------------------------------Current---------------------------------------------------*/
 	/* 当前选中组件-多组件配置 */
 	get currentWidgetListConfig(): any {
