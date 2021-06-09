@@ -33,7 +33,6 @@
 			i-option(value="full-size") 充满页面
 			i-option(value="full-width") 100%宽度
 			i-option(value="full-height") 100%高度
-	// START_PROD
 	d-right-control(label="封面", title="支持jpg，png，gif")
 		d-upload(v-model="editor.avatar", :data="screenAvatarFormData")
 	d-right-control
@@ -41,7 +40,6 @@
 			@click="screenAvatar",
 			type="primary",
 			:loading="screenAvatarLoading") 截屏
-	// END_PROD
 	d-right-control(label="首场景")
 		i-select(filterable, v-model="editor.mainScene")
 			i-option(:value="0") 主场景
@@ -50,12 +48,12 @@
 <script lang="ts">
 import func from '@/vue2/components-func/func.mx'
 import { Component } from 'vue-property-decorator'
-// START_PROD
 import html2canvas from 'html2canvas'
-// END_PROD
 import dUpload from '@/vue2/components-right/d-upload/index.vue'
 import { Tooltip } from 'view-design'
 import Editor from '@/core/Editor'
+import { file } from '@/vue2/api/upload.api'
+
 @Component({
 	components: {
 		dUpload,
@@ -96,7 +94,6 @@ export default class FuncConfig extends func {
 	heightChange(e: any): void {
 		this.editor.screenSizeChange({ height: +e.target.value })
 	}
-	// START_PROD
 	async screenAvatar() {
 		this.screenAvatarLoading = true
 		this.capture({
@@ -121,8 +118,7 @@ export default class FuncConfig extends func {
 		const data = new FormData()
 		data.append('file', blob, name)
 		data.append('library', 'screenAvatar')
-		this.$api.upload
-			.file(data)
+		file(data)
 			.then(data => {
 				resolve(data)
 			})
@@ -184,6 +180,5 @@ export default class FuncConfig extends func {
 			})
 		})
 	}
-	// END_PROD
 }
 </script>

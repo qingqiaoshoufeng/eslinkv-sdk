@@ -221,6 +221,13 @@ import {
 	Row,
 	Icon,
 } from 'view-design'
+import {
+	getSourceList,
+	getSourceDatabaseList,
+	getSchemaList,
+	getSourceTableList,
+	getSourceTableDetail,
+} from '@/vue2/api/dataWarehouse.api'
 
 export default {
 	components: {
@@ -423,7 +430,7 @@ export default {
 		getProList(bool) {
 			this.isEcho = false
 			if (bool) {
-				this.$api.dataWarehouse.getSourceList().then(res => {
+				getSourceList().then(res => {
 					this.sourceList = res
 				})
 			}
@@ -461,24 +468,22 @@ export default {
 							this.queryCond.databaseType = val.dataSourceType
 						}
 					})
-					this.$api.dataWarehouse
-						.getSourceDatabaseList({ id: value })
-						.then(data => {
-							const list = []
-							if (data.length == 0) {
-								this.$Message.info('当前项目下无库')
-							} else {
-								data.map((item, index) => {
-									list.push({
-										value: item,
-									})
+					getSourceDatabaseList({ id: value }).then(data => {
+						const list = []
+						if (data.length == 0) {
+							this.$Message.info('当前项目下无库')
+						} else {
+							data.map((item, index) => {
+								list.push({
+									value: item,
 								})
-							}
-							this.databaseList = list
-							// 回显设置
-							if (this.isEcho)
-								this.queryCond.databaseName = this.singleCond.databaseName
-						})
+							})
+						}
+						this.databaseList = list
+						// 回显设置
+						if (this.isEcho)
+							this.queryCond.databaseName = this.singleCond.databaseName
+					})
 				}
 			},
 		},
@@ -490,69 +495,10 @@ export default {
 					this.tableList = []
 					this.queryFieldList = []
 					if (this.databaseType == 0) {
-						this.$api.dataWarehouse
-							.getSourceTableList({
-								id: this.queryCond.dataSourceId,
-								databaseName: value,
-							})
-							.then(data => {
-								const list = []
-								if (data.length == 0) {
-									this.$Message.info('当前数据库为空')
-								} else {
-									data.map((item, i) => {
-										list.push({
-											value: item,
-										})
-									})
-								}
-								this.tableList = list
-								// 回显设置
-								if (this.isEcho)
-									this.queryCond.tableName = this.singleCond.tableName
-							})
-					} else {
-						this.queryCond.databaseSchema = ''
-						this.$api.dataWarehouse
-							.getSchemaList({
-								id: this.queryCond.dataSourceId,
-								databaseName: value,
-							})
-							.then(data => {
-								this.dataSchemaeList = []
-								const list = []
-								if (data.length == 0) {
-									this.$Message.info('当前数据库为空')
-								} else {
-									data.map((item, i) => {
-										list.push({
-											value: item,
-										})
-									})
-								}
-								this.dataSchemaeList = list
-								// 回显设置
-								if (this.isEcho)
-									this.queryCond.databaseSchema = this.singleCond.databaseSchema
-							})
-					}
-				}
-			},
-		},
-		// oracle下获取表
-		'queryCond.databaseSchema': {
-			handler(value) {
-				if (value && this.queryCond.databaseName) {
-					this.queryCond.tableName = ''
-					this.tableList = []
-					this.queryFieldList = []
-					this.$api.dataWarehouse
-						.getSourceTableList({
+						getSourceTableList({
 							id: this.queryCond.dataSourceId,
-							databaseName: this.queryCond.databaseName,
-							databaseSchema: value,
-						})
-						.then(data => {
+							databaseName: value,
+						}).then(data => {
 							const list = []
 							if (data.length == 0) {
 								this.$Message.info('当前数据库为空')
@@ -568,6 +514,59 @@ export default {
 							if (this.isEcho)
 								this.queryCond.tableName = this.singleCond.tableName
 						})
+					} else {
+						this.queryCond.databaseSchema = ''
+						getSchemaList({
+							id: this.queryCond.dataSourceId,
+							databaseName: value,
+						}).then(data => {
+							this.dataSchemaeList = []
+							const list = []
+							if (data.length == 0) {
+								this.$Message.info('当前数据库为空')
+							} else {
+								data.map((item, i) => {
+									list.push({
+										value: item,
+									})
+								})
+							}
+							this.dataSchemaeList = list
+							// 回显设置
+							if (this.isEcho)
+								this.queryCond.databaseSchema = this.singleCond.databaseSchema
+						})
+					}
+				}
+			},
+		},
+		// oracle下获取表
+		'queryCond.databaseSchema': {
+			handler(value) {
+				if (value && this.queryCond.databaseName) {
+					this.queryCond.tableName = ''
+					this.tableList = []
+					this.queryFieldList = []
+					getSourceTableList({
+						id: this.queryCond.dataSourceId,
+						databaseName: this.queryCond.databaseName,
+						databaseSchema: value,
+					}).then(data => {
+						const list = []
+						if (data.length == 0) {
+							this.$Message.info('当前数据库为空')
+						} else {
+							data.map((item, i) => {
+								list.push({
+									value: item,
+								})
+							})
+						}
+						this.tableList = list
+						// 回显设置
+						if (this.isEcho)
+							this.queryCond.tableName = this.singleCond.tableName
+					})
 				}
 			},
 		},
@@ -599,27 +598,25 @@ export default {
 							databaseSchema: this.queryCond.databaseSchema,
 						}
 					}
-					this.$api.dataWarehouse
-						.getSourceTableDetail(data)
-						.then(data => {
-							const list = []
-							data.map(item => {
-								list.push({
-									value: item.fieldName,
-									label: item.fieldDesc
-										? item.fieldDesc
-										: item.fieldName,
-									fieldType: item.fieldType,
-								})
+					getSourceTableDetail(data).then(data => {
+						const list = []
+						data.map(item => {
+							list.push({
+								value: item.fieldName,
+								label: item.fieldDesc
+									? item.fieldDesc
+									: item.fieldName,
+								fieldType: item.fieldType,
 							})
-							this.queryFieldList = list
-							if (this.isEcho) {
-								this.queryCond.analyseCondition = this.analyseCondition
-								setTimeout(() => {
-									this.isEcho = false
-								})
-							}
 						})
+						this.queryFieldList = list
+						if (this.isEcho) {
+							this.queryCond.analyseCondition = this.analyseCondition
+							setTimeout(() => {
+								this.isEcho = false
+							})
+						}
+					})
 				}
 			},
 		},

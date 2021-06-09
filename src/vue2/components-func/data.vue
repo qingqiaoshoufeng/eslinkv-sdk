@@ -1,7 +1,6 @@
 <template lang="pug">
 .d-manage-modal-control-data
 	d-right-swiper(title="数据请求", :show="true")
-		// START_PROD
 		d-right-control(label="数据类型")
 			i-select(
 				v-model="apiType",
@@ -59,13 +58,11 @@
 			lang="json",
 			:code="typeof editor.currentWidget.config.api.params === 'string' ? editor.currentWidget.config.api.params : JSON.stringify(editor.currentWidget.config.api.params)",
 			@update:code="value => (editor.currentWidget.config.api.params = JSON.parse(value))")
-		// END_PROD
 		d-code(
 			label="响应数据",
 			lang="json",
 			:code="apiData",
 			@update:code="value => (apiData = value)")
-	// START_PROD
 	d-right-swiper-eye(
 		title="数据过滤器",
 		:enable="editor.currentWidget.config.api.process.enable",
@@ -86,7 +83,6 @@
 				:step="1",
 				:formatter="value => `${value} ms`",
 				v-model="editor.currentWidget.config.api.autoFetch.duration")
-	// END_PROD
 	data-event-component
 	data-event-scene
 	//d-right-control(label="开启组件内部事件")
@@ -119,7 +115,6 @@ import DataEventScene from './data-event-scene.vue'
 export default class FuncData extends func {
 	animates = animates
 	eventModal = false
-	// START_PROD
 	showDatabaseConfigModal = false
 	get apiType() {
 		if (this.editor.currentWidget.config.api.system.enable) {
@@ -143,7 +138,6 @@ export default class FuncData extends func {
 			this.editor.currentWidget.config.api.system.enable = false
 		}
 	}
-	// END_PROD
 
 	// eslint-disable-next-line getter-return
 	get apiData() {
@@ -197,7 +191,6 @@ export default class FuncData extends func {
 		return list
 	}
 
-	// START_PROD
 	updateApiSystem(value) {
 		Object.assign(this.editor.currentWidget.config.api.system.params, value)
 		this.showDatabaseConfigModal = false
@@ -211,6 +204,5 @@ export default class FuncData extends func {
 			value.api.system.params,
 		)
 	}
-	// END_PROD
 }
 </script>

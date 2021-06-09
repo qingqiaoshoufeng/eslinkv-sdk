@@ -199,6 +199,12 @@ import {
 	Option,
 	Icon,
 } from 'view-design'
+import {
+	getProList,
+	getProDatabaseList,
+	getDatabaseTableList,
+	getTableDetail,
+} from '@/vue2/api/dataWarehouse.api'
 
 export default {
 	components: {
@@ -324,7 +330,7 @@ export default {
 	methods: {
 		// 获取项目列表
 		getProList() {
-			this.$api.dataWarehouse.getProList().then(data => {
+			getProList().then(data => {
 				const list = []
 				data.map(item => {
 					list.push({
@@ -341,7 +347,7 @@ export default {
 				this.$Message.warning('请先选择项目')
 				return
 			}
-			this.$api.dataWarehouse.getProDatabaseList({ id: id }).then(res => {
+			getProDatabaseList({ id: id }).then(res => {
 				const list = []
 				const data = res.databaseList
 				if (data.length == 0) {
@@ -363,23 +369,21 @@ export default {
 				this.$Message.warning('请先选择数据库')
 				return
 			}
-			this.$api.dataWarehouse
-				.getDatabaseTableList({ id: id })
-				.then(res => {
-					const list = []
-					const data = res.tableList
-					if (data.length == 0) {
-						this.$Message.info('当前数据库为空')
-					} else {
-						data.map((item, i) => {
-							list.push({
-								value: item.id,
-								label: item.name,
-							})
+			getDatabaseTableList({ id: id }).then(res => {
+				const list = []
+				const data = res.tableList
+				if (data.length == 0) {
+					this.$Message.info('当前数据库为空')
+				} else {
+					data.map((item, i) => {
+						list.push({
+							value: item.id,
+							label: item.name,
 						})
-					}
-					this.querySingleList.tableList = list
-				})
+					})
+				}
+				this.querySingleList.tableList = list
+			})
 		},
 		// 切换项目 清空之前的值
 		changeSinglePro() {
@@ -475,19 +479,17 @@ export default {
 		'querySingle.tableId': {
 			handler(value) {
 				if (value) {
-					this.$api.dataWarehouse
-						.getTableDetail({ id: value })
-						.then(res => {
-							const list = []
-							const data = JSON.parse(res.fieldSet)
-							data.map(item => {
-								list.push({
-									value: item.fieldName,
-									label: item.fieldName,
-								})
+					getTableDetail({ id: value }).then(res => {
+						const list = []
+						const data = JSON.parse(res.fieldSet)
+						data.map(item => {
+							list.push({
+								value: item.fieldName,
+								label: item.fieldName,
 							})
-							this.querySingleList.fieldList = list
 						})
+						this.querySingleList.fieldList = list
+					})
 				}
 			},
 		},

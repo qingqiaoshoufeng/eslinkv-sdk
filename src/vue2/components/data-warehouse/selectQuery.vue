@@ -26,6 +26,7 @@
 import selectSource from './selectSource'
 import { RadioGroup, Radio } from 'view-design'
 import esFormNew from '../es-form-new'
+import { getProList, getAnalyseList } from '@/vue2/api/dataWarehouse.api'
 
 export default {
 	props: {
@@ -92,7 +93,7 @@ export default {
 	methods: {
 		// 获取查询项目列表
 		getProList() {
-			this.$api.dataWarehouse.getProList().then(data => {
+			getProList().then(data => {
 				const list = []
 				data.map(item => {
 					list.push({
@@ -110,22 +111,20 @@ export default {
 				return
 			}
 			this.selectObj.templetDetailList[1].dataSourceList = []
-			this.$api.dataWarehouse
-				.getAnalyseList({ projectId: projectId })
-				.then(data => {
-					const arr = []
-					if (data.length > 0) {
-						data.map(item => {
-							arr.push({
-								value: item.id.toString(),
-								label: item.name,
-							})
+			getAnalyseList({ projectId: projectId }).then(data => {
+				const arr = []
+				if (data.length > 0) {
+					data.map(item => {
+						arr.push({
+							value: item.id.toString(),
+							label: item.name,
 						})
-						this.selectObj.templetDetailList[1].dataSourceList = arr
-					} else {
-						this.$Message.info('该项目下无结果')
-					}
-				})
+					})
+					this.selectObj.templetDetailList[1].dataSourceList = arr
+				} else {
+					this.$Message.info('该项目下无结果')
+				}
+			})
 		},
 		getSource(data) {
 			this.$emit('getQueryCond', data)

@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { databaseQuery } from '@/vue2/api/dataWarehouse.api'
 const parseParams = (params = {}) => {
 	if (typeof params === 'string' && params !== '') {
 		try {
@@ -90,17 +90,15 @@ export default {
 			if (!Object.keys(params).length) return
 			this.querying = true
 			this.queryFailed = false
-			this.$api.dataWarehouse
-				.databaseQuery(params, method, innerUrl)
-				.then(response => {
-					const process = api.process
-					this.parseQueryResult(response, {
-						path,
-						process,
-					})
-					this.querying = false
-					this.lastFetchDoneTime = Date.now()
+			databaseQuery(params, method, innerUrl).then(response => {
+				const process = api.process
+				this.parseQueryResult(response, {
+					path,
+					process,
 				})
+				this.querying = false
+				this.lastFetchDoneTime = Date.now()
+			})
 		},
 		dispatchQuery(api) {
 			const system = api.system

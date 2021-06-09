@@ -79,10 +79,14 @@
 		</FormItem>
 	</Form>
 </template>
-
 <script>
 import { Form, FormItem, Select, Option } from 'view-design'
 import esSql from '../esSql.vue'
+import {
+	getSchemaList,
+	getSourceList,
+	getSourceDatabaseList,
+} from '@/vue2/api/dataWarehouse.api'
 
 export default {
 	data() {
@@ -141,30 +145,27 @@ export default {
 			}
 		},
 		openBaseSchema() {
-			this.$api.dataWarehouse
-				.getSchemaList({
-					id: this.queryCustomSource.dataSourceId,
-					databaseName: this.queryCustomSource.databaseName,
-				})
-				.then(data => {
-					this.dataSchemaeList = []
-					const list = []
-					if (data.length == 0) {
-						this.$Message.info('当前数据库为空')
-					} else {
-						data.map((item, i) => {
-							list.push(item)
-						})
-					}
-					this.querySourceList.databaseSchemaList = list
-				})
+			getSchemaList({
+				id: this.queryCustomSource.dataSourceId,
+				databaseName: this.queryCustomSource.databaseName,
+			}).then(data => {
+				this.dataSchemaeList = []
+				const list = []
+				if (data.length == 0) {
+					this.$Message.info('当前数据库为空')
+				} else {
+					data.map((item, i) => {
+						list.push(item)
+					})
+				}
+				this.querySourceList.databaseSchemaList = list
+			})
 		},
 		// 获取项目列表
 		getProList() {
 			this.querySourceList.projectList = []
-			const that = this
-			that.$api.dataWarehouse.getSourceList().then(data => {
-				that.querySourceList.sourceList = data
+			getSourceList().then(data => {
+				this.querySourceList.sourceList = data
 			})
 		},
 		// 获取项目下的数据库列表
@@ -178,16 +179,14 @@ export default {
 					this.databaseType = val.dataSourceType
 				}
 			})
-			this.$api.dataWarehouse
-				.getSourceDatabaseList({
-					id: this.queryCustomSource.dataSourceId,
-				})
-				.then(data => {
-					if (data.length == 0) {
-						this.$Message.info('当前项目下无库')
-					}
-					this.querySourceList.databaseList = data
-				})
+			getSourceDatabaseList({
+				id: this.queryCustomSource.dataSourceId,
+			}).then(data => {
+				if (data.length == 0) {
+					this.$Message.info('当前项目下无库')
+				}
+				this.querySourceList.databaseList = data
+			})
 		},
 		reShow(data) {
 			this.getProList()

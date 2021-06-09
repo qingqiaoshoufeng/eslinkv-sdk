@@ -78,6 +78,7 @@
 import esSql from '../esSql.vue'
 import customSource from './customSource'
 import { RadioGroup, Radio, Select, Option, FormItem, Form } from 'view-design'
+import { getProList, getProDatabaseList } from '@/vue2/api/dataWarehouse.api'
 
 export default {
 	props: {
@@ -142,7 +143,7 @@ export default {
 	methods: {
 		// 获取项目列表
 		getProList() {
-			this.$api.dataWarehouse.getProList().then(data => {
+			getProList().then(data => {
 				const list = []
 				data.map(item => {
 					list.push({
@@ -160,7 +161,7 @@ export default {
 				this.$Message.warning('请先选择项目')
 				return
 			}
-			this.$api.dataWarehouse.getProDatabaseList({ id: id }).then(res => {
+			getProDatabaseList({ id: id }).then(res => {
 				const list = []
 				const data = res.databaseList
 				if (data.length == 0) {

@@ -13,13 +13,14 @@
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
+import { getVersionList } from '@/vue2/api/marketComponent.api'
 
 @Component
 export default class FuncCustom extends func {
 	versionList = []
 
 	async getVersionList() {
-		const res = await this.$api.marketComponent.getVersionList({
+		const res = await getVersionList({
 			componentEnTitle: this.editor.currentWidget.type,
 		})
 		this.versionList = res

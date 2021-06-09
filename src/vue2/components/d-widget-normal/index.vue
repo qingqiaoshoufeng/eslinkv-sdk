@@ -21,6 +21,7 @@ eslinkv-group(
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
+import { use } from '@/vue2/api/marketComponent.api'
 
 const prefix1 = 'market-'
 const prefix2 = 'eslinkv-'
@@ -88,11 +89,10 @@ export default class WidgetNormal extends Vue {
 		if (this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]) {
 			this.ready = true
 		} else {
-			this.$api.marketComponent
-				.use({
-					componentEnTitle: this.type,
-					componentVersion: this.config.widget.componentVersion,
-				})
+			use({
+				componentEnTitle: this.type,
+				componentVersion: this.config.widget.componentVersion,
+			})
 				.then(res => {
 					const script = document.createElement('script')
 					script.onload = () => {

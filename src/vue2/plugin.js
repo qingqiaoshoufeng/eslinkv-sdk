@@ -1,4 +1,3 @@
-import '@/vue2/api'
 import '@/vue2/icons'
 import 'view-design/dist/styles/iview.css'
 import '@/vue2/scss/conf.scss'

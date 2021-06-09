@@ -38,6 +38,7 @@ import { Icon } from 'view-design'
 import itemCard from './item-card.vue'
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
+import { typeList } from '@/vue2/api/marketComponent.api'
 
 @Component({
 	components: {
@@ -60,17 +61,15 @@ export default class DLeftWidget extends Vue {
 		}
 		if (!this.list[componentTypeId]) {
 			if (market) {
-				this.$api.marketComponent
-					.typeList({
-						componentTypeId,
-						isCurrentVersion: true,
-						status: 'SUCCESS',
-						pageNum: 1,
-						pageSize: 999,
-					})
-					.then(res => {
-						this.$set(this.list, componentTypeId, res.list)
-					})
+				typeList({
+					componentTypeId,
+					isCurrentVersion: true,
+					status: 'SUCCESS',
+					pageNum: 1,
+					pageSize: 999,
+				}).then(res => {
+					this.$set(this.list, componentTypeId, res.list)
+				})
 			} else {
 				const list = this.editor.local.widgets[this.leftIndex].children
 				list.forEach(item => {

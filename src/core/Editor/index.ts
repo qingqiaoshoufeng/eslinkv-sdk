@@ -10,7 +10,7 @@ import { configMerge } from '@/core/utils'
 import commonConfigValue from '@/core/common-config-value'
 
 const rulerContainerId = `drag-content-${+new Date()}`
-export default class Editor extends Factory<Editor> {
+class Editor extends Factory<Editor> {
 	rulerContainerId = rulerContainerId
 	/* 大屏ID */
 	screenId: string
@@ -300,6 +300,10 @@ export default class Editor extends Factory<Editor> {
 	updateComponentTarget(id, target, value): void {
 		this.screen.updateComponentTarget(id, target, value)
 	}
+	/* 更新组件 */
+	updateComponent(id, config): void {
+		this.screen.updateComponent(id, config)
+	}
 	/* 给组件打组 */
 	createWidgetGroup(): void {
 		const children = []
@@ -440,3 +444,6 @@ if (!window.eslinkV) window.eslinkV = {}
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 window.eslinkV.Editor = Editor
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export default window.eslinkV.Editor

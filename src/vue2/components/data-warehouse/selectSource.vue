@@ -8,9 +8,9 @@
 		></es-form-new>
 	</div>
 </template>
-
 <script>
 import esFormNew from '../es-form-new'
+import { getSourceList, getAnalyseList } from '@/vue2/api/dataWarehouse.api'
 
 export default {
 	components: {
@@ -72,7 +72,7 @@ export default {
 	methods: {
 		// 获取项目列表
 		getProList() {
-			this.$api.dataWarehouse.getSourceList().then(data => {
+			getSourceList().then(data => {
 				const list = []
 				data.map(item => {
 					list.push({
@@ -90,22 +90,20 @@ export default {
 				return
 			}
 			this.selectObj.templetDetailList[1].dataSourceList = []
-			this.$api.dataWarehouse
-				.getAnalyseList({ dataSourceId: dataSourceId })
-				.then(data => {
-					const arr = []
-					if (data.length > 0) {
-						data.map(item => {
-							arr.push({
-								value: item.id.toString(),
-								label: item.name,
-							})
+			getAnalyseList({ dataSourceId: dataSourceId }).then(data => {
+				const arr = []
+				if (data.length > 0) {
+					data.map(item => {
+						arr.push({
+							value: item.id.toString(),
+							label: item.name,
 						})
-						this.selectObj.templetDetailList[1].dataSourceList = arr
-					} else {
-						this.$Message.info('该项目下无结果')
-					}
-				})
+					})
+					this.selectObj.templetDetailList[1].dataSourceList = arr
+				} else {
+					this.$Message.info('该项目下无结果')
+				}
+			})
 		},
 		reShow(data) {
 			this.getProList()
