@@ -429,3 +429,8 @@ export default class Editor extends Factory<Editor> {
 		this.resetZoom()
 	}
 }
+
+// @ts-ignore
+if (!window.eslinkV) window.eslinkV = {}
+// @ts-ignore
+window.eslinkV.Editor = Editor
