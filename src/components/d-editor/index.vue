@@ -108,8 +108,10 @@ export default class DEditor extends Vue {
 		this.editor.fullscreen = false
 		document.removeEventListener('fullscreenchange', this.fullscreenchange)
 	}
-	mounted(): void {
+	created () {
 		this.editor.updateEditorStatus('inEdit')
+	}
+	mounted(): void {
 		document.addEventListener('fullscreenchange', this.fullscreenchange)
 	}
 }
