@@ -1,4 +1,3 @@
-import scene from '@/core/store/scene.store.js'
 import fetch from '@/vue2/fetch.js'
 import dataProcess from '@/vue2/data-process.js'
 import { createSandbox } from '@/vue2/data-process'
@@ -19,7 +18,6 @@ const mx: any = {
 	},
 	data() {
 		return {
-			scene: scene.state,
 			configValue: null,
 			ready: false,
 			data: null,
@@ -47,7 +45,7 @@ const mx: any = {
 				const sceneId = item.id
 				switch (item.type) {
 					case 'openScene':
-						scene.state.activeWidgetId = this.config.widget.id
+						this.editor.scene.activeWidgetId = this.config.widget.id
 						this.editor.openScene(sceneId)
 						break
 					case 'closeScene':
@@ -155,9 +153,9 @@ const mx: any = {
 			if (!this.config) return false
 			if (!this.config.event.scene.length) return false
 			return (
-				scene.state.activeWidgetId === this.config.widget.id &&
+				this.editor.scene.activeWidgetId === this.config.widget.id &&
 				this.config.event.scene.some(
-					v => v.id === scene.state.activeSceneId,
+					v => v.id === this.editor.scene.activeSceneId,
 				)
 			)
 		},

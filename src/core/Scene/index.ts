@@ -1,6 +1,10 @@
 import Factory from '@/core/Base/factory'
 
 export default class SceneBase extends Factory<SceneBase> {
+	/* 被激活的场景对应组件 */
+	activeWidgetId: string = ''
+	/* 被激活的场景id */
+	activeSceneId: number|string = 0
 	/* 大屏场景配置 */
 	screenScene: any = {}
 	/* 大屏场景数据序列化 */
