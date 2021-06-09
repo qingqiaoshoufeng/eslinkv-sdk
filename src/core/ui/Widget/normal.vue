@@ -12,7 +12,7 @@ export default class widgetNormal extends Vue {
 
 	styles = (this.$parent as any).styles
 
-	created() {
+	created(): void {
 		this.$parent.$data.configValue = (this.$parent as any).parseConfigValue(
 			this.value,
 			this.customConfig,
@@ -20,4 +20,3 @@ export default class widgetNormal extends Vue {
 	}
 }
 </script>
-<style lang="scss"></style>

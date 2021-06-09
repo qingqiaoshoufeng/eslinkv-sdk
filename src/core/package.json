@@ -1,5 +1,12 @@
 {
 	"name": "@eslinkv/core",
 	"version": "1.0.0",
-	"main": "index.js"
+	"main": "lib/core.umd.min.js",
+	"dependencies": {
+		"fast-copy": "^2.1.1"
+	},
+	"files": [
+		"lib/core.css",
+		"lib/core.umd.min.js"
+	]
 }

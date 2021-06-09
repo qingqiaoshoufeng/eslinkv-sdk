@@ -1,6 +1,6 @@
 import scene from '@/core/store/scene.store.js'
 import fetch from '@/vue2/fetch.js'
-import dataProcess from './data-process.js'
+import dataProcess from '@/vue2/data-process.js'
 import instance from '@/core/store/instance.store'
 import { createSandbox } from '@/vue2/data-process'
 import { usePath } from '@/vue2/utils'
