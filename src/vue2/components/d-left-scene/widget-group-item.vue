@@ -6,15 +6,13 @@
 		.d-left-scene-left
 			h2 {{ child.config.widget.name }}
 		.d-left-scene-right
-	WidgetGroup(:childList="child.children", v-if="child.children")
+	scene-group(:childList="child.children", v-if="child.children")
 </template>
 <script lang="ts">
-import widgetGroup from './widget-group.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
-@Component({
-	components: { widgetGroup },
-})
+
+@Component
 export default class widgetGroupItem extends Vue {
 	editor: Editor = Editor.Instance()
 	@Prop() child

@@ -1,7 +1,7 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999(:style="{ width: `${editor.xRoomR1}px` }")
 	.d-right-modal-more-list.fn-flex.flex-column
-		i-button(@click="handleGroup", type="primary") 成组
+		i-button(@click="handleGroup", type="primary") 组合
 		i-button(@click="handleDelete", type="primary") 删除
 </template>
 <script lang="ts">

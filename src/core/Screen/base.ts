@@ -56,6 +56,7 @@ export default class Screen extends Factory<Screen> {
 		const mergedValue = localConfigValue
 			? configMerge(localConfigValue, globalConfigValue())
 			: globalConfigValue()
+		if (!this.screenWidgets[id]) return {}
 		const inputConfig = Object.freeze(this.screenWidgets[id].config || {})
 		const res = configMerge(inputConfig, mergedValue)
 		// 过滤可用属性
@@ -78,14 +79,16 @@ export default class Screen extends Factory<Screen> {
 		return res
 	}
 	findWidget(widget, id, res): void {
-		if (widget.children) {
-			widget.children.forEach((v2: Widget) => {
-				if (v2.id === id) {
-					v2.config = res
-				} else if (v2.children) {
-					this.findWidget(v2, id, res)
+		if (Object.values(widget.children).length > 0) {
+			for (const k in widget.children) {
+				if (widget.children[k].id === id) {
+					widget.children[k].config = res
+				} else if (
+					Object.values(widget.children[k].children).length > 0
+				) {
+					this.findWidget(widget.children[k], id, res)
 				}
-			})
+			}
 		}
 	}
 	/* 大屏样式 */

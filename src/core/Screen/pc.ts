@@ -1,24 +1,24 @@
 import ScreenBase from '@/core/Screen/base'
 import { setDefault } from '@/core/utils'
-import Widget from '@/core/Widget/normal'
 
 export default class ScreenPc extends ScreenBase {
+	marketComponents = []
 	/* 递归查询组件 */
-	searchWidget(widget: Widget, id: string): Widget {
-		let res
-		if (widget.children && id) {
-			res = widget.children.find((v: Widget) => v.id === id)
-		}
-		if (!res) {
-			for (const v of widget.children) {
-				if (v.children) {
-					res = this.searchWidget(v, id)
-					if (res) break
-				}
-			}
-		}
-		return res
-	}
+	// searchWidget(widget: Widget, id: string): Widget {
+	// 	let res
+	// 	if (widget.children && id) {
+	// 		res = widget.children.find((v: Widget) => v.id === id)
+	// 	}
+	// 	if (!res) {
+	// 		for (const v of widget.children) {
+	// 			if (v.children) {
+	// 				res = this.searchWidget(v, id)
+	// 				if (res) break
+	// 			}
+	// 		}
+	// 	}
+	// 	return res
+	// }
 	/* 初始化配置 */
 	init(res: any): any {
 		this.screenId = res.screenId
@@ -55,6 +55,23 @@ export default class ScreenPc extends ScreenBase {
 		this.screenPlatform = res.screenPlatform
 		return this.initWidget(res)
 	}
+	/* 序列化children */
+	serialize(screenWidgets): void {
+		for (const key in screenWidgets) {
+			setDefault(screenWidgets[key].config)
+			if (screenWidgets[key].market) {
+				this.marketComponents.push({
+					type: screenWidgets[key].type,
+					version: screenWidgets[key].config.widget.componentVersion,
+				})
+			}
+			if (screenWidgets[key].children) {
+				if (Object.values(screenWidgets[key].children).length > 0) {
+					this.serialize(screenWidgets[key].children)
+				}
+			}
+		}
+	}
 	/* 序列化组件数据 */
 	initWidget(res: any): any {
 		let screenWidgets
@@ -69,6 +86,7 @@ export default class ScreenPc extends ScreenBase {
 					scene: item.scene,
 					type: item.type,
 					config: item.value,
+					children: {},
 				}
 				if (item.market) {
 					marketComponents.push({
@@ -81,17 +99,8 @@ export default class ScreenPc extends ScreenBase {
 			delete this.screenConfig.widgets
 		} else {
 			screenWidgets = res.screenWidgets || {}
-			for (const key in screenWidgets) {
-				setDefault(screenWidgets[key].config)
-				if (screenWidgets[key].market) {
-					marketComponents.push({
-						type: screenWidgets[key].type,
-						version:
-							screenWidgets[key].config.widget.componentVersion,
-					})
-				}
-			}
 		}
+		this.serialize(screenWidgets)
 		return { marketComponents, screenWidgets }
 	}
 }

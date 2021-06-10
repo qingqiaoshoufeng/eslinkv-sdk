@@ -27,7 +27,7 @@ const prefix1 = 'market-'
 const prefix2 = 'eslinkv-'
 @Component
 export default class WidgetNormal extends Vue {
-	@Prop() widgetType
+	@Prop({ default: 'normal' }) widgetType
 	@Prop({ default: false }) market
 	@Prop() type
 	@Prop() config

@@ -9,10 +9,6 @@
 			type="ios-create-outline",
 			@click.stop="editName = true",
 			v-if="!editName")
-		i-icon.pointer.widget-name-icon(
-			:type="editor.currentWidget.config.widget.locked ? 'md-lock' : 'md-unlock'",
-			@click.stop="handleLock",
-			v-if="!editName")
 	.d-right-modal-id.fn-flex.flex-column
 		span {{ editor.currentWidget.type }}{{ editor.currentWidget.config.widget.componentVersion ? ` | ${editor.currentWidget.config.widget.componentVersion}` : '' }}
 	.d-right-modal-title.pointer.text-center.fn-flex.flex-row
@@ -51,11 +47,6 @@ export default class DRightSetting extends Vue {
 
 	close(): void {
 		this.editName = false
-	}
-
-	handleLock(): void {
-		this.editor.currentWidget.config.widget.locked = !this.editor
-			.currentWidget.config.widget.locked
 	}
 
 	handleClick(index: number): void {

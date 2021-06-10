@@ -10,16 +10,14 @@
 		li(@click="handleZIndexBottom")
 			i-icon(type="md-arrow-round-down")
 			span 置底
-		li(@click="handleZIndex(1)")
-			i-icon(type="ios-arrow-up")
-			span 上移一层
-		li(@click="handleZIndex(-1)", :class="{ disabled: zIndex === 1 }")
-			i-icon(type="ios-arrow-down")
-			span 下移一层
-	ul.list
-		li(@click="")
-			i-icon(type="md-heart-outline")
-			span 收藏
+	//ul.list
+	//	li(@click="")
+	//		i-icon(type="md-heart-outline")
+	//		span 收藏
+	ul.list(v-if="isGroup")
+		li(@click="handleRelieveGroup")
+			i-icon(type="md-apps")
+			span 取消组合
 	ul.list
 		li(@click="hideWidget")
 			i-icon(type="md-eye-off")
@@ -52,37 +50,42 @@ import ClickOutside from 'vue-click-outside'
 })
 export default class rightMenu extends Vue {
 	isLock = false
-	zIndex = 10
 	minZIndex = 0
 	maxZIndex = 0
 	editor: Editor = Editor.Instance()
+
+	get isGroup(): boolean {
+		if (this.editor.currentWidget) {
+			return this.editor.currentWidget.widgetType === 'group'
+		}
+		return false
+	}
+
+	handleRelieveGroup(): void {
+		this.editor.relieveWidgetGroup()
+		this.hideRightMenu()
+		this.handleUnActive()
+	}
+
 	handleSync(): void {
 		this.editor.refreshWidget()
 		this.hideRightMenu()
 	}
 
-	handleZIndex(num: number): void {
-		if (this.zIndex === 1 && num === -1) return
-		this.zIndex += num
-		this.editor.currentWidget.config.layout.zIndex = this.zIndex
-		this.hideRightMenu()
-	}
-
 	handleZIndexTop(): void {
-		this.zIndex = this.maxZIndex
-		this.editor.currentWidget.config.layout.zIndex = this.maxZIndex
+		this.editor.currentWidget.config.layout.zIndex = this.editor.currentMaxZIndex
 		this.hideRightMenu()
 	}
 
 	handleZIndexBottom(): void {
-		this.zIndex = this.minZIndex
-		this.editor.currentWidget.config.layout.zIndex = this.minZIndex
+		this.editor.currentWidget.config.layout.zIndex = this.editor.currentMinZIndex
 		this.hideRightMenu()
 	}
 
 	hideWidget(): void {
 		const widget = this.editor.currentWidget.config.widget
 		widget.hide = !widget.hide
+		this.hideRightMenu()
 		this.handleUnActive()
 	}
 
@@ -104,6 +107,7 @@ export default class rightMenu extends Vue {
 	copyWidget(): void {
 		this.editor.copyWidget()
 		this.handleUnActive()
+		this.hideRightMenu()
 	}
 
 	hideRightMenu(): void {

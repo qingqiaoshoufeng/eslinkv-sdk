@@ -10,7 +10,9 @@ import Vue from 'vue'
 import Hljs from 'highlight.js'
 import 'highlight.js/styles/tomorrow-night.css'
 import group from '@/vue2/components/d-widget-group'
+import widgetGroup from '@/vue2/components/d-left-scene/widget-group'
 import normal from '@/vue2/components/d-widget-normal'
+Vue.component('scene-group', widgetGroup)
 Vue.component('eslinkv-group', group)
 Vue.component('eslinkv-normal', normal)
 const Highlight = {

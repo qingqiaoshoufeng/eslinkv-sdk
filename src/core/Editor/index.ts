@@ -76,7 +76,7 @@ class Editor extends Factory<Editor> {
 	get currentWidgetId(): string {
 		return this.current.currentWidgetId
 	}
-	get currentWidget(): Widget | null {
+	get currentWidget() {
 		return this.current.currentWidget
 	}
 	/* 当前选中组件-多组件 */
@@ -203,32 +203,34 @@ class Editor extends Factory<Editor> {
 	}
 	/* 大屏场景组件关联 */
 	get sceneWidgets() {
-		const res = { 0: [] }
+		const res = { 0: {} }
 		for (const widgetId in this.screenWidgets) {
 			if (!res[this.screenWidgets[widgetId].scene])
-				res[this.screenWidgets[widgetId].scene] = []
-			res[this.screenWidgets[widgetId].scene].push(
-				this.screenWidgets[widgetId],
-			)
+				res[this.screenWidgets[widgetId].scene] = {}
+			res[this.screenWidgets[widgetId].scene][
+				widgetId
+			] = this.screenWidgets[widgetId]
 		}
 		return res
 	}
 	get showWidgets() {
 		if (this.current.currentSceneIndex === 0) {
-			return [
+			return {
 				...this.sceneWidgets[0],
-				...this.current.currentCreateSceneList
-					.map(v => this.sceneWidgets[v])
-					.flat(),
-			]
+				...this.current.currentCreateSceneList.map(
+					v => this.sceneWidgets[v],
+				),
+			}
 		} else {
-			return [
-				...(this.sceneWidgets[this.current.currentSceneIndex] || []),
+			let obj = {}
+			this.current.currentCreateSceneList.map(v => {
+				obj = { ...obj, ...this.sceneWidgets[v] }
+			})
+			return {
+				...this.sceneWidgets[this.current.currentSceneIndex],
 				...this.sceneWidgets[0],
-				...this.current.currentCreateSceneList
-					.map(v => this.sceneWidgets[v])
-					.flat(),
-			]
+				...obj,
+			}
 		}
 	}
 	/* 大屏名 */
@@ -295,17 +297,26 @@ class Editor extends Factory<Editor> {
 			this.screen.screenWidgets = { ...this.screen.screenWidgets }
 		})
 	}
-	/* 添加组件 */
-	createWidget(offsetX: number, offsetY: number, data: any): void {
-		const currentMaxZIndex = this.sortByZIndexWidgetsList.length
+	get currentMaxZIndex(): number {
+		return this.sortByZIndexWidgetsList.length
 			? this.sortByZIndexWidgetsList[0].config.layout.zIndex + 1
 			: 10
+	}
+	get currentMinZIndex(): number {
+		return this.sortByZIndexWidgetsList.length
+			? this.sortByZIndexWidgetsList[
+					this.sortByZIndexWidgetsList.length - 1
+			  ].config.layout.zIndex - 1
+			: 10
+	}
+	/* 添加组件 */
+	createWidget(offsetX: number, offsetY: number, data: any): void {
 		this.screen.createWidget(
 			offsetX,
 			offsetY,
 			data,
 			this.current.currentSceneIndex,
-			currentMaxZIndex,
+			this.currentMaxZIndex,
 		)
 	}
 	/* 更新组件 */
@@ -316,11 +327,23 @@ class Editor extends Factory<Editor> {
 	updateComponent(id, config): void {
 		this.screen.updateComponent(id, config)
 	}
+	/* 给组件取消打组 */
+	relieveWidgetGroup(): void {
+		const item = this.screen.screenWidgets[this.current.currentWidgetId]
+		delete this.screen.screenWidgets[this.current.currentWidgetId]
+		for (const key in item.children) {
+			this.screen.screenWidgets[key] = item.children[key]
+		}
+		this.screen.screenWidgets = { ...this.screen.screenWidgets }
+	}
 	/* 给组件打组 */
 	createWidgetGroup(): void {
-		const children = []
+		let children = {}
 		this.current.currentWidgetList.map(item => {
-			children.push(this.screen.screenWidgets[item.id])
+			children = {
+				...children,
+				[item.id]: this.screen.screenWidgets[item.id],
+			}
 			delete this.screen.screenWidgets[item.id]
 		})
 		const id = uuid()
@@ -349,6 +372,7 @@ class Editor extends Factory<Editor> {
 			widgetType: 'group',
 			children,
 		}
+		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 		this.current.unSelectWidget()
 	}
 	/* 删除多个组件 */

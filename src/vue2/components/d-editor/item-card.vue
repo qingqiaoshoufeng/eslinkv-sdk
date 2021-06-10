@@ -79,12 +79,13 @@ export default class ItemCard extends Vue {
 
 	onGroupDragStop(item: any, diffLeft: number, diffTop: number): void {
 		if (item.children) {
-			item.children.map(child => {
-				child.config.layout.position.left += diffLeft
-				child.config.layout.position.top += diffTop
-				this.onGroupDragStop(child, diffLeft, diffTop)
-			})
-			item.children = [...item.children]
+			if (Object.values(item.children).length > 0)
+				for (let key in item.children) {
+					item.children[key].config.layout.position.left += diffLeft
+					item.children[key].config.layout.position.top += diffTop
+					this.onGroupDragStop(item.children[key], diffLeft, diffTop)
+					item.children = { ...item.children }
+				}
 		}
 	}
 

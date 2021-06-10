@@ -7,7 +7,7 @@ export default class Widget {
 	widgetType = 'normal'
 	scene: number | string
 	market: boolean
-	children = []
+	children = {}
 	constructor(
 		offsetX: number,
 		offsetY: number,

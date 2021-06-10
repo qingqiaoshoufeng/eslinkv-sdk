@@ -25,7 +25,7 @@ export default class Current extends Factory<Current> {
 	offsetY = 0
 	/* 当前组件 */
 	currentWidgetId = ''
-	currentWidget: Widget | null
+	currentWidget = {}
 	/* 当前选中组件-多组件 */
 	currentWidgetList: Widget[] = []
 	/* 当前场景 */
@@ -82,8 +82,7 @@ export default class Current extends Factory<Current> {
 			return
 		}
 		this.currentWidgetId = widget.id
-		this.currentWidget = null
-		this.currentWidget = widget
+		this.currentWidget = { ...widget }
 		this.currentWidgetList = []
 	}
 	/* 取消选中组件 */

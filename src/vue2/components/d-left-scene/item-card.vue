@@ -19,18 +19,16 @@ li.pointer.pos-r.d-left-scene-list-li(
 				title="解锁",
 				@click="handleUnLock(item.id)",
 				@click.stop)
-	WidgetGroup(:childList="item.children")
+	scene-group(:childList="item.children")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'view-design'
-import WidgetGroup from './widget-group.vue'
 import Editor from '@/core/Editor'
 
 @Component({
 	components: {
 		'i-icon': Icon,
-		WidgetGroup,
 	},
 })
 export default class DLeftSceneItem extends Vue {

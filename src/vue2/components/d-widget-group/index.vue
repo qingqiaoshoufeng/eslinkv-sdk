@@ -32,8 +32,8 @@ export default class WidgetGroup extends Vue {
 	get stylesR() {
 		const { layout } = this.config
 		return {
-			left: `-${layout.position.left}px`,
-			top: `-${layout.position.top}px`,
+			left: `${-layout.position.left}px`,
+			top: `${-layout.position.top}px`,
 		}
 	}
 }
