@@ -58,22 +58,40 @@ export default class ScreenPc extends ScreenBase {
 	/* 序列化组件数据 */
 	initWidget(res: any): any {
 		let screenWidgets
+		const obj = {}
+		const marketComponents: { type: string; version: string }[] = []
 		if (res.screenConfig.widgets) {
 			screenWidgets = res.screenConfig.widgets
+			screenWidgets.forEach(item => {
+				obj[item.id] = {
+					id: item.id,
+					market: item.market,
+					scene: item.scene,
+					type: item.type,
+					config: item.value,
+				}
+				if (item.market) {
+					marketComponents.push({
+						type: item.type,
+						version: item.value.widget.componentVersion,
+					})
+				}
+			})
+			screenWidgets = obj
+			delete this.screenConfig.widgets
 		} else {
 			screenWidgets = res.screenWidgets || {}
-		}
-		const marketComponents: { type: string; version: string }[] = []
-		for (const key in screenWidgets) {
-			setDefault(screenWidgets[key].config)
-			if (screenWidgets[key].market) {
-				marketComponents.push({
-					type: screenWidgets[key].type,
-					version: screenWidgets[key].config.widget.componentVersion,
-				})
+			for (const key in screenWidgets) {
+				setDefault(screenWidgets[key].config)
+				if (screenWidgets[key].market) {
+					marketComponents.push({
+						type: screenWidgets[key].type,
+						version:
+							screenWidgets[key].config.widget.componentVersion,
+					})
+				}
 			}
 		}
-		delete this.screenConfig.widgets
 		return { marketComponents, screenWidgets }
 	}
 }

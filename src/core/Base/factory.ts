@@ -8,7 +8,7 @@ export class Singleton<T> {
 			// @ts-ignore
 			window.eslinkvEditorInstance[this.name] = new this(obj)
 		}
-		return  window.eslinkvEditorInstance[this.name]
+		return window.eslinkvEditorInstance[this.name]
 	}
 }
 
