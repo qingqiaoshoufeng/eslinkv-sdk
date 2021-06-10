@@ -1,7 +1,12 @@
 <template lang="pug">
 #screen(ref="canvas-wrapper", :style="editor.screen.screenStyle")
-	template(v-for="item in editor.showWidgets")
+	.scene-container(
+		v-for="(sceneId, index) in [0, ...editor.current.currentCreateSceneList]"
+		:key="sceneId"
+		:style="{ zIndex: index }"
+	)
 		eslinkv-normal(
+			v-for="item in editor.sceneWidgets[sceneId]"
 			:widget-type="item.widgetType",
 			:key="item.id",
 			:type="item.type",
@@ -32,4 +37,14 @@ export default class DView extends Vue {
 		position: fixed !important;
 	}
 }
+
+.scene-container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	pointer-events: none;
+}
+
 </style>

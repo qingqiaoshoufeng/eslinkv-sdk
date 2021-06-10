@@ -107,14 +107,15 @@ export default class Current extends Factory<Current> {
 	selectSceneIndex(val: number | string): void {
 		if (typeof val === 'number' || val) this.currentSceneIndex = val
 		this.activeSceneId = val
+		this.currentCreateSceneList = [val]
 		let event = new CustomEvent('SceneIndex', { detail: { index: val } })
 		document.dispatchEvent(event)
 		event = null
 	}
 	/* 打开场景 */
-	openScene(id: string): void {
+	openScene(id: number | string): void {
 		this.activeSceneId = id
-		this.currentCreateSceneList = [...this.currentCreateSceneList, id]
+		this.currentCreateSceneList.push(id)
 	}
 	/* 关闭场景 */
 	closeScene(id: string): void {

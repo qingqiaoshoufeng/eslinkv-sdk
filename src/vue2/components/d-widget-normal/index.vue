@@ -165,5 +165,6 @@ export default class WidgetNormal extends Vue {
 	color: rgb(0, 0, 0);
 	text-align: center;
 	backface-visibility: hidden;
+	pointer-events: auto;
 }
 </style>
