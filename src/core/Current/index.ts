@@ -7,6 +7,10 @@ export default class Current extends Factory<Current> {
 	xRoomL2: number = +localStorage.getItem('xRoomL2')
 	xRoomR1: number = +localStorage.getItem('xRoomR1')
 	yRoom = 60
+	/* 被激活的场景对应组件 */
+	activeWidgetId = ''
+	/* 被激活的场景id */
+	activeSceneId: number | string = 0
 	/* 是否按下了 空格 键，启动内容区拖动 */
 	contentMove = false
 	/* 组件点击开始拖拽 */

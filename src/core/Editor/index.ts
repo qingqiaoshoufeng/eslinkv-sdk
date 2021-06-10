@@ -56,6 +56,18 @@ class Editor extends Factory<Editor> {
 		this.local.setLocalWidgets(obj)
 	}
 	/* ---------------------------------------------------Current---------------------------------------------------*/
+	get activeWidgetId(): string {
+		return this.current.activeWidgetId
+	}
+	set activeWidgetId(val: string) {
+		this.current.activeWidgetId = val
+	}
+	get activeSceneId(): number | string {
+		return this.current.activeSceneId
+	}
+	set activeSceneId(val: number | string) {
+		this.current.activeSceneId = val
+	}
 	/* 当前选中组件-多组件配置 */
 	get currentWidgetListConfig(): any {
 		return this.current.currentWidgetListConfig

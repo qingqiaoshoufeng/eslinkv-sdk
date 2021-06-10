@@ -201,7 +201,7 @@ export default class Screen extends Factory<Screen> {
 		}
 	}
 	/* 更新组件 */
-	updateComponent(id, config) {
+	updateComponent(id, config): void {
 		const widgetConfig = this.screenWidgets[id].config.api
 		if (config.params) {
 			widgetConfig.params = JSON.stringify(config.params)

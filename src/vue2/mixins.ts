@@ -45,7 +45,7 @@ const mx: any = {
 				const sceneId = item.id
 				switch (item.type) {
 					case 'openScene':
-						this.editor.scene.activeWidgetId = this.config.widget.id
+						this.editor.activeWidgetId = this.config.widget.id
 						this.editor.openScene(sceneId)
 						break
 					case 'closeScene':
@@ -153,9 +153,9 @@ const mx: any = {
 			if (!this.config) return false
 			if (!this.config.event.scene.length) return false
 			return (
-				this.editor.scene.activeWidgetId === this.config.widget.id &&
+				this.editor.activeWidgetId === this.config.widget.id &&
 				this.config.event.scene.some(
-					v => v.id === this.editor.scene.activeSceneId,
+					v => v.id === this.editor.activeSceneId,
 				)
 			)
 		},
