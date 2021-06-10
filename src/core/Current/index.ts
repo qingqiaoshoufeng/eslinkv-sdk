@@ -31,7 +31,7 @@ export default class Current extends Factory<Current> {
 	/* 当前场景 */
 	currentSceneIndex: number | string = 0
 	/* 当前打开的场景集合 */
-	currentCreateSceneList = []
+	currentCreateSceneList: Array<number|string> = [0]
 	/* 当前选中组件-多组件配置 */
 	currentWidgetListConfig = {
 		left: 0,
@@ -107,7 +107,7 @@ export default class Current extends Factory<Current> {
 		if (val === undefined || val === null) return
 		this.currentSceneIndex = val
 		this.activeSceneId = val
-		this.currentCreateSceneList = [val]
+		this.currentCreateSceneList = [0, val]
 		let event = new CustomEvent('SceneIndex', { detail: { index: val } })
 		document.dispatchEvent(event)
 		event = null

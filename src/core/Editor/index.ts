@@ -216,7 +216,6 @@ class Editor extends Factory<Editor> {
 	get showWidgets() {
 		if (this.current.currentSceneIndex === 0) {
 			return {
-				...this.sceneWidgets[0],
 				...this.current.currentCreateSceneList.map(
 					v => this.sceneWidgets[v],
 				),
@@ -228,7 +227,6 @@ class Editor extends Factory<Editor> {
 			})
 			return {
 				...this.sceneWidgets[this.current.currentSceneIndex],
-				...this.sceneWidgets[0],
 				...obj,
 			}
 		}
