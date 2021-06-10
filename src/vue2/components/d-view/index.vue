@@ -1,12 +1,34 @@
 <template lang="pug">
 #screen(ref="canvas-wrapper", :style="editor.screen.screenStyle")
-	.scene-container(
-		v-for="(sceneId, index) in [0, ...editor.current.currentCreateSceneList]"
-		:key="sceneId"
-		:style="{ zIndex: index }"
-	)
+	.scene-container(:style="{ zIndex: 1 }")
 		eslinkv-normal(
-			v-for="item in editor.sceneWidgets[sceneId]"
+			v-for="item in editor.sceneWidgets[0]",
+			:widget-type="item.widgetType",
+			:key="item.id",
+			:type="item.type",
+			:config="item.config",
+			:children="item.children",
+			:ref="item.id",
+			:market="item.market",
+			:style="item.config.widget.hide ? 'display: none' : ''",
+			readonly)
+		eslinkv-normal(
+			v-for="item in editor.current.currentSceneIndex === 0 ? [] : editor.sceneWidgets[editor.current.currentSceneIndex]",
+			:widget-type="item.widgetType",
+			:key="item.id",
+			:type="item.type",
+			:config="item.config",
+			:children="item.children",
+			:ref="item.id",
+			:market="item.market",
+			:style="item.config.widget.hide ? 'display: none' : ''",
+			readonly)
+	.scene-container(
+		v-for="(sceneId, index) in [...editor.current.currentCreateSceneList]",
+		:key="sceneId",
+		:style="{ zIndex: index + 2 }")
+		eslinkv-normal(
+			v-for="item in editor.sceneWidgets[sceneId]",
 			:widget-type="item.widgetType",
 			:key="item.id",
 			:type="item.type",
@@ -46,5 +68,4 @@ export default class DView extends Vue {
 	left: 0;
 	pointer-events: none;
 }
-
 </style>
