@@ -22,8 +22,8 @@ export default class DRightSettingMore extends Vue {
 	}
 	handleDelete(): void {
 		this.$Modal.confirm({
-			title: '提示',
-			content: '是否删除所选组件？',
+			title: '是否删除所选组件？',
+			content: '所有组件将自动进入回收站！',
 			onOk: () => {
 				this.editor.deleteWidgets()
 				this.editor.unSelectWidget()

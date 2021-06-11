@@ -166,7 +166,7 @@ export default class Screen extends Factory<Screen> {
 	}
 	/* 删除组件 */
 	deleteWidget(id: string): void {
-		delete this.screenWidgets[id]
+		this.screenWidgets[id].scene = -1
 		this.screenWidgets = { ...this.screenWidgets }
 	}
 	/* 复制组件 */

@@ -91,8 +91,8 @@ export default class rightMenu extends Vue {
 
 	deleteWidget(): void {
 		this.$Modal.confirm({
-			title: '提示',
-			content: '是否删除当前组件？',
+			title: '是否删除当前组件？',
+			content: '该组件将自动进入回收站！',
 			onOk: () => {
 				const id = this.editor.currentWidgetId
 				this.editor.deleteWidget(id)

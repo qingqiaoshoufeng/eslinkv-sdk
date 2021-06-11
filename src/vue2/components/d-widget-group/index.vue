@@ -3,7 +3,7 @@
 	.pos-a(:style="stylesR")
 		template(v-for="item in children")
 			eslinkv-group(v-bind="item", v-if="item.widgetType === 'group'")
-			eslinkv-normal(
+			eslinkv-widget(
 				:ref="item.id",
 				:type="item.type",
 				:config="item.config",

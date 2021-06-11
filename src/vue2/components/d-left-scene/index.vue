@@ -29,7 +29,7 @@
 					:key="item.id",
 					:item="item")
 	.d-left-scene-bottom.fn-flex.flex-row
-		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('copy')") 复制
+		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('clear')") 清空
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('create')") 新增
 		.d-left-scene-bottom-btn.text-center(
 			@click="handleSetScene('edit')",
@@ -37,20 +37,10 @@
 		.d-left-scene-bottom-btn.text-center(
 			@click="handleSetScene('destroy')",
 			:class="{ disabled: editor.currentSceneIndex === 0 }") 删除
-	i-modal(v-model="copyModel", title="提示", :footer-hide="true")
-		.fn-flex.flex-row
-			span.fn-hide.copy-id {{ editor.currentSceneIndex }}
-			i-input(
-				:value="editor.currentSceneIndex",
-				search,
-				readonly,
-				enter-button="复制",
-				@on-search="handleCopy")
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Icon, Input, Select, Option, Modal } from 'view-design'
-import { copyText } from '../../utils/index'
+import { Icon, Input, Select, Option } from 'view-design'
 import ItemCard from './item-card.vue'
 import draggable from 'vuedraggable'
 import Editor from '@/core/Editor'
@@ -60,7 +50,6 @@ import Editor from '@/core/Editor'
 		draggable,
 		ItemCard,
 		'i-icon': Icon,
-		'i-modal': Modal,
 		'i-input': Input,
 		'i-select': Select,
 		'i-option': Option,
@@ -69,7 +58,7 @@ import Editor from '@/core/Editor'
 export default class DLeftScene extends Vue {
 	editor: Editor = Editor.Instance()
 	editScene = false
-	copyModel = false
+
 	changeSceneIndex(index: string | number): void {
 		this.editor.selectSceneIndex(index)
 	}
@@ -90,14 +79,26 @@ export default class DLeftScene extends Vue {
 					},
 				})
 				break
-			case 'copy':
-				this.copyModel = true
+			case 'clear':
+				if (this.editor.currentSceneIndex === -1) {
+					this.$Modal.confirm({
+						title: '是否清空回收站？',
+						content: '回收站的组件将被清空！',
+						onOk: () => {
+							this.editor.clearWidgetByCurrentScene()
+						},
+					})
+				} else {
+					this.$Modal.confirm({
+						title: '是否清空当前场景？',
+						content: '删除的组件将自动进入回收站！',
+						onOk: () => {
+							this.editor.clearWidgetByCurrentScene()
+						},
+					})
+				}
 				break
 		}
-	}
-
-	handleCopy(): void {
-		copyText(this.editor.currentSceneIndex)
 	}
 
 	handleSceneName(e): void {

@@ -374,7 +374,7 @@ class Editor extends Factory<Editor> {
 	/* 删除多个组件 */
 	deleteWidgets(): void {
 		this.currentWidgetList.map(item => {
-			delete this.screen.screenWidgets[item.id]
+			this.screen.screenWidgets[item.id].scene = -1
 		})
 		this.current.unSelectWidget()
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
@@ -467,6 +467,20 @@ class Editor extends Factory<Editor> {
 		if (width) this.screen.screenWidth = width
 		if (height) this.screen.screenHeight = height
 		this.resetZoom()
+	}
+	/* 清除当前场景的组件 */
+	clearWidgetByCurrentScene(): void {
+		for (const key in this.screen.screenWidgets) {
+			if (this.current.currentSceneIndex == -1) {
+				delete this.screen.screenWidgets[key]
+			} else if (
+				this.screen.screenWidgets[key].scene ===
+				this.current.currentSceneIndex
+			) {
+				this.screen.screenWidgets[key].scene = -1
+			}
+		}
+		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 	}
 }
 

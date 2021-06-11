@@ -21,7 +21,7 @@ dr(
 	@dragstop="onDragStop",
 	@activated="editor.selectWidget(item)",
 	@contextmenu.native="showRightMenu($event, item)")
-	eslinkv-normal(
+	eslinkv-widget(
 		:widget-type="item.widgetType",
 		:type="item.type",
 		:config="item.config",
