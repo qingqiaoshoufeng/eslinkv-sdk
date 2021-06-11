@@ -2,7 +2,7 @@
 import Factory from '@/core/Base/factory'
 import Widget from '@/core/Widget/base'
 import copy from 'fast-copy'
-import globalConfigValue from '@/core/common-config-value.js'
+import commonConfigValue from '@/core/common-config-value.js'
 import { configMerge, versionToNum } from '@/core/utils'
 export default class Screen extends Factory<Screen> {
 	/* 当前系统版本 */
@@ -53,41 +53,37 @@ export default class Screen extends Factory<Screen> {
 		localConfigValue: any,
 		customConfig: any,
 	): any {
+		if (localConfigValue.widgetType) {
+		}
 		const mergedValue = localConfigValue
-			? configMerge(localConfigValue, globalConfigValue())
-			: globalConfigValue()
-		if (!this.screenWidgets[id]) return {}
-		const inputConfig = Object.freeze(this.screenWidgets[id].config || {})
-		const res = configMerge(inputConfig, mergedValue)
+			? configMerge(localConfigValue, commonConfigValue())
+			: commonConfigValue()
+		this.findWidget(id, this.screenWidgets, mergedValue, customConfig)
 		// 过滤可用属性
-		res.widget.name = res.widget.name || '未知组件'
-		if (customConfig) {
-			customConfig.map(item => {
-				if (!item.prop.includes('config.config')) {
-					item.prop = `config.config.${item.prop}`
-				}
-			})
-			res.customConfig = customConfig
-		}
-		if (this.screenWidgets[id]) {
-			this.screenWidgets[id].config = res
-		} else {
-			Object.values(this.screenWidgets).forEach((v: Widget) => {
-				this.findWidget(v, id, res)
-			})
-		}
-		return res
 	}
-	findWidget(widget, id, res): void {
-		if (Object.values(widget.children).length > 0) {
-			for (const k in widget.children) {
-				if (widget.children[k].id === id) {
-					widget.children[k].config = res
-				} else if (
-					Object.values(widget.children[k].children).length > 0
-				) {
-					this.findWidget(widget.children[k], id, res)
+	private findWidget(id, obj, mergedValue, customConfig): void {
+		for (const key in obj) {
+			if (id === obj[key].id) {
+				const inputConfig = Object.freeze(obj[key].config || {})
+				const res = configMerge(inputConfig, mergedValue)
+				res.widget.name = res.widget.name || '未知组件'
+				if (customConfig) {
+					customConfig.map(item => {
+						if (!item.prop.includes('config.config')) {
+							item.prop = `config.config.${item.prop}`
+						}
+					})
+					res.customConfig = customConfig
 				}
+				obj[key].config = res
+			} else if (obj[key].children) {
+				if (Object.values(obj[key].children).length > 0)
+					this.findWidget(
+						id,
+						obj[key].children,
+						mergedValue,
+						customConfig,
+					)
 			}
 		}
 	}

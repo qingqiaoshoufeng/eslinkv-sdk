@@ -3,18 +3,20 @@ import dScreen from './components/d-screen/index.vue'
 import dDetail from './components/d-detail/index.vue'
 import dView from './components/d-view/index.vue'
 import loadMask from './components/load-mask/index.vue'
-import commonConfigValue from '@/core/common-config-value.js'
 import './plugin.js'
 import colorTheme from '@/core/colorTheme'
+import widgetEcharts from '@/vue2/ui/Widget/echarts'
+import widgetNormal from '@/vue2/ui/Widget/normal'
 
 const eslinkV = {
 	widgetMixin,
+	widgetEcharts,
+	widgetNormal,
 	colorTheme,
 	dScreen,
 	dDetail,
 	dView,
 	loadMask,
-	commonConfigValue,
 }
 if (window !== undefined) {
 	if (!window.eslinkV) {
@@ -25,11 +27,12 @@ if (window !== undefined) {
 
 export {
 	widgetMixin,
+	widgetEcharts,
+	widgetNormal,
 	colorTheme,
 	dScreen,
 	dDetail,
 	dView,
 	loadMask,
-	commonConfigValue,
 }
 export default eslinkV

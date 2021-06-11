@@ -37,7 +37,7 @@ export default {
 		},
 	},
 	created() {
-		this.configValue = this.parseConfigValue(value, customConfig)
+		this.parseConfigValue(value, customConfig)
 	},
 }
 </script>

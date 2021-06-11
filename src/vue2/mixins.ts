@@ -18,7 +18,6 @@ const mx: any = {
 	},
 	data() {
 		return {
-			configValue: null,
 			ready: false,
 			data: null,
 			configReady: false,
@@ -40,8 +39,8 @@ const mx: any = {
 	},
 	methods: {
 		__handleClick__(val) {
-			if (!this.configValue) return
-			for (const item of this.configValue.event.scene) {
+			if (!this.config) return
+			for (const item of this.config.event.scene) {
 				const sceneId = item.id
 				switch (item.type) {
 					case 'openScene':
@@ -57,7 +56,7 @@ const mx: any = {
 					default:
 				}
 			}
-			for (const item of this.configValue.event.component) {
+			for (const item of this.config.event.component) {
 				if (item.type === 'update') {
 					const coms = Object.values(
 						this.editor.screenWidgets,
@@ -98,8 +97,9 @@ const mx: any = {
 		 * [id]
 		 */
 		emitComponentUpdate(data) {
-			if (this.configValue) {
-				this.configValue.api.bind.refIds.forEach((ref: any) => {
+			console.log(this.config)
+			if (this.config) {
+				this.config.api.bind.refIds.forEach((ref: any) => {
 					const widget = this.editor.screenWidgets[ref]
 					if (!widget) return
 					let params = widget.config.api.params

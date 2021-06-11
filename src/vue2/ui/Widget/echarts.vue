@@ -15,10 +15,7 @@ export default class widgetNormal extends Vue {
 	}
 
 	created(): void {
-		this.$parent.$data.configValue = (this.$parent as any).parseConfigValue(
-			this.value,
-			this.customConfig,
-		)
+		;(this.$parent as any).parseConfigValue(this.value, this.customConfig)
 	}
 }
 </script>

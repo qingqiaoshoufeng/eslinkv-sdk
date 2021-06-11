@@ -8,7 +8,7 @@ widget-normal(:value="value", :customConfig="customConfig")
 import widgetMixin from '@/vue2/mixins'
 import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
-import widgetNormal from '@/core/ui/Widget/normal.vue'
+import widgetNormal from '@/vue2/ui/Widget/normal.vue'
 import { value, customConfig } from './index.component'
 
 @Component({ components: { widgetNormal } })

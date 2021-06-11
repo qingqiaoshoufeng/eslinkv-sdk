@@ -7,7 +7,7 @@ import Current from '@/core/Current'
 import Local from '@/core/Local'
 import { uuid } from '@/core/utils'
 import { configMerge } from '@/core/utils'
-import commonConfigValue from '@/core/common-config-value'
+import commonConfigValue from '@/core/common-config-value.js'
 import { use } from '@/vue2/api/marketComponent.api'
 
 const rulerContainerId = `drag-content-${+new Date()}`
@@ -85,7 +85,7 @@ class Editor extends Factory<Editor> {
 		})
 		Promise.all(p)
 			.then(() => {
-				for (let key in screen.screenWidgets) {
+				for (const key in screen.screenWidgets) {
 					if (screen.screenWidgets[key].value) {
 						screen.screenWidgets[key].config =
 							screen.screenWidgets[key].value
