@@ -1,6 +1,5 @@
 <template lang="pug">
-#right-menu.right-menu.pos-f(
-	ref="rightMenu",
+#widget-right-menu.right-menu.pos-f(
 	@contextmenu.stop.prevent,
 	v-click-outside="hideRightMenu")
 	ul.list
@@ -50,8 +49,6 @@ import ClickOutside from 'vue-click-outside'
 })
 export default class rightMenu extends Vue {
 	isLock = false
-	minZIndex = 0
-	maxZIndex = 0
 	editor: Editor = Editor.Instance()
 
 	get isGroup(): boolean {
@@ -111,7 +108,7 @@ export default class rightMenu extends Vue {
 	}
 
 	hideRightMenu(): void {
-		const rightMenu = document.getElementById('right-menu')
+		const rightMenu = document.getElementById('widget-right-menu')
 		rightMenu.classList.remove('active')
 	}
 

@@ -22,8 +22,6 @@
 		label {{ zoom }}
 	.d-footer-bar.fn-flex(title="放大")
 		d-svg.pointer(icon-class="zoomIn", @click.native="() => editor.zoomIn()")
-	.d-footer-bar.fn-flex(title="最佳比例")
-		d-svg.pointer(icon-class="smile", @click.native="() => editor.resetZoom()")
 	.d-footer-bar.fn-flex(:style="{ marginRight: '0' }")
 		i-icon.pointer(
 			:type="editor.fullscreen ? 'md-contract' : 'md-expand'",

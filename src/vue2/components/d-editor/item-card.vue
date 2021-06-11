@@ -57,7 +57,7 @@ export default class ItemCard extends Vue {
 	showRightMenu(e: MouseEvent, item: any): void {
 		e.preventDefault()
 		this.editor.selectWidget(item)
-		const rightMenu = document.getElementById('right-menu')
+		const rightMenu = document.getElementById('widget-right-menu')
 		rightMenu.classList.add('active')
 		if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
 			rightMenu.style.top = e.clientY - rightMenu.scrollHeight + 'px'

@@ -2,8 +2,10 @@
 .d-ruler-wrapper.pos-r(
 	:id="editor.rulerContainerId",
 	@mousedown="mouseDown",
+	@contextmenu.native="showRightMenu",
 	@wheel="wheel",
 	@mousemove="mouseMove")
+	ruler-right-menu
 	.content-body.pos-a(:style="editor.rulerStyle")
 		slot
 </template>
@@ -11,8 +13,13 @@
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 import Widget from '@/core/Widget/normal'
+import rulerRightMenu from '@/vue2/components/ruler-right-menu/index.vue'
 
-@Component
+@Component({
+	components: {
+		rulerRightMenu,
+	},
+})
 export default class DRuler extends Vue {
 	editor: Editor = Editor.Instance()
 	startX = 0
@@ -31,6 +38,17 @@ export default class DRuler extends Vue {
 	kuangMove = false
 	windowResize(): void {
 		this.editor.resetZoom()
+	}
+
+	showRightMenu(e: MouseEvent): void {
+		const rightMenu = document.getElementById('ruler-right-menu')
+		rightMenu.classList.add('active')
+		if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
+			rightMenu.style.top = e.clientY - rightMenu.scrollHeight + 'px'
+		} else {
+			rightMenu.style.top = e.clientY + 'px'
+		}
+		rightMenu.style.left = e.clientX + 'px'
 	}
 
 	beforeDestroy(): void {
@@ -176,7 +194,7 @@ export default class DRuler extends Vue {
 		}
 		if (!this.editor.widgetMove) {
 			this.editor.unSelectWidget()
-			const rightMenu = document.getElementById('right-menu')
+			const rightMenu = document.getElementById('widget-right-menu')
 			rightMenu.classList.remove('active')
 		}
 		if (!this.editor.contentMove && !this.editor.widgetMove) {

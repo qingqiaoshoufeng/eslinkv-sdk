@@ -40,11 +40,11 @@
 				v-for="item in hLine",
 				v-show="item.display",
 				:style="{ top: item.position, left: item.origin, width: item.lineLength }")
-	right-menu
+	widget-right-menu
 	d-footer
 </template>
 <script lang="ts">
-import rightMenu from '../right-menu/index.vue'
+import widgetRightMenu from '../widget-right-menu/index.vue'
 import dRuler from '../d-ruler/index.vue'
 import drMore from '@/vue2/components/d-dr-more/index.vue'
 import dFooter from '../d-footer/index.vue'
@@ -58,7 +58,7 @@ import Editor from '@/core/Editor'
 		dRuler,
 		dFooter,
 		drMore,
-		rightMenu,
+		widgetRightMenu,
 	},
 })
 export default class DEditor extends Vue {
