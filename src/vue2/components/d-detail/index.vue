@@ -148,18 +148,6 @@ export default class DDetail extends Vue {
 					}
 				}
 				this.editor.screen.screenWidgets = screen.screenWidgets
-				// const widgets = Object.values(screen.screenWidgets)
-				// widgets.forEach((item: any) => {
-				// 	if (item.scene !== 0) {
-				// 		if (!this.sceneWidgets[item.scene]) {
-				// 			this.sceneWidgets[item.scene] = {}
-				// 		}
-				// 		if (!this.sceneWidgets[item.scene].list) {
-				// 			this.sceneWidgets[item.scene].list = []
-				// 		}
-				// 		this.sceneWidgets[item.scene].list.push(item)
-				// 	}
-				// })
 			})
 			.catch(e => {
 				this.loading = false
@@ -174,18 +162,18 @@ export default class DDetail extends Vue {
 	mounted(): void {
 		const templateId = this.$route.query.templateId
 		const id = this.$route.params.id || templateId
+		const shareScreenId = this.$route.params.shareScreenId
 		const file = this.$route.params.file
 		this.isNew = !id
 		if (id) {
 			detail({ screenId: id }).then(res => {
-				const result = this.editor.init(res)
-				this.loadMarketComponent(result.screen)
+				this.editor.init(res)
 			})
 		} else if (file) {
 			detailFile(decodeURIComponent(file)).then(res => {
 				this.editor.init(res)
 			})
-		} else {
+		} else if (!shareScreenId) {
 			this.editor.init()
 		}
 		const sceneIndex = getQueryString('scene')

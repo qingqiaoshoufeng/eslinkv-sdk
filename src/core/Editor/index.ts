@@ -8,6 +8,7 @@ import Local from '@/core/Local'
 import { uuid } from '@/core/utils'
 import { configMerge } from '@/core/utils'
 import commonConfigValue from '@/core/common-config-value'
+import { use } from '@/vue2/api/marketComponent.api'
 
 const rulerContainerId = `drag-content-${+new Date()}`
 class Editor extends Factory<Editor> {
@@ -44,9 +45,59 @@ class Editor extends Factory<Editor> {
 			this.screenId = res.screenId
 			screen = this.screen.init(res)
 			this.scene.init(res)
+			this.loadMarketComponent(screen)
 		}
 		this.resetZoom()
 		return { screen }
+	}
+
+	loadMarketComponent(screen: any) {
+		let p = []
+		screen.marketComponents.forEach(item => {
+			if (this.widgetLoaded[`${item.type}${item.version}`]) return
+			p.push(
+				new Promise((resolve, reject) => {
+					use({
+						componentEnTitle: item.type,
+						componentVersion: item.version,
+					}).then((res: any) => {
+						const script = document.createElement('script')
+						script.onload = () => {
+							this.updateWidgetLoaded(
+								`${item.type}${item.version}`,
+							)
+							resolve(1)
+						}
+						script.onerror = () => {
+							reject(1)
+						}
+						if (res) {
+							script.src = res.componentJsUrl
+							document.head.appendChild(script)
+						} else {
+							console.error(
+								`${item.type}${item.version}加载组件失败`,
+							)
+						}
+					})
+				}),
+			)
+		})
+		Promise.all(p)
+			.then(() => {
+				for (let key in screen.screenWidgets) {
+					if (screen.screenWidgets[key].value) {
+						screen.screenWidgets[key].config =
+							screen.screenWidgets[key].value
+						delete screen.screenWidgets[key].value
+					}
+				}
+				this.screen.screenWidgets = screen.screenWidgets
+			})
+			.catch(e => {
+				console.error(e)
+				console.error('组件初始化加载失败')
+			})
 	}
 	/* ---------------------------------------------------Local---------------------------------------------------*/
 	localInit(obj: any): void {
