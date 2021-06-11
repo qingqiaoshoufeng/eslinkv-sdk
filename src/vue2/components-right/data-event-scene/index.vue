@@ -30,10 +30,10 @@ d-right-swiper-list(
 					i-option(:value="k", v-for="(k, i) in animates", :key="i") {{ k }}
 </template>
 <script lang="ts">
-import func from './func.mx'
+import func from '@/vue2/components-func/func.mx'
 import { Component } from 'vue-property-decorator'
 import dCode from '@/vue2/components-right/d-code/index.vue'
-import { animates } from './config.js'
+import { animates } from '@/vue2/components-func/config.js'
 
 @Component({ components: { dCode } })
 export default class FuncData extends func {

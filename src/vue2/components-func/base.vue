@@ -52,12 +52,18 @@
 			d-input(
 				append="ms",
 				v-model="editor.currentWidget.config.animation.duration")
+	d-right-echarts
 </template>
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
+import dRightEcharts from '../components-right/d-right-echarts/index.vue'
 
-@Component
+@Component({
+	components: {
+		dRightEcharts,
+	},
+})
 export default class FuncBase extends func {
 	animationEnterNames: any[] = [
 		{ label: '渐隐渐显', value: 'fadeIn' },

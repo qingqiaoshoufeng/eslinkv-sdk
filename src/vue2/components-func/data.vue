@@ -16,8 +16,7 @@
 				v-if="apiType === '数仓平台'",
 				:disabled="!editor.currentWidget.config.api.system.enable") 配置
 		d-right-control(label="接口地址", v-if="apiType === 'API接口'")
-			i-input(
-				v-model="editor.currentWidget.config.api.url",)
+			i-input(v-model="editor.currentWidget.config.api.url")
 		d-right-control(v-if="apiType === 'API接口'")
 			i-select(
 				v-model="editor.currentWidget.config.api.method",
@@ -33,8 +32,7 @@
 		d-right-control(
 			label="接口地址",
 			v-if="editor.currentWidget.config.api.system.enable")
-			i-input(
-				v-model="editor.currentWidget.config.api.system.interface")
+			i-input(v-model="editor.currentWidget.config.api.system.interface")
 		d-right-control(v-if="editor.currentWidget.config.api.system.enable")
 			i-select(
 				v-model="editor.currentWidget.config.api.system.method",
@@ -99,18 +97,26 @@
 				:value="editor.currentWidget.id",
 				v-for="(item, key) in relateList",
 				:key="key") {{ item.id }}
+	data-echarts(v-if="editor.currentWidget.widgetType === 'echarts'")
 </template>
 <script lang="ts">
-import func from './func.mx'
+import func from '@/vue2/components-func/func.mx'
 import { Component } from 'vue-property-decorator'
 import databaseConfig from '../components/data-warehouse/index.vue'
 import dCode from '@/vue2/components-right/d-code/index.vue'
 import { animates } from './config.js'
-import DataEventComponent from './data-event-component.vue'
-import DataEventScene from './data-event-scene.vue'
+import DataEventComponent from '@/vue2/components-right/data-event-component/index.vue'
+import DataEventScene from '@/vue2/components-right/data-event-scene/index.vue'
+import DataEcharts from '@/vue2/components-right/data-echarts/index.vue'
 
 @Component({
-	components: { DataEventScene, DataEventComponent, databaseConfig, dCode },
+	components: {
+		DataEcharts,
+		DataEventScene,
+		DataEventComponent,
+		databaseConfig,
+		dCode,
+	},
 })
 export default class FuncData extends func {
 	animates = animates

@@ -53,20 +53,34 @@ export default class Screen extends Factory<Screen> {
 		localConfigValue: any,
 		customConfig: any,
 	): any {
-		if (localConfigValue.widgetType) {
-		}
 		const mergedValue = localConfigValue
-			? configMerge(localConfigValue, commonConfigValue())
+			? configMerge(
+					localConfigValue,
+					commonConfigValue(localConfigValue.widgetType),
+			  )
 			: commonConfigValue()
-		this.findWidget(id, this.screenWidgets, mergedValue, customConfig)
+		this.findWidget(
+			id,
+			this.screenWidgets,
+			mergedValue,
+			localConfigValue,
+			customConfig,
+		)
 		// 过滤可用属性
 	}
-	private findWidget(id, obj, mergedValue, customConfig): void {
+	private findWidget(
+		id,
+		obj,
+		mergedValue,
+		localConfigValue,
+		customConfig,
+	): void {
 		for (const key in obj) {
 			if (id === obj[key].id) {
 				const inputConfig = Object.freeze(obj[key].config || {})
 				const res = configMerge(inputConfig, mergedValue)
 				res.widget.name = res.widget.name || '未知组件'
+				obj[key].widgetType = localConfigValue.widgetType
 				if (customConfig) {
 					customConfig.map(item => {
 						if (!item.prop.includes('config.config')) {
@@ -82,6 +96,7 @@ export default class Screen extends Factory<Screen> {
 						id,
 						obj[key].children,
 						mergedValue,
+						localConfigValue,
 						customConfig,
 					)
 			}

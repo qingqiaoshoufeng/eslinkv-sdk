@@ -47,7 +47,7 @@ d-right-swiper-list(
 							v-model="editor.currentWidget.config.event.component[dataDefault.activeIndex].process.enable")
 </template>
 <script lang="ts">
-import func from './func.mx'
+import func from '@/vue2/components-func/func.mx'
 import { Component } from 'vue-property-decorator'
 import dCode from '@/vue2/components-right/d-code/index.vue'
 
