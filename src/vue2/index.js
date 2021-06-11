@@ -1,6 +1,7 @@
 import widgetMixin from './mixins'
 import dScreen from './components/d-screen/index.vue'
 import dDetail from './components/d-detail/index.vue'
+import dShareDialog from './components/d-share-dialog/index.vue'
 import dView from './components/d-view/index.vue'
 import loadMask from './components/load-mask/index.vue'
 import './plugin.js'
@@ -14,6 +15,7 @@ const eslinkV = {
 	widgetNormal,
 	colorTheme,
 	dScreen,
+	dShareDialog,
 	dDetail,
 	dView,
 	loadMask,
@@ -32,6 +34,7 @@ export {
 	colorTheme,
 	dScreen,
 	dDetail,
+	dShareDialog,
 	dView,
 	loadMask,
 }
