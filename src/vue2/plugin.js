@@ -11,10 +11,10 @@ import Hljs from 'highlight.js'
 import 'highlight.js/styles/tomorrow-night.css'
 import group from '@/vue2/components/d-widget-group'
 import widgetGroup from '@/vue2/components/d-left-scene/widget-group'
-import normal from '@/vue2/components/d-widget-normal'
+import widget from '@/vue2/components/d-widget'
 Vue.component('scene-group', widgetGroup)
 Vue.component('eslinkv-group', group)
-Vue.component('eslinkv-normal', normal)
+Vue.component('eslinkv-widget', widget)
 const Highlight = {
 	install: function (Vue) {
 		Vue.directive('highlight', {

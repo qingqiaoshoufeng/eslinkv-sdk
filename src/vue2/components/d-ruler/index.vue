@@ -50,6 +50,11 @@ export default class DRuler extends Vue {
 	mouseUp(e: MyMouseEvent): void {
 		if (this.contentDrag) {
 			this.contentDrag = false
+			if (this.editor.contentMove) {
+				document.getElementById(
+					this.editor.rulerContainerId,
+				).style.cursor = 'grab'
+			}
 		}
 		if (this.editor.widgetMove) {
 			this.editor.widgetMove = false
@@ -166,6 +171,8 @@ export default class DRuler extends Vue {
 		this.startPointerY = (e.layerY - diffY) / this.editor.zoom
 		if (this.editor.contentMove) {
 			this.contentDrag = true
+			document.getElementById(this.editor.rulerContainerId).style.cursor =
+				'grabbing'
 		}
 		if (!this.editor.widgetMove) {
 			this.editor.unSelectWidget()
@@ -265,7 +272,7 @@ export default class DRuler extends Vue {
 		) {
 			e.preventDefault()
 		}
-		if (e.keyCode === 32) {
+		if (e.keyCode === 32 && !this.editor.contentMove) {
 			this.editor.contentMove = true
 			document.getElementById(this.editor.rulerContainerId).style.cursor =
 				'grab'

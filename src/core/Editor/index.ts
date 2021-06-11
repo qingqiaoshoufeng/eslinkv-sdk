@@ -216,9 +216,7 @@ class Editor extends Factory<Editor> {
 	get showWidgets() {
 		if (this.current.currentSceneIndex === 0) {
 			return {
-				...this.current.currentCreateSceneList.map(
-					v => this.sceneWidgets[v],
-				),
+				...this.sceneWidgets[0],
 			}
 		} else {
 			let obj = {}
