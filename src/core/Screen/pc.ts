@@ -31,6 +31,7 @@ export default class ScreenPc extends ScreenBase {
 		this.sort = res.sort
 		this.createTime = res.createTime
 		this.updateTime = res.updateTime
+		res.screenConfig = res.screenConfig || {}
 		this.screenConfig = res.screenConfig
 		this.screenWidth = res.screenWidth
 			? res.screenWidth

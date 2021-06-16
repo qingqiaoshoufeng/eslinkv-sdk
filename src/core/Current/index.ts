@@ -7,6 +7,8 @@ export default class Current extends Factory<Current> {
 	xRoomL2: number = +localStorage.getItem('xRoomL2')
 	xRoomR1: number = +localStorage.getItem('xRoomR1')
 	yRoom = 60
+	/* 当前场景动画 */
+	sceneAnimate = ''
 	/* 被激活的场景对应组件 */
 	activeWidgetId = ''
 	/* 被激活的场景id */
@@ -31,7 +33,7 @@ export default class Current extends Factory<Current> {
 	/* 当前场景 */
 	currentSceneIndex: number | string = 0
 	/* 当前打开的场景集合 */
-	currentCreateSceneList: Array<number | string> = [0]
+	currentCreateSceneList: Array<number | string> = []
 	/* 当前选中组件-多组件配置 */
 	currentWidgetListConfig = {
 		left: 0,
@@ -119,10 +121,15 @@ export default class Current extends Factory<Current> {
 	/* 关闭场景 */
 	closeScene(id: string): void {
 		const index = this.currentCreateSceneList.findIndex(v => v === id)
-		this.currentCreateSceneList.splice(index, 1)
-		this.currentCreateSceneList = [...this.currentCreateSceneList]
-		let event = new CustomEvent('DestroyScene', { detail: { index } })
-		document.dispatchEvent(event)
-		event = null
+		if (index === -1) return
+		this.activeSceneId = id
+		// 动画结束后再删除
+		const delay = this.sceneAnimate ? 1000 : 0
+		setTimeout(() => {
+			this.currentCreateSceneList.splice(index, 1)
+			let event = new CustomEvent('DestroyScene', { detail: { index } })
+			document.dispatchEvent(event)
+			event = null
+		}, delay)
 	}
 }

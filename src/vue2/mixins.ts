@@ -44,10 +44,13 @@ const mx: any = {
 				const sceneId = item.id
 				switch (item.type) {
 					case 'openScene':
+						if (this.editor.current.currentCreateSceneList.includes(sceneId)) return
 						this.editor.activeWidgetId = this.config.widget.id
+						this.editor.current.sceneAnimate = item.animate
 						this.editor.openScene(sceneId)
 						break
 					case 'closeScene':
+						this.editor.current.sceneAnimate = item.animate
 						this.editor.closeScene(sceneId)
 						break
 					case 'changeScene':
