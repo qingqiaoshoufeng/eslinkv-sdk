@@ -3,38 +3,59 @@
 	@contextmenu.stop.prevent,
 	v-click-outside="hideRightMenu")
 	ul.list
-		li(@click="handleZIndexTop")
-			i-icon(type="md-arrow-round-up")
-			span 插入横参考线
-		li(@click="handleZIndexBottom")
-			i-icon(type="md-arrow-round-down")
+		li(@click="handleCreateX")
+			i-icon(type="md-color-wand", :style="{ transform: 'rotate(46deg)' }")
 			span 插入纵参考线
-		li(@click="editor.resetZoom")
-			i-icon(type="md-arrow-round-down")
+		li(@click="handleCreateY")
+			i-icon(type="md-color-wand", :style="{ transform: 'rotate(-46deg)' }")
+			span 插入横参考线
+		li(@click="resetZoom")
+			i-icon(type="md-happy")
 			span 画布居中
+	i-modal(v-model="createModal", :closable="false", @on-ok="createGuide")
+		.fn-flex.flex-row
+			label(:style="{ marginRight: '10px', width: '100px' }") {{ guideType }}轴坐标值
+			i-input(v-model="guide")
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Icon } from 'view-design'
+import { Icon, Input, Modal } from 'view-design'
 import Editor from '@/core/Editor'
 import ClickOutside from 'vue-click-outside'
 
 @Component({
 	components: {
 		'i-icon': Icon,
+		'i-input': Input,
+		'i-modal': Modal,
 	},
 	directives: { ClickOutside },
 })
 export default class rightMenu extends Vue {
 	editor: Editor = Editor.Instance()
+	guide = ''
+	guideType = ''
+	createModal = false
 
-	handleZIndexTop(): void {
-		this.editor.currentWidget.config.layout.zIndex = this.editor.currentMaxZIndex
+	createGuide(): void {
+		if (isNaN(Number(this.guide))) this.$Message.error('请输入数字')
+		this.editor.createGuide(this.guide, this.guideType)
+	}
+	resetZoom(): void {
+		this.editor.resetZoom()
+		this.hideRightMenu()
+	}
+	handleCreateX(): void {
+		this.createModal = true
+		this.guide = ''
+		this.guideType = 'x'
 		this.hideRightMenu()
 	}
 
-	handleZIndexBottom(): void {
-		this.editor.currentWidget.config.layout.zIndex = this.editor.currentMinZIndex
+	handleCreateY(): void {
+		this.createModal = true
+		this.guide = ''
+		this.guideType = 'y'
 		this.hideRightMenu()
 	}
 

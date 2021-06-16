@@ -188,20 +188,24 @@ export default class Ruler {
 			if (this.rulerVisible) {
 				const t = this.context2d.x.getTransform()
 				const num = ~~((e.layerX - t.e) / this.zoom)
-				const guide = new Guide({
-					num,
-					type: 'x',
-					father: this.guideLinesDom.x,
-					offset: this.diffX,
-					zoom: this.zoom,
-					width: this.width,
-					height: this.height,
-					rulerSize: this.rulerSize,
-				})
-				this.guideLines.push(guide)
+				this.createGuide(num, 'x')
 			}
 		}
 		return dom
+	}
+	/* 创建参考线 */
+	createGuide(num: string | number, type: string): void {
+		const guide = new Guide({
+			num,
+			type,
+			father: this.guideLinesDom[type],
+			offset: type === 'x' ? this.diffX : this.diffY,
+			zoom: this.zoom,
+			width: this.width,
+			height: this.height,
+			rulerSize: this.rulerSize,
+		})
+		this.guideLines.push(guide)
 	}
 	/* 创建，y轴标尺容器 */
 	private createYFather(): HTMLElement {
@@ -238,17 +242,7 @@ export default class Ruler {
 			if (this.rulerVisible) {
 				const t = this.context2d.y.getTransform()
 				const num = ~~((e.layerY - t.f) / this.zoom)
-				const guide = new Guide({
-					num,
-					type: 'y',
-					father: this.guideLinesDom.y,
-					offset: this.diffY,
-					zoom: this.zoom,
-					width: this.width,
-					height: this.height,
-					rulerSize: this.rulerSize,
-				})
-				this.guideLines.push(guide)
+				this.createGuide(num, 'y')
 			}
 		}
 		return dom

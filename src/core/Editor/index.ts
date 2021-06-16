@@ -99,6 +99,10 @@ class Editor extends Factory<Editor> {
 				console.error('组件初始化加载失败')
 			})
 	}
+	/* ---------------------------------------------------Ruler---------------------------------------------------*/
+	createGuide(num: string | number, type: string) {
+		this.ruler.createGuide(num, type)
+	}
 	/* ---------------------------------------------------Local---------------------------------------------------*/
 	localInit(obj: any): void {
 		this.local.init(obj)
@@ -432,7 +436,12 @@ class Editor extends Factory<Editor> {
 	}
 	/* 删除组件 */
 	deleteWidget(id: string): void {
-		if (id) this.screen.deleteWidget(id)
+		if (this.current.currentSceneIndex === -1) {
+			delete this.screen.screenWidgets[id]
+			this.screen.screenWidgets = { ...this.screen.screenWidgets }
+		} else {
+			if (id) this.screen.deleteWidget(id)
+		}
 		if (id === this.currentWidgetId) this.current.unSelectWidget()
 	}
 	/* 复制组件 */

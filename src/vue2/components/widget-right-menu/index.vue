@@ -87,18 +87,32 @@ export default class rightMenu extends Vue {
 	}
 
 	deleteWidget(): void {
-		this.$Modal.confirm({
-			title: '是否删除当前组件？',
-			content: '该组件将自动进入回收站！',
-			onOk: () => {
-				const id = this.editor.currentWidgetId
-				this.editor.deleteWidget(id)
-				this.hideRightMenu()
-			},
-			onCancel: () => {
-				this.hideRightMenu()
-			},
-		})
+		const id = this.editor.currentWidgetId
+		if (this.editor.currentSceneIndex === -1) {
+			this.$Modal.confirm({
+				title: '是否删除当前组件？',
+				content: '该组件将自动进入回收站！',
+				onOk: () => {
+					this.editor.deleteWidget(id)
+					this.hideRightMenu()
+				},
+				onCancel: () => {
+					this.hideRightMenu()
+				},
+			})
+		} else {
+			this.$Modal.confirm({
+				title: '是否删除当前组件？',
+				content: '该组件将自动进入回收站！',
+				onOk: () => {
+					this.editor.deleteWidget(id)
+					this.hideRightMenu()
+				},
+				onCancel: () => {
+					this.hideRightMenu()
+				},
+			})
+		}
 	}
 
 	copyWidget(): void {

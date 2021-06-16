@@ -2,7 +2,7 @@
 .d-ruler-wrapper.pos-r(
 	:id="editor.rulerContainerId",
 	@mousedown="mouseDown",
-	@contextmenu.native="showRightMenu",
+	@contextmenu="showRightMenu",
 	@wheel="wheel",
 	@mousemove="mouseMove")
 	ruler-right-menu
