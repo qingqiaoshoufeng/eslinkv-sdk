@@ -100,8 +100,11 @@ class Editor extends Factory<Editor> {
 			})
 	}
 	/* ---------------------------------------------------Ruler---------------------------------------------------*/
-	createGuide(num: string | number, type: string) {
+	createGuide(num: string | number, type: string): void {
 		this.ruler.createGuide(num, type)
+	}
+	clearGuides(): void {
+		this.ruler.clearGuides()
 	}
 	/* ---------------------------------------------------Local---------------------------------------------------*/
 	localInit(obj: any): void {

@@ -20,7 +20,7 @@ dr(
 	@refLineParams="params => getRefLineParams(params, item)",
 	@dragstop="onDragStop",
 	@activated="editor.selectWidget(item)",
-	@contextmenu.native="showRightMenu($event, item)")
+	@contextmenu.native.stop="showRightMenu($event, item)")
 	eslinkv-widget(
 		:widget-type="item.widgetType",
 		:type="item.type",
@@ -59,6 +59,8 @@ export default class ItemCard extends Vue {
 		this.editor.selectWidget(item)
 		const rightMenu = document.getElementById('widget-right-menu')
 		rightMenu.classList.add('active')
+		const rulerRightMenu = document.getElementById('ruler-right-menu')
+		rulerRightMenu.classList.remove('active')
 		if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
 			rightMenu.style.top = e.clientY - rightMenu.scrollHeight + 'px'
 		} else {

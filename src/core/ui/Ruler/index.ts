@@ -311,6 +311,11 @@ export default class Ruler {
 				break
 		}
 	}
+	/* 清空参考线dom及数据 */
+	clearGuides(): void {
+		this.clearGuide()
+		this.guideLines = []
+	}
 	/* 清空参考线dom */
 	private clearGuide(): void {
 		this.guideLinesDom.y.innerHTML = ''

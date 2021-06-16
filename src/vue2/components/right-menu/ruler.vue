@@ -3,13 +3,17 @@
 	@contextmenu.stop.prevent,
 	v-click-outside="hideRightMenu")
 	ul.list
-		li(@click="handleCreateX")
+		item-card(@click="handleCreateXGuide")
 			i-icon(type="md-color-wand", :style="{ transform: 'rotate(46deg)' }")
 			span 插入纵参考线
-		li(@click="handleCreateY")
+		item-card(@click="handleCreateYGuide")
 			i-icon(type="md-color-wand", :style="{ transform: 'rotate(-46deg)' }")
 			span 插入横参考线
-		li(@click="resetZoom")
+		item-card(@click="handleClearGuide", :keyItem="hotKeys[0].key")
+			i-icon(type="md-cut")
+			span 清除全部参考线
+	ul.list
+		item-card(@click="resetZoom")
 			i-icon(type="md-happy")
 			span 画布居中
 	i-modal(v-model="createModal", :closable="false", @on-ok="createGuide")
@@ -22,9 +26,12 @@ import { Vue, Component } from 'vue-property-decorator'
 import { Icon, Input, Modal } from 'view-design'
 import Editor from '@/core/Editor'
 import ClickOutside from 'vue-click-outside'
+import ItemCard from '@/vue2/components/right-menu/item-card.vue'
+import { hotKeys } from '@/vue2/utils'
 
 @Component({
 	components: {
+		ItemCard,
 		'i-icon': Icon,
 		'i-input': Input,
 		'i-modal': Modal,
@@ -36,6 +43,7 @@ export default class rightMenu extends Vue {
 	guide = ''
 	guideType = ''
 	createModal = false
+	hotKeys = hotKeys
 
 	createGuide(): void {
 		if (isNaN(Number(this.guide))) this.$Message.error('请输入数字')
@@ -45,20 +53,22 @@ export default class rightMenu extends Vue {
 		this.editor.resetZoom()
 		this.hideRightMenu()
 	}
-	handleCreateX(): void {
+	handleCreateXGuide(): void {
 		this.createModal = true
 		this.guide = ''
 		this.guideType = 'x'
 		this.hideRightMenu()
 	}
-
-	handleCreateY(): void {
+	handleClearGuide(): void {
+		this.editor.clearGuides()
+		this.hideRightMenu()
+	}
+	handleCreateYGuide(): void {
 		this.createModal = true
 		this.guide = ''
 		this.guideType = 'y'
 		this.hideRightMenu()
 	}
-
 	hideRightMenu(): void {
 		const rightMenu = document.getElementById('ruler-right-menu')
 		rightMenu.classList.remove('active')
@@ -68,7 +78,6 @@ export default class rightMenu extends Vue {
 <style lang="scss">
 .right-menu {
 	z-index: 2;
-	width: 132px;
 	font-size: 12px;
 	color: #bfbfbf;
 	text-align: left;
@@ -83,24 +92,6 @@ export default class rightMenu extends Vue {
 
 		&:last-child {
 			border-bottom: none;
-		}
-
-		li {
-			position: relative;
-			display: flex;
-			align-items: center;
-			height: 26px;
-			padding: 0 12px 0 15px;
-			cursor: pointer;
-
-			&:hover {
-				background: #393e49;
-			}
-
-			span {
-				margin-left: 4px;
-				user-select: none;
-			}
 		}
 	}
 

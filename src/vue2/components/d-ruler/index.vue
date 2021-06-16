@@ -13,7 +13,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 import Widget from '@/core/Widget/normal'
-import rulerRightMenu from '@/vue2/components/ruler-right-menu/index.vue'
+import rulerRightMenu from '@/vue2/components/right-menu/ruler.vue'
 
 @Component({
 	components: {
@@ -43,6 +43,8 @@ export default class DRuler extends Vue {
 	showRightMenu(e: MouseEvent): void {
 		const rightMenu = document.getElementById('ruler-right-menu')
 		rightMenu.classList.add('active')
+		const widgetRightMenu = document.getElementById('widget-right-menu')
+		widgetRightMenu.classList.remove('active')
 		if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
 			rightMenu.style.top = e.clientY - rightMenu.scrollHeight + 'px'
 		} else {

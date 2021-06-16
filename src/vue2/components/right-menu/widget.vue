@@ -3,35 +3,35 @@
 	@contextmenu.stop.prevent,
 	v-click-outside="hideRightMenu")
 	ul.list
-		li(@click="handleZIndexTop")
+		item-card(@click="handleZIndexTop")
 			i-icon(type="md-arrow-round-up")
 			span 置顶
-		li(@click="handleZIndexBottom")
+		item-card(@click="handleZIndexBottom")
 			i-icon(type="md-arrow-round-down")
 			span 置底
 	//ul.list
-	//	li(@click="")
+	//	item-card(@click="")
 	//		i-icon(type="md-heart-outline")
 	//		span 收藏
 	ul.list(v-if="isGroup")
-		li(@click="handleRelieveGroup")
+		item-card(@click="handleRelieveGroup")
 			i-icon(type="md-apps")
 			span 取消组合
 	ul.list
-		li(@click="hideWidget")
+		item-card(@click="hideWidget")
 			i-icon(type="md-eye-off")
 			span 隐藏
-		li(@click="handleLock")
+		item-card(@click="handleLock")
 			i-icon(:type="isLock ? 'md-lock' : 'md-unlock'")
 			span {{ isLock ? '解锁' : '锁定' }}
 	ul.list
-		li(@click="copyWidget")
+		item-card(@click="copyWidget")
 			i-icon(type="ios-copy")
 			span 复制
-		li(@click="handleSync")
+		item-card(@click="handleSync")
 			i-icon(type="md-refresh")
 			span 刷新
-		li(@click="deleteWidget")
+		item-card(@click="deleteWidget")
 			i-icon(type="md-trash")
 			span 删除
 </template>
@@ -40,10 +40,12 @@ import { Vue, Component } from 'vue-property-decorator'
 import { Icon } from 'view-design'
 import Editor from '@/core/Editor'
 import ClickOutside from 'vue-click-outside'
+import ItemCard from '@/vue2/components/right-menu/item-card.vue'
 
 @Component({
 	components: {
 		'i-icon': Icon,
+		ItemCard,
 	},
 	directives: { ClickOutside },
 })
@@ -140,7 +142,6 @@ export default class rightMenu extends Vue {
 <style lang="scss">
 .right-menu {
 	z-index: 2;
-	width: 132px;
 	font-size: 12px;
 	color: #bfbfbf;
 	text-align: left;
@@ -155,24 +156,6 @@ export default class rightMenu extends Vue {
 
 		&:last-child {
 			border-bottom: none;
-		}
-
-		li {
-			position: relative;
-			display: flex;
-			align-items: center;
-			height: 26px;
-			padding: 0 12px 0 15px;
-			cursor: pointer;
-
-			&:hover {
-				background: #393e49;
-			}
-
-			span {
-				margin-left: 4px;
-				user-select: none;
-			}
 		}
 	}
 
