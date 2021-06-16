@@ -13,6 +13,12 @@
 			i-icon(type="md-cut")
 			span 清除全部参考线
 	ul.list
+		item-card(@click="zoomIn", :keyItem="hotKeys[1].key")
+			d-svg.pointer(icon-class="zoomIn", :size="12")
+			span 画布放大
+		item-card(@click="zoomOut", :keyItem="hotKeys[2].key")
+			d-svg.pointer(icon-class="zoomOut", :size="12") 
+			span 画布缩小
 		item-card(@click="resetZoom")
 			i-icon(type="md-happy")
 			span 画布居中
@@ -45,6 +51,14 @@ export default class rightMenu extends Vue {
 	createModal = false
 	hotKeys = hotKeys
 
+	zoomIn(): void {
+		this.editor.zoomIn()
+		this.hideRightMenu()
+	}
+	zoomOut(): void {
+		this.editor.zoomOut()
+		this.hideRightMenu()
+	}
 	createGuide(): void {
 		if (isNaN(Number(this.guide))) this.$Message.error('请输入数字')
 		this.editor.createGuide(this.guide, this.guideType)

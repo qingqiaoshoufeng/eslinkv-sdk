@@ -25,6 +25,22 @@ const hotKeys = [
 		],
 	},
 	{
+		name: '放大画布',
+		key: [
+			{ value: ctrl, type: 'text' },
+			{ type: '+' },
+			{ value: '+', type: 'text' },
+		],
+	},
+	{
+		name: '缩小画布',
+		key: [
+			{ value: ctrl, type: 'text' },
+			{ type: '+' },
+			{ value: '-', type: 'text' },
+		],
+	},
+	{
 		name: '缩放画布',
 		key: [
 			{ value: ctrl, type: 'text' },

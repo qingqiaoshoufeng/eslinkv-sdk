@@ -292,6 +292,12 @@ export default class DRuler extends Vue {
 		) {
 			e.preventDefault()
 		}
+		if (e.keyCode === 189) {
+			this.editor.zoomOut()
+		}
+		if (e.keyCode === 187) {
+			this.editor.zoomIn()
+		}
 		if (e.keyCode === 32 && !this.editor.contentMove) {
 			this.editor.contentMove = true
 			document.getElementById(this.editor.rulerContainerId).style.cursor =

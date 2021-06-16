@@ -1,6 +1,6 @@
 <template lang="pug">
 li.fn-flex(@click="handleClick")
-	.left-right-menu
+	.left-right-menu.fn-flex
 		slot
 	template(v-if="keyItem")
 		.right-right-menu-key-code.fn-flex.flex-row(v-for="child in keyItem")
@@ -26,11 +26,12 @@ li {
 	position: relative;
 	display: flex;
 	align-items: center;
-	height: 26px;
+	height: 30px;
 	padding: 0 12px 0 15px;
 	cursor: pointer;
 	.left-right-menu {
 		min-width: 132px;
+		align-items: center;
 	}
 	&:hover {
 		background: #393e49;
