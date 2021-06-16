@@ -1,5 +1,5 @@
 <template lang="pug">
-#ruler-right-menu.right-menu.pos-f(
+#ruler-right-menu.right-menu.pos-f.z-index-99(
 	@contextmenu.stop.prevent,
 	v-click-outside="hideRightMenu")
 	ul.list
@@ -89,9 +89,8 @@ export default class rightMenu extends Vue {
 	}
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .right-menu {
-	z-index: 2;
 	font-size: 12px;
 	color: #bfbfbf;
 	text-align: left;

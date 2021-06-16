@@ -3,40 +3,40 @@
 	.d-detail-left.fn-flex
 		.d-detail-left-icon-box.fn-flex
 			i-tooltip(placement="bottom", content="组件区")
-				i-icon.pointer(
-					type="ios-cube-outline",
-					@click.native="editor.taggerXRoomL1",
-					:size="18",
-					:class="{ active: editor.xRoomL1 > 0 }")
+				.left-icon.pointer(:class="{ active: editor.xRoomL1 > 0 }")
+					d-svg(
+						icon-class="widget",
+						:size="18",
+						@click.native="editor.taggerXRoomL1")
 			i-tooltip(placement="bottom", content="场景区")
-				i-icon.pointer(
-					type="ios-photos-outline",
-					@click.native="editor.taggerXRoomL2",
-					:size="18",
-					:class="{ active: editor.xRoomL2 > 0 }")
+				.left-icon.pointer(:class="{ active: editor.xRoomL2 > 0 }")
+					d-svg(
+						icon-class="scene",
+						:size="18",
+						@click.native="editor.taggerXRoomL2")
 			i-tooltip(placement="bottom", content="设置区")
-				i-icon.pointer(
-					type="ios-archive-outline",
-					@click.native="editor.taggerXRoomR1",
-					:size="18",
-					:class="{ active: editor.xRoomR1 > 0 }")
+				.left-icon.pointer(:class="{ active: editor.xRoomR1 > 0 }")
+					d-svg(
+						icon-class="setting",
+						:size="18",
+						@click.native="editor.taggerXRoomR1")
 	.d-detail-middle.fn-flex
 		span.d-detail-title {{ editor.name }}
 	ul.d-detail-right.fn-flex
 		li.fn-flex.flex-column.pointer(@click.stop="search")
-			i-icon(type="ios-search-outline", :size="24")
+			d-svg(icon-class="search", :size="20")
 			span 搜索
 		li.fn-flex.flex-column.pointer(@click="preview", v-if="!isNew")
-			i-icon(type="ios-desktop-outline", :size="24")
+			d-svg(icon-class="preview", :size="20")
 			span 预览
 		li.fn-flex.flex-column.pointer(@click="handleExport")
-			i-icon(type="ios-cloud-download-outline", :size="24")
+			d-svg(icon-class="export", :size="20")
 			span 导出
 		li.fn-flex.flex-column.pointer(@click="importModal = true")
-			i-icon(type="ios-cloud-upload-outline", :size="24")
+			d-svg(icon-class="import", :size="20")
 			span 导入
 		li.fn-flex.flex-column.pointer(@click="handleSave")
-			i-icon(type="ios-cloud-done-outline", :size="24")
+			d-svg(icon-class="save", :size="20")
 			span 保存
 	load-mask(:show="loading") {{ loadingMsg }}
 	i-modal(v-model="importModal", :footer-hide="true")
@@ -200,7 +200,6 @@ export default class DDetail extends Vue {
 		let isNew = false
 		this.$Modal.confirm({
 			title: `确定${this.isNew || isNew ? '创建' : '更新'}大屏吗？`,
-			content: '回收站内的组件将被清除！',
 			okText: '确定',
 			cancelText: '取消',
 			onOk: () => {
@@ -268,14 +267,14 @@ export default class DDetail extends Vue {
 .d-detail-left-icon-box {
 	margin-left: 20px;
 
-	.ivu-icon {
+	.left-icon {
 		padding: 4px 10px;
 		margin-right: 10px;
 		color: rgb(161, 174, 179);
 		background-color: #303640;
 		border: 1px solid rgba(255, 235, 235, 0.1);
 		border-radius: 2px;
-
+		height: 28px;
 		&:hover {
 			background-color: #414750;
 		}
@@ -296,7 +295,10 @@ export default class DDetail extends Vue {
 		height: 100%;
 		padding: 0 15px;
 		color: var(--white);
-
+		align-items: center;
+		span {
+			margin-top: 4px;
+		}
 		&:hover {
 			background-color: var(--white_01);
 		}

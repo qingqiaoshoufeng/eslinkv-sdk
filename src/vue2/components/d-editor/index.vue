@@ -139,7 +139,6 @@ export default class DEditor extends Vue {
 	transition: all 0.3s;
 
 	&.fullscreen {
-		position: fixed !important;
 		top: 0 !important;
 		right: 0 !important;
 		bottom: 0 !important;

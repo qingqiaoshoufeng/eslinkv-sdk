@@ -4,11 +4,12 @@
 	:style="{ width: `calc(100% - ${editor.xRoomL1 + editor.xRoomL2 + editor.xRoomR1}px)`, left: `${editor.xRoomL1 + editor.xRoomL2}px` }")
 	.d-detail-search.animated.searchFadeInDown(v-click-outside="hide")
 		i-input.d-detail-input(
+			:autofocus="true",
 			suffix="ios-search",
 			placeholder="请输入组件名",
 			v-model="keyword")
 		ul.result
-			li(v-for="(k, i) in searchResult", :key="i", @click="check(k)") {{ k.config.widget.name }}
+			li.pointer(v-for="(k, i) in searchResult", :key="i", @click="check(k)") {{ k.config.widget.name }}
 </template>
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
@@ -30,6 +31,13 @@ export default class DSearch extends Vue {
 	editor: Editor = Editor.Instance()
 	@Prop() value
 	@Prop() hide
+
+	@Watch('value')
+	valueChange(val: boolean): void {
+		if (val) {
+			this.keyword = ''
+		}
+	}
 
 	@Watch('keyword')
 	keywordChange(val: string): void {
@@ -85,6 +93,8 @@ export default class DSearch extends Vue {
 			input {
 				color: #fff;
 				background: rgba(10, 10, 14, 0.7);
+				border: none;
+				border-radius: 0;
 			}
 		}
 	}
@@ -129,6 +139,7 @@ export default class DSearch extends Vue {
 
 .searchFadeInDown {
 	animation-name: searchFadeInDown;
+	animation-duration: 0.3s;
 }
 
 @keyframes searchFadeInDown {
