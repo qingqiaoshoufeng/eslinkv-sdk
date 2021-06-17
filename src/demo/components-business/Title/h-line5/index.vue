@@ -1,44 +1,47 @@
-<template>
-	<div class="widget-part" :style="styles">
-		<div class="chart" :id="id"></div>
-	</div>
+<template lang="pug">
+widget-normal(
+	:value="value",
+	:customConfig="customConfig",
+	:setting="setting",
+	:settingData="settingD")
+	.chart(:id="id")
 </template>
-<script>
-import widgetMixin from '@/vue2/mixins'
-
+<script lang="ts">
 import getOption from './options'
-import { customConfig, value } from './index.component'
+import widgetMixin from '@/vue2/mixins'
+import { Component, Watch } from 'vue-property-decorator'
+import { mixins } from 'vue-class-component'
+import widgetNormal from '@/vue2/ui/Widget/normal.vue'
+import { value, customConfig, setting, settingData } from './index.component'
 
-export default {
-	mixins: [widgetMixin],
-	computed: {},
-	methods: {
-		setOption(data) {
-			this.instance &&
-				this.instance.setOption(
-					getOption(this.data.data, this.config.config),
-				)
-		},
-	},
-	watch: {
-		data: {
-			handler(val) {
-				if (this.id) {
-					this.$nextTick(() => {
-						this.instance = echarts.init(
-							document.getElementById(this.id),
-						)
-						this.setOption(val)
-					})
-				}
-			},
-			deep: true,
-			immediate: true,
-		},
-	},
-	created() {
-		this.parseConfigValue(value, customConfig)
-	},
+@Component({ components: { widgetNormal } })
+export default class extends mixins(widgetMixin) {
+	value = value
+	customConfig = customConfig
+	setting = setting
+	settingD = settingData
+	setOption(): void {
+		const option = getOption(this.config.config)
+		if (this.settingData['y'])
+			this.settingData['y'].forEach((child, index) => {
+				// option.series[index].data = this.data.map(item => item[child])
+			})
+		if (this.settingData['x'])
+			this.settingData['x'].forEach((child, index) => {
+				// option.xAxis[index].data = this.data.map(item => item[child])
+			})
+		this.instance.setOption(option)
+	}
+
+	@Watch('data')
+	dataChange(val): void {
+		if (this.id) {
+			this.$nextTick(() => {
+				this.instance = echarts.init(document.getElementById(this.id))
+				this.setOption(val)
+			})
+		}
+	}
 }
 </script>
 <style lang="scss" scoped>

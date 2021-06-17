@@ -1,4 +1,4 @@
-export default function getOption(data, config) {
+export default function getOption(config) {
 	return {
 		textStyle: {
 			fontSize: 16,
@@ -53,7 +53,6 @@ export default function getOption(data, config) {
 					interval: 0,
 				},
 				offset: 5,
-				data: data.map(item => item.name),
 			},
 		],
 		yAxis: [
@@ -162,7 +161,6 @@ export default function getOption(data, config) {
 						},
 					],
 				},
-				data: data.map(item => item.value),
 			},
 		],
 	}

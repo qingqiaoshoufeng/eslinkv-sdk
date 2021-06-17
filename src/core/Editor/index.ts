@@ -344,12 +344,14 @@ class Editor extends Factory<Editor> {
 	/* 刷新当前组件 */
 	refreshWidget(): void {
 		const item = this.screen.screenWidgets[this.current.currentWidgetId]
-		delete this.screen.screenWidgets[this.current.currentWidgetId]
-		this.screen.screenWidgets = { ...this.screen.screenWidgets }
-		setTimeout(() => {
-			this.screen.screenWidgets[item.id] = item
+		if (item) {
+			delete this.screen.screenWidgets[this.current.currentWidgetId]
 			this.screen.screenWidgets = { ...this.screen.screenWidgets }
-		})
+			setTimeout(() => {
+				this.screen.screenWidgets[item.id] = item
+				this.screen.screenWidgets = { ...this.screen.screenWidgets }
+			})
+		}
 	}
 	get currentMaxZIndex(): number {
 		return this.sortByZIndexWidgetsList.length
@@ -543,6 +545,11 @@ class Editor extends Factory<Editor> {
 				this.screen.screenWidgets[key].scene = -1
 			}
 		}
+		this.screen.screenWidgets = { ...this.screen.screenWidgets }
+	}
+	dataSetting(id: string, list, data): void {
+		if (list.length) this.screen.screenWidgets[id].settingDataHandle = list
+		if (data) this.screen.screenWidgets[id].settingData = data
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 	}
 }

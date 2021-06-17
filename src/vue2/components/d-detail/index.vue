@@ -24,7 +24,7 @@
 		span.d-detail-title {{ editor.name }}
 	ul.d-detail-right.fn-flex
 		li.fn-flex.flex-column.pointer(@click.stop="search")
-			d-svg(icon-class="search", :size="20")
+			d-svg(icon-class="search", :size="18")
 			span 搜索
 		li.fn-flex.flex-column.pointer(@click="preview", v-if="!isNew")
 			d-svg(icon-class="preview", :size="20")

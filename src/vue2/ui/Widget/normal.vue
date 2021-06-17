@@ -9,6 +9,18 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class widgetNormal extends Vue {
 	@Prop() value
 	@Prop() customConfig
+	@Prop({
+		default() {
+			return []
+		},
+	})
+	setting
+	@Prop({
+		default() {
+			return {}
+		},
+	})
+	settingData
 
 	get styles() {
 		return (this.$parent as any).styles
@@ -16,6 +28,7 @@ export default class widgetNormal extends Vue {
 
 	created(): void {
 		;(this.$parent as any).parseConfigValue(this.value, this.customConfig)
+		;(this.$parent as any).dataSetting(this.setting, this.settingData)
 	}
 }
 </script>

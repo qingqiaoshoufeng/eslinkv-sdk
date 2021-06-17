@@ -1,15 +1,13 @@
 <template lang="pug">
-d-right-swiper(title="echarts 数据处理")
-	d-right-control(label="X轴数据")
+d-right-swiper(title="自定义数据过滤器")
+	d-right-control(
+		:label="item.label",
+		v-for="item in editor.currentWidget.settingDataHandle")
 		i-select(
-			v-model="editor.currentWidget.config.echartsXAnalysis",
+			v-model="editor.currentWidget.settingData[item.key]",
+			@on-change="handleChange",
 			:multiple="true")
-			i-option(v-for="item in echartsAnalysis", :value="item") {{ item }}
-	d-right-control(label="Y轴数据")
-		i-select(
-			v-model="editor.currentWidget.config.echartsYAnalysis",
-			:multiple="true")
-			i-option(v-for="item in echartsAnalysis", :value="item") {{ item }}
+			i-option(v-for="item in list", :value="item") {{ item }}
 </template>
 <script lang="ts">
 import func from '@/vue2/components-func/func.mx'
@@ -17,7 +15,7 @@ import { Component } from 'vue-property-decorator'
 
 @Component
 export default class DataEcharts extends func {
-	get echartsAnalysis() {
+	get list() {
 		const data = JSON.parse(this.editor.currentWidget.config.api.data)
 		let result = []
 		data.forEach(item => {
@@ -28,6 +26,10 @@ export default class DataEcharts extends func {
 			}
 		})
 		return result
+	}
+
+	handleChange(): void {
+		this.editor.refreshWidget()
 	}
 }
 </script>

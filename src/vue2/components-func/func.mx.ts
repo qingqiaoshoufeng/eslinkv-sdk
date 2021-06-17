@@ -87,7 +87,7 @@ export default class Func extends Vue {
 	}
 
 	getItemValue(keyString) {
-		let res = this.editor.currentWidget
+		let res = this.editor.screen.screenWidgets[this.editor.currentWidgetId]
 		const props = keyString.split('.')
 		props.forEach(v => {
 			res = res[v]

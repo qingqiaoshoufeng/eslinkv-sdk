@@ -22,7 +22,6 @@ export default class DManageItem extends Vue {
 		)
 		components.keys().forEach(child => {
 			const name = child.split('/')[1].replace('.vue', '')
-			console.log(this.config.type)
 			this.currentComponent[name] = components(child).default
 		})
 	}

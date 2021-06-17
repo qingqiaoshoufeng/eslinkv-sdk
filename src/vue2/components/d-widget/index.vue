@@ -3,7 +3,7 @@ component.widget-part(
 	:is="currentComponent",
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
-	v-bind="{ config, readonly, ...$attrs }",
+	v-bind="{ config, readonly,settingData, ...$attrs }",
 	@query-start="querying = true",
 	@query-end="querying = false",
 	@query-failed="querying = true",
@@ -15,7 +15,7 @@ eslinkv-group(
 	v-else,
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
-	v-bind="{ config, readonly, ...$attrs }",
+	v-bind="{ config, readonly,settingData, ...$attrs }",
 	v-on="$listeners")
 </template>
 <script lang="ts">
@@ -31,6 +31,7 @@ export default class WidgetNormal extends Vue {
 	@Prop({ default: false }) market
 	@Prop() type
 	@Prop() config
+	@Prop() settingData
 	@Prop({ default: false }) readonly
 	componentVersion = ''
 	querying = false

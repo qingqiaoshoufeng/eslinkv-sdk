@@ -70,6 +70,7 @@
 			label="数据过滤器",
 			:code="editor.currentWidget.config.api.process.methodBody",
 			@update:code="value => (editor.currentWidget.config.api.process.methodBody = value)")
+	data-custom-deal
 	d-right-swiper-eye(
 		title="自动更新",
 		:enable="editor.currentWidget.config.api.autoFetch.enable",
@@ -97,7 +98,6 @@
 				:value="editor.currentWidget.id",
 				v-for="(item, key) in relateList",
 				:key="key") {{ item.id }}
-	//data-echarts(v-if="editor.currentWidget.widgetType === 'echarts'")
 </template>
 <script lang="ts">
 import func from '@/vue2/components-func/func.mx'
@@ -107,11 +107,11 @@ import dCode from '@/vue2/components-right/d-code/index.vue'
 import { animates } from './config.js'
 import DataEventComponent from '@/vue2/components-right/data-event-component/index.vue'
 import DataEventScene from '@/vue2/components-right/data-event-scene/index.vue'
-import DataEcharts from '@/vue2/components-right/data-echarts/index.vue'
+import DataCustomDeal from '@/vue2/components-right/data-custom-deal/index.vue'
 
 @Component({
 	components: {
-		DataEcharts,
+		DataCustomDeal,
 		DataEventScene,
 		DataEventComponent,
 		databaseConfig,

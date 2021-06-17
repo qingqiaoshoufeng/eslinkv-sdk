@@ -8,6 +8,8 @@ export default class Widget {
 	scene: number | string
 	market: boolean
 	children = {}
+	settingDataHandle = []
+	settingData = {}
 	constructor(
 		offsetX: number,
 		offsetY: number,

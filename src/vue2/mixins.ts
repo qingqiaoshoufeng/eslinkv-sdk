@@ -7,6 +7,9 @@ import Editor from '@/core/Editor'
 const mx: any = {
 	mixins: [fetch, dataProcess],
 	props: {
+		settingData: {
+			type: Object,
+		},
 		config: {
 			type: Object,
 			default: null,
@@ -38,13 +41,21 @@ const mx: any = {
 		this.animateActiveIndex = -1
 	},
 	methods: {
+		dataSetting(list = [], data) {
+			this.editor.dataSetting(this.config.widget.id, list, data)
+		},
 		__handleClick__(val) {
 			if (!this.config) return
 			for (const item of this.config.event.scene) {
 				const sceneId = item.id
 				switch (item.type) {
 					case 'openScene':
-						if (this.editor.current.currentCreateSceneList.includes(sceneId)) return
+						if (
+							this.editor.current.currentCreateSceneList.includes(
+								sceneId,
+							)
+						)
+							return
 						this.editor.activeWidgetId = this.config.widget.id
 						this.editor.current.sceneAnimate = item.animate
 						this.editor.openScene(sceneId)

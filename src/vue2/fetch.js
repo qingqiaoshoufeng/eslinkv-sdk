@@ -155,6 +155,7 @@ export default {
 				params: systemParams,
 				method: innerMethod,
 			} = system
+			console.log(1)
 			return {
 				url,
 				params,

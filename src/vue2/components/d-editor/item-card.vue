@@ -24,6 +24,7 @@ dr(
 	eslinkv-widget(
 		:widget-type="item.widgetType",
 		:type="item.type",
+		:settingData="item.settingData",
 		:config="item.config",
 		:children="item.children",
 		:market="item.market")

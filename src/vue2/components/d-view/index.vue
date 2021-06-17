@@ -8,6 +8,7 @@
 			:type="item.type",
 			:config="item.config",
 			:children="item.children",
+			:settingData="item.settingData",
 			:ref="item.id",
 			:market="item.market",
 			:style="item.config.widget.hide ? 'display: none' : ''",
@@ -19,6 +20,7 @@
 			:type="item.type",
 			:config="item.config",
 			:children="item.children",
+			:settingData="item.settingData",
 			:ref="item.id",
 			:market="item.market",
 			:style="item.config.widget.hide ? 'display: none' : ''",
@@ -35,6 +37,7 @@
 			:type="item.type",
 			:config="item.config",
 			:children="item.children",
+			:settingData="item.settingData",
 			:ref="item.id",
 			:market="item.market",
 			:style="item.config.widget.hide ? 'display: none' : ''",
@@ -52,9 +55,12 @@ import Editor from '@/core/Editor'
 })
 export default class DView extends Vue {
 	editor: Editor = Editor.Instance()
-	
-	currentAnimate (sceneId) {
-		if(this.editor.current.activeSceneId === sceneId || this.editor.current.currentSceneIndex === sceneId) {
+
+	currentAnimate(sceneId) {
+		if (
+			this.editor.current.activeSceneId === sceneId ||
+			this.editor.current.currentSceneIndex === sceneId
+		) {
 			return `scene-container animated ${this.editor.current.sceneAnimate}`
 		}
 		return 'scene-container'
