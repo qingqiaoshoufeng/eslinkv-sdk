@@ -74,8 +74,13 @@ export default class rightMenu extends Vue {
 		this.hideRightMenu()
 	}
 	handleClearGuide(): void {
-		this.editor.clearGuides()
 		this.hideRightMenu()
+		this.$Modal.confirm({
+			title: '确定是否清空参考线',
+			onOk: () => {
+				this.editor.clearGuides()
+			},
+		})
 	}
 	handleCreateYGuide(): void {
 		this.createModal = true
