@@ -72,7 +72,7 @@ export default class Current extends Factory<Current> {
 	/* 画布还原最佳比例 */
 	resetZoom({ screenWidth, screenHeight }: any = {}): void {
 		const dom: HTMLElement = document.getElementById(this.rulerContainerId)
-		const rulerOffsetWidth = dom.offsetWidth
+		const rulerOffsetWidth = dom.offsetWidth - 18
 		this.zoom = ~~((rulerOffsetWidth / screenWidth) * 100) / 100
 		const rulerOffsetHeight = dom.offsetHeight
 		this.offsetX = (rulerOffsetWidth - screenWidth) * 0.5
