@@ -42,6 +42,8 @@ export default class Current extends Factory<Current> {
 		height: 0,
 		z: 0,
 	}
+
+	currentRightSettingIndex = 0
 	constructor(obj: any) {
 		super()
 		this.rulerContainerId = obj.rulerContainerId

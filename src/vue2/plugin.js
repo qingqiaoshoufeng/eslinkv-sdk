@@ -15,6 +15,7 @@ import widget from '@/vue2/components/d-widget'
 Vue.component('scene-group', widgetGroup)
 Vue.component('eslinkv-group', group)
 Vue.component('eslinkv-widget', widget)
+
 const Highlight = {
 	install: function (Vue) {
 		Vue.directive('highlight', {

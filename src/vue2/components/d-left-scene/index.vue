@@ -44,6 +44,7 @@ import { Icon, Input, Select, Option } from 'view-design'
 import ItemCard from './item-card.vue'
 import draggable from 'vuedraggable'
 import Editor from '@/core/Editor'
+import { market } from '@/vue2/api/marketComponentType.api'
 
 @Component({
 	components: {
@@ -123,6 +124,10 @@ export default class DLeftScene extends Vue {
 			newItem.config.layout.zIndex = oldItem.config.layout.zIndex
 			oldItem.config.layout.zIndex = zIndex
 		}
+	}
+
+	mounted(): void {
+		market()
 	}
 }
 </script>

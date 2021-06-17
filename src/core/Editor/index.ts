@@ -114,6 +114,12 @@ class Editor extends Factory<Editor> {
 		this.local.setLocalWidgets(obj)
 	}
 	/* ---------------------------------------------------Current---------------------------------------------------*/
+	get currentRightSettingIndex(): number {
+		return this.current.currentRightSettingIndex
+	}
+	selectRightSettingIndex(index: number): void {
+		this.current.currentRightSettingIndex = index
+	}
 	get activeWidgetId(): string {
 		return this.current.activeWidgetId
 	}

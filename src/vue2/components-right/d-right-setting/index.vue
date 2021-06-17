@@ -17,12 +17,12 @@
 			v-for="(item, index) in title",
 			@click="handleClick(index)",
 			:key="item",
-			:class="{ active: index === tabIndex }") {{ item }}
+			:class="{ active: index === editor.currentRightSettingIndex }") {{ item }}
 	.d-right-modal.d-scrollbar-none
 		itemList(
 			v-for="(item, index) in chooseList",
 			:list="item.key",
-			v-if="tabIndex === index")
+			v-if="editor.currentRightSettingIndex === index")
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
@@ -40,7 +40,6 @@ import Editor from '@/core/Editor'
 	directives: { ClickOutside },
 })
 export default class DRightSetting extends Vue {
-	tabIndex = 0
 	editName = false
 	editor: Editor = Editor.Instance()
 	title = ['基础', '交互', '主题', '自定义']
@@ -51,7 +50,7 @@ export default class DRightSetting extends Vue {
 	}
 
 	handleClick(index: number): void {
-		this.tabIndex = index
+		this.editor.selectRightSettingIndex(index)
 	}
 
 	mounted(): void {

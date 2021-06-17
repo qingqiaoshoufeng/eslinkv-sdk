@@ -1,10 +1,8 @@
 import Editor from './Editor/index.ts'
-import widgetNormal from './ui/Widget/normal'
 
 const editor = Editor.Instance()
 const eslinkV = {
 	Editor,
-	widgetNormal,
 }
 if (window !== undefined) {
 	if (!window.eslinkV) {
@@ -35,5 +33,5 @@ window.eslinkV.instance = {
 		},
 	},
 }
-export { Editor, widgetNormal }
+export { Editor }
 export default eslinkV
