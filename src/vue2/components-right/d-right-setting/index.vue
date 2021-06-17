@@ -5,8 +5,9 @@
 		i-input.widget-name(
 			v-if="editName",
 			v-model="editor.currentWidget.config.widget.name")
-		i-icon.pointer.widget-name-icon(
-			type="ios-create-outline",
+		d-svg.pointer.widget-name-icon(
+			icon-class="edit",
+			color="#515a6e",
 			@click.stop="editName = true",
 			v-if="!editName")
 	.d-right-modal-id.fn-flex.flex-column

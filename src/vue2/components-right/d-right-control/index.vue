@@ -1,9 +1,9 @@
 <template lang="pug">
 .d-manage-modal-control
-	label 
+	label
 		span(style="margin-right: 5px") {{ label }}
 		i-tooltip(:content="title", placement="top", v-if="title")
-			i-icon(:type="icon", size="16")
+			d-svg.pos-r.pointer(:icon-class="icon", size="16", :style="{ top: '3px' }")
 	.d-manage-modal-control-right
 		slot
 </template>
@@ -19,7 +19,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class DRightControl extends Vue {
 	@Prop() label: string
 	@Prop() title: string
-	@Prop({ default: 'md-help-circle' }) icon: string
+	@Prop({ default: 'help' }) icon: string
 }
 </script>
 <style lang="scss">

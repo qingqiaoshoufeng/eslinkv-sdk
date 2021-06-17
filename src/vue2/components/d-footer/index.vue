@@ -9,17 +9,20 @@
 			.d-footer-hot-key-list.pos-a(:class="{ active: showHotKey }")
 				ul
 					item-card(v-for="item in hotKeys", :key="item.name", :item="item")
-	.d-footer-bar.fn-flex(title="缩小", :style="{ marginLeft: 'auto' }")
-		d-svg.pointer(icon-class="zoomOut", @click.native="() => editor.zoomOut()")
+	.d-footer-bar.fn-flex(:style="{ marginLeft: 'auto' }")
+		i-tooltip(content="缩小")
+			d-svg.pointer(icon-class="zoomOut", @click.native="() => editor.zoomOut()")
 	.d-footer-bar.fn-flex
 		label {{ zoom }}
-	.d-footer-bar.fn-flex(title="放大")
-		d-svg.pointer(icon-class="zoomIn", @click.native="() => editor.zoomIn()")
+	.d-footer-bar.fn-flex
+		i-tooltip(content="放大")
+			d-svg.pointer(icon-class="zoomIn", @click.native="() => editor.zoomIn()")
 	.d-footer-bar.fn-flex(:style="{ marginRight: '0' }")
-		i-icon.pointer(
-			:type="editor.fullscreen ? 'md-contract' : 'md-expand'",
-			:size="18",
-			@click="handleFullscreen")
+		i-tooltip(:content="editor.fullscreen ? '退出全屏' : '全屏'")
+			d-svg.pointer(
+				:icon-class="editor.fullscreen ? 'unfullscreen' : 'fullscreen'",
+				:size="18",
+				@click="handleFullscreen")
 	i-modal(v-model="copyModel", title="场景ID", :footer-hide="true")
 		.fn-flex.flex-row
 			span.fn-hide.copy-id {{ editor.currentSceneIndex }}
@@ -32,7 +35,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Icon, Input, Modal } from 'view-design'
+import { Icon, Input, Modal, Tooltip } from 'view-design'
 import Editor from '@/core/Editor'
 import { copyText } from '@/vue2/utils'
 import ItemCard from '@/vue2/components/d-footer/item-card.vue'
@@ -43,6 +46,7 @@ import { hotKeys } from '@/vue2/utils'
 		'i-icon': Icon,
 		'i-input': Input,
 		'i-modal': Modal,
+		'i-tooltip': Tooltip,
 		ItemCard,
 	},
 })

@@ -10,8 +10,9 @@
 			@on-click="editName = false",
 			:autofocus="true")
 		span.screen-name-text(v-if="!editName") {{ editor.name }}
-		i-icon.pointer.screen-name-icon(
-			type="ios-create-outline",
+		d-svg.pointer.screen-name-icon(
+			icon-class="edit",
+			color="#515a6e",
 			@click.stop="editName = true",
 			v-if="!editName")
 	.d-right-modal-border
@@ -35,7 +36,7 @@ import Editor from '@/core/Editor'
 export default class DRightManage extends Vue {
 	editName = false
 	editor: Editor = Editor.Instance()
-	close() {
+	close(): void {
 		this.editName = false
 	}
 }
