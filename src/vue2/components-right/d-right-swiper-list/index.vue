@@ -16,7 +16,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import dRightSwiper from '../d-right-swiper/index.vue'
 @Component({ components: { dRightSwiper } })
-export default class FuncGroup extends Vue {
+export default class DRightSwiperList extends Vue {
 	@Prop() title: string
 	@Prop({ default: '配置' }) prefix: string
 	@Prop({ default: false }) show: boolean

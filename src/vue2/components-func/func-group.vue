@@ -5,8 +5,9 @@
 		@add-click="handleAddClick",
 		:list="obj[inputKey]",
 		@remove-click="handleRemoveClick")
-		template(v-slot="dataDefault", v-for="(k, n) in config.children")
+		template(v-slot="dataDefault")
 			d-manage-item(
+				v-for="(k, n) in config.children"
 				:config="k",
 				:key="n",
 				:parentProp="inputKey",
