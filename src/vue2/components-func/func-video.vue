@@ -1,5 +1,5 @@
 <template lang="pug">
-d-right-control(:label="config.label", title="支持mp4,webm,mov")
+d-right-control(:label="`${config.label} [${inputKey}]`", title="支持mp4,webm,mov")
 	d-upload(
 		v-model="obj[inputKey]",
 		:data="formData",

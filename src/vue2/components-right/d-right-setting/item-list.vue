@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-mange-list
-	DManageItem(
+	d-manage-item(
 		:config="child",
 		v-for="(child, i) in list",
 		:key="`${i}-${editor.currentWidgetId}`")

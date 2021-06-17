@@ -14,7 +14,7 @@ export default class DManageItem extends Vue {
 	@Prop() parentProp: any
 	@Prop() parentIndex: any
 	currentComponent: any = {}
-	created() {
+	created(): void {
 		const components = require.context(
 			`../../components-func`,
 			true,
@@ -22,6 +22,7 @@ export default class DManageItem extends Vue {
 		)
 		components.keys().forEach(child => {
 			const name = child.split('/')[1].replace('.vue', '')
+			console.log(this.config.type)
 			this.currentComponent[name] = components(child).default
 		})
 	}

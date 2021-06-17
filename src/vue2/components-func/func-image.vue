@@ -1,5 +1,5 @@
 <template lang="pug">
-d-right-control(:label="config.label", title="支持jpg，png，gif")
+d-right-control(:label="`${config.label} [${inputKey}]`", title="支持jpg，png，gif")
 	d-upload(v-model="obj[inputKey]", :data="formData", accept="image/*")
 </template>
 <script lang="ts">

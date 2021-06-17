@@ -1,5 +1,5 @@
 <template lang="pug">
-d-right-control(:label="config.label")
+d-right-control(:label="`${config.label} [${inputKey}]`")
 	span.d-manage-modal-control-text {{ obj[inputKey] }}
 </template>
 <script lang="ts">

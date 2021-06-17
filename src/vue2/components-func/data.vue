@@ -97,7 +97,7 @@
 				:value="editor.currentWidget.id",
 				v-for="(item, key) in relateList",
 				:key="key") {{ item.id }}
-	data-echarts(v-if="editor.currentWidget.widgetType === 'echarts'")
+	//data-echarts(v-if="editor.currentWidget.widgetType === 'echarts'")
 </template>
 <script lang="ts">
 import func from '@/vue2/components-func/func.mx'

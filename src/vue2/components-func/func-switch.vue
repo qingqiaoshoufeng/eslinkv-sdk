@@ -1,5 +1,5 @@
 <template lang="pug">
-d-right-control(:label="config.label")
+d-right-control(:label="`${config.label} [${inputKey}]`")
 	i-switch(v-model="obj[inputKey]")
 </template>
 <script lang="ts">

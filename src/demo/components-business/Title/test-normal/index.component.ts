@@ -15,6 +15,11 @@ export const customConfig = [
 				label: '图片',
 				type: 'func-image',
 			},
+			{
+				prop: 'title',
+				label: '标题',
+				type: 'func-input',
+			},
 		],
 	},
 ]

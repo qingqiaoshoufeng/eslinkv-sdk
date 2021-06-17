@@ -1,15 +1,14 @@
 <template lang="pug">
 .func-group.fn-flex.flex-column
 	d-right-swiper-list(
-		:title="config.label",
+		:title="`${config.label} [${inputKey}]`",
 		@add-click="handleAddClick",
 		:list="obj[inputKey]",
 		@remove-click="handleRemoveClick")
 		template(v-slot="dataDefault", v-for="(k, n) in config.children")
-			DManageItem(
+			d-manage-item(
 				:config="k",
-				v-if="dataDefault.index === dataDefault.activeIndex",
-				:key="`${dataDefault.index}-${n}`",
+				:key="n",
 				:parentProp="inputKey",
 				:parentIndex="dataDefault.index")
 </template>

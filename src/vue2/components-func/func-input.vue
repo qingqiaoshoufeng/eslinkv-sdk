@@ -1,5 +1,5 @@
 <template lang="pug">
-d-right-control(:label="config.label")
+d-right-control(:label="`${config.label} [${inputKey}]`")
 	i-input(
 		v-model="obj[inputKey]",
 		@on-focus="event.inputFocus = true",

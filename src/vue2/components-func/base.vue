@@ -52,7 +52,7 @@
 			d-input(
 				append="ms",
 				v-model="editor.currentWidget.config.animation.duration")
-	d-right-echarts
+	//d-right-echarts
 </template>
 <script lang="ts">
 import func from './func.mx'
