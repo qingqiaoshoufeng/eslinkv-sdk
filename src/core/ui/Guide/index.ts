@@ -40,12 +40,16 @@ export default class Guide {
 			dom.style.transform = `translateX(${
 				this.offset + this.num * this.zoom
 			}px)`
+			dom.setAttribute('data-top', '0px')
+			dom.setAttribute('data-left', `${this.num - 1}px`)
 			dom.innerHTML = `<div class="d-ruler-guide-x-num">${this.num}</div>`
 		} else {
 			dom.style.width = `${this.width + this.rulerSize}px`
 			dom.style.transform = `translateY(${
 				this.offset + this.num * this.zoom
 			}px)`
+			dom.setAttribute('data-left', '0px')
+			dom.setAttribute('data-top', `${this.num - 1}px`)
 			dom.innerHTML = `<div class="d-ruler-guide-y-num">${this.num}</div>`
 		}
 		// dom.onmousedown = (e) => {
