@@ -268,13 +268,14 @@ export default class DDetail extends Vue {
 	margin-left: 20px;
 
 	.left-icon {
+		height: 28px;
 		padding: 4px 10px;
 		margin-right: 10px;
 		color: rgb(161, 174, 179);
 		background-color: #303640;
 		border: 1px solid rgba(255, 235, 235, 0.1);
 		border-radius: 2px;
-		height: 28px;
+
 		&:hover {
 			background-color: #414750;
 		}
@@ -291,14 +292,16 @@ export default class DDetail extends Vue {
 	height: 100%;
 
 	li {
+		align-items: center;
 		justify-content: center;
 		height: 100%;
 		padding: 0 15px;
 		color: var(--white);
-		align-items: center;
+
 		span {
 			margin-top: 4px;
 		}
+
 		&:hover {
 			background-color: var(--white_01);
 		}

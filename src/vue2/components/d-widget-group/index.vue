@@ -7,6 +7,7 @@
 				:ref="item.id",
 				:type="item.type",
 				:config="item.config",
+				:settingData="item.settingData",
 				:children="item.children",
 				:market="item.market",
 				v-else)

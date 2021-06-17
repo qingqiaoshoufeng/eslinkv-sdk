@@ -547,17 +547,25 @@ class Editor extends Factory<Editor> {
 		}
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 	}
-	dataSetting(id: string, list, data): void {
-		if (list.length) this.screen.screenWidgets[id].settingDataHandle = list
-		if (this.screen.screenWidgets[id].settingData) {
-			if (
-				data &&
-				Object.keys(this.screen.screenWidgets[id].settingData).length <=
-					0
-			)
-				this.screen.screenWidgets[id].settingData = data
+	private dataSettingFind(id: string, list, data, parent) {
+		for (const key in parent) {
+			if (id === parent[key].id) {
+				if (list.length) parent[key].settingDataHandle = list
+				if (parent[key].settingData) {
+					if (
+						data &&
+						Object.keys(parent[key].settingData).length <= 0
+					)
+						parent[key].settingData = data
+				}
+				this.screen.screenWidgets = { ...this.screen.screenWidgets }
+			} else if (parent[key].children) {
+				this.dataSettingFind(id, list, data, parent[key].children)
+			}
 		}
-		this.screen.screenWidgets = { ...this.screen.screenWidgets }
+	}
+	dataSetting(id: string, list, data): void {
+		this.dataSettingFind(id, list, data, this.screen.screenWidgets)
 	}
 }
 

@@ -29,10 +29,12 @@ li {
 	height: 30px;
 	padding: 0 12px 0 15px;
 	cursor: pointer;
+
 	.left-right-menu {
-		min-width: 132px;
 		align-items: center;
+		min-width: 132px;
 	}
+
 	&:hover {
 		background: #393e49;
 	}
@@ -42,6 +44,7 @@ li {
 		user-select: none;
 	}
 }
+
 .right-right-menu-key-code {
 	&:last-child {
 		.right-right-menu-hot-key-text {
@@ -55,10 +58,10 @@ li {
 }
 
 .right-right-menu-hot-key-text {
-	margin-right: 10px;
-	margin-left: 10px;
 	min-width: 22px;
 	padding: 0 4px;
+	margin-right: 10px;
+	margin-left: 10px;
 	font-style: normal;
 	text-align: center;
 	border: 1px solid #ddd;

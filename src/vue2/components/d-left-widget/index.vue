@@ -16,10 +16,10 @@
 			li.pointer(
 				v-for="item in editor.local.widgets[leftIndex].children",
 				:class="{ active: openList[item.componentTypeId] }")
-				i-icon(
-					type="ios-arrow-down",
+				.d-left-widget-right-title.fn-flex(
 					@click="handleCheckType(item.componentTypeId, item.market)")
-				label.pointer(@click="handleCheckType(item.componentTypeId, item.market)") {{ item.componentTypeName }}
+					i-icon(type="ios-arrow-down")
+					label.pointer {{ item.componentTypeName }}
 				.d-left-widget-list.fn-flex(
 					v-if="list[item.componentTypeId] && openList[item.componentTypeId]")
 					item-card(
@@ -143,6 +143,10 @@ export default class DLeftWidget extends Vue {
 	}
 }
 
+.d-left-widget-right-title {
+	align-items: center;
+}
+
 .d-left-widget-right {
 	width: 100%;
 
@@ -159,7 +163,8 @@ export default class DLeftWidget extends Vue {
 
 		/deep/ {
 			.ivu-icon {
-				margin: 0 10px;
+				height: 12px;
+				margin-right: 5px;
 				color: rgb(188, 201, 212);
 				transition: all 0.3s;
 				transform: rotate(-90deg);

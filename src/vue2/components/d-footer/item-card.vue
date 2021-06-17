@@ -25,6 +25,7 @@ li {
 		border-bottom: none;
 	}
 }
+
 .d-footer-key-code {
 	&:last-child {
 		.d-footer-hot-key-text {
@@ -34,8 +35,8 @@ li {
 }
 
 .d-footer-name {
-	margin-right: auto;
 	padding: 3px 10px;
+	margin-right: auto;
 	text-align: right;
 	letter-spacing: 0;
 }
@@ -45,10 +46,10 @@ li {
 }
 
 .d-footer-hot-key-text {
-	margin-right: 10px;
-	margin-left: 10px;
 	min-width: 22px;
 	padding: 0 4px;
+	margin-right: 10px;
+	margin-left: 10px;
 	font-style: normal;
 	text-align: center;
 	border: 1px solid #ddd;
