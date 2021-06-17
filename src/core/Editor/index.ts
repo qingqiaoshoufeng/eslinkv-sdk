@@ -52,7 +52,7 @@ class Editor extends Factory<Editor> {
 	}
 
 	loadMarketComponent(screen: any) {
-		let p = []
+		const p = []
 		screen.marketComponents.forEach(item => {
 			if (this.widgetLoaded[`${item.type}${item.version}`]) return
 			p.push(
@@ -549,7 +549,14 @@ class Editor extends Factory<Editor> {
 	}
 	dataSetting(id: string, list, data): void {
 		if (list.length) this.screen.screenWidgets[id].settingDataHandle = list
-		if (data) this.screen.screenWidgets[id].settingData = data
+		if (this.screen.screenWidgets[id].settingData) {
+			if (
+				data &&
+				Object.keys(this.screen.screenWidgets[id].settingData).length <=
+					0
+			)
+				this.screen.screenWidgets[id].settingData = data
+		}
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 	}
 }

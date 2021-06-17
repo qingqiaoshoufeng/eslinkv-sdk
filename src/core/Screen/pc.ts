@@ -87,6 +87,8 @@ export default class ScreenPc extends ScreenBase {
 					scene: item.scene,
 					type: item.type,
 					config: item.value,
+					settingDataHandle: [],
+					settingData: {},
 					children: {},
 				}
 				if (item.market) {
