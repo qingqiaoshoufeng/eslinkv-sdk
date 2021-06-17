@@ -4,8 +4,8 @@
 	"scripts": {
 		"serve": "vue-cli-service --mode local serve",
 		"update": "auto-vers -t",
-		"lib-core": "vue-cli-service build --mode build --target lib --dest src/core/lib src/core/index.js --name core --no-clean",
-		"lib-vue2": "vue-cli-service build --mode build --target lib --dest src/vue2/lib src/vue2/index.js --name v2 --no-clean",
+		"lib-core": "vue-cli-service build --mode build --target lib --dest src/core/lib src/core/index.js --name core",
+		"lib-vue2": "vue-cli-service build --mode build --target lib --dest src/vue2/lib src/vue2/index.js --name v2",
 		"stylelint": "stylelint 'src/**/*.{scss,vue}' --config '.stylelintrc.js' --fix",
 		"commit": "git add .&&git cz"
 	},
