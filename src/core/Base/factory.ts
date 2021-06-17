@@ -2,13 +2,13 @@
 // @ts-ignore
 export class Singleton<T> {
 	static Instance<T>(obj?: any): T {
-		if (!window.eslinkvEditorInstance) window.eslinkvEditorInstance = {}
-		if (!window.eslinkvEditorInstance[this.name]) {
+		if (!window.eslinkVEditorInstance) window.eslinkVEditorInstance = {}
+		if (!window.eslinkVEditorInstance[this.name]) {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
-			window.eslinkvEditorInstance[this.name] = new this(obj)
+			window.eslinkVEditorInstance[this.name] = new this(obj)
 		}
-		return window.eslinkvEditorInstance[this.name]
+		return window.eslinkVEditorInstance[this.name]
 	}
 }
 

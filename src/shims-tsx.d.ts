@@ -10,5 +10,8 @@ declare global {
 			[elem: string]: any
 		}
 	}
-	interface Window { eslinkvEditorInstance: any; }
+	interface Window {
+		eslinkVEditorInstance: any
+		eslinkV: any
+	}
 }
