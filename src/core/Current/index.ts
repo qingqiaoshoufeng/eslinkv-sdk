@@ -84,7 +84,7 @@ export default class Current extends Factory<Current> {
 			return
 		}
 		this.currentWidgetId = widget.id
-		this.currentWidget = { ...widget }
+		this.currentWidget = widget
 		this.currentWidgetList = []
 	}
 	/* 取消选中组件 */
