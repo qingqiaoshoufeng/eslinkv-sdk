@@ -116,7 +116,8 @@ export default class Current extends Factory<Current> {
 		event = null
 	}
 	/* 打开场景 */
-	openScene(id: number | string): void {
+	openScene(id: number | string, animate?: string): void {
+		this.sceneAnimate = animate || this.sceneAnimate
 		this.activeSceneId = id
 		this.currentCreateSceneList.push(id)
 	}

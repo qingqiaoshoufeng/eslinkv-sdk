@@ -57,11 +57,11 @@ const mx: any = {
 						)
 							return
 						this.editor.activeWidgetId = this.config.widget.id
-						this.editor.current.sceneAnimate = item.animate
+						this.editor.current.sceneAnimate = item.animate || 'fadeIn'
 						this.editor.openScene(sceneId)
 						break
 					case 'closeScene':
-						this.editor.current.sceneAnimate = item.animate
+						this.editor.current.sceneAnimate = item.animate || 'fadeOut'
 						this.editor.closeScene(sceneId)
 						break
 					case 'changeScene':
