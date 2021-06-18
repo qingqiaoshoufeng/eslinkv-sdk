@@ -11,6 +11,9 @@ if (window !== undefined) {
 	window.eslinkV = { ...window.eslinkV, ...eslinkV }
 }
 window.eslinkV.scene = {
+	state: {
+		index: editor.current.currentSceneIndex,
+	},
 	actions: {
 		setSceneIndex(index) {
 			editor.selectSceneIndex(index)
