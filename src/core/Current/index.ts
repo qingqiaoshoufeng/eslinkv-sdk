@@ -110,6 +110,7 @@ export default class Current extends Factory<Current> {
 	selectSceneIndex(val: number | string): void {
 		if (val === undefined || val === null) return
 		this.currentSceneIndex = val
+		window.eslinkV.scene.state.index = val // 兼容老版本
 		this.activeSceneId = val
 		let event = new CustomEvent('SceneIndex', { detail: { index: val } })
 		document.dispatchEvent(event)
