@@ -131,6 +131,7 @@ export default class Current extends Factory<Current> {
 		const delay = this.sceneAnimate ? 1000 : 0
 		setTimeout(() => {
 			this.currentCreateSceneList.splice(index, 1)
+			this.sceneAnimate = ''
 			let event = new CustomEvent('DestroyScene', { detail: { index } })
 			document.dispatchEvent(event)
 			event = null
