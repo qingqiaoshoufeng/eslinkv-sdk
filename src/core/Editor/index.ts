@@ -55,6 +55,7 @@ class Editor extends Factory<Editor> {
 		const p = []
 		screen.marketComponents.forEach(item => {
 			if (this.widgetLoaded[`${item.type}${item.version}`]) return
+			this.updateWidgetLoaded(`${item.type}${item.version}`)
 			p.push(
 				new Promise((resolve, reject) => {
 					use({
@@ -63,9 +64,6 @@ class Editor extends Factory<Editor> {
 					}).then((res: any) => {
 						const script = document.createElement('script')
 						script.onload = () => {
-							this.updateWidgetLoaded(
-								`${item.type}${item.version}`,
-							)
 							resolve(1)
 						}
 						script.onerror = () => {
