@@ -55,30 +55,32 @@ class Editor extends Factory<Editor> {
 		const list = []
 		const p = []
 		screen.marketComponents.forEach(item => {
-			if (this.widgetLoaded[`${item.type}${item.version}`]) return
-			this.updateWidgetLoaded(`${item.componentEnTitle}${item.componentVersion}`)
-			list.push({
-				componentEnTitle: item.type,
-				componentVersion: item.version,
-			})
+			if (!this.widgetLoaded[`${item.type}${item.version}`]) {
+				this.updateWidgetLoaded(`${item.type}${item.version}`)
+				list.push({
+					componentEnTitle: item.type,
+					componentVersion: item.version,
+				})
+			}
 		})
 		useList({ list }).then((res: any) => {
 			res.forEach((item: any) => {
-				p.push(new Promise(resolve => {
-					const script = document.createElement('script')
-					script.onload = () => {
-						resolve(true)
-					}
-					script.src = item.componentJsUrl
-					document.head.appendChild(script)
-				}))
+				p.push(
+					new Promise(resolve => {
+						const script = document.createElement('script')
+						script.onload = () => {
+							resolve(true)
+						}
+						script.src = item.componentJsUrl
+						document.head.appendChild(script)
+					}),
+				)
 			})
 			Promise.all(p)
 				.then(() => {
 					for (const key in screen.screenWidgets) {
 						if (screen.screenWidgets[key].value) {
-							screen.screenWidgets[key].config =
-								screen.screenWidgets[key].value
+							screen.screenWidgets[key].config = screen.screenWidgets[key].value
 							delete screen.screenWidgets[key].value
 						}
 					}
@@ -260,11 +262,8 @@ class Editor extends Factory<Editor> {
 	get sceneWidgets() {
 		const res = { 0: {} }
 		for (const widgetId in this.screenWidgets) {
-			if (!res[this.screenWidgets[widgetId].scene])
-				res[this.screenWidgets[widgetId].scene] = {}
-			res[this.screenWidgets[widgetId].scene][
-				widgetId
-			] = this.screenWidgets[widgetId]
+			if (!res[this.screenWidgets[widgetId].scene]) res[this.screenWidgets[widgetId].scene] = {}
+			res[this.screenWidgets[widgetId].scene][widgetId] = this.screenWidgets[widgetId]
 		}
 		return res
 	}
@@ -351,26 +350,16 @@ class Editor extends Factory<Editor> {
 		}
 	}
 	get currentMaxZIndex(): number {
-		return this.sortByZIndexWidgetsList.length
-			? this.sortByZIndexWidgetsList[0].config.layout.zIndex + 1
-			: 10
+		return this.sortByZIndexWidgetsList.length ? this.sortByZIndexWidgetsList[0].config.layout.zIndex + 1 : 10
 	}
 	get currentMinZIndex(): number {
 		return this.sortByZIndexWidgetsList.length
-			? this.sortByZIndexWidgetsList[
-					this.sortByZIndexWidgetsList.length - 1
-			  ].config.layout.zIndex - 1
+			? this.sortByZIndexWidgetsList[this.sortByZIndexWidgetsList.length - 1].config.layout.zIndex - 1
 			: 10
 	}
 	/* 添加组件 */
 	createWidget(offsetX: number, offsetY: number, data: any): void {
-		this.screen.createWidget(
-			offsetX,
-			offsetY,
-			data,
-			this.current.currentSceneIndex,
-			this.currentMaxZIndex,
-		)
+		this.screen.createWidget(offsetX, offsetY, data, this.current.currentSceneIndex, this.currentMaxZIndex)
 	}
 	/* 更新组件 */
 	updateComponentTarget(id, target, value): void {
@@ -451,16 +440,8 @@ class Editor extends Factory<Editor> {
 		this.screen.copyWidget(this.current.currentWidgetId)
 	}
 	/* 更新大屏组件配置 */
-	updateWidgetConfig(
-		id: string,
-		localConfigValue: any,
-		customConfig: any,
-	): any {
-		return this.screen.updateWidgetConfig(
-			id,
-			localConfigValue,
-			customConfig,
-		)
+	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
+		return this.screen.updateWidgetConfig(id, localConfigValue, customConfig)
 	}
 
 	/* ---------------------------------------------------Scene---------------------------------------------------*/
@@ -494,10 +475,7 @@ class Editor extends Factory<Editor> {
 	/* ---------------------------------------------------More---------------------------------------------------*/
 	moveWaitingDeleteRoom(): void {
 		for (const key in this.screen.screenWidgets) {
-			if (
-				this.screen.screenWidgets[key].scene ===
-				this.current.currentSceneIndex
-			) {
+			if (this.screen.screenWidgets[key].scene === this.current.currentSceneIndex) {
 				this.screen.screenWidgets[key].scene = -1
 			}
 		}
@@ -535,10 +513,7 @@ class Editor extends Factory<Editor> {
 		for (const key in this.screen.screenWidgets) {
 			if (this.current.currentSceneIndex == -1) {
 				delete this.screen.screenWidgets[key]
-			} else if (
-				this.screen.screenWidgets[key].scene ===
-				this.current.currentSceneIndex
-			) {
+			} else if (this.screen.screenWidgets[key].scene === this.current.currentSceneIndex) {
 				this.screen.screenWidgets[key].scene = -1
 			}
 		}
@@ -549,11 +524,7 @@ class Editor extends Factory<Editor> {
 			if (id === parent[key].id) {
 				if (list.length) parent[key].settingDataHandle = list
 				if (parent[key].settingData) {
-					if (
-						data &&
-						Object.keys(parent[key].settingData).length <= 0
-					)
-						parent[key].settingData = data
+					if (data && Object.keys(parent[key].settingData).length <= 0) parent[key].settingData = data
 				}
 				this.screen.screenWidgets = { ...this.screen.screenWidgets }
 			} else if (parent[key].children) {
