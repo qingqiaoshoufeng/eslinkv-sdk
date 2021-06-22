@@ -65,7 +65,6 @@ import { downloadFile, getQueryString } from '@/vue2/utils'
 import dSearch from '@/vue2/components/d-search/index.vue'
 import Editor from '@/core/Editor'
 import { detail, detailFile, create, update } from '@/vue2/api/screen.api'
-import { use } from '@/vue2/api/marketComponent.api'
 import { screenShareUpdate } from '@/vue2/api/screenShare.api'
 
 @Component({
@@ -102,61 +101,6 @@ export default class DDetail extends Vue {
 		window.open(
 			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.editor.layoutMode}${scene}`,
 		)
-	}
-
-	loadMarketComponent(screen: any): void {
-		let p = []
-		this.loading = true
-		screen.marketComponents.forEach(item => {
-			if (this.editor.widgetLoaded[`${item.type}${item.version}`]) return
-			p.push(
-				new Promise((resolve, reject) => {
-					use({
-						componentEnTitle: item.type,
-						componentVersion: item.version,
-					}).then((res: any) => {
-						const script = document.createElement('script')
-						script.onload = () => {
-							this.editor.updateWidgetLoaded(
-								`${item.type}${item.version}`,
-							)
-							resolve(1)
-						}
-						script.onerror = () => {
-							reject(1)
-						}
-						if (res) {
-							script.src = res.componentJsUrl
-							document.head.appendChild(script)
-						} else {
-							console.error(
-								`${item.type}${item.version}加载组件失败`,
-							)
-						}
-					})
-				}),
-			)
-		})
-		Promise.all(p)
-			.then(() => {
-				this.loading = false
-				for (let key in screen.screenWidgets) {
-					if (screen.screenWidgets[key].value) {
-						screen.screenWidgets[key].config =
-							screen.screenWidgets[key].value
-						delete screen.screenWidgets[key].value
-					}
-				}
-				this.editor.screen.screenWidgets = screen.screenWidgets
-			})
-			.catch(e => {
-				this.loading = false
-				console.error(e)
-				console.error('组件初始化加载失败')
-			})
-		if (p.length === 0) {
-			this.loading = false
-		}
 	}
 
 	mounted(): void {

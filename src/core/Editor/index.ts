@@ -8,7 +8,7 @@ import Local from '@/core/Local'
 import { uuid } from '@/core/utils'
 import { configMerge } from '@/core/utils'
 import commonConfigValue from '@/core/common-config-value.js'
-import { use } from '@/vue2/api/marketComponent.api'
+import { useList } from '@/vue2/api/marketComponent.api'
 
 const rulerContainerId = `drag-content-${+new Date()}`
 class Editor extends Factory<Editor> {
@@ -52,50 +52,43 @@ class Editor extends Factory<Editor> {
 	}
 
 	loadMarketComponent(screen: any) {
+		const list = []
 		const p = []
 		screen.marketComponents.forEach(item => {
 			if (this.widgetLoaded[`${item.type}${item.version}`]) return
-			this.updateWidgetLoaded(`${item.type}${item.version}`)
-			p.push(
-				new Promise((resolve, reject) => {
-					use({
-						componentEnTitle: item.type,
-						componentVersion: item.version,
-					}).then((res: any) => {
-						const script = document.createElement('script')
-						script.onload = () => {
-							resolve(1)
-						}
-						script.onerror = () => {
-							reject(1)
-						}
-						if (res) {
-							script.src = res.componentJsUrl
-							document.head.appendChild(script)
-						} else {
-							console.error(
-								`${item.type}${item.version}加载组件失败`,
-							)
-						}
-					})
-				}),
-			)
+			list.push({
+				componentEnTitle: item.type,
+				componentVersion: item.version,
+			})
 		})
-		Promise.all(p)
-			.then(() => {
-				for (const key in screen.screenWidgets) {
-					if (screen.screenWidgets[key].value) {
-						screen.screenWidgets[key].config =
-							screen.screenWidgets[key].value
-						delete screen.screenWidgets[key].value
+		useList({ list }).then((res: any) => {
+			res.forEach((item: any) => {
+				p.push(new Promise(resolve => {
+					const script = document.createElement('script')
+					script.onload = () => {
+						this.updateWidgetLoaded(`${item.componentEnTitle}${item.componentVersion}`)
+						resolve(true)
 					}
-				}
-				this.screen.screenWidgets = screen.screenWidgets
+					script.src = item.componentJsUrl
+					document.head.appendChild(script)
+				}))
 			})
-			.catch(e => {
-				console.error(e)
-				console.error('组件初始化加载失败')
-			})
+			Promise.all(p)
+				.then(() => {
+					for (const key in screen.screenWidgets) {
+						if (screen.screenWidgets[key].value) {
+							screen.screenWidgets[key].config =
+								screen.screenWidgets[key].value
+							delete screen.screenWidgets[key].value
+						}
+					}
+					this.screen.screenWidgets = screen.screenWidgets
+				})
+				.catch(e => {
+					console.error(e)
+					console.error('组件初始化加载失败')
+				})
+		})
 	}
 	/* ---------------------------------------------------Ruler---------------------------------------------------*/
 	createGuide(num: string | number, type: string): void {
