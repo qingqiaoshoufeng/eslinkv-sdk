@@ -20,8 +20,8 @@ export default class ScreenPc extends ScreenBase {
 	// 	return res
 	// }
 	/* 初始化配置 */
-	init(res: any): any {
-		this.screenId = res.screenId
+	init(res: any, reId = true): any {
+		if (reId) this.screenId = res.screenId
 		this.screenName = res.screenName
 		this.screenAvatar = res.screenAvatar
 		this.screenPublish = res.screenPublish
@@ -33,13 +33,9 @@ export default class ScreenPc extends ScreenBase {
 		this.updateTime = res.updateTime
 		res.screenConfig = res.screenConfig || {}
 		this.screenConfig = res.screenConfig
-		this.screenWidth = res.screenWidth
-			? res.screenWidth
-			: res.screenConfig.width
+		this.screenWidth = res.screenWidth ? res.screenWidth : res.screenConfig.width
 		delete this.screenConfig.width
-		this.screenHeight = res.screenHeight
-			? res.screenHeight
-			: res.screenConfig.height
+		this.screenHeight = res.screenHeight ? res.screenHeight : res.screenConfig.height
 		delete this.screenConfig.height
 		this.screenBackGroundColor = res.screenBackGroundColor
 			? res.screenBackGroundColor
@@ -49,9 +45,7 @@ export default class ScreenPc extends ScreenBase {
 			? res.screenBackGroundImage
 			: res.screenConfig.backgroundImage
 		delete this.screenConfig.backgroundImage
-		this.screenMainScene = res.screenMainScene
-			? res.screenMainScene
-			: res.screenConfig.mainScene
+		this.screenMainScene = res.screenMainScene ? res.screenMainScene : res.screenConfig.mainScene
 		delete this.screenConfig.mainScene
 		this.screenPlatform = res.screenPlatform
 		return this.initWidget(res)
@@ -94,7 +88,7 @@ export default class ScreenPc extends ScreenBase {
 			screenWidgets = obj
 			delete this.screenConfig.widgets
 		} else {
-			screenWidgets = res.screenWidgets || {}
+			screenWidgets = { ...res.screenWidgets } || {}
 		}
 		this.serialize(screenWidgets)
 		return { screenWidgets }

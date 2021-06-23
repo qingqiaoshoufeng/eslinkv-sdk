@@ -4,22 +4,13 @@
 		.d-detail-left-icon-box.fn-flex
 			i-tooltip(placement="bottom", content="组件区")
 				.left-icon.pointer(:class="{ active: editor.xRoomL1 > 0 }")
-					d-svg(
-						icon-class="widget",
-						:size="18",
-						@click.native="editor.taggerXRoomL1")
+					d-svg(icon-class="widget", :size="18", @click.native="editor.taggerXRoomL1")
 			i-tooltip(placement="bottom", content="场景区")
 				.left-icon.pointer(:class="{ active: editor.xRoomL2 > 0 }")
-					d-svg(
-						icon-class="scene",
-						:size="18",
-						@click.native="editor.taggerXRoomL2")
+					d-svg(icon-class="scene", :size="18", @click.native="editor.taggerXRoomL2")
 			i-tooltip(placement="bottom", content="设置区")
 				.left-icon.pointer(:class="{ active: editor.xRoomR1 > 0 }")
-					d-svg(
-						icon-class="setting",
-						:size="18",
-						@click.native="editor.taggerXRoomR1")
+					d-svg(icon-class="setting", :size="18", @click.native="editor.taggerXRoomR1")
 	.d-detail-middle.fn-flex
 		span.d-detail-title {{ editor.name }}
 	ul.d-detail-right.fn-flex
@@ -42,24 +33,13 @@
 	i-modal(v-model="importModal", :footer-hide="true")
 		i-form
 			i-form-item
-				input#originFile.fn-hide(
-					type="file",
-					accept="application/json",
-					@change="handleFile")
+				input#originFile.fn-hide(type="file", accept="application/json", @change="handleFile")
 				label.ivu-btn.ivu-btn-primary.d-detail-import-button(for="originFile") 选择导入文件
 	d-search(v-model="searchModal", :hide="() => (searchModal = false)")
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import {
-	Icon,
-	Button,
-	Modal,
-	Form,
-	FormItem,
-	Input,
-	Tooltip,
-} from 'view-design'
+import { Icon, Button, Modal, Form, FormItem, Input, Tooltip } from 'view-design'
 import loadMask from '../load-mask/index.vue'
 import { downloadFile, getQueryString } from '@/vue2/utils'
 import dSearch from '@/vue2/components/d-search/index.vue'
@@ -95,12 +75,8 @@ export default class DDetail extends Vue {
 	}
 
 	preview(): void {
-		const scene = this.editor.mainScene
-			? `&scene=${this.editor.mainScene}`
-			: ''
-		window.open(
-			`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.editor.layoutMode}${scene}`,
-		)
+		const scene = this.editor.mainScene ? `&scene=${this.editor.mainScene}` : ''
+		window.open(`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.editor.layoutMode}${scene}`)
 	}
 
 	mounted(): void {
@@ -192,7 +168,7 @@ export default class DDetail extends Vue {
 			try {
 				this.loading = true
 				const result = JSON.parse((e as any).target.result)
-				this.editor.init(result)
+				this.editor.init(result, false)
 				this.importModal = false
 				this.loading = false
 			} catch (e) {
