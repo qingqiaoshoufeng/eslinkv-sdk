@@ -39,11 +39,11 @@ class Editor extends Factory<Editor> {
 	local: Local = Local.Instance()
 	ruler: Ruler | null
 
-	init(res?: any, reId = true): any {
+	init(res?: any): any {
 		let screen
 		if (res) {
-			this.screenId = res.screenId
-			screen = this.screen.init(res,reId)
+			if (res.screenId) this.screenId = res.screenId
+			screen = this.screen.init(res)
 			this.scene.init(res)
 			this.loadMarketComponent(screen)
 		}

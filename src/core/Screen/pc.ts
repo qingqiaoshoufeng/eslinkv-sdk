@@ -20,8 +20,8 @@ export default class ScreenPc extends ScreenBase {
 	// 	return res
 	// }
 	/* 初始化配置 */
-	init(res: any, reId = true): any {
-		if (reId) this.screenId = res.screenId
+	init(res: any): any {
+		if (res.screenId) this.screenId = res.screenId
 		this.screenName = res.screenName
 		this.screenAvatar = res.screenAvatar
 		this.screenPublish = res.screenPublish
@@ -88,7 +88,7 @@ export default class ScreenPc extends ScreenBase {
 			screenWidgets = obj
 			delete this.screenConfig.widgets
 		} else {
-			screenWidgets = { ...res.screenWidgets } || {}
+			screenWidgets = res.screenWidgets || {}
 		}
 		this.serialize(screenWidgets)
 		return { screenWidgets }

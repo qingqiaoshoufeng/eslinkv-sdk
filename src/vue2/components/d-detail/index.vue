@@ -168,7 +168,7 @@ export default class DDetail extends Vue {
 			try {
 				this.loading = true
 				const result = JSON.parse((e as any).target.result)
-				this.editor.init(result, false)
+				this.editor.init(result)
 				this.importModal = false
 				this.loading = false
 			} catch (e) {
