@@ -54,7 +54,7 @@ class Editor extends Factory<Editor> {
 	loadMarketComponent(screen: any) {
 		const list = []
 		const p = []
-		screen.marketComponents.forEach(item => {
+		this.screen.marketComponents.forEach(item => {
 			if (!this.widgetLoaded[`${item.type}${item.version}`]) {
 				this.updateWidgetLoaded(`${item.type}${item.version}`)
 				list.push({

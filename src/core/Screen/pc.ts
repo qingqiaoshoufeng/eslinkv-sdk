@@ -77,7 +77,6 @@ export default class ScreenPc extends ScreenBase {
 	initWidget(res: any): any {
 		let screenWidgets
 		const obj = {}
-		const marketComponents: { type: string; version: string }[] = []
 		if (res.screenConfig.widgets) {
 			screenWidgets = res.screenConfig.widgets
 			screenWidgets.forEach(item => {
@@ -91,12 +90,6 @@ export default class ScreenPc extends ScreenBase {
 					settingData: {},
 					children: {},
 				}
-				if (item.market) {
-					marketComponents.push({
-						type: item.type,
-						version: item.value.widget.componentVersion,
-					})
-				}
 			})
 			screenWidgets = obj
 			delete this.screenConfig.widgets
@@ -104,6 +97,6 @@ export default class ScreenPc extends ScreenBase {
 			screenWidgets = res.screenWidgets || {}
 		}
 		this.serialize(screenWidgets)
-		return { marketComponents, screenWidgets }
+		return { screenWidgets }
 	}
 }
