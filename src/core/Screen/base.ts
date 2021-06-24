@@ -48,33 +48,14 @@ export default class Screen extends Factory<Screen> {
 	/* 大屏平台类型 PC:PC */
 	screenPlatform: string
 	/* 更新大屏组件配置 */
-	updateWidgetConfig(
-		id: string,
-		localConfigValue: any,
-		customConfig: any,
-	): any {
+	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
 		const mergedValue = localConfigValue
-			? configMerge(
-					localConfigValue,
-					commonConfigValue(localConfigValue.widgetType),
-			  )
+			? configMerge(localConfigValue, commonConfigValue(localConfigValue.widgetType))
 			: commonConfigValue()
-		this.findWidget(
-			id,
-			this.screenWidgets,
-			mergedValue,
-			localConfigValue,
-			customConfig,
-		)
+		this.findWidget(id, this.screenWidgets, mergedValue, localConfigValue, customConfig)
 		// 过滤可用属性
 	}
-	private findWidget(
-		id,
-		obj,
-		mergedValue,
-		localConfigValue,
-		customConfig,
-	): void {
+	private findWidget(id, obj, mergedValue, localConfigValue, customConfig): void {
 		for (const key in obj) {
 			if (id === obj[key].id) {
 				const inputConfig = Object.freeze(obj[key].config || {})
@@ -87,18 +68,12 @@ export default class Screen extends Factory<Screen> {
 							item.prop = `config.config.${item.prop}`
 						}
 					})
-					res.customConfig = customConfig
+					res.customConfig = [{ type: 'custom' }, ...customConfig]
 				}
 				obj[key].config = res
 			} else if (obj[key].children) {
 				if (Object.values(obj[key].children).length > 0)
-					this.findWidget(
-						id,
-						obj[key].children,
-						mergedValue,
-						localConfigValue,
-						customConfig,
-					)
+					this.findWidget(id, obj[key].children, mergedValue, localConfigValue, customConfig)
 			}
 		}
 	}
@@ -163,13 +138,7 @@ export default class Screen extends Factory<Screen> {
 		currentSceneIndex: number | string = 0,
 		currentMaxZIndex = 10,
 	): void {
-		const widgetItem = new Widget(
-			offsetX,
-			offsetY,
-			data,
-			currentSceneIndex,
-			currentMaxZIndex,
-		)
+		const widgetItem = new Widget(offsetX, offsetY, data, currentSceneIndex, currentMaxZIndex)
 		this.screenWidgets = {
 			...this.screenWidgets,
 			[widgetItem.id]: widgetItem,
