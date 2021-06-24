@@ -106,6 +106,7 @@ export default class DEditor extends Vue {
 	}
 	beforeDestroy(): void {
 		this.editor.fullscreen = false
+		this.editor.ruler = null
 		document.removeEventListener('fullscreenchange', this.fullscreenchange)
 	}
 	created() {
