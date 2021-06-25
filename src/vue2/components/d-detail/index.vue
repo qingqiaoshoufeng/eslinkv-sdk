@@ -4,13 +4,13 @@
 		.d-detail-left-icon-box.fn-flex
 			i-tooltip(placement="bottom", content="组件区")
 				.left-icon.pointer(:class="{ active: editor.xRoomL1 > 0 }")
-					d-svg(icon-class="widget", :size="18", @click.native="editor.taggerXRoomL1")
+					d-svg(icon-class="widget", :size="18", @click.native="taggerXRoomL1")
 			i-tooltip(placement="bottom", content="场景区")
 				.left-icon.pointer(:class="{ active: editor.xRoomL2 > 0 }")
-					d-svg(icon-class="scene", :size="18", @click.native="editor.taggerXRoomL2")
+					d-svg(icon-class="scene", :size="18", @click.native="taggerXRoomL2")
 			i-tooltip(placement="bottom", content="设置区")
 				.left-icon.pointer(:class="{ active: editor.xRoomR1 > 0 }")
-					d-svg(icon-class="setting", :size="18", @click.native="editor.taggerXRoomR1")
+					d-svg(icon-class="setting", :size="18", @click.native="taggerXRoomR1")
 	.d-detail-middle.fn-flex
 		span.d-detail-title {{ editor.name }}
 	ul.d-detail-right.fn-flex
@@ -69,6 +69,16 @@ export default class DDetail extends Vue {
 	loading = false
 	importModal = false
 	isNew = true
+
+	taggerXRoomL1() {
+		this.editor.taggerXRoomL1()
+	}
+	taggerXRoomL2() {
+		this.editor.taggerXRoomL2()
+	}
+	taggerXRoomR1() {
+		this.editor.taggerXRoomR1()
+	}
 
 	search(): void {
 		this.searchModal = true
