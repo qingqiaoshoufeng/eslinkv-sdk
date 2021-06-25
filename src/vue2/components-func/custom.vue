@@ -1,11 +1,11 @@
 <template lang="pug">
 .d-manage-modal-control-base
-	d-right-control(label="组件市场", v-if="editor.currentWidget.market")
+	d-right-control(label="组件市场")
 		i-select(
 			v-model="editor.currentWidget.config.widget.componentVersion",
 			:style="{ marginRight: '10px', width: '156px' }")
 			i-option(
-				:value="editor.currentWidget.componentVersion",
+				:value="item.componentVersion",
 				v-for="(item, i) in versionList",
 				:key="i") {{ item.componentVersion }}
 		i-switch(v-model="editor.currentWidget.market")
