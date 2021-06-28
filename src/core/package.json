@@ -5,6 +5,10 @@
 	"dependencies": {
 		"fast-copy": "^2.1.1"
 	},
+	"maintainers": [
+		"fishuncle",
+		"xjm1122"
+	],
 	"files": [
 		"lib/core.css",
 		"lib/core.umd.min.js"
