@@ -55,7 +55,7 @@ export default class Screen extends Factory<Screen> {
 		this.findWidget(id, this.screenWidgets, mergedValue, localConfigValue, customConfig)
 		// 过滤可用属性
 	}
-	private findWidget(id, obj, mergedValue, localConfigValue, customConfig): void {
+	private findWidget(id, obj, mergedValue, localConfigValue, customConfig = []): void {
 		for (const key in obj) {
 			if (id === obj[key].id) {
 				const inputConfig = Object.freeze(obj[key].config || {})
