@@ -17,7 +17,7 @@ export default class Screen extends Factory<Screen> {
 	/* 大屏组件配置 */
 	screenWidgets: any = {}
 	/* 大屏类型 CUSTOM:大屏 TEMPLATE:模版 */
-	screenType = ''
+	screenType = 'CUSTOM'
 	/* 已废弃 */
 	/* 大屏发布情况 EDIT:未发布 COMPLETE:已发布*/
 	screenPublish = ''
