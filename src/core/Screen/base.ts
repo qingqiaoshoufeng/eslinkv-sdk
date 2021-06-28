@@ -26,7 +26,7 @@ export default class Screen extends Factory<Screen> {
 	/* 大屏版本号 */
 	screenVersion = ''
 	/* 大屏适配方式 full-size 充满页面 full-width 100%宽度 full-height 100%高度 */
-	screenLayoutMode = ''
+	screenLayoutMode = 'full-size'
 	/* 备注 */
 	remark = ''
 	/* 排序 */
