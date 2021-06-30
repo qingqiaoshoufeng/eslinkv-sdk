@@ -25,9 +25,9 @@ export default class ScreenPc extends ScreenBase {
 		this.screenName = res.screenName
 		this.screenAvatar = res.screenAvatar
 		this.screenPublish = res.screenPublish
-		this.screenType = res.screenType
+		this.screenType = res.screenType || 'CUSTOM'
 		this.screenVersion = res.screenVersion
-		this.screenLayoutMode = res.screenLayoutMode
+		this.screenLayoutMode = res.screenLayoutMode || 'full-size'
 		this.sort = res.sort
 		this.createTime = res.createTime
 		this.updateTime = res.updateTime

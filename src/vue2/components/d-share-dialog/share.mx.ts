@@ -75,7 +75,13 @@ export default {
 				this.deadline = req.screenShareTime
 			}
 			await screenShareUpdate(req)
-			this.shareUrl = `${location.origin}/shareScreen/${this.screenId}?layoutMode=${this.editor.layoutMode}`
+			const scene = this.screenMainScene
+				? `&scene=${this.screenMainScene}`
+				: ''
+			const layoutMode = this.screenLayoutMode
+				? `?layoutMode=${this.screenLayoutMode}`
+				: ''
+			this.shareUrl = `${location.origin}/shareScreen/${this.screenId}${layoutMode}${scene}`
 		},
 		async init() {
 			this.screenId = this.sid || this.$route.params.id
