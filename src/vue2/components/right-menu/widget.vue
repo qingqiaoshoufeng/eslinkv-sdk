@@ -1,7 +1,5 @@
 <template lang="pug">
-#widget-right-menu.right-menu.pos-f.z-index-99(
-	@contextmenu.stop.prevent,
-	v-click-outside="hideRightMenu")
+#widget-right-menu.right-menu.pos-f.z-index-99(@contextmenu.stop.prevent, v-click-outside="hideRightMenu")
 	ul.list
 		item-card(@click="handleZIndexTop")
 			i-icon(type="md-arrow-round-up")
@@ -9,10 +7,10 @@
 		item-card(@click="handleZIndexBottom")
 			i-icon(type="md-arrow-round-down")
 			span 置底
-	//ul.list
-	//	item-card(@click="")
-	//		i-icon(type="md-heart-outline")
-	//		span 收藏
+	ul.list
+		item-card(@click="handleCollection")
+			i-icon(type="md-heart-outline")
+			span 收藏
 	ul.list(v-if="isGroup")
 		item-card(@click="handleRelieveGroup")
 			i-icon(type="md-apps")
@@ -41,6 +39,7 @@ import { Icon } from 'view-design'
 import Editor from '@/core/Editor'
 import ClickOutside from 'vue-click-outside'
 import ItemCard from '@/vue2/components/right-menu/item-card.vue'
+import { create } from '@/vue2/api/collectionComponent.api.js'
 
 @Component({
 	components: {
@@ -64,6 +63,25 @@ export default class rightMenu extends Vue {
 		this.editor.relieveWidgetGroup()
 		this.hideRightMenu()
 		this.handleUnActive()
+	}
+
+	handleCollection(): void {
+		const widget = this.editor.currentWidget
+		create({
+			componentConfig: widget.config,
+			componentEnTitle: widget.type,
+			componentTitle: widget.config.widget.name,
+			componentVersion: widget.config.widget.componentVersion,
+		}).then(() => {
+			this.$Modal.info({
+				content: '收藏成功',
+				okText: '查看组件',
+				cancelText: '忽略',
+				onOk: () => {
+					this.$router.push('/collection/componentList')
+				},
+			})
+		})
 	}
 
 	handleSync(): void {
