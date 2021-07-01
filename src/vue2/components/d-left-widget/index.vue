@@ -1,6 +1,5 @@
 <template lang="pug">
-.d-left-widget.pos-a.fn-flex.flex-column(
-	:style="{ width: `${editor.xRoomL1}px` }")
+.d-left-widget.pos-a.fn-flex.flex-column(:style="{ width: `${editor.xRoomL1}px` }")
 	.d-left-modal-title.text-center
 		span 组件区
 	.fn-flex.flex-row(:style="{ flex: 1, height: 'calc(100% - 40px)' }")
@@ -16,12 +15,10 @@
 			li.pointer(
 				v-for="item in editor.local.widgets[leftIndex].children",
 				:class="{ active: openList[item.componentTypeId] }")
-				.d-left-widget-right-title.fn-flex(
-					@click="handleCheckType(item.componentTypeId, item.market)")
+				.d-left-widget-right-title.fn-flex(@click="handleCheckType(item.componentTypeId, item.market)")
 					i-icon(type="ios-arrow-down")
 					label.pointer {{ item.componentTypeName }}
-				.d-left-widget-list.fn-flex(
-					v-if="list[item.componentTypeId] && openList[item.componentTypeId]")
+				.d-left-widget-list.fn-flex(v-if="list[item.componentTypeId] && openList[item.componentTypeId]")
 					item-card(
 						v-for="widget in list[item.componentTypeId]",
 						:market="item.market",

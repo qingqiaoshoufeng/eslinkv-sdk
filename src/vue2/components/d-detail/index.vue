@@ -3,14 +3,14 @@
 	.d-detail-left.fn-flex
 		.d-detail-left-icon-box.fn-flex
 			i-tooltip(placement="bottom", content="组件区")
-				.left-icon.pointer(:class="{ active: editor.xRoomL1 > 0 }")
-					d-svg(icon-class="widget", :size="18", @click.native="taggerXRoomL1")
+				.left-icon.pointer(:class="{ active: editor.xRoomL1 > 0 }", @click="taggerXRoomL1")
+					d-svg(icon-class="widget", :size="18")
 			i-tooltip(placement="bottom", content="场景区")
-				.left-icon.pointer(:class="{ active: editor.xRoomL2 > 0 }")
-					d-svg(icon-class="scene", :size="18", @click.native="taggerXRoomL2")
+				.left-icon.pointer(:class="{ active: editor.xRoomL2 > 0 }", @click="taggerXRoomL2")
+					d-svg(icon-class="scene", :size="18")
 			i-tooltip(placement="bottom", content="设置区")
-				.left-icon.pointer(:class="{ active: editor.xRoomR1 > 0 }")
-					d-svg(icon-class="setting", :size="18", @click.native="taggerXRoomR1")
+				.left-icon.pointer(:class="{ active: editor.xRoomR1 > 0 }", @click="taggerXRoomR1")
+					d-svg(icon-class="setting", :size="18")
 	.d-detail-middle.fn-flex
 		span.d-detail-title {{ editor.name }}
 	ul.d-detail-right.fn-flex
