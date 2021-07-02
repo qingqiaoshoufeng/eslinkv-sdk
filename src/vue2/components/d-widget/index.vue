@@ -101,6 +101,10 @@ export default class WidgetNormal extends Vue {
 						this.editor.updateWidgetLoaded(
 							`${this.type}${this.componentVersion}`,
 						)
+						if (res.isCollection) {
+							res.componentConfig.widget.id = this.config.widget.id
+							this.editor.screenWidgets[this.config.widget.id].config = res.componentConfig
+						}
 					}
 					if (res) {
 						script.src = res.componentJsUrl
