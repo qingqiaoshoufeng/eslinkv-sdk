@@ -26,7 +26,7 @@
 			:style="item.config.widget.hide ? 'display: none' : ''",
 			readonly)
 	div(
-		:class="currentAnimate(sceneId)"
+		:class="currentAnimate(sceneId)",
 		v-for="(sceneId, index) in editor.current.currentCreateSceneList",
 		:key="sceneId",
 		:style="{ zIndex: index + 2 }")
@@ -56,11 +56,8 @@ import Editor from '@/core/Editor'
 export default class DView extends Vue {
 	editor: Editor = Editor.Instance()
 
-	currentAnimate(sceneId) {
-		if (
-			this.editor.current.activeSceneId === sceneId ||
-			this.editor.current.currentSceneIndex === sceneId
-		) {
+	currentAnimate(sceneId: string | number): string {
+		if (this.editor.current.activeSceneId === sceneId || this.editor.current.currentSceneIndex === sceneId) {
 			return `scene-container animated ${this.editor.current.sceneAnimate}`
 		}
 		return 'scene-container'

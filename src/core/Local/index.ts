@@ -4,7 +4,7 @@ export default class Local extends Factory<Local> {
 	widgets = {}
 	components = {}
 
-	setLocalComponents(value) {
+	setLocalComponents(value): void {
 		this.components = { ...this.components, ...value }
 	}
 	setLocalWidgets(value: any): void {

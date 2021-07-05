@@ -26,14 +26,14 @@
 			color="#fff",
 			size="14",
 			@click="handlePlayVideo")
-		i-icon.d-upload-download-icon.pos-a.pointer(
+		i-icon.d-upload-download-icon.pos-a.pointer.z-index-9(
 			v-if="value",
 			title="下载",
 			type="md-cloud-download",
 			color="#fff",
 			size="14",
 			@click="handleDown")
-		i-icon.d-upload-remove-icon.pos-a.pointer(
+		i-icon.d-upload-remove-icon.pos-a.pointer.z-index-9(
 			v-if="value",
 			title="删除",
 			type="md-trash",
