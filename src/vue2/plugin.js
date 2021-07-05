@@ -7,34 +7,13 @@ import '@/vue2/scss/animate.min.scss'
 import '@/vue2/scss/animate-widget.min.scss'
 import '@/vue2/scss/font.scss'
 import Vue from 'vue'
-import Hljs from 'highlight.js'
-import 'highlight.js/styles/tomorrow-night.css'
+
 import group from '@/vue2/components/d-widget-group'
 import widgetGroup from '@/vue2/components/d-left-scene/widget-group'
 import widget from '@/vue2/components/d-widget'
 Vue.component('scene-group', widgetGroup)
 Vue.component('eslinkv-group', group)
 Vue.component('eslinkv-widget', widget)
-
-const Highlight = {
-	install: function (Vue) {
-		Vue.directive('highlight', {
-			deep: true,
-			inserted: function (el) {
-				const blocks = el.querySelectorAll('pre code')
-				for (let i = 0; i < blocks.length; i++) {
-					Hljs.highlightBlock(blocks[i])
-				}
-			},
-			componentUpdated: function (el) {
-				const blocks = el.querySelectorAll('pre code')
-				for (let i = 0; i < blocks.length; i++) {
-					Hljs.highlightBlock(blocks[i])
-				}
-			},
-		})
-	},
-}
 
 const toThousand = value => {
 	if (!value) {
@@ -46,5 +25,4 @@ const toThousand = value => {
 }
 const filters = { toThousand }
 
-Vue.use(Highlight)
 Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
