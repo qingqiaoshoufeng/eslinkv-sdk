@@ -2,6 +2,7 @@
 	"name": "@eslinkv/vue2",
 	"version": "1.0.18",
 	"main": "lib/v2.umd.min.js",
+	"types": "types/index.d.ts",
 	"dependencies": {
 		"@babel/polyfill": "^7.12.1",
 		"axios": "^0.21.1",
@@ -30,6 +31,7 @@
 		"lib/v2.css",
 		"lib/v2.umd.min.js",
 		"lib/fonts",
-		"lib/img"
+		"lib/img",
+		"types"
 	]
 }

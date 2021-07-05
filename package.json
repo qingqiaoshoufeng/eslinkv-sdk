@@ -9,6 +9,7 @@
 		"stylelint": "stylelint 'src/**/*.{scss,vue}' --config '.stylelintrc.js' --fix",
 		"commit": "git add .&&git cz"
 	},
+	"types": "vue2.d.ts",
 	"dependencies": {
 		"@babel/polyfill": "^7.12.1",
 		"axios": "^0.21.1",
@@ -90,7 +91,8 @@
 		}
 	},
 	"files": [
-		"lib"
+		"lib",
+		"vue2.d.ts"
 	],
 	"_customHasUsedEsStandard": true,
 	"lint-staged": {
