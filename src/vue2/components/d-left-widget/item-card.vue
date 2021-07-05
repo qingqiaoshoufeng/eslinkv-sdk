@@ -1,11 +1,8 @@
 <template lang="pug">
 .widget-item-wrapper.pos-r
-	.fn-flex.flex-column.d-widget-list-card.pointer(
-		draggable="true",
-		@dragstart="dragstart($event)")
+	.fn-flex.flex-column.d-widget-list-card.pointer(draggable="true", @dragstart="dragstart($event)")
 		h2.ellipsis(:title="componentTitle") {{ componentTitle }}
-		.d-widget-list-img.fn-flex(
-			:style="{ backgroundImage: `url(${componentAvatar})` }")
+		.d-widget-list-img.fn-flex(:style="{ backgroundImage: `url(${componentAvatar})` }")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
@@ -23,7 +20,7 @@ export default class ItemCard extends Vue {
 	/**
 	 * @description h5 原生拖拽事件
 	 */
-	dragstart(e) {
+	dragstart(e): void {
 		e.dataTransfer.setData(
 			'widget-config',
 			JSON.stringify({
