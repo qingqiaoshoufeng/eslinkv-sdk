@@ -281,6 +281,7 @@ class Editor extends Factory<Editor> {
 				obj = { ...obj, ...this.sceneWidgets[v] }
 			})
 			return {
+				...this.sceneWidgets[0],
 				...this.sceneWidgets[this.current.currentSceneIndex],
 				...obj,
 			}
