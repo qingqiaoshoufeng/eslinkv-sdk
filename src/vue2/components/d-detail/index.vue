@@ -17,7 +17,7 @@
 		li.fn-flex.flex-column.pointer(@click.stop="search")
 			d-svg(icon-class="search", :size="18")
 			span 搜索
-		li.fn-flex.flex-column.pointer(@click="preview", v-if="!isNew")
+		li.fn-flex.flex-column.pointer(@click="preview")
 			d-svg(icon-class="preview", :size="20")
 			span 预览
 		li.fn-flex.flex-column.pointer(@click="handleExport")
@@ -86,7 +86,12 @@ export default class DDetail extends Vue {
 
 	preview(): void {
 		const scene = this.editor.mainScene ? `&scene=${this.editor.mainScene}` : ''
-		window.open(`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.editor.layoutMode}${scene}`)
+		if (this.isNew) {
+			sessionStorage.setItem('previewData', JSON.stringify(this.editor.screen))
+			window.open(`${location.origin}/detail/preview?layoutMode=${this.editor.layoutMode}${scene}`)
+		} else {
+			window.open(`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.editor.layoutMode}${scene}`)
+		}
 	}
 
 	mounted(): void {
@@ -96,9 +101,13 @@ export default class DDetail extends Vue {
 		const file = this.$route.params.file
 		this.isNew = !id
 		if (id) {
-			detail({ screenId: id }).then(res => {
-				this.editor.init(res)
-			})
+			if (id === 'preview') {
+				this.editor.init(JSON.parse(sessionStorage.getItem('previewData')))
+			} else {
+				detail({ screenId: id }).then(res => {
+					this.editor.init(res)
+				})
+			}
 		} else if (file) {
 			detailFile(decodeURIComponent(file)).then(res => {
 				this.editor.init(res)
