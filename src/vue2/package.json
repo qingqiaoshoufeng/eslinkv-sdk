@@ -1,6 +1,6 @@
 {
 	"name": "@eslinkv/vue2",
-	"version": "1.0.17",
+	"version": "1.0.18",
 	"main": "lib/v2.umd.min.js",
 	"dependencies": {
 		"@babel/polyfill": "^7.12.1",
