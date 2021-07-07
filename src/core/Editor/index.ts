@@ -515,7 +515,10 @@ class Editor extends Factory<Editor> {
 	/* 清除当前场景的组件 */
 	clearWidgetByCurrentScene(): void {
 		for (const key in this.screen.screenWidgets) {
-			if (this.current.currentSceneIndex == -1) {
+			if (
+				this.current.currentSceneIndex == -1 &&
+				this.screen.screenWidgets[key].scene === this.current.currentSceneIndex
+			) {
 				delete this.screen.screenWidgets[key]
 			} else if (this.screen.screenWidgets[key].scene === this.current.currentSceneIndex) {
 				this.screen.screenWidgets[key].scene = -1
