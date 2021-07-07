@@ -1,9 +1,6 @@
 <template lang="pug">
 d-right-control(:label="`${config.label} [${inputKey}]`")
-	i-input(
-		v-model="obj[inputKey]",
-		@on-focus="event.inputFocus = true",
-		@on-blur="event.inputFocus = false")
+	i-input(v-model="obj[inputKey]")
 </template>
 <script lang="ts">
 import func from './func.mx'
