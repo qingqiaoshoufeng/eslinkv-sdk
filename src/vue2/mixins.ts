@@ -50,12 +50,7 @@ const mx: any = {
 				const sceneId = item.id
 				switch (item.type) {
 					case 'openScene':
-						if (
-							this.editor.current.currentCreateSceneList.includes(
-								sceneId,
-							)
-						)
-							return
+						if (this.editor.current.currentCreateSceneList.includes(sceneId)) return
 						this.editor.activeWidgetId = this.config.widget.id
 						this.editor.current.sceneAnimate = item.animate || 'fadeIn'
 						this.editor.openScene(sceneId)
@@ -72,9 +67,7 @@ const mx: any = {
 			}
 			for (const item of this.config.event.component) {
 				if (item.type === 'update') {
-					const coms = Object.values(
-						this.editor.screenWidgets,
-					).filter((v: any) => item.ids.includes(v.id))
+					const coms = Object.values(this.editor.screenWidgets).filter((v: any) => item.ids.includes(v.id))
 					let data = usePath(item.source.trim(), val)
 					const { enable, methodBody } = item.process
 					if (enable && methodBody.trim()) {
@@ -82,25 +75,15 @@ const mx: any = {
 							const processor = createSandbox(methodBody)
 							data = processor({ data })
 							coms.forEach((v: any) => {
-								this.editor.updateComponentTarget(
-									v.id,
-									item.target,
-									data,
-								)
+								this.editor.updateComponentTarget(v.id, item.target, data)
 							})
 						} catch (err) {
 							console.warn('数据加工函数语法错误：', err.message)
-							this.$Message.warning(
-								'数据加工函数语法错误：' + err.message,
-							)
+							this.$Message.warning('数据加工函数语法错误：' + err.message)
 						}
 					} else {
 						coms.forEach((v: any) => {
-							this.editor.updateComponentTarget(
-								v.id,
-								item.target,
-								data,
-							)
+							this.editor.updateComponentTarget(v.id, item.target, data)
 						})
 					}
 				}
@@ -111,7 +94,6 @@ const mx: any = {
 		 * [id]
 		 */
 		emitComponentUpdate(data) {
-			console.log(this.config)
 			if (this.config) {
 				this.config.api.bind.refIds.forEach((ref: any) => {
 					const widget = this.editor.screenWidgets[ref]
@@ -132,11 +114,7 @@ const mx: any = {
 		},
 		parseConfigValue(localConfigValue, customConfig) {
 			this.configReady = true
-			return this.editor.updateWidgetConfig(
-				this.config.widget.id,
-				localConfigValue,
-				customConfig,
-			)
+			return this.editor.updateWidgetConfig(this.config.widget.id, localConfigValue, customConfig)
 		},
 	},
 	computed: {
@@ -146,18 +124,16 @@ const mx: any = {
 				width: `${layout.size.width}px`,
 				height: `${layout.size.height}px`,
 				zIndex: `${layout.zIndex}`,
-				transform: `translate3d(${layout.position.left}px, ${
-					layout.position.top
-				}px,0) ${layout.scale ? 'scale(' + layout.scale + ')' : ''}`,
+				transform: `translate3d(${layout.position.left}px, ${layout.position.top}px,0) ${
+					layout.scale ? 'scale(' + layout.scale + ')' : ''
+				}`,
 			}
 		},
 		id() {
 			const now = +new Date()
 			if (this.config) {
 				if (this.config.widget) {
-					return `d-${
-						this.config.widget.id ? this.config.widget.id : ''
-					}${now}`
+					return `d-${this.config.widget.id ? this.config.widget.id : ''}${now}`
 				}
 				return `d-${now}`
 			}
@@ -168,9 +144,7 @@ const mx: any = {
 			if (!this.config.event.scene.length) return false
 			return (
 				this.editor.activeWidgetId === this.config.widget.id &&
-				this.config.event.scene.some(
-					v => v.id === this.editor.activeSceneId,
-				)
+				this.config.event.scene.some(v => v.id === this.editor.activeSceneId)
 			)
 		},
 	},
