@@ -42,8 +42,7 @@ export default class DLeftSceneItem extends Vue {
 	}
 
 	handleTaggerHide(id: string): void {
-		this.editor.screenWidgets[id].config.widget.hide = !this.editor
-			.screenWidgets[id].config.widget.hide
+		this.editor.screenWidgets[id].config.widget.hide = !this.editor.screenWidgets[id].config.widget.hide
 	}
 }
 </script>
@@ -73,6 +72,7 @@ export default class DLeftSceneItem extends Vue {
 	h2 {
 		font-size: 14px;
 		font-weight: normal;
+		color: #fff;
 	}
 
 	&.active {

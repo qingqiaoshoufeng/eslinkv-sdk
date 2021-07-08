@@ -8,9 +8,8 @@ declare module '*.vue' {
 declare global {
 	namespace JSX {
 		// tslint:disable no-empty-interface
+		// @ts-ignore
 		interface Element extends VNode {}
-		// tslint:disable no-empty-interface
-		interface ElementClass extends Vue {}
 		interface IntrinsicElements {
 			[elem: string]: any
 		}
@@ -18,16 +17,5 @@ declare global {
 	interface Window {
 		eslinkVEditorInstance: any
 		eslinkV: any
-	}
-}
-
-import { ModalInstance } from 'view-design'
-import { Route } from 'vue-router'
-import { VueRouter } from 'vue-router/types/router'
-declare module 'vue/types/vue' {
-	interface Vue {
-		$route: Route
-		$router: VueRouter
-		$Modal: ModalInstance
 	}
 }
