@@ -1,16 +1,28 @@
 import './vue.d.ts'
 
-export interface selectSceneIndex {
+interface selectSceneIndex {
 	/**
 	 * 切换场景
 	 */
-	(index: string): void
+	(index: string | number): void
 }
-export interface Instance {
+interface Instance {
 	/**
 	 * 单例缓存实例
 	 */
 	(): EditorInstance
+}
+interface setLocalComponents {
+	/**
+	 * 注册内置组件
+	 */
+	(components: any): void
+}
+interface setLocalWidgets {
+	/**
+	 * 设置内置组件
+	 */
+	(obj: any): void
 }
 export interface EditorInstance {
 	/**
@@ -18,6 +30,8 @@ export interface EditorInstance {
 	 */
 	currentSceneIndex: string
 	selectSceneIndex: selectSceneIndex
+	setLocalComponents: setLocalComponents
+	setLocalWidgets: setLocalWidgets
 }
 
 declare module '@eslinkv/core' {
