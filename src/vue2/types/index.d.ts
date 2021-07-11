@@ -78,7 +78,7 @@ declare module '@eslinkv/vue2' {
 		 *
 		 * 组件数据对象
 		 *
-		 * esinkV缓存数据或通过API请求获取到的数据
+		 * eslinkV缓存数据或通过API请求获取到的数据
 		 */
 		data: any
 		/**
@@ -98,5 +98,23 @@ declare module '@eslinkv/vue2' {
 		 */
 		config: any
 		__handleClick__: __handleClick__
+		/**
+		 * widgetNormalMixin
+		 *
+		 * 动画定时器
+		 */
+		animateTimer: any
+		/**
+		 * widgetNormalMixin
+		 *
+		 * 动画定时器,当前播放索引值
+		 */
+		animateActiveIndex: number
+		/**
+		 * widgetNormalMixin
+		 *
+		 * 是否在预览/编辑器中
+		 */
+		inPreview: boolean
 	}
 }
