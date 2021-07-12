@@ -24,6 +24,19 @@ interface setLocalWidgets {
 	 */
 	(obj: any): void
 }
+interface loadJs {
+	/**
+	 * 加载外部js
+	 */
+	(src: string | string[], value: string): Promise<any>
+}
+interface loadCss {
+	/**
+	 * 加载外部css
+	 */
+	(src: string | string[], value: string): Promise<any>
+}
+
 export interface EditorInstance {
 	/**
 	 * 当前场景key值
@@ -41,4 +54,7 @@ declare module '@eslinkv/core' {
 	export class Editor {
 		static Instance: Instance
 	}
+
+	export const loadCss: loadCss
+	export const loadJs: loadJs
 }

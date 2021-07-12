@@ -1,5 +1,6 @@
 <template lang="pug">
-component.widget-part(
+component.widget-part.animate__animated(
+	:style="{ animationDuration: duration }",
 	:is="currentComponent",
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
@@ -42,10 +43,7 @@ export default class WidgetNormal extends Vue {
 	editor: Editor = Editor.Instance()
 	get currentComponent(): string | null {
 		if (this.ready) {
-			if (
-				this.market &&
-				this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]
-			) {
+			if (this.market && this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]) {
 				return `${prefix1}${this.type}-${this.componentVersion}`
 			}
 			return `${prefix2}${this.type}`
@@ -74,13 +72,12 @@ export default class WidgetNormal extends Vue {
 			return
 		}
 		const { enter, duration, delay } = this.animation
-		let animationClass
-		animationClass = `animate__${enter}`
-		this.animationClass = `animate__animated ${animationClass}`
+		this.duration = `${duration / 1000}s`
+		enter ? (this.animationClass = `animate__${enter}`) : void 0
 		const timer = setTimeout(() => {
 			this.handleAnimationEnd()
 			clearTimeout(timer)
-		}, delay + duration + 300)
+		}, delay)
 	}
 	removeAnimation(): void {
 		this.animationClass = null
@@ -98,9 +95,7 @@ export default class WidgetNormal extends Vue {
 					const script = document.createElement('script')
 					script.onload = () => {
 						this.ready = true
-						this.editor.updateWidgetLoaded(
-							`${this.type}${this.componentVersion}`,
-						)
+						this.editor.updateWidgetLoaded(`${this.type}${this.componentVersion}`)
 						if (res.isCollection) {
 							res.componentConfig.widget.id = this.config.widget.id
 							this.editor.screenWidgets[this.config.widget.id].config = res.componentConfig
@@ -110,15 +105,11 @@ export default class WidgetNormal extends Vue {
 						script.src = res.componentJsUrl
 						document.head.appendChild(script)
 					} else {
-						console.error(
-							`${this.type}${this.componentVersion}加载组件失败`,
-						)
+						console.error(`${this.type}${this.componentVersion}加载组件失败`)
 					}
 				})
 				.catch(() => {
-					console.error(
-						`${this.type}${this.componentVersion}加载组件失败`,
-					)
+					console.error(`${this.type}${this.componentVersion}加载组件失败`)
 				})
 		}
 	}
@@ -145,15 +136,10 @@ export default class WidgetNormal extends Vue {
 		if (this.market) {
 			this.loadMarket()
 		} else {
-			if (
-				this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]
-			) {
+			if (this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]) {
 				this.ready = true
 			} else {
-				Vue.component(
-					`${prefix2}${this.type}`,
-					this.editor.local.components[this.type],
-				)
+				Vue.component(`${prefix2}${this.type}`, this.editor.local.components[this.type])
 				this.ready = true
 			}
 		}

@@ -545,12 +545,6 @@ class Editor extends Factory<Editor> {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 if (!window.eslinkV) window.eslinkV = {}
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 window.eslinkV.Editor = Editor
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 export default window.eslinkV.Editor

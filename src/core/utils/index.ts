@@ -19,9 +19,7 @@ export const configMerge = function (from: any, to: any): any {
 		const value = from[actualKey]
 		if (value && typeof value === 'object') {
 			if (!output[actualKey]) {
-				output[actualKey] = !Array.isArray(value)
-					? { ...value }
-					: [...value]
+				output[actualKey] = !Array.isArray(value) ? { ...value } : [...value]
 				return
 			}
 			output[actualKey] = configMerge(value, output[actualKey])
@@ -76,5 +74,99 @@ export function setDefault(o, str = '', defaultConfig = commonConfigValue()) {
 			if (defaultValue === undefined) return
 			o[key] = JSON.parse(JSON.stringify(defaultValue))
 		}
+	}
+}
+
+/**
+ * @description 加载三方包
+ */
+export function loadJs(src: string | string[], value: string): Promise<any> {
+	if (!src) {
+		return
+	}
+	if (!window.loadJS) {
+		window.loadJS = {}
+	}
+	if (typeof src === 'string') {
+		return new Promise<void>(resolve => {
+			if (window.loadJS[value]) {
+				resolve()
+			} else {
+				const el = document.createElement('script')
+				el.src = src
+				el.onload = () => {
+					resolve()
+					window.loadJS[value] = true
+				}
+				document.head.appendChild(el)
+			}
+		})
+	} else {
+		const p = []
+		src.forEach((item, index) => {
+			p.push(
+				new Promise<void>(resolve => {
+					if (window.loadJS[value[index]]) {
+						resolve()
+					} else {
+						const el = document.createElement('script')
+						el.src = item
+						el.onload = () => {
+							resolve()
+							window.loadJS[value[index]] = true
+						}
+						document.head.appendChild(el)
+					}
+				}),
+			)
+		})
+		return Promise.all(p)
+	}
+}
+
+/**
+ * @description 加载三方包css
+ */
+export function loadCss(src: string | string[], value: string): Promise<any> {
+	if (!src) return
+	if (!window.loadCSS) {
+		window.loadCSS = {}
+	}
+	if (typeof src === 'string') {
+		return new Promise<void>(resolve => {
+			if (window.loadCSS[value]) {
+				resolve()
+			} else {
+				const el = document.createElement('link')
+				el.rel = 'stylesheet'
+				el.href = src
+				el.onload = () => {
+					resolve()
+					window.loadCSS[value] = true
+				}
+				document.head.appendChild(el)
+			}
+		})
+	} else {
+		const p = []
+		src.forEach((item, index) => {
+			p.push(
+				new Promise<void>(resolve => {
+					if (window.loadCSS[value[index]]) {
+						resolve()
+					} else {
+						const el = document.createElement('link')
+						el.rel = 'stylesheet'
+						el.href = item
+						el.onload = () => {
+							resolve()
+							window.loadCSS[value[index]] = true
+						}
+						document.head.appendChild(el)
+					}
+				}),
+			)
+		})
+		return Promise.all(p)
 	}
 }

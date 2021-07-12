@@ -3,10 +3,8 @@ import App from './App.vue'
 import { Message, Modal } from 'view-design'
 import router from './router'
 import '@babel/polyfill'
-import '@/vue2/plugin.js'
+import '@/vue2/index.js'
 import '@/demo/components-business'
-import widgetMixin from '@/vue2/mixins'
-window.eslinkV.widgetMixin = widgetMixin
 
 Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal

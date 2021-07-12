@@ -1,8 +1,11 @@
 import Editor from './Editor/index.ts'
+import { loadCss, loadJs } from '@/core/utils'
 
 const editor = Editor.Instance()
 const eslinkV = {
 	Editor,
+	loadCss,
+	loadJs,
 }
 if (window !== undefined) {
 	if (!window.eslinkV) {
@@ -36,5 +39,5 @@ window.eslinkV.instance = {
 		},
 	},
 }
-export { Editor }
+export { Editor, loadCss, loadJs }
 export default eslinkV
