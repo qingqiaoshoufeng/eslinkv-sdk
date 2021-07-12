@@ -159,8 +159,8 @@ export default class Screen extends Factory<Screen> {
 		const config = newWidget.config
 		config.widget.id = id
 		const layout = config.layout
-		layout.position.left += 10
-		layout.position.top += 10
+		layout.position.left = 10 + Number(layout.position.left)
+		layout.position.top = 10 + Number(layout.position.top)
 		this.screenWidgets = { ...this.screenWidgets, [id]: newWidget }
 	}
 	/* 更新组件 */
