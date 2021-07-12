@@ -34,7 +34,7 @@ export default class extends mixins(widgetMixin) {
 	}
 
 	@Watch('settingData', { deep: true })
-	settingDataChange(val): void {
+	settingDataChange(): void {
 		if (this.id) {
 			this.$nextTick(() => {
 				this.instance = echarts.init(document.getElementById(this.id))

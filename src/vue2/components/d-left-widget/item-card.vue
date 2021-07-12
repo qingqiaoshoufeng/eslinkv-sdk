@@ -25,7 +25,7 @@ export default class ItemCard extends Vue {
 			'widget-config',
 			JSON.stringify({
 				type: this.componentEnTitle,
-				config: { layout: this.componentConfig.layout },
+				config: this.componentConfig,
 				market: this.market,
 				componentVersion: this.componentVersion,
 				componentId: this.componentId,
