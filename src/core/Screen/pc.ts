@@ -1,5 +1,4 @@
 import ScreenBase from '@/core/Screen/base'
-import { setDefault } from '@/core/utils'
 
 export default class ScreenPc extends ScreenBase {
 	marketComponents = []
@@ -31,33 +30,21 @@ export default class ScreenPc extends ScreenBase {
 		this.sort = res.sort
 		this.createTime = res.createTime
 		this.updateTime = res.updateTime
-		res.screenConfig = res.screenConfig || {}
-		this.screenConfig = res.screenConfig
-		this.screenWidth = res.screenWidth ? res.screenWidth : res.screenConfig.width
-		delete this.screenConfig.width
-		this.screenHeight = res.screenHeight ? res.screenHeight : res.screenConfig.height
-		delete this.screenConfig.height
+		this.screenWidth = res.screenWidth
+		this.screenHeight = res.screenHeight
 		this.screenBackGroundColor = res.screenBackGroundColor
-			? res.screenBackGroundColor
-			: res.screenConfig.backgroundColor
-		delete this.screenConfig.backgroundColor
 		this.screenBackGroundImage = res.screenBackGroundImage
-			? res.screenBackGroundImage
-			: res.screenConfig.backgroundImage
-		delete this.screenConfig.backgroundImage
-		this.screenMainScene = res.screenMainScene ? res.screenMainScene : res.screenConfig.mainScene
-		delete this.screenConfig.mainScene
+		this.screenMainScene = res.screenMainScene
 		this.screenPlatform = res.screenPlatform
 		return this.initWidget(res)
 	}
 	/* 序列化children */
 	serialize(screenWidgets): void {
 		for (const key in screenWidgets) {
-			setDefault(screenWidgets[key].config)
 			if (screenWidgets[key].market) {
 				this.marketComponents.push({
 					type: screenWidgets[key].type,
-					version: screenWidgets[key].config.widget.componentVersion,
+					version: screenWidgets[key].componentVersion,
 				})
 			}
 			if (screenWidgets[key].children) {
@@ -69,26 +56,18 @@ export default class ScreenPc extends ScreenBase {
 	}
 	/* 序列化组件数据 */
 	initWidget(res: any): any {
-		let screenWidgets
-		const obj = {}
-		if (res.screenConfig.widgets) {
-			screenWidgets = res.screenConfig.widgets
-			screenWidgets.forEach(item => {
-				obj[item.id] = {
-					id: item.id,
-					market: item.market,
-					scene: item.scene,
-					type: item.type,
-					config: item.value,
-					settingDataHandle: [],
-					settingData: {},
-					children: {},
-				}
-			})
-			screenWidgets = obj
-			delete this.screenConfig.widgets
-		} else {
-			screenWidgets = res.screenWidgets || {}
+		const screenWidgets = res.screenWidgets
+		for (const key in screenWidgets) {
+			res.screenWidgets[key] = {
+				name: res.screenWidgets[key].config.widget.name,
+				componentId: res.screenWidgets[key].market
+					? res.screenWidgets[key].config.widget.componentVersion
+					: null,
+				componentVersion: res.screenWidgets[key].market
+					? res.screenWidgets[key].config.widget.componentVersion
+					: null,
+				...res.screenWidgets[key],
+			}
 		}
 		this.serialize(screenWidgets)
 		return { screenWidgets }

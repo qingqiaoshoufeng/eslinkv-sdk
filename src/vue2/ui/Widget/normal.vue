@@ -21,6 +21,12 @@ export default class widgetNormal extends Vue {
 		},
 	})
 	settingData
+	@Prop({
+		default() {
+			return [{ label: '点击事件', key: 'click' }]
+		},
+	})
+	eventType
 
 	get styles() {
 		return (this.$parent as any).styles
@@ -29,6 +35,7 @@ export default class widgetNormal extends Vue {
 	created(): void {
 		;(this.$parent as any).parseConfigValue(this.value, this.customConfig)
 		;(this.$parent as any).dataSetting(this.setting, this.settingData)
+		;(this.$parent as any).eventTypeSetting(this.eventType)
 	}
 }
 </script>

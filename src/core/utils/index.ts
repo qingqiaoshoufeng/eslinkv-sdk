@@ -1,5 +1,4 @@
 import copy from 'fast-copy'
-import commonConfigValue from '@/core/common-config-value'
 
 /**
  * @description uuid
@@ -54,27 +53,6 @@ export function getQueryString(name) {
 	const r = window.location.search.substr(1).match(reg)
 	if (r != null) return unescape(r[2])
 	return null
-}
-
-function getAttr(o, str) {
-	const arr = str.split('.')
-	let res = o
-	arr.forEach(v => {
-		res = res[v]
-	})
-	return res
-}
-export function setDefault(o, str = '', defaultConfig = commonConfigValue()) {
-	for (const key in o) {
-		const prop = str ? str + '.' + key : key
-		if (Object.prototype.toString.call(o[key]) === '[object Object]') {
-			setDefault(o[key], prop, defaultConfig)
-		} else if (o[key] === 'default') {
-			const defaultValue = getAttr(defaultConfig, prop)
-			if (defaultValue === undefined) return
-			o[key] = JSON.parse(JSON.stringify(defaultValue))
-		}
-	}
 }
 
 /**

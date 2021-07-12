@@ -11,9 +11,6 @@ export default class Screen extends Factory<Screen> {
 	screenId: string
 	/* 大屏名 */
 	screenName = '未命名'
-	/* 已废弃 */
-	/* 大屏配置 */
-	screenConfig: any = {}
 	/* 大屏组件配置 */
 	screenWidgets: any = {}
 	/* 大屏类型 CUSTOM:大屏 TEMPLATE:模版 */
@@ -117,7 +114,6 @@ export default class Screen extends Factory<Screen> {
 		return {
 			screenWidgets: this.screenWidgets,
 			screenType: this.screenType,
-			screenConfig: this.screenConfig,
 			screenAvatar: this.screenAvatar,
 			screenBackGroundColor: this.screenBackGroundColor,
 			screenBackGroundImage: this.screenBackGroundImage,

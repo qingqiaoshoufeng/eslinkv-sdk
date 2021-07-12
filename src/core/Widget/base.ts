@@ -9,6 +9,8 @@ export default class Widget {
 	market: boolean
 	children = {}
 	settingDataHandle = []
+	eventType = [{ label: '点击事件', key: 'click' }]
+	event = {}
 	settingData = {}
 	constructor(
 		offsetX: number,
@@ -17,15 +19,7 @@ export default class Widget {
 		currentSceneIndex: number | string,
 		currentMaxZIndex: number,
 	) {
-		const {
-			type,
-			config: inputConfig,
-			startX,
-			startY,
-			market = false,
-			componentVersion,
-			componentId,
-		} = data
+		const { type, config: inputConfig, startX, startY, market = false, componentVersion, componentId } = data
 		this.type = type
 		this.market = market
 		this.scene = currentSceneIndex

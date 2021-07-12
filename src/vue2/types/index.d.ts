@@ -3,13 +3,24 @@ import './vue.d.ts'
 
 interface __handleClick__ {
 	/**
-	 * widgetNormalMixin
+	 * widgetNormalMixin(即将废弃 请使用 __handleEvent__)
 	 *
 	 * 组件事件、场景事件配置
 	 *
 	 * 目前支持更新组件、场景切换、添加场景、移除场景
 	 */
 	(val: any): void
+}
+
+interface __handleEvent__ {
+	/**
+	 * widgetNormalMixin
+	 *
+	 * 组件事件、场景事件配置
+	 *
+	 * 目前支持更新组件、场景切换、添加场景、移除场景
+	 */
+	(val: any, eventType: string): void
 }
 
 declare module '@eslinkv/vue2' {
@@ -32,7 +43,7 @@ declare module '@eslinkv/vue2' {
 	 */
 	export class dView extends Vue {}
 	/**
-	 * Vue2.x 组件(即将废弃)
+	 * Vue2.x 组件(即将废弃 请使用 widgetNormalMixin)
 	 *
 	 * 自定义组件-基础mixin
 	 */
@@ -98,6 +109,7 @@ declare module '@eslinkv/vue2' {
 		 */
 		config: any
 		__handleClick__: __handleClick__
+		__handleEvent__: __handleEvent__
 		/**
 		 * widgetNormalMixin
 		 *

@@ -41,29 +41,33 @@ const mx: any = {
 		this.animateActiveIndex = -1
 	},
 	methods: {
+		eventTypeSetting(eventType) {
+			this.editor.eventTypeSetting(this.config.widget.id, eventType)
+		},
 		dataSetting(list = [], data) {
 			this.editor.dataSetting(this.config.widget.id, list, data)
 		},
-		__handleClick__(val) {
+		__handleEvent__(val, eventType = 'click') {
 			if (!this.config) return
 			for (const item of this.config.event.scene) {
 				const sceneId = item.id
-				switch (item.type) {
-					case 'openScene':
-						if (this.editor.current.currentCreateSceneList.includes(sceneId)) return
-						this.editor.activeWidgetId = this.config.widget.id
-						this.editor.current.sceneAnimate = item.animate || 'fadeIn'
-						this.editor.openScene(sceneId)
-						break
-					case 'closeScene':
-						this.editor.current.sceneAnimate = item.animate || 'fadeOut'
-						this.editor.closeScene(sceneId)
-						break
-					case 'changeScene':
-						this.editor.selectSceneIndex(sceneId)
-						break
-					default:
-				}
+				if (item.eventType === eventType || (!item.eventType && eventType === 'click'))
+					switch (item.type) {
+						case 'openScene':
+							if (this.editor.current.currentCreateSceneList.includes(sceneId)) return
+							this.editor.activeWidgetId = this.config.widget.id
+							this.editor.current.sceneAnimate = item.animate || 'fadeIn'
+							this.editor.openScene(sceneId)
+							break
+						case 'closeScene':
+							this.editor.current.sceneAnimate = item.animate || 'fadeOut'
+							this.editor.closeScene(sceneId)
+							break
+						case 'changeScene':
+							this.editor.selectSceneIndex(sceneId)
+							break
+						default:
+					}
 			}
 			for (const item of this.config.event.component) {
 				if (item.type === 'update') {
@@ -75,7 +79,8 @@ const mx: any = {
 							const processor = createSandbox(methodBody)
 							data = processor({ data })
 							coms.forEach((v: any) => {
-								this.editor.updateComponentTarget(v.id, item.target, data)
+								if (item.eventType === eventType || (!item.eventType && eventType === 'click'))
+									this.editor.updateComponentTarget(v.id, item.target, data)
 							})
 						} catch (err) {
 							console.warn('数据加工函数语法错误：', err.message)
@@ -83,11 +88,15 @@ const mx: any = {
 						}
 					} else {
 						coms.forEach((v: any) => {
-							this.editor.updateComponentTarget(v.id, item.target, data)
+							if (item.eventType === eventType || (!item.eventType && eventType === 'click'))
+								this.editor.updateComponentTarget(v.id, item.target, data)
 						})
 					}
 				}
 			}
+		},
+		__handleClick__(val) {
+			this.__handleEvent__(val, 'click')
 		},
 		/**
 		 * @description 组件间联动，被关联组件收动添加 updateComponent 方法

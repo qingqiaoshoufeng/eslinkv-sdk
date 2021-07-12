@@ -543,6 +543,19 @@ class Editor extends Factory<Editor> {
 	dataSetting(id: string, list, data): void {
 		this.dataSettingFind(id, list, data, this.screen.screenWidgets)
 	}
+	private eventTypeSettingFind(id: string, eventType: { key: string; label: string }[], parent) {
+		for (const key in parent) {
+			if (id === parent[key].id) {
+				if (eventType.length) parent[key].eventType = eventType
+				this.screen.screenWidgets = { ...this.screen.screenWidgets }
+			} else if (parent[key].children) {
+				this.eventTypeSettingFind(id, eventType, parent[key].children)
+			}
+		}
+	}
+	eventTypeSetting(id: string, eventType: { key: string; label: string }[]) {
+		this.eventTypeSettingFind(id, eventType, this.screen.screenWidgets)
+	}
 }
 
 if (!window.eslinkV) window.eslinkV = {}

@@ -40,6 +40,7 @@ export default class WidgetNormal extends Vue {
 	replayAnimation = false
 	ready = false
 	animationClass = null
+	duration = 600
 	editor: Editor = Editor.Instance()
 	get currentComponent(): string | null {
 		if (this.ready) {

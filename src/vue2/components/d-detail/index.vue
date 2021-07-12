@@ -90,7 +90,9 @@ export default class DDetail extends Vue {
 			sessionStorage.setItem('previewData', JSON.stringify(this.editor.screen))
 			window.open(`${location.origin}/detail/preview?layoutMode=${this.editor.layoutMode}${scene}`)
 		} else {
-			window.open(`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.editor.layoutMode}${scene}`)
+			window.open(
+				`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.editor.layoutMode}${scene}`,
+			)
 		}
 	}
 

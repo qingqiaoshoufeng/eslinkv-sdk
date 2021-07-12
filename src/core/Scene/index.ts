@@ -11,12 +11,7 @@ export default class SceneBase extends Factory<SceneBase> {
 	}
 	/* 序列化场景数据 */
 	initScene(res: any): void {
-		if (res.screenScene) {
-			this.screenScene = res.screenScene
-		} else {
-			this.screenScene = res.screenConfig.scene
-		}
-		delete res.screenConfig.scene
+		this.screenScene = res.screenScene
 		this.sceneObj = this.screenScene
 	}
 	/* 创建场景 */
