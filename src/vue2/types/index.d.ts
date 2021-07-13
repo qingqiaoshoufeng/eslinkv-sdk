@@ -9,7 +9,7 @@ interface __handleClick__ {
 	 *
 	 * 目前支持更新组件、场景切换、添加场景、移除场景
 	 */
-	(val: any): void
+	(val?: any): void
 }
 
 interface __handleEvent__ {
@@ -20,7 +20,7 @@ interface __handleEvent__ {
 	 *
 	 * 目前支持更新组件、场景切换、添加场景、移除场景
 	 */
-	(val: any, eventType: string): void
+	(eventType: string, val?: any): void
 }
 
 declare module '@eslinkv/vue2' {

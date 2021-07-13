@@ -47,7 +47,7 @@ const mx: any = {
 		dataSetting(list = [], data) {
 			this.editor.dataSetting(this.config.widget.id, list, data)
 		},
-		__handleEvent__(val, eventType = 'click') {
+		__handleEvent__(eventType = 'click', val) {
 			if (!this.config) return
 			for (const item of this.config.event.scene) {
 				const sceneId = item.id
@@ -96,7 +96,7 @@ const mx: any = {
 			}
 		},
 		__handleClick__(val) {
-			this.__handleEvent__(val, 'click')
+			this.__handleEvent__('click', val)
 		},
 		/**
 		 * @description 组件间联动，被关联组件收动添加 updateComponent 方法
