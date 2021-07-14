@@ -73,11 +73,13 @@
 import { Component, Prop } from 'vue-property-decorator'
 import func from '@/vue2/components-func/func.mx'
 import dCode from '@/vue2/components-right/d-code/index.vue'
+import { animates } from '@/vue2/components-func/config.js'
 
 @Component({ components: { dCode } })
 export default class FuncData extends func {
 	@Prop() activeIndex
 	@Prop() eventType
+	animates = animates
 
 	get isComponentClass(): boolean {
 		return this.editor.currentWidget.events[this.eventType][this.activeIndex].eventClass === 'component'

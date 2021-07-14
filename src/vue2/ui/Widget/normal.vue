@@ -23,7 +23,7 @@ export default class widgetNormal extends Vue {
 	settingData
 	@Prop({
 		default() {
-			return [{ label: '点击事件', key: 'click' }]
+			return []
 		},
 	})
 	eventType

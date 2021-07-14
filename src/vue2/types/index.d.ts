@@ -128,5 +128,17 @@ declare module '@eslinkv/vue2' {
 		 * 是否在预览/编辑器中
 		 */
 		inPreview: boolean
+		/**
+		 * widgetNormalMixin
+		 *
+		 * 需要触发场景是否在激活状态
+		 */
+		isSceneActive: boolean
+		/**
+		 * widgetNormalMixin
+		 *
+		 * 自定义事件配置的个数
+		 */
+		eventLength: number
 	}
 }

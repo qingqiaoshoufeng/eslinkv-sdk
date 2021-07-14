@@ -159,12 +159,23 @@ const mx = {
 			}
 			return `d-${now}`
 		},
+		eventLength() {
+			const events = this.events
+			let e = []
+			for (const key in events) {
+				e = [...e, ...events[key]]
+			}
+			return e.length
+		},
 		isSceneActive() {
-			if (!this.config) return false
-			if (!this.config.event.scene.length) return false
+			if (!this.events) return false
+			const events = this.events
+			let e = []
+			for (const key in events) {
+				e = [...e, ...events[key]]
+			}
 			return (
-				this.editor.activeWidgetId === this.config.widget.id &&
-				this.config.event.scene.some(v => v.id === this.editor.activeSceneId)
+				this.editor.activeWidgetId === this.config.widget.id && e.some(v => v.id === this.editor.activeSceneId)
 			)
 		},
 	},

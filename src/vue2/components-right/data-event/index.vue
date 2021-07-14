@@ -19,6 +19,8 @@ export default class FuncData extends func {
 	handleAddClick(eventType: string): void {
 		this.editor.currentWidget.events[eventType].push({
 			ids: [],
+			id: '',
+			animate: '',
 			type: '',
 			eventType,
 			source: '',
