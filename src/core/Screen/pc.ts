@@ -58,16 +58,47 @@ export default class ScreenPc extends ScreenBase {
 	initWidget(res: any): any {
 		const screenWidgets = res.screenWidgets
 		for (const key in screenWidgets) {
-			res.screenWidgets[key] = {
-				name: res.screenWidgets[key].config.widget.name,
-				componentId: res.screenWidgets[key].market
-					? res.screenWidgets[key].config.widget.componentVersion
-					: null,
-				componentVersion: res.screenWidgets[key].market
-					? res.screenWidgets[key].config.widget.componentVersion
-					: null,
-				...res.screenWidgets[key],
+			let item = { ...res.screenWidgets[key] }
+			item = {
+				name: item.config.widget.name,
+				componentId: item.market ? item.config.widget.componentVersion : null,
+				componentVersion: item.market ? item.config.widget.componentVersion : null,
+				...item,
 			}
+			// 兼容自定义事件
+			if (item.config.eventType) {
+				delete item.config.eventType
+			}
+			if (item.event) {
+				item.events = item.event
+				delete item.event
+			}
+			if (item.config.event) {
+				if (!item.eventType) item.eventType = []
+				item.eventType.push({ key: 'click', label: '点击事件' })
+				if (item.config.event.scene) {
+					if (!item.events) item.events = {}
+					item.config.event.scene.forEach(child => {
+						const triggerType = child.type
+						delete child.type
+						if (!item.events.click) item.events.click = []
+						item.events.click.push({ ...child, eventClass: 'scene', eventType: 'click', triggerType })
+					})
+					delete item.config.event.scene
+				}
+				if (item.config.event.component) {
+					if (!item.events) item.events = {}
+					item.config.event.component.forEach(child => {
+						const triggerType = child.type
+						delete child.type
+						if (!item.events.click) item.events.click = []
+						item.events.click.push({ ...child, eventClass: 'component', eventType: 'click', triggerType })
+					})
+					delete item.config.event.component
+				}
+				delete item.config.event
+			}
+			screenWidgets[item.id] = item
 		}
 		this.serialize(screenWidgets)
 		return { screenWidgets }

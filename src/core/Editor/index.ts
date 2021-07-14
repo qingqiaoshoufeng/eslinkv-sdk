@@ -546,7 +546,13 @@ class Editor extends Factory<Editor> {
 	private eventTypeSettingFind(id: string, eventType: { key: string; label: string }[], parent) {
 		for (const key in parent) {
 			if (id === parent[key].id) {
-				if (eventType.length) parent[key].eventType = eventType
+				if (eventType.length) {
+					parent[key].eventType = eventType
+					if (!parent[key].events) parent[key].events = {}
+					eventType.forEach(item => {
+						if (!parent[key].events[item['key']]) parent[key].events[item['key']] = []
+					})
+				}
 				this.screen.screenWidgets = { ...this.screen.screenWidgets }
 			} else if (parent[key].children) {
 				this.eventTypeSettingFind(id, eventType, parent[key].children)

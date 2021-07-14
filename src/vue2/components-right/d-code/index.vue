@@ -22,6 +22,7 @@ div
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator'
 import { Icon, Modal, Tooltip } from 'view-design'
 import dRightControl from '@/vue2/components-right/d-right-control/index.vue'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const editor = require('vue2-ace-editor')
 
 @Component({

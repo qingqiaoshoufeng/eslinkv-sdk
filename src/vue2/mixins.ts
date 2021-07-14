@@ -4,15 +4,23 @@ import { createSandbox } from '@/vue2/data-process'
 import { usePath } from '@/vue2/utils'
 import Editor from '@/core/Editor'
 
-const mx: any = {
+const mx = {
 	mixins: [fetch, dataProcess],
 	props: {
 		settingData: {
 			type: Object,
 		},
+		events: {
+			type: Object,
+			default() {
+				return {}
+			},
+		},
 		config: {
 			type: Object,
-			default: null,
+			default() {
+				return {}
+			},
 		},
 		readonly: {
 			type: Boolean,
@@ -48,51 +56,54 @@ const mx: any = {
 			this.editor.dataSetting(this.config.widget.id, list, data)
 		},
 		__handleEvent__(eventType = 'click', val) {
-			if (!this.config) return
-			for (const item of this.config.event.scene) {
-				const sceneId = item.id
-				if (item.eventType === eventType || (!item.eventType && eventType === 'click'))
-					switch (item.type) {
-						case 'openScene':
-							if (this.editor.current.currentCreateSceneList.includes(sceneId)) return
-							this.editor.activeWidgetId = this.config.widget.id
-							this.editor.current.sceneAnimate = item.animate || 'fadeIn'
-							this.editor.openScene(sceneId)
-							break
-						case 'closeScene':
-							this.editor.current.sceneAnimate = item.animate || 'fadeOut'
-							this.editor.closeScene(sceneId)
-							break
-						case 'changeScene':
-							this.editor.selectSceneIndex(sceneId)
-							break
-						default:
-					}
-			}
-			for (const item of this.config.event.component) {
-				if (item.type === 'update') {
-					const coms = Object.values(this.editor.screenWidgets).filter((v: any) => item.ids.includes(v.id))
-					let data = usePath(item.source.trim(), val)
-					const { enable, methodBody } = item.process
-					if (enable && methodBody.trim()) {
-						try {
-							const processor = createSandbox(methodBody)
-							data = processor({ data })
-							coms.forEach((v: any) => {
-								if (item.eventType === eventType || (!item.eventType && eventType === 'click'))
-									this.editor.updateComponentTarget(v.id, item.target, data)
-							})
-						} catch (err) {
-							console.warn('数据加工函数语法错误：', err.message)
-							this.$Message.warning('数据加工函数语法错误：' + err.message)
+			if (this.events[eventType]) {
+				for (const item of this.events[eventType]) {
+					if (item.eventClass === 'scene') {
+						const sceneId = item.id
+						switch (item.triggerType) {
+							case 'openScene':
+								if (this.editor.current.currentCreateSceneList.includes(sceneId)) return
+								this.editor.activeWidgetId = this.config.widget.id
+								this.editor.current.sceneAnimate = item.animate || 'fadeIn'
+								this.editor.openScene(sceneId)
+								break
+							case 'closeScene':
+								this.editor.current.sceneAnimate = item.animate || 'fadeOut'
+								this.editor.closeScene(sceneId)
+								break
+							case 'changeScene':
+								this.editor.selectSceneIndex(sceneId)
+								break
+							default:
 						}
 					} else {
-						coms.forEach((v: any) => {
-							if (item.eventType === eventType || (!item.eventType && eventType === 'click'))
-								this.editor.updateComponentTarget(v.id, item.target, data)
-						})
+						if (item.triggerType === 'update') {
+							const coms = Object.values(this.editor.screenWidgets).filter((v: any) =>
+								item.ids.includes(v.id),
+							)
+							let data = usePath(item.source.trim(), val)
+							const { enable, methodBody } = item.process
+							if (enable && methodBody.trim()) {
+								try {
+									const processor = createSandbox(methodBody)
+									data = processor({ data })
+									coms.forEach((v: any) => {
+										this.editor.updateComponentTarget(v.id, item.target, data)
+									})
+								} catch (err) {
+									console.warn('数据加工函数语法错误：', err.message)
+									this.$Message.warning('数据加工函数语法错误：' + err.message)
+								}
+							} else {
+								coms.forEach((v: any) => {
+									this.editor.updateComponentTarget(v.id, item.target, data)
+								})
+							}
+						}
 					}
 				}
+			} else {
+				this.eventTypeSetting([{ key: 'click', label: '点击事件' }])
 			}
 		},
 		__handleClick__(val) {

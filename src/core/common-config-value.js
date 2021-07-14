@@ -71,20 +71,6 @@ const commonConfigValue = (type = 'normal') => {
 			duration: 600,
 		},
 		widgetType: 'normal',
-		eventType: [{ key: 'click', label: '点击事件' }],
-		event: {
-			scene: [
-				// {
-				// 	id: '',
-				// 	type: '',
-				// 	eventType: 'click',
-				// 	animate: '',
-				// }
-			],
-			component: [
-				// { ids: [], type: '', source:'', target:'', eventType: 'click', }
-			],
-		},
 	}
 	const echarts = {
 		echartsGrid: {

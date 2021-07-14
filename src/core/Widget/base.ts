@@ -9,8 +9,8 @@ export default class Widget {
 	market: boolean
 	children = {}
 	settingDataHandle = []
-	eventType = [{ label: '点击事件', key: 'click' }]
-	event = {}
+	eventType = []
+	events = {}
 	settingData = {}
 	constructor(
 		offsetX: number,

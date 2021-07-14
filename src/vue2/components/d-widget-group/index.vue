@@ -7,6 +7,7 @@
 				:ref="item.id",
 				:type="item.type",
 				:config="item.config",
+				:events="item.events",
 				:settingData="item.settingData",
 				:children="item.children",
 				:market="item.market",
@@ -24,9 +25,9 @@ export default class WidgetGroup extends Vue {
 			width: `${layout.size.width}px`,
 			height: `${layout.size.height}px`,
 			zIndex: `${layout.zIndex}`,
-			transform: `translate3d(${layout.position.left}px, ${
-				layout.position.top
-			}px,0) ${layout.scale ? 'scale(' + layout.scale + ')' : ''}`,
+			transform: `translate3d(${layout.position.left}px, ${layout.position.top}px,0) ${
+				layout.scale ? 'scale(' + layout.scale + ')' : ''
+			}`,
 		}
 	}
 

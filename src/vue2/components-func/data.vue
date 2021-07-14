@@ -82,8 +82,7 @@
 				:step="1",
 				:formatter="value => `${value} ms`",
 				v-model="editor.currentWidget.config.api.autoFetch.duration")
-	data-event-component
-	data-event-scene
+	data-event
 	//d-right-control(label="开启组件内部事件")
 	//	i-switch(v-model="event.componentsDisabled[editor.currentWidgetId]")
 	d-right-control(label="组件关联")
@@ -105,15 +104,13 @@ import { Component } from 'vue-property-decorator'
 import databaseConfig from '../components/data-warehouse/index.vue'
 import dCode from '@/vue2/components-right/d-code/index.vue'
 import { animates } from './config.js'
-import DataEventComponent from '@/vue2/components-right/data-event-component/index.vue'
-import DataEventScene from '@/vue2/components-right/data-event-scene/index.vue'
+import DataEvent from '@/vue2/components-right/data-event/index.vue'
 import DataCustomDeal from '@/vue2/components-right/data-custom-deal/index.vue'
 
 @Component({
 	components: {
 		DataCustomDeal,
-		DataEventScene,
-		DataEventComponent,
+		DataEvent,
 		databaseConfig,
 		dCode,
 	},
@@ -185,11 +182,7 @@ export default class FuncData extends func {
 
 	get relateList() {
 		const list = Object.values(this.editor.screenWidgets)
-			.filter(
-				(v: any) =>
-					v.config.api.bind.enable &&
-					v.scene === this.editor.currentSceneIndex,
-			)
+			.filter((v: any) => v.config.api.bind.enable && v.scene === this.editor.currentSceneIndex)
 			.map((v: any) => {
 				const { id, name } = v.config.widget
 				return { id, name }
@@ -206,9 +199,7 @@ export default class FuncData extends func {
 		const value = this.editor.currentWidget.config
 		if (!value) return
 		this.showDatabaseConfigModal = true
-		;(this.$refs.dataBaseConfig as any).setQueryCond(
-			value.api.system.params,
-		)
+		;(this.$refs.dataBaseConfig as any).setQueryCond(value.api.system.params)
 	}
 }
 </script>

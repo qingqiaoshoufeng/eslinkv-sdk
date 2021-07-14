@@ -24,6 +24,7 @@ dr(
 	eslinkv-widget(
 		:widget-type="item.widgetType",
 		:type="item.type",
+		:events="item.events",
 		:settingData="item.settingData",
 		:config="item.config",
 		:children="item.children",
@@ -71,10 +72,8 @@ export default class ItemCard extends Vue {
 	}
 
 	onDragStop(left: number, top: number): void {
-		const diffLeft =
-			left - this.editor.currentWidget.config.layout.position.left
-		const diffTop =
-			top - this.editor.currentWidget.config.layout.position.top
+		const diffLeft = left - this.editor.currentWidget.config.layout.position.left
+		const diffTop = top - this.editor.currentWidget.config.layout.position.top
 		this.editor.currentWidget.config.layout.position.left = left
 		this.editor.currentWidget.config.layout.position.top = top
 		this.onGroupDragStop(this.editor.currentWidget, diffLeft, diffTop)

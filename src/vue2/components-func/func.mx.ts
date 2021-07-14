@@ -25,6 +25,7 @@ import dInput from '@/vue2/components/d-input/index.vue'
 import Editor from '@/core/Editor'
 
 @Component({
+	// @ts-ignore
 	components: {
 		dRightSwiper,
 		dRightControl,

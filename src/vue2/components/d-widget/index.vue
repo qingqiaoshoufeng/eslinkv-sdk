@@ -4,7 +4,7 @@ component.widget-part.animate__animated(
 	:is="currentComponent",
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
-	v-bind="{ config, readonly,settingData, ...$attrs }",
+	v-bind="{ events, config, readonly,settingData, ...$attrs }",
 	@query-start="querying = true",
 	@query-end="querying = false",
 	@query-failed="querying = true",
@@ -16,7 +16,7 @@ eslinkv-group(
 	v-else,
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
-	v-bind="{ config, readonly,settingData, ...$attrs }",
+	v-bind="{ events, config, readonly,settingData, ...$attrs }",
 	v-on="$listeners")
 </template>
 <script lang="ts">
@@ -32,6 +32,7 @@ export default class WidgetNormal extends Vue {
 	@Prop({ default: false }) market
 	@Prop() type
 	@Prop() config
+	@Prop() events
 	@Prop() settingData
 	@Prop({ default: false }) readonly
 	componentVersion = ''
@@ -40,7 +41,7 @@ export default class WidgetNormal extends Vue {
 	replayAnimation = false
 	ready = false
 	animationClass = null
-	duration = 600
+	duration = `.6s`
 	editor: Editor = Editor.Instance()
 	get currentComponent(): string | null {
 		if (this.ready) {

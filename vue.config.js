@@ -24,8 +24,8 @@ module.exports = {
 		proxy: {
 			'^/node': {
 				// target: 'http://127.0.0.1:7001',
-				target: 'http://eslinkv.eslink.cc',
-				// target: 'http://192.168.1.44:2000',
+				// target: 'http://eslinkv.eslink.cc',
+				target: 'http://192.168.1.44:2000',
 				// target: 'http://10.30.3.156:7001',
 				changeOrigin: true,
 				// pathRewrite: {
@@ -43,9 +43,9 @@ module.exports = {
 			},
 			'^/cdn': {
 				// target: 'http://127.0.0.1:7001',
-				target: 'http://eslinkv.eslink.cc',
+				// target: 'http://eslinkv.eslink.cc',
 				// target: 'http://10.30.3.156:7001',
-				// target: 'http://192.168.1.44:2000',
+				target: 'http://192.168.1.44:2000',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/cdn': '/',
@@ -90,11 +90,7 @@ module.exports = {
 		}
 	},
 	chainWebpack: config => {
-		config.module
-			.rule('vue')
-			.use('iview')
-			.loader('iview-loader')
-			.options({ prefix: false })
+		config.module.rule('vue').use('iview').loader('iview-loader').options({ prefix: false })
 		config.module
 			.rule('view-design')
 			.test(/view-design.src.*?js$/)
@@ -117,9 +113,7 @@ module.exports = {
 			if (needReport) {
 				config
 					.plugin('webpack-bundle-analyzer')
-					.use(
-						require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
-					)
+					.use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
 					.end()
 			}
 			config.plugins.delete('prefetch')

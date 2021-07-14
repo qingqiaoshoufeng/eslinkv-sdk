@@ -1,8 +1,5 @@
 <template lang="pug">
-.svg-external-icon.svg-icon(
-	v-if="isExternal",
-	:style="styleExternalIcon",
-	v-on="$listeners")
+.svg-external-icon.svg-icon(v-if="isExternal", :style="styleExternalIcon", v-on="$listeners")
 svg(
 	v-else,
 	:class="svgClass",
