@@ -2,19 +2,19 @@
 .func-group.fn-flex.flex-column
 	d-right-swiper(:title="title", :icon="icon", @icon-click="handleClick")
 		.func-group-tab.fn-flex.flex-row(v-if="list.length > 0")
-			span.pointer(
-				@click="handleClickTab(i)",
-				v-for="(v, i) in list",
-				:class="{ active: index === i }") {{ prefix }}{{ i + 1 }}
+			span.pointer(@click="handleClickTab(i)", v-for="(v, i) in list", :class="{ active: index === i }") {{ prefix }}{{ i + 1 }}
 		.func-group-empty.fn-flex.flex-row(v-else)
-			img(src="../../assets/empty.png")
+			img(:src="emptyImg")
 			span 暂无数据
 		template(v-for="(v, i) in list")
 			slot(:index="i", :activeIndex="index", v-if="i === index")
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import dRightSwiper from '../d-right-swiper/index.vue'
+
+const emptyImg = require('../../assets/empty.png')
+
 @Component({ components: { dRightSwiper } })
 export default class DRightSwiperList extends Vue {
 	@Prop() title: string
@@ -22,10 +22,16 @@ export default class DRightSwiperList extends Vue {
 	@Prop({ default: false }) show: boolean
 	@Prop({ default: () => [] }) list
 	index = 0
+	emptyImg = emptyImg
 	icon = [
 		{ icon: 'md-add-circle', msg: '加一个' },
 		{ icon: 'md-trash', msg: '减一个' },
 	]
+
+	@Watch('list', { deep: true })
+	listchange(val) {
+		console.log(val)
+	}
 
 	handleClickTab(index: number): void {
 		this.index = index

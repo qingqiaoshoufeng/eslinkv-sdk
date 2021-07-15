@@ -10,6 +10,12 @@ const mx = {
 		settingData: {
 			type: Object,
 		},
+		events: {
+			type: Object,
+			default() {
+				return {}
+			},
+		},
 		config: {
 			type: Object,
 			default() {

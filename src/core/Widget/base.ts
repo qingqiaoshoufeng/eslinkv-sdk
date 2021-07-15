@@ -20,10 +20,10 @@ export default class Widget {
 		currentMaxZIndex: number,
 	) {
 		const {
-			settingDataHandle,
-			settingData,
-			eventTypes,
-			events,
+			// settingDataHandle = [],
+			// settingData = {},
+			// eventTypes = [],
+			// events = {},
 			type,
 			config: inputConfig,
 			startX,
@@ -33,10 +33,10 @@ export default class Widget {
 			componentId,
 		} = data
 		this.type = type
-		this.settingDataHandle = settingDataHandle
-		this.settingData = settingData
-		this.eventTypes = eventTypes
-		this.events = events
+		// this.settingDataHandle = settingDataHandle
+		// this.settingData = settingData
+		// this.eventTypes = eventTypes
+		// this.events = events
 		this.market = market
 		this.scene = currentSceneIndex
 		const { layout = {}, config = {}, widget = {}, api } = inputConfig || {}
