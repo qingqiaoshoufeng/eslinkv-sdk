@@ -3,7 +3,7 @@ div
 	d-right-swiper-list(
 		:title="item.label",
 		@add-click="handleAddClick(item['key'])",
-		v-for="item in editor.currentWidget.eventType",
+		v-for="item in editor.currentWidget.eventTypes",
 		:list="editor.currentWidget.events[item['key']]",
 		@remove-click="index => handleRemoveClick(item['key'], index)")
 		template(v-slot="dataDefault")

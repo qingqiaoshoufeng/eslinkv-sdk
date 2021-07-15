@@ -9,9 +9,9 @@ export default class Widget {
 	market: boolean
 	children = {}
 	settingDataHandle = []
-	eventType = []
-	events = {}
 	settingData = {}
+	eventTypes = []
+	events = {}
 	constructor(
 		offsetX: number,
 		offsetY: number,

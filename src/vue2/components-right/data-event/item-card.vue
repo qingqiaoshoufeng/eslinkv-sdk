@@ -25,9 +25,7 @@
 			v-if="isComponentClass",
 			:style="{ marginBottom: '10px' }",
 			v-model="editor.currentWidget.events[eventType][activeIndex].source",
-			placeholder="源地址路径",
-			@on-focus="event.inputFocus = true",
-			@on-blur="event.inputFocus = false")
+			placeholder="源地址路径",)
 		i-select(
 			v-if="isComponentClass",
 			:style="{ marginBottom: '10px' }",

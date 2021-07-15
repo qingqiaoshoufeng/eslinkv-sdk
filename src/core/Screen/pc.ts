@@ -69,13 +69,9 @@ export default class ScreenPc extends ScreenBase {
 			if (item.config.eventType) {
 				delete item.config.eventType
 			}
-			if (item.event) {
-				item.events = item.event
-				delete item.event
-			}
 			if (item.config.event) {
-				if (!item.eventType) item.eventType = []
-				item.eventType.push({ key: 'click', label: '点击事件' })
+				if (!item.eventTypes) item.eventTypes = []
+				item.eventTypes.push({ key: 'click', label: '点击事件' })
 				if (item.config.event.scene) {
 					if (!item.events) item.events = {}
 					item.config.event.scene.forEach(child => {

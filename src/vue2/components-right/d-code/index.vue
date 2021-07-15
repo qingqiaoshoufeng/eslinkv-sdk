@@ -52,19 +52,6 @@ export default class DDcode extends Vue {
 		require('brace/theme/idle_fingers')
 		require('brace/snippets/javascript')
 	}
-
-	mounted() {
-		const editor = document.getElementsByClassName('ace_text-input')
-		// @ts-ignore
-		editor.forEach(item => {
-			item.onfocus = () => {
-				// this.event.inputFocus = true
-			}
-			item.onblur = () => {
-				// this.event.inputFocus = true
-			}
-		})
-	}
 }
 </script>
 <style lang="scss" scoped>

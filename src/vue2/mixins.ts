@@ -16,6 +16,12 @@ const mx = {
 				return {}
 			},
 		},
+		eventTypes: {
+			type: Array,
+			default() {
+				return []
+			},
+		},
 		config: {
 			type: Object,
 			default() {
@@ -41,7 +47,7 @@ const mx = {
 			editor: Editor.Instance(),
 		}
 	},
-	beforeDestroy() {
+	beforeDestroy(): void {
 		this.instance = null
 		clearInterval(this.animateTimer)
 		clearTimeout(this.animateTimer)
@@ -49,14 +55,14 @@ const mx = {
 		this.animateActiveIndex = -1
 	},
 	methods: {
-		eventTypeSetting(eventType) {
-			this.editor.eventTypeSetting(this.config.widget.id, eventType)
+		eventTypesSetting(eventTypes): void {
+			this.editor.eventTypesSetting(this.config.widget.id, eventTypes)
 		},
-		dataSetting(list = [], data) {
+		dataSetting(list = [], data): void {
 			this.editor.dataSetting(this.config.widget.id, list, data)
 		},
-		__handleEvent__(eventType = 'click', val) {
-			if (this.events[eventType]) {
+		__handleEvent__(eventType = 'click', val): void {
+			if (this.events) {
 				for (const item of this.events[eventType]) {
 					if (item.eventClass === 'scene') {
 						const sceneId = item.id
@@ -76,7 +82,8 @@ const mx = {
 								break
 							default:
 						}
-					} else {
+					}
+					if (item.eventClass === 'component') {
 						if (item.triggerType === 'update') {
 							const coms = Object.values(this.editor.screenWidgets).filter((v: any) =>
 								item.ids.includes(v.id),
@@ -103,17 +110,17 @@ const mx = {
 					}
 				}
 			} else {
-				this.eventTypeSetting([{ key: 'click', label: '点击事件' }])
+				this.eventTypesSetting([{ key: 'click', label: '点击事件' }])
 			}
 		},
-		__handleClick__(val) {
+		__handleClick__(val): void {
 			this.__handleEvent__('click', val)
 		},
 		/**
 		 * @description 组件间联动，被关联组件收动添加 updateComponent 方法
 		 * [id]
 		 */
-		emitComponentUpdate(data) {
+		emitComponentUpdate(data): void {
 			if (this.config) {
 				this.config.api.bind.refIds.forEach((ref: any) => {
 					const widget = this.editor.screenWidgets[ref]
@@ -149,7 +156,7 @@ const mx = {
 				}`,
 			}
 		},
-		id() {
+		id(): string {
 			const now = +new Date()
 			if (this.config) {
 				if (this.config.widget) {
@@ -159,7 +166,7 @@ const mx = {
 			}
 			return `d-${now}`
 		},
-		eventLength() {
+		eventLength(): number {
 			const events = this.events
 			let e = []
 			for (const key in events) {
@@ -167,7 +174,7 @@ const mx = {
 			}
 			return e.length
 		},
-		isSceneActive() {
+		isSceneActive(): boolean {
 			if (!this.events) return false
 			const events = this.events
 			let e = []
@@ -180,7 +187,7 @@ const mx = {
 		},
 	},
 	watch: {
-		configReady(value) {
+		configReady(value): void {
 			if (value) {
 				requestAnimationFrame(() => {
 					this.readonly && this.$el.classList.add('readonly')
@@ -189,7 +196,7 @@ const mx = {
 			}
 		},
 	},
-	mounted() {
+	mounted(): void {
 		this.inPreview = this.editor.editorStatus === 'inPreview'
 	},
 }

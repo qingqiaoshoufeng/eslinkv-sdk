@@ -33,6 +33,7 @@ export default class WidgetNormal extends Vue {
 	@Prop() type
 	@Prop() config
 	@Prop() events
+	@Prop() eventTypes
 	@Prop() settingData
 	@Prop({ default: false }) readonly
 	componentVersion = ''

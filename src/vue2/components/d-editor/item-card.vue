@@ -25,6 +25,7 @@ dr(
 		:widget-type="item.widgetType",
 		:type="item.type",
 		:events="item.events",
+		:eventTypes="item.eventTypes",
 		:settingData="item.settingData",
 		:config="item.config",
 		:children="item.children",

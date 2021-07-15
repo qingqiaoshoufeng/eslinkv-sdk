@@ -32,8 +32,6 @@
 		d-right-control(label="缩放比例")
 			i-input(
 				v-model="scale",
-				@on-focus="event.inputFocus = true",
-				@on-blur="event.inputFocus = false",
 				:style="{ width: '100px' }")
 	d-right-swiper-eye(
 		title="载入动画",

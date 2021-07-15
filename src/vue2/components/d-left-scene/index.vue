@@ -7,8 +7,6 @@
 		i-input(
 			:value="editor.sceneObj[editor.currentSceneIndex].name",
 			@on-change="handleSceneName",
-			@on-focus="event.inputFocus = true",
-			@on-blur="event.inputFocus = false",
 			v-if="editScene")
 			i-icon(type="md-checkmark", slot="suffix", @click="editScene = false")
 		i-select(
@@ -107,12 +105,8 @@ export default class DLeftScene extends Vue {
 	}
 
 	sceneWidgetDragEnd(e): void {
-		const oldItem = this.editor.screenWidgets[
-			this.editor.sortByZIndexWidgetsList[e.moved.oldIndex].id
-		]
-		const newItem = this.editor.screenWidgets[
-			this.editor.sortByZIndexWidgetsList[e.moved.newIndex].id
-		]
+		const oldItem = this.editor.screenWidgets[this.editor.sortByZIndexWidgetsList[e.moved.oldIndex].id]
+		const newItem = this.editor.screenWidgets[this.editor.sortByZIndexWidgetsList[e.moved.newIndex].id]
 		if (oldItem.config.layout.zIndex === newItem.config.layout.zIndex) {
 			if (e.moved.newIndex > e.moved.oldIndex) {
 				newItem.config.layout.zIndex++

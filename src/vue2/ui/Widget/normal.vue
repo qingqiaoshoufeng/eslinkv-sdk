@@ -26,7 +26,7 @@ export default class widgetNormal extends Vue {
 			return []
 		},
 	})
-	eventType
+	eventTypes
 
 	get styles() {
 		return (this.$parent as any).styles
@@ -35,7 +35,7 @@ export default class widgetNormal extends Vue {
 	created(): void {
 		;(this.$parent as any).parseConfigValue(this.value, this.customConfig)
 		;(this.$parent as any).dataSetting(this.setting, this.settingData)
-		;(this.$parent as any).eventTypeSetting(this.eventType)
+		;(this.$parent as any).eventTypesSetting(this.eventTypes)
 	}
 }
 </script>
