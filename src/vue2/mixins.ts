@@ -10,18 +10,6 @@ const mx = {
 		settingData: {
 			type: Object,
 		},
-		events: {
-			type: Object,
-			default() {
-				return {}
-			},
-		},
-		eventTypes: {
-			type: Array,
-			default() {
-				return []
-			},
-		},
 		config: {
 			type: Object,
 			default() {
@@ -63,6 +51,10 @@ const mx = {
 		},
 		__handleEvent__(eventType = 'click', val): void {
 			if (this.events) {
+				if (!this.events[eventType]) {
+					console.error(`自定义事件：${eventType} 未初始化`)
+					return
+				}
 				for (const item of this.events[eventType]) {
 					if (item.eventClass === 'scene') {
 						const sceneId = item.id

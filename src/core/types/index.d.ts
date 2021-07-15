@@ -37,6 +37,26 @@ interface loadCss {
 	(src: string | string[], value: string): Promise<any>
 }
 
+interface localInit {
+	/**
+	 * 初始化本地组件集
+	 */
+	(obj: any): void
+}
+
+interface createWidget {
+	/**
+	 * 创建组件
+	 */
+	(x: number, y: number, data: any): void
+}
+
+interface init {
+	/**
+	 * 编辑器初始化
+	 */
+	(res: any): void
+}
 export interface EditorInstance {
 	/**
 	 * 当前场景key值
@@ -45,6 +65,9 @@ export interface EditorInstance {
 	selectSceneIndex: selectSceneIndex
 	setLocalComponents: setLocalComponents
 	setLocalWidgets: setLocalWidgets
+	localInit: localInit
+	createWidget: createWidget
+	init: init
 }
 
 declare module '@eslinkv/core' {

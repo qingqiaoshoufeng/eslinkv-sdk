@@ -27,6 +27,12 @@ declare module '@eslinkv/vue2' {
 	/**
 	 * Vue2.x 组件
 	 *
+	 * 央视组件-分享组件
+	 */
+	export class dShareDialog extends Vue {}
+	/**
+	 * Vue2.x 组件
+	 *
 	 * 核心组件-编辑器组件
 	 */
 	export const dScreen: any
