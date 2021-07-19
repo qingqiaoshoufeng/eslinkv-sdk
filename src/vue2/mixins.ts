@@ -165,12 +165,7 @@ const mx = {
 			return `d-${now}`
 		},
 		eventLength(): number {
-			const events = this.events
-			let e = []
-			for (const key in events) {
-				e = [...e, ...events[key]]
-			}
-			return e.length
+			return Object.keys(this.events).length
 		},
 		isSceneActive(): boolean {
 			if (!this.events) return false

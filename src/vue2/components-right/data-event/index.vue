@@ -31,7 +31,6 @@ export default class DataEvent extends func {
 				methodBody: '',
 			},
 		})
-		this.$forceUpdate()
 	}
 	handleRemoveClick(eventType: string, index: number): void {
 		this.editor.currentWidget.events[eventType].splice(index, 1)

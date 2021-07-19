@@ -553,14 +553,15 @@ class Editor extends Factory<Editor> {
 						if (!parent[key].events[item['key']]) parent[key].events[item['key']] = []
 					})
 				}
-				this.screen.screenWidgets = { ...this.screen.screenWidgets }
 			} else if (parent[key].children) {
 				this.eventTypesSettingFind(id, eventTypes, parent[key].children)
 			}
 		}
 	}
 	eventTypesSetting(id: string, eventTypes: { key: string; label: string }[]) {
-		if (eventTypes) this.eventTypesSettingFind(id, eventTypes, this.screen.screenWidgets)
+		const test = JSON.parse(JSON.stringify(this.screen.screenWidgets))
+		if (eventTypes) this.eventTypesSettingFind(id, eventTypes, test)
+		this.screen.screenWidgets = { ...test }
 	}
 }
 
