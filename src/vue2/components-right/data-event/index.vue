@@ -15,9 +15,9 @@ import { Component } from 'vue-property-decorator'
 import ItemCard from './item-card.vue'
 
 @Component({ components: { ItemCard } })
-export default class FuncData extends func {
+export default class DataEvent extends func {
 	handleAddClick(eventType: string): void {
-		this.editor.currentWidget.events[eventType].push({
+		this.editor.current.currentWidget.events[eventType].push({
 			ids: [],
 			id: '',
 			animate: '',
@@ -31,6 +31,7 @@ export default class FuncData extends func {
 				methodBody: '',
 			},
 		})
+		this.$forceUpdate()
 	}
 	handleRemoveClick(eventType: string, index: number): void {
 		this.editor.currentWidget.events[eventType].splice(index, 1)
