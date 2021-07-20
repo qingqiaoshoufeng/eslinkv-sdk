@@ -127,6 +127,7 @@ export default class Current extends Factory<Current> {
 		const index = this.currentCreateSceneList.findIndex(v => v === id)
 		if (index === -1) return
 		this.activeSceneId = id
+		this.activeWidgetId = ''
 		// 动画结束后再删除
 		const delay = this.sceneAnimate ? 1000 : 0
 		setTimeout(() => {
