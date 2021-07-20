@@ -44,7 +44,7 @@ export default class ScreenPc extends ScreenBase {
 			if (screenWidgets[key].market) {
 				this.marketComponents.push({
 					type: screenWidgets[key].type,
-					version: screenWidgets[key].componentVersion,
+					version: screenWidgets[key].config.widget.componentVersion,
 				})
 			}
 			if (screenWidgets[key].children) {
@@ -61,8 +61,6 @@ export default class ScreenPc extends ScreenBase {
 			let item = { ...res.screenWidgets[key] }
 			item = {
 				name: item.config.widget.name,
-				componentId: item.market ? item.config.widget.componentVersion : null,
-				componentVersion: item.market ? item.config.widget.componentVersion : null,
 				...item,
 			}
 			// 兼容自定义事件
