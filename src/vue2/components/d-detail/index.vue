@@ -1,18 +1,6 @@
 <template lang="pug">
 .d-detail.fn-flex(v-if="show")
-	.d-detail-left.fn-flex
-		.d-detail-left-icon-box.fn-flex
-			i-tooltip(placement="bottom", content="组件区")
-				.left-icon.pointer(:class="{ active: editor.xRoomL1 > 0 }", @click="taggerXRoomL1")
-					d-svg(icon-class="widget", :size="18")
-			i-tooltip(placement="bottom", content="场景区")
-				.left-icon.pointer(:class="{ active: editor.xRoomL2 > 0 }", @click="taggerXRoomL2")
-					d-svg(icon-class="scene", :size="18")
-			i-tooltip(placement="bottom", content="设置区")
-				.left-icon.pointer(:class="{ active: editor.xRoomR1 > 0 }", @click="taggerXRoomR1")
-					d-svg(icon-class="setting", :size="18")
-	.d-detail-middle.fn-flex
-		span.d-detail-title {{ editor.name }}
+	left
 	ul.d-detail-right.fn-flex
 		li.fn-flex.flex-column.pointer(@click.stop="search")
 			d-svg(icon-class="search", :size="18")
@@ -39,17 +27,17 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { Icon, Button, Modal, Form, FormItem, Input, Tooltip } from 'view-design'
+import { Button, Modal, Form, FormItem, Input, Tooltip } from 'view-design'
 import loadMask from '../load-mask/index.vue'
 import { downloadFile, getQueryString } from '@/vue2/utils'
 import dSearch from '@/vue2/components/d-search/index.vue'
 import Editor from '@/core/Editor'
 import { detail, detailFile, create, update } from '@/vue2/api/screen.api'
 import { screenShareUpdate } from '@/vue2/api/screenShare.api'
+import left from './left'
 
 @Component({
 	components: {
-		'i-icon': Icon,
 		'i-button': Button,
 		loadMask,
 		'i-modal': Modal,
@@ -58,6 +46,7 @@ import { screenShareUpdate } from '@/vue2/api/screenShare.api'
 		'i-input': Input,
 		'i-tooltip': Tooltip,
 		dSearch,
+		left,
 	},
 })
 export default class DDetail extends Vue {
@@ -69,16 +58,6 @@ export default class DDetail extends Vue {
 	loading = false
 	importModal = false
 	isNew = true
-
-	taggerXRoomL1() {
-		this.editor.taggerXRoomL1()
-	}
-	taggerXRoomL2() {
-		this.editor.taggerXRoomL2()
-	}
-	taggerXRoomR1() {
-		this.editor.taggerXRoomR1()
-	}
 
 	search(): void {
 		this.searchModal = true
@@ -205,30 +184,6 @@ export default class DDetail extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.d-detail-left-icon-box {
-	margin-left: 20px;
-
-	.left-icon {
-		height: 28px;
-		padding: 4px 10px;
-		margin-right: 10px;
-		color: rgb(161, 174, 179);
-		background-color: #303640;
-		border: 1px solid rgba(255, 235, 235, 0.1);
-		border-radius: 2px;
-
-		&:hover {
-			background-color: #414750;
-		}
-
-		&.active {
-			color: var(--white);
-			background-color: var(--themeColor);
-			border: 1px solid var(--themeColor);
-		}
-	}
-}
-
 .d-detail-right {
 	height: 100%;
 
@@ -237,30 +192,16 @@ export default class DDetail extends Vue {
 		justify-content: center;
 		height: 100%;
 		padding: 0 15px;
-		color: var(--white);
+		color: var(--text-tab);
 
 		span {
 			margin-top: 4px;
 		}
 
 		&:hover {
-			background-color: var(--white_01);
+			background-color: #30333d;
+			color: #fff;
 		}
-	}
-}
-
-.d-detail-left-icon {
-	align-items: center;
-	height: 100%;
-	padding: 0 15px;
-	color: var(--white);
-
-	> i {
-		line-height: 60px;
-	}
-
-	&:hover {
-		background-color: var(--white_01);
 	}
 }
 
@@ -270,28 +211,13 @@ export default class DDetail extends Vue {
 
 .d-detail {
 	align-items: center;
-	justify-content: space-between;
 	width: 100%;
 	height: 60px;
-	background-color: #313239;
-	border-bottom: 1px solid #000;
+	color: var(--text-tab);
+	background: var(--background-2);
 
 	/deep/ button {
 		margin-left: 10px;
 	}
-}
-
-.d-detail-title {
-	font-size: 15px;
-	color: var(--white);
-}
-
-.d-detail-left {
-	align-items: center;
-	height: 100%;
-}
-
-.deadline {
-	margin-bottom: 10px;
 }
 </style>

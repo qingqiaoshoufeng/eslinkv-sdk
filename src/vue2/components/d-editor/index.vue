@@ -80,11 +80,7 @@ export default class DEditor extends Vue {
 	createWidget(e: any): void {
 		const widgetConfig = e.dataTransfer.getData('widget-config')
 		if (widgetConfig) {
-			this.editor.createWidget(
-				e.offsetX,
-				e.offsetY,
-				JSON.parse(widgetConfig),
-			)
+			this.editor.createWidget(e.offsetX, e.offsetY, JSON.parse(widgetConfig))
 		}
 	}
 
@@ -137,7 +133,6 @@ export default class DEditor extends Vue {
 
 .d-editor {
 	background-color: #313239;
-	transition: all 0.3s;
 
 	&.fullscreen {
 		top: 0 !important;

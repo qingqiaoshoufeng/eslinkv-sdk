@@ -18,7 +18,7 @@
 				.d-left-widget-right-title.fn-flex(@click="handleCheckType(item.componentTypeId, item.market)")
 					i-icon(type="ios-arrow-down")
 					label.pointer {{ item.componentTypeName }}
-				.d-left-widget-list.fn-flex(v-if="list[item.componentTypeId] && openList[item.componentTypeId]")
+				.d-left-widget-list.fn-flex(v-if="list[item.componentTypeId]", v-show="openList[item.componentTypeId]")
 					item-card(
 						v-for="widget in list[item.componentTypeId]",
 						:market="item.market",
@@ -105,7 +105,6 @@ export default class DLeftWidget extends Vue {
 	padding: 0;
 	overflow: hidden;
 	background-color: #191c21;
-	transition: width 0.3s;
 }
 
 .d-left-widget-left {
