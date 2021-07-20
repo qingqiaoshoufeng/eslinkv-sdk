@@ -74,6 +74,9 @@ export default class ScreenPc extends ScreenBase {
 				item.eventTypes.push({ key: 'click', label: '点击事件' })
 				if (item.config.event.scene) {
 					if (!item.events) item.events = {}
+					if (!(item.config.event.scene instanceof Array)) {
+						item.config.event.scene = [item.config.event.scene]
+					}
 					item.config.event.scene.forEach(child => {
 						const triggerType = child.type
 						delete child.type
@@ -84,6 +87,9 @@ export default class ScreenPc extends ScreenBase {
 				}
 				if (item.config.event.component) {
 					if (!item.events) item.events = {}
+					if (!(item.config.event.component instanceof Array)) {
+						item.config.event.component = [item.config.event.component]
+					}
 					item.config.event.component.forEach(child => {
 						const triggerType = child.type
 						delete child.type
