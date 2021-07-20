@@ -23,6 +23,8 @@
 				:icon-class="editor.fullscreen ? 'unfullscreen' : 'fullscreen'",
 				:size="18",
 				@click="handleFullscreen")
+	.d-footer-bar.fn-flex
+		label(@click="update") 测试更新组件
 	i-modal(v-model="copyModel", title="场景ID", :footer-hide="true")
 		.fn-flex.flex-row
 			span.fn-hide.copy-id {{ editor.currentSceneIndex }}
@@ -32,10 +34,22 @@
 				readonly,
 				enter-button="复制",
 				@on-search="handleCopy")
+	drawer(title="组件升级" :closable="false" v-model="showDrawer")
+		.drawer-tool
+			checkbox(
+				:indeterminate="indeterminate"
+				:value="checkAll"
+				@click.prevent.native="handleCheckAll"
+			) 可更新组件
+			.update-btn 更新
+		checkbox-group(v-model="checkAllGroup" @on-change="checkAllGroupChange")
+			checkbox(label="111")
+			checkbox(label="112")
+			checkbox(label="113")
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Icon, Input, Modal, Tooltip } from 'view-design'
+import { Icon, Input, Modal, Tooltip, Drawer, Checkbox, CheckboxGroup } from 'view-design'
 import Editor from '@/core/Editor'
 import { copyText } from '@/vue2/utils'
 import ItemCard from '@/vue2/components/d-footer/item-card.vue'
@@ -47,10 +61,14 @@ import { hotKeys } from '@/vue2/utils'
 		'i-input': Input,
 		'i-modal': Modal,
 		'i-tooltip': Tooltip,
+		CheckboxGroup,
+		Checkbox,
+		Drawer,
 		ItemCard,
 	},
 })
 export default class DFooter extends Vue {
+	showDrawer = false
 	showHotKey = false
 	copyModel = false
 	hotKeys = hotKeys
@@ -63,6 +81,12 @@ export default class DFooter extends Vue {
 
 	handleCopy(): void {
 		copyText(this.editor.currentSceneIndex)
+	}
+
+	update () {
+		console.log(this.editor.current.currentSceneIndex)
+		console.log(this.editor.sceneWidgets)
+		this.showDrawer = true
 	}
 
 	handleFullscreen(): void {
