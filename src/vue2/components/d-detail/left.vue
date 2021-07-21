@@ -1,10 +1,10 @@
 <template lang="pug">
 .d-detail-left.fn-flex
 	.d-detail-left-icon-box.fn-flex
-		.d-detail-left-icon.fn-flex.pointer
+		.d-detail-left-icon.fn-flex.pointer(@click="backHandler")
 			i-icon(type="ios-arrow-dropleft", size="22")
 	.d-detail-title.fn-flex.pointer(:title="editor.name", @click="editName = true")
-		e-input(v-model="editor.name", v-if="editName" @blur="editName = false", :autofocus="true")
+		e-input(v-model="editor.name", v-if="editName", @blur="editName = false", :autofocus="true")
 		span.fn-flex.d-detail-title.ellipsis(v-else) {{ editor.name }}
 </template>
 <script lang="ts">
@@ -21,6 +21,10 @@ import eInput from '@/vue2/components-style/e-input'
 export default class DDetail extends Vue {
 	editor: Editor = Editor.Instance()
 	editName = false
+
+	backHandler(): void {
+		this.$router.push('/editor/manger')
+	}
 }
 </script>
 <style lang="scss" scoped>
