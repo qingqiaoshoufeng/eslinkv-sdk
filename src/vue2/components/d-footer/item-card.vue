@@ -16,12 +16,12 @@ export default class ItemCard extends Vue {
 </script>
 <style lang="scss" scoped>
 li {
-	justify-content: space-between;
 	align-items: center;
-	padding: 0 16px;
+	justify-content: space-between;
 	height: 36px;
-	border-bottom: 1px solid #22242b;
+	padding: 0 16px;
 	white-space: nowrap;
+	border-bottom: 1px solid #22242b;
 
 	&:last-child {
 		border-bottom: none;
@@ -46,16 +46,18 @@ li {
 .d-footer-hot-key-img {
 	margin-left: 6px;
 }
+
 .d-footer-hot-key-item {
 	margin: 0 5px;
 }
+
 .d-footer-hot-key-text {
-	justify-content: center;
 	align-items: center;
-	background: var(--background-2);
+	justify-content: center;
 	min-width: 24px;
 	height: 24px;
 	padding: 0 5px;
+	background: var(--background-2);
 	border: 1px solid #393b4a;
 	border-radius: 2px;
 	box-shadow: 0 1px 3px 0 rgba(44, 46, 64, 0.82);

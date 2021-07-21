@@ -1,7 +1,6 @@
 ﻿<template lang="pug">
-.d-left-scene.pos-a.fn-flex.flex-column(:style="{ width: `${editor.xRoomL2}px`, left: `${editor.xRoomL1}px` }")
-	.d-left-modal-title.text-center
-		span 场景区
+.d-left-scene.pos-a.fn-flex.flex-column(:style="{ width: `${editor.xRoomL2}px` }")
+	.d-modal-title 场景区
 	header.fn-flex.flex-row
 		i-input(:value="editor.sceneObj[editor.currentSceneIndex].name", @on-change="handleSceneName", v-if="editScene")
 			i-icon(type="md-checkmark", slot="suffix", @click="editScene = false")

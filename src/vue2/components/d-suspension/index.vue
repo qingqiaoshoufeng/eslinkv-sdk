@@ -46,20 +46,22 @@ export default class DSuspension extends Vue {
 </script>
 <style lang="scss" scoped>
 .d-suspension {
-	width: 46px;
 	top: 88px;
 	right: 338px;
+	width: 46px;
 	background: #22242b;
 	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.5);
 }
+
 .d-suspension-item {
+	align-items: center;
+	justify-content: center;
 	width: 46px;
 	height: 46px;
-	justify-content: center;
-	align-items: center;
 	color: #bfbfbf;
-	border-bottom: 1px solid #393b4a;
 	cursor: pointer;
+	border-bottom: 1px solid #393b4a;
+
 	&:last-child {
 		border: none;
 	}

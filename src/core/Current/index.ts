@@ -3,7 +3,7 @@ import Widget from '@/core/Widget/normal'
 
 export default class Current extends Factory<Current> {
 	rulerContainerId: string
-	xRoomL1: number = +localStorage.getItem('xRoomL1')
+	xRoomL1 = 0
 	xRoomL2: number = +localStorage.getItem('xRoomL2')
 	xRoomR1: number = +localStorage.getItem('xRoomR1')
 	yRoom = 60
@@ -49,10 +49,10 @@ export default class Current extends Factory<Current> {
 		this.rulerContainerId = obj.rulerContainerId
 	}
 
-	taggerXRoomL1(): void {
-		this.xRoomL1 = this.xRoomL1 > 0 ? 0 : 238
-		localStorage.setItem('xRoomL1', `${this.xRoomL1}`)
-	}
+	// taggerXRoomL1(): void {
+	// 	this.xRoomL1 = this.xRoomL1 > 0 ? 0 : 238
+	// 	localStorage.setItem('xRoomL1', `${this.xRoomL1}`)
+	// }
 	taggerXRoomL2(): void {
 		this.xRoomL2 = this.xRoomL2 > 0 ? 0 : 238
 		localStorage.setItem('xRoomL2', `${this.xRoomL2}`)

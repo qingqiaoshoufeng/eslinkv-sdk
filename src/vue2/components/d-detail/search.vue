@@ -1,7 +1,7 @@
 <template lang="pug">
 .container(
 	:class="{ active: value }",
-	:style="{ width: `calc(100% - ${editor.xRoomL1 + editor.xRoomL2 + editor.xRoomR1}px)`, left: `${editor.xRoomL1 + editor.xRoomL2}px` }")
+	:style="{ width: `calc(100% - ${editor.xRoomL2 + editor.xRoomR1}px)`, left: `${editor.xRoomL2}px` }")
 	.d-detail-search.animated.searchFadeInDown(v-click-outside="hide")
 		i-input.d-detail-input(:autofocus="true", suffix="ios-search", placeholder="请输入组件名", v-model="keyword")
 		ul.result

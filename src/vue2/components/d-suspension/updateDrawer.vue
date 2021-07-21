@@ -90,46 +90,50 @@ export default class MarketEditDialog extends Vue {
 ::v-deep {
 	.ivu-drawer-content {
 		background: #22242b;
+
 		.ivu-drawer-header-inner {
 			color: #fff;
 		}
 	}
+
 	.ivu-checkbox-inner {
+		margin-right: 4px;
 		background-color: rgb(24, 27, 36);
 		border-color: #393b4a;
-		margin-right: 4px;
 	}
 }
+
 .drawer-tool {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
+	justify-content: space-between;
 	height: 40px;
 	padding: 0 10px;
-	background-color: #313237;
 	color: #fff;
+	background-color: #313237;
 
 	.update-btn {
 		width: 56px;
 		height: 18px;
-		background-color: #545454;
-		color: #aaa;
 		font-size: 12px;
-		border-radius: 2px;
-		text-align: center;
 		line-height: 18px;
+		color: #aaa;
+		text-align: center;
 		cursor: pointer;
+		background-color: #545454;
+		border-radius: 2px;
 	}
 }
 
 .group {
 	color: rgb(191, 191, 191);
+
 	.row {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0 14px;
 		height: 36px;
+		padding: 0 14px;
 		border-bottom: 1px solid #393b4a;
 	}
 }

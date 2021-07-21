@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-right-modal-box.z-index-999.fn-flex.flex-column(:style="{ width: `${editor.xRoomR1}px`, height: '100%', flex: 1 }")
-	.d-right-modal-title 页面设置
+	.d-modal-title 页面设置
 	config
 </template>
 <script lang="ts">
@@ -26,15 +26,3 @@ export default class DRightManage extends Vue {
 	}
 }
 </script>
-<style lang="scss" scoped>
-.d-right-modal-title {
-	height: 40px;
-	font-size: 14px;
-	font-weight: normal;
-	line-height: 40px;
-	color: #d8d8d8;
-	text-align: center;
-	background: var(--background-4);
-	border-bottom: 1px solid rgba(36, 38, 46, 0.4);
-}
-</style>

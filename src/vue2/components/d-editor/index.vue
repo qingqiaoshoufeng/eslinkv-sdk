@@ -3,7 +3,7 @@
 #d-editor.d-editor.pos-r(
 	ref="canvas-wrapper",
 	:class="{ fullscreen: editor.fullscreen }",
-	:style="{ width: `calc(100% - ${editor.xRoomL1 + editor.xRoomL2 + editor.xRoomR1}px)`, marginLeft: `${editor.xRoomL1 + editor.xRoomL2}px` }",
+	:style="{ width: `calc(100% - ${editor.xRoomL2 + editor.xRoomR1}px)`, marginLeft: `${editor.xRoomL2}px` }",
 	@contextmenu.stop.prevent)
 	// 标尺容器
 	d-ruler(ref="rulerCanvas")

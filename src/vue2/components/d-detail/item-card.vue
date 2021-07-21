@@ -1,8 +1,8 @@
 <template lang="pug">
 .widget-item-wrapper.pos-r
 	.fn-flex.flex-column.d-widget-list-card.pointer(draggable="true", @dragstart="dragstart($event)")
-		h2.ellipsis(:title="componentTitle") {{ componentTitle }}
 		.d-widget-list-img.fn-flex(:style="{ backgroundImage: `url(${componentAvatar})` }")
+		h2.ellipsis(:title="componentTitle") {{ componentTitle }}
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
@@ -38,22 +38,22 @@ export default class ItemCard extends Vue {
 </script>
 <style lang="scss" scoped>
 .d-widget-list-card {
-	width: 80px;
+	width: 100%;
 
 	h2 {
 		padding: 0 5px;
 		font-size: 12px;
 		line-height: 22px;
-		color: #fff;
+		color: var(--text-1);
+		text-align: center;
 		white-space: nowrap;
-		background: #212326;
 	}
 }
 
 .d-widget-list-img {
-	width: 80px;
-	height: 58px;
-	background-color: #17191c;
+	width: 100%;
+	height: 60px;
+	background-color: var(--component-background);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-clip: content-box;
@@ -64,13 +64,13 @@ export default class ItemCard extends Vue {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 80px;
+	width: 100px;
+	margin-right: 10px;
 	margin-bottom: 5px;
 	overflow: hidden;
-	background: rgba(0, 0, 0, 1);
 	transition: 0.3s;
 
-	&:nth-child(2n) {
+	&:nth-child(3n) {
 		margin-right: 0;
 	}
 }

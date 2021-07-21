@@ -6,16 +6,19 @@
 	.d-detail-title.fn-flex.pointer(:title="editor.name", @click="editName = true")
 		e-input(v-model="editor.name", v-if="editName", @blur="editName = false", :autofocus="true")
 		span.fn-flex.d-detail-title.ellipsis(v-else) {{ editor.name }}
+	widget
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Icon } from 'view-design'
 import Editor from '@/core/Editor'
 import eInput from '@/vue2/components-style/e-input'
+import widget from './widget.vue'
 @Component({
 	components: {
 		'i-icon': Icon,
 		eInput,
+		widget,
 	},
 })
 export default class DDetail extends Vue {

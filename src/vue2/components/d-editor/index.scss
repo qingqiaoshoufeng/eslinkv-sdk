@@ -28,12 +28,23 @@
 	}
 }
 
+.d-modal-title {
+	height: 40px;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 40px;
+	color: #d8d8d8;
+	text-align: center;
+	user-select: none;
+	background: var(--background-4);
+	border-bottom: 1px solid rgba(36, 38, 46, 0.4);
+}
+
 .d-right-modal-border {
 	border-bottom: 1px solid #000;
 }
 
-.d-right-modal-title,
-.d-left-modal-title {
+.d-right-modal-title {
 	height: 40px;
 	font-size: 14px;
 	line-height: 40px;

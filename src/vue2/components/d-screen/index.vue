@@ -1,7 +1,6 @@
 <template lang="pug">
 #d-screen.d-screen(:style="{ height: `calc(100% - ${editor.yRoom}px)` }")
 	.d-editor-box.pos-r.fn-flex
-		d-left-widget
 		d-left-scene
 		d-editor
 		d-suspension
@@ -12,7 +11,6 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import dLeftWidget from '../d-left-widget/index.vue'
 import dLeftScene from '../d-left-scene/index.vue'
 import dEditor from '../d-editor/index.vue'
 import dRightManage from '@/vue2/components-right/d-right-manage/index.vue'
@@ -23,7 +21,6 @@ import Editor from '@/core/Editor'
 
 @Component({
 	components: {
-		dLeftWidget,
 		dLeftScene,
 		dRightManage,
 		dRightSetting,

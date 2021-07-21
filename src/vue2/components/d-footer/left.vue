@@ -3,9 +3,6 @@
 	.d-footer-bar.fn-flex.pointer
 		.d-footer-bar-text(@click.stop="viewModal = !viewModal") 视图调整
 	ul.d-footer-view-modal.pos-a(v-show="viewModal", v-click-outside="hideView")
-		li.fn-flex.pointer(@click="taggerXRoomL1")
-			span 组件区
-			i-icon.pointer(type="md-checkmark", v-show="editor.xRoomL1 > 0")
 		li.fn-flex.pointer(@click="taggerXRoomL2")
 			span 场景区
 			i-icon.pointer(type="md-checkmark", v-show="editor.xRoomL2 > 0")
@@ -49,10 +46,6 @@ export default class Left extends Vue {
 	hotKeys = hotKeys
 	editor: Editor = Editor.Instance()
 
-	taggerXRoomL1(): void {
-		this.editor.taggerXRoomL1()
-		this.viewModal = false
-	}
 	taggerXRoomL2(): void {
 		this.editor.taggerXRoomL2()
 		this.viewModal = false
@@ -75,24 +68,26 @@ export default class Left extends Vue {
 <style lang="scss" scoped>
 .d-footer-view-modal {
 	bottom: 32px;
+	left: -4px;
 	width: 90px;
 	color: var(--text-1);
 	background: var(--background-4);
 	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.57);
-	left: -4px;
+
 	li {
-		justify-content: space-between;
 		align-items: center;
-		padding: 0 16px;
+		justify-content: space-between;
 		height: 36px;
-		border-bottom: 1px solid #22242b;
+		padding: 0 16px;
 		white-space: nowrap;
+		border-bottom: 1px solid #22242b;
 
 		&:last-child {
 			border-bottom: none;
 		}
 	}
 }
+
 .d-footer-bar {
 	padding: 0 10px;
 	line-height: 30px;
@@ -120,13 +115,14 @@ export default class Left extends Vue {
 	width: 100%;
 	height: 100%;
 }
+
 .d-footer-hot-key-list {
 	bottom: 32px;
+	left: -4px;
 	width: 295px;
-	pointer-events: none;
 	color: var(--text-1);
+	pointer-events: none;
 	background: var(--background-4);
 	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.57);
-	left: -4px;
 }
 </style>
