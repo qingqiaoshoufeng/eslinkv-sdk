@@ -58,6 +58,8 @@ import { mixins } from 'vue-class-component'
 export default class DShareDialog extends mixins(shareMx) {
 	@Prop(Boolean) value!: boolean
 	@Prop(String) sid?: string
+	@Prop(String) screenMainScene: string
+	@Prop(String) screenLayoutMode: string
 	@Prop({ default: false, type: Boolean }) autoInit?: boolean
 
 	get openShare() {

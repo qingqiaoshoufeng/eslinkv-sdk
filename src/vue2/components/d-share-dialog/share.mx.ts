@@ -74,8 +74,8 @@ export default {
 			}
 			await screenShareUpdate(req)
 			const scene = this.screenMainScene ? `&scene=${this.screenMainScene}` : ''
-			const layoutMode = this.screenLayoutMode ? `?layoutMode=${this.screenLayoutMode}` : ''
-			this.shareUrl = `${location.origin}/shareScreen/${this.screenId}${layoutMode}${scene}`
+			const layoutMode = this.screenLayoutMode ? `layoutMode=${this.screenLayoutMode}` : ''
+			this.shareUrl = `${location.origin}/shareScreen/${this.screenId}?${layoutMode}${scene}`
 		},
 		async init() {
 			this.screenId = this.sid || this.$route.params.id
@@ -90,7 +90,9 @@ export default {
 				this.deadline = formatTime(res.screenShareTime)
 			}
 			if (res.screenShareType !== 'NO') {
-				this.shareUrl = `${location.origin}/shareScreen/${this.screenId}?layoutMode=${this.editor.layoutMode}`
+				const scene = this.screenMainScene ? `&scene=${this.screenMainScene}` : ''
+				const layoutMode = this.screenLayoutMode ? `layoutMode=${this.screenLayoutMode}` : ''
+				this.shareUrl = `${location.origin}/shareScreen/${this.screenId}?${layoutMode}${scene}`
 			}
 		},
 	},
