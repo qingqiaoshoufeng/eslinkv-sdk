@@ -67,7 +67,7 @@ export default class Current extends Factory<Current> {
 	}
 	/* 缩小画布 */
 	zoomOut(step = 2): void {
-		if (this.zoom * 100 > step) {
+		if (this.zoom * 100 > 20) {
 			this.zoom = +((this.zoom * 100 - step) / 100).toFixed(2)
 		}
 	}
@@ -75,7 +75,12 @@ export default class Current extends Factory<Current> {
 	resetZoom({ screenWidth, screenHeight }: any = {}): void {
 		const dom: HTMLElement = document.getElementById(this.rulerContainerId)
 		const rulerOffsetWidth = dom.offsetWidth - 18
-		this.zoom = ~~((rulerOffsetWidth / screenWidth) * 100) / 100
+		let zoom = ~~((rulerOffsetWidth / screenWidth) * 100) / 100
+		if (zoom % 2 !== 0) zoom = zoom - 0.1
+		if (zoom < 0.2) {
+			zoom = 0.2
+		}
+		this.zoom = zoom
 		const rulerOffsetHeight = dom.offsetHeight
 		this.offsetX = (rulerOffsetWidth - screenWidth) * 0.5
 		this.offsetY = (rulerOffsetHeight - screenHeight) * 0.5

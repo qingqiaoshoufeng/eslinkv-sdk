@@ -76,6 +76,8 @@ export default class MarketEditDialog extends Vue {
 					this.editor.sceneWidgets[this.editor.current.currentSceneIndex][
 						t.componentId
 					].config.widget.componentVersion = t.componentVersion
+					this.showDrawer = false
+					this.$Message.success('组件升级成功')
 				})
 			},
 			okText: '确定',
@@ -103,7 +105,7 @@ export default class MarketEditDialog extends Vue {
 	justify-content: space-between;
 	align-items: center;
 	height: 40px;
-	padding: 0 14px;
+	padding: 0 10px;
 	background-color: #313237;
 	color: #fff;
 

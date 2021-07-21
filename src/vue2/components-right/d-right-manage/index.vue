@@ -29,12 +29,12 @@ export default class DRightManage extends Vue {
 <style lang="scss" scoped>
 .d-right-modal-title {
 	height: 40px;
-	line-height: 40px;
-	border-bottom: 1px solid rgba(36, 38, 46, 0.4);
-	background: var(--background-4);
 	font-size: 14px;
-	text-align: center;
 	font-weight: normal;
+	line-height: 40px;
 	color: #d8d8d8;
+	text-align: center;
+	background: var(--background-4);
+	border-bottom: 1px solid rgba(36, 38, 46, 0.4);
 }
 </style>

@@ -8,6 +8,10 @@
 	ruler-right-menu
 	.content-body.pos-a(:style="editor.rulerStyle")
 		slot
+		.content-body-tip.pos-a(
+			:style="{ fontSize: `${(1 / editor.zoom) * 12}px`, bottom: `-${(1 / editor.zoom) * 12 + 24}px` }")
+			span 按住空格可拖动画布
+			label {{ editor.width }}×{{ editor.height }} {{ zoom }}
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
@@ -36,6 +40,11 @@ export default class DRuler extends Vue {
 	contentDrag = false
 	/* 框移动 */
 	kuangMove = false
+	get zoom(): string {
+		const zoom = this.editor.zoom
+		return `${~~(zoom * 100)}%`
+	}
+
 	windowResize(): void {
 		this.editor.resetZoom()
 	}
@@ -71,9 +80,7 @@ export default class DRuler extends Vue {
 		if (this.contentDrag) {
 			this.contentDrag = false
 			if (this.editor.contentMove) {
-				document.getElementById(
-					this.editor.rulerContainerId,
-				).style.cursor = 'grab'
+				document.getElementById(this.editor.rulerContainerId).style.cursor = 'grab'
 			}
 		}
 		if (this.editor.widgetMove) {
@@ -82,19 +89,11 @@ export default class DRuler extends Vue {
 		if (this.kuangMove) {
 			document.getElementById('d-kuang').style.display = 'none'
 			this.kuangMove = false
-			const diffX =
-				(this.editor.width * (1 - this.editor.zoom)) / 2 +
-				this.editor.offsetX
-			const diffY =
-				(this.editor.height * (1 - this.editor.zoom)) / 2 +
-				this.editor.offsetY
+			const diffX = (this.editor.width * (1 - this.editor.zoom)) / 2 + this.editor.offsetX
+			const diffY = (this.editor.height * (1 - this.editor.zoom)) / 2 + this.editor.offsetY
 			const endPointerX = (e.layerX - diffX) / this.editor.zoom
 			const endPointerY = (e.layerY - diffY) / this.editor.zoom
-			if (
-				this.startPointerX === endPointerX ||
-				this.startPointerY === endPointerY
-			)
-				return
+			if (this.startPointerX === endPointerX || this.startPointerY === endPointerY) return
 			const minPointerX = Math.min(this.startPointerX, endPointerX)
 			const minPointerY = Math.min(this.startPointerY, endPointerY)
 			const maxPointerX = Math.max(this.startPointerX, endPointerX)
@@ -105,12 +104,8 @@ export default class DRuler extends Vue {
 				if (v.scene === this.editor.currentSceneIndex) {
 					const widgetStartX = v.config.layout.position.left
 					const widgetStartY = v.config.layout.position.top
-					const widgetEndX =
-						v.config.layout.position.left +
-						v.config.layout.size.width
-					const widgetEndY =
-						v.config.layout.position.top +
-						v.config.layout.size.height
+					const widgetEndX = v.config.layout.position.left + v.config.layout.size.width
+					const widgetEndY = v.config.layout.position.top + v.config.layout.size.height
 					if (
 						minPointerX < widgetStartX &&
 						widgetStartX < maxPointerX &&
@@ -152,14 +147,12 @@ export default class DRuler extends Vue {
 						maxTop = m.config.layout.position.top
 						height = m.config.layout.size.height
 					}
-					if (minLeft > m.config.layout.position.left)
-						minLeft = m.config.layout.position.left
+					if (minLeft > m.config.layout.position.left) minLeft = m.config.layout.position.left
 					if (maxLeft < m.config.layout.position.left) {
 						maxLeft = m.config.layout.position.left
 						width = m.config.layout.size.width
 					}
-					if (minTop > m.config.layout.position.top)
-						minTop = m.config.layout.position.top
+					if (minTop > m.config.layout.position.top) minTop = m.config.layout.position.top
 					if (maxTop < m.config.layout.position.top) {
 						maxTop = m.config.layout.position.top
 						height = m.config.layout.size.height
@@ -181,18 +174,13 @@ export default class DRuler extends Vue {
 		if (e.buttons !== 1 || e.which !== 1) return
 		this.startX = e.clientX
 		this.startY = e.clientY
-		const diffX =
-			(this.editor.width * (1 - this.editor.zoom)) / 2 +
-			this.editor.offsetX
-		const diffY =
-			(this.editor.height * (1 - this.editor.zoom)) / 2 +
-			this.editor.offsetY
+		const diffX = (this.editor.width * (1 - this.editor.zoom)) / 2 + this.editor.offsetX
+		const diffY = (this.editor.height * (1 - this.editor.zoom)) / 2 + this.editor.offsetY
 		this.startPointerX = (e.layerX - diffX) / this.editor.zoom
 		this.startPointerY = (e.layerY - diffY) / this.editor.zoom
 		if (this.editor.contentMove) {
 			this.contentDrag = true
-			document.getElementById(this.editor.rulerContainerId).style.cursor =
-				'grabbing'
+			document.getElementById(this.editor.rulerContainerId).style.cursor = 'grabbing'
 		}
 		if (!this.editor.widgetMove) {
 			this.editor.unSelectWidget()
@@ -273,8 +261,7 @@ export default class DRuler extends Vue {
 
 	keyup(): void {
 		this.editor.contentMove = false
-		document.getElementById(this.editor.rulerContainerId).style.cursor =
-			'auto'
+		document.getElementById(this.editor.rulerContainerId).style.cursor = 'auto'
 		// if (e.keyCode === 8 || e.keyCode === 46) {
 		// delete 键 删除
 		// }
@@ -300,8 +287,7 @@ export default class DRuler extends Vue {
 		}
 		if (e.keyCode === 32 && !this.editor.contentMove) {
 			this.editor.contentMove = true
-			document.getElementById(this.editor.rulerContainerId).style.cursor =
-				'grab'
+			document.getElementById(this.editor.rulerContainerId).style.cursor = 'grab'
 		}
 	}
 }
@@ -322,6 +308,16 @@ export default class DRuler extends Vue {
 		margin-top: 1px;
 		overflow: visible;
 		border: 18px transparent solid;
+	}
+}
+
+.content-body-tip {
+	right: 0;
+	color: rgb(169, 175, 184);
+	white-space: nowrap;
+
+	span {
+		margin-right: 20px;
 	}
 }
 </style>

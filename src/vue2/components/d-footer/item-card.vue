@@ -2,7 +2,7 @@
 li.fn-flex.flex-row
 	label.d-footer-name {{ item.name }}
 	.d-footer-key-code.fn-flex.flex-row(v-for="child in item.key")
-		.d-footer-hot-key-text(v-if="child.type === 'text'") {{ child.value }}
+		.d-footer-hot-key-text.fn-flex(v-if="child.type === 'text'") {{ child.value }}
 		.d-footer-hot-key-item(v-if="child.type === '+'") +
 		img.d-footer-hot-key-img(v-if="child.type === 'img'", :src="child.value")
 </template>
@@ -16,10 +16,12 @@ export default class ItemCard extends Vue {
 </script>
 <style lang="scss" scoped>
 li {
+	justify-content: space-between;
 	align-items: center;
-	height: 44px;
-	white-space: nowrap;
+	padding: 0 16px;
+	height: 36px;
 	border-bottom: 1px solid #22242b;
+	white-space: nowrap;
 
 	&:last-child {
 		border-bottom: none;
@@ -44,16 +46,19 @@ li {
 .d-footer-hot-key-img {
 	margin-left: 6px;
 }
-
+.d-footer-hot-key-item {
+	margin: 0 5px;
+}
 .d-footer-hot-key-text {
-	min-width: 22px;
-	padding: 0 4px;
-	margin-right: 10px;
-	margin-left: 10px;
-	font-style: normal;
-	text-align: center;
-	border: 1px solid #ddd;
+	justify-content: center;
+	align-items: center;
+	background: var(--background-2);
+	min-width: 24px;
+	height: 24px;
+	padding: 0 5px;
+	border: 1px solid #393b4a;
 	border-radius: 2px;
+	box-shadow: 0 1px 3px 0 rgba(44, 46, 64, 0.82);
 }
 
 .d-footer-hot-key-img {
