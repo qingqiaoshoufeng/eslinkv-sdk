@@ -13,52 +13,24 @@
 				:icon-class="editor.fullscreen ? 'unfullscreen' : 'fullscreen'",
 				:size="18",
 				@click="handleFullscreen")
-	.d-footer-bar.fn-flex
-		i-icon.pointer(type="md-sync", @click="update", size="22", title="更新组件")
-	updateDrawer(v-model="showDrawer", :data="updateInfo")
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import updateDrawer from './updateDrawer.vue'
 import { Icon, Tooltip } from 'view-design'
 import Editor from '@/core/Editor'
 import { hotKeys } from '@/vue2/utils'
-import { versionUpdateList } from '@/vue2/api/marketComponent.api'
-
 import left from './left.vue'
+
 @Component({
 	components: {
 		'i-icon': Icon,
 		'i-tooltip': Tooltip,
 		left,
-		updateDrawer,
 	},
 })
 export default class DFooter extends Vue {
-	showDrawer = false
-	updateInfo = []
 	hotKeys = hotKeys
 	editor: Editor = Editor.Instance()
-
-	async update() {
-		const req = []
-		Object.values(this.editor.sceneWidgets[this.editor.current.currentSceneIndex]).forEach((v: any) => {
-			if (v.market) {
-				req.push({
-					componentEnTitle: v.type,
-					componentVersion: v.config.widget.componentVersion,
-					componentId: v.id,
-					componentTitle: v.config.widget.name,
-				})
-			}
-		})
-		this.updateInfo = await versionUpdateList({ components: req })
-		if (this.updateInfo.length === 0) {
-			this.$Message.warning('暂无可更新组件')
-			return
-		}
-		this.showDrawer = true
-	}
 
 	handleFullscreen(): void {
 		if (this.editor.fullscreen) {

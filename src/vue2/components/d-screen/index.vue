@@ -4,6 +4,7 @@
 		d-left-widget
 		d-left-scene
 		d-editor
+		d-suspension
 		d-right-manage(v-if="!editor.currentWidgetId")
 		d-right-setting(v-if="editor.currentWidgetId")
 		d-right-setting-more(
@@ -17,6 +18,7 @@ import dEditor from '../d-editor/index.vue'
 import dRightManage from '@/vue2/components-right/d-right-manage/index.vue'
 import dRightSetting from '@/vue2/components-right/d-right-setting/index.vue'
 import dRightSettingMore from '@/vue2/components-right/d-right-setting-more/index.vue'
+import dSuspension from '@/vue2/components/d-suspension/index.vue'
 import Editor from '@/core/Editor'
 
 @Component({
@@ -26,6 +28,7 @@ import Editor from '@/core/Editor'
 		dRightManage,
 		dRightSetting,
 		dRightSettingMore,
+		dSuspension,
 		dEditor,
 	},
 })
