@@ -98,3 +98,13 @@ export function useList(data) {
 		headers,
 	})
 }
+
+
+export function versionUpdateList(data) {
+	return request({
+		url: 'market/component/versionUpdateList',
+		method: 'post',
+		data,
+		headers,
+	})
+}

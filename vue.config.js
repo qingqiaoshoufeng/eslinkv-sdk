@@ -43,13 +43,13 @@ module.exports = {
 			},
 			'^/cdn': {
 				// target: 'http://127.0.0.1:7001',
-				target: 'http://eslinkv.eslink.cc',
+				// target: 'http://eslinkv.eslink.cc',
 				// target: 'http://10.30.3.156:7001',
-				// target: 'http://192.168.1.44:2000',
+				target: 'http://192.168.1.44:2000',
 				changeOrigin: true,
-				pathRewrite: {
-					'^/cdn': '/',
-				},
+				// pathRewrite: {
+				// 	'^/cdn': '/',
+				// },
 			},
 		},
 	},
