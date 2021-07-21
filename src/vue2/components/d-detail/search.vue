@@ -3,11 +3,7 @@
 	:class="{ active: value }",
 	:style="{ width: `calc(100% - ${editor.xRoomL1 + editor.xRoomL2 + editor.xRoomR1}px)`, left: `${editor.xRoomL1 + editor.xRoomL2}px` }")
 	.d-detail-search.animated.searchFadeInDown(v-click-outside="hide")
-		i-input.d-detail-input(
-			:autofocus="true",
-			suffix="ios-search",
-			placeholder="请输入组件名",
-			v-model="keyword")
+		i-input.d-detail-input(:autofocus="true", suffix="ios-search", placeholder="请输入组件名", v-model="keyword")
 		ul.result
 			li.pointer(v-for="(k, i) in searchResult", :key="i", @click="check(k)") {{ k.config.widget.name }}
 </template>
@@ -48,7 +44,8 @@ export default class DSearch extends Vue {
 		let arr = []
 		for (const key in this.editor.screenWidgets) {
 			if (
-				this.editor.screenWidgets[key].config.widget.name.includes(val)
+				this.editor.screenWidgets[key].config.widget.name.includes(val) &&
+				this.editor.screenWidgets[key].scene !== -1
 			) {
 				arr.push(this.editor.screenWidgets[key])
 			}

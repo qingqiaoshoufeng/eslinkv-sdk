@@ -28,11 +28,6 @@ export default class DRightSwiperList extends Vue {
 		{ icon: 'md-trash', msg: '减一个' },
 	]
 
-	@Watch('list', { deep: true })
-	listchange(val) {
-		console.log(val)
-	}
-
 	handleClickTab(index: number): void {
 		this.index = index
 	}

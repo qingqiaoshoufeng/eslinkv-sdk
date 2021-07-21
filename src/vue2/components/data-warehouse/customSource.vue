@@ -8,65 +8,27 @@
 		:rules="querySourceRule"
 	>
 		<FormItem label="数据源" prop="dataSourceId" style="width: 100%">
-			<Select
-				v-model="queryCustomSource.dataSourceId"
-				@on-open-change="openCustomPro"
-				transfer
-				filterable
-			>
-				<Option
-					v-for="item in querySourceList.sourceList"
-					:value="item.id"
-					:key="item.id"
-				>
+			<Select v-model="queryCustomSource.dataSourceId" @on-open-change="openCustomPro" transfer filterable>
+				<Option v-for="item in querySourceList.sourceList" :value="item.id" :key="item.id">
 					{{ item.name }}
 				</Option>
 			</Select>
 		</FormItem>
 		<FormItem label="数据库" prop="databaseName" style="width: 100%">
-			<Select
-				v-model="queryCustomSource.databaseName"
-				transfer
-				@on-open-change="openCustomDatabase"
-				filterable
-			>
-				<Option
-					v-for="v in querySourceList.databaseList"
-					:value="v"
-					:key="v"
-				>
+			<Select v-model="queryCustomSource.databaseName" transfer @on-open-change="openCustomDatabase" filterable>
+				<Option v-for="v in querySourceList.databaseList" :value="v" :key="v">
 					{{ v }}
 				</Option>
 			</Select>
 		</FormItem>
-		<FormItem
-			label="模式"
-			prop="databaseSchema"
-			style="width: 100%"
-			v-if="databaseType == 1"
-		>
-			<Select
-				v-model="queryCustomSource.databaseSchema"
-				transfer
-				@on-open-change="openBaseSchema"
-				filterable
-			>
-				<Option
-					v-for="v in querySourceList.databaseSchemaList"
-					:value="v"
-					:key="v"
-				>
+		<FormItem label="模式" prop="databaseSchema" style="width: 100%" v-if="databaseType == 1">
+			<Select v-model="queryCustomSource.databaseSchema" transfer @on-open-change="openBaseSchema" filterable>
+				<Option v-for="v in querySourceList.databaseSchemaList" :value="v" :key="v">
 					{{ v }}
 				</Option>
 			</Select>
 		</FormItem>
-		<FormItem
-			class="editor"
-			label
-			:label-width="0"
-			style="height: 160px"
-			prop="executeSql"
-		>
+		<FormItem class="editor" label :label-width="0" style="height: 160px" prop="executeSql">
 			<!-- sql编辑器 -->
 			<div class="es-sql-editor">
 				<es-sql
@@ -82,11 +44,7 @@
 <script>
 import { Form, FormItem, Select, Option } from 'view-design'
 import esSql from '../esSql.vue'
-import {
-	getSchemaList,
-	getSourceList,
-	getSourceDatabaseList,
-} from '@/vue2/api/dataWarehouse.api'
+import { getSchemaList, getSourceList, getSourceDatabaseList } from '@/vue2/api/dataWarehouse.api'
 
 export default {
 	data() {

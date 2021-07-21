@@ -4,18 +4,18 @@
 		.d-detail-left-icon.fn-flex.pointer
 			i-icon(type="ios-arrow-dropleft", size="22")
 	.d-detail-title.fn-flex.pointer(:title="editor.name", @click="editName = true")
-		d-input(v-model="editor.name", @on-blur="editName = false", :autofocus="true")
-		//span.fn-flex.d-detail-title.ellipsis(v-else) {{ editor.name }}
+		e-input(v-model="editor.name", v-if="editName" @blur="editName = false", :autofocus="true")
+		span.fn-flex.d-detail-title.ellipsis(v-else) {{ editor.name }}
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Icon } from 'view-design'
 import Editor from '@/core/Editor'
-import dInput from '@/vue2/components/d-input'
+import eInput from '@/vue2/components-style/e-input'
 @Component({
 	components: {
 		'i-icon': Icon,
-		dInput,
+		eInput,
 	},
 })
 export default class DDetail extends Vue {
@@ -25,30 +25,34 @@ export default class DDetail extends Vue {
 </script>
 <style lang="scss" scoped>
 .d-detail-left-icon-box {
-	height: 100%;
 	align-items: center;
+	height: 100%;
 }
+
 .d-detail-left-icon {
-	padding: 0 20px;
-	height: 100%;
 	align-items: center;
+	height: 100%;
+	padding: 0 20px;
 	color: var(--text-tab);
+
 	&:hover {
-		background-color: #30333d;
 		color: #4fb0ff;
+		background-color: #30333d;
 	}
 }
 
 .d-detail-title {
+	align-items: center;
+	margin-right: auto;
 	font-size: 15px;
 	color: var(--text-tab);
-	margin-right: auto;
-	align-items: center;
+
 	span {
+		align-items: center;
 		width: 152px;
 		height: 30px;
 		padding: 0 8px;
-		align-items: center;
+
 		&:hover {
 			background-color: #30333d;
 		}
@@ -56,7 +60,7 @@ export default class DDetail extends Vue {
 }
 
 .d-detail-left {
-	margin-right: auto;
 	height: 100%;
+	margin-right: auto;
 }
 </style>

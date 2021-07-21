@@ -1,21 +1,6 @@
 <template lang="pug">
-.d-right-modal-box.z-index-999.fn-flex.flex-column(
-	:style="{ width: `${editor.xRoomR1}px`, height: '100%', flex: 1 }")
-	.d-right-modal-name.fn-flex.flex-row(
-		:style="{ marginBottom: '10px' }",
-		v-click-outside="close")
-		i-input.screen-name(
-			v-if="editName",
-			v-model="editor.name",
-			@on-click="editName = false",
-			:autofocus="true")
-		span.screen-name-text(v-if="!editName") {{ editor.name }}
-		d-svg.pointer.screen-name-icon(
-			icon-class="edit",
-			color="#515a6e",
-			@click.stop="editName = true",
-			v-if="!editName")
-	.d-right-modal-border
+.d-right-modal-box.z-index-999.fn-flex.flex-column(:style="{ width: `${editor.xRoomR1}px`, height: '100%', flex: 1 }")
+	.d-right-modal-title 页面设置
 	config
 </template>
 <script lang="ts">
@@ -42,28 +27,14 @@ export default class DRightManage extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.screen-name-icon {
-	line-height: 32px;
-}
-
-.d-right-modal-name {
-	line-height: 32px;
-}
-
-.screen-name {
-	&::v-deep {
-		.ivu-input {
-			padding: 0;
-			font-size: 20px;
-			line-height: 20px;
-			color: #fff;
-			background-color: transparent;
-			border: none;
-			border-bottom: 1px solid var(--borderGray);
-			border-radius: 0;
-			outline: none;
-			box-shadow: none;
-		}
-	}
+.d-right-modal-title {
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid rgba(36, 38, 46, 0.4);
+	background: var(--background-4);
+	font-size: 14px;
+	text-align: center;
+	font-weight: normal;
+	color: #d8d8d8;
 }
 </style>

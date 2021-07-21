@@ -25,53 +25,26 @@
 					@on-open-change="openCustomPro"
 					@on-change="changeCustomPro"
 				>
-					<Option
-						v-for="v in queryCustomList.projectList"
-						:value="v.value"
-						:key="v.value"
-					>
+					<Option v-for="v in queryCustomList.projectList" :value="v.value" :key="v.value">
 						{{ v.label }}
 					</Option>
 				</Select>
 			</FormItem>
 			<FormItem label="数据库" prop="databaseId" style="width: 100%">
-				<Select
-					v-model="queryCustom.databaseId"
-					transfer
-					filterable
-					@on-open-change="openCustomDatabase"
-				>
-					<Option
-						v-for="v in queryCustomList.databaseList"
-						:value="v.value"
-						:key="v.value"
-					>
+				<Select v-model="queryCustom.databaseId" transfer filterable @on-open-change="openCustomDatabase">
+					<Option v-for="v in queryCustomList.databaseList" :value="v.value" :key="v.value">
 						{{ v.label }}
 					</Option>
 				</Select>
 			</FormItem>
-			<FormItem
-				class="editor"
-				label
-				:label-width="0"
-				style="height: 160px"
-				prop="executeSql"
-			>
+			<FormItem class="editor" label :label-width="0" style="height: 160px" prop="executeSql">
 				<!-- sql编辑器 -->
 				<div class="es-sql-editor">
-					<es-sql
-						sqlName="custom-query"
-						v-model="queryCustom.executeSql"
-						class="es-sql-box"
-					></es-sql>
+					<es-sql sqlName="custom-query" v-model="queryCustom.executeSql" class="es-sql-box"></es-sql>
 				</div>
 			</FormItem>
 		</Form>
-		<custom-source
-			ref="customSource"
-			@setCustom="setCustom"
-			v-else
-		></custom-source>
+		<custom-source ref="customSource" @setCustom="setCustom" v-else></custom-source>
 	</div>
 </template>
 <script>

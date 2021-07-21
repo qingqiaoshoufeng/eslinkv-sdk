@@ -8,43 +8,21 @@
 		style="width: 100%"
 		ref="querySourceForm"
 	>
-		<FormItem
-			:style="{ width: type == 1 ? '100%' : '' }"
-			prop="dataSourceId"
-			label="数据源"
-			:label-width="80"
-		>
+		<FormItem :style="{ width: type == 1 ? '100%' : '' }" prop="dataSourceId" label="数据源" :label-width="80">
 			<i-select
 				v-model="queryCond.dataSourceId"
 				:style="{ width: type == 0 ? '140px' : '100%' }"
 				@on-open-change="getProList"
 				filterable
 			>
-				<i-option
-					v-for="item in sourceList"
-					:value="item.id"
-					:key="item.id"
-				>
+				<i-option v-for="item in sourceList" :value="item.id" :key="item.id">
 					{{ item.name }}
 				</i-option>
 			</i-select>
 		</FormItem>
-		<FormItem
-			:style="{ width: type == 1 ? '100%' : '' }"
-			prop="databaseName"
-			label="数据库名称"
-			:label-width="90"
-		>
-			<i-select
-				v-model="queryCond.databaseName"
-				:style="{ width: type == 0 ? '140px' : '100%' }"
-				filterable
-			>
-				<i-option
-					v-for="item in databaseList"
-					:value="item.value"
-					:key="item.value"
-				>
+		<FormItem :style="{ width: type == 1 ? '100%' : '' }" prop="databaseName" label="数据库名称" :label-width="90">
+			<i-select v-model="queryCond.databaseName" :style="{ width: type == 0 ? '140px' : '100%' }" filterable>
+				<i-option v-for="item in databaseList" :value="item.value" :key="item.value">
 					{{ item.value }}
 				</i-option>
 			</i-select>
@@ -56,35 +34,15 @@
 			label="模式"
 			:label-width="90"
 		>
-			<i-select
-				v-model="queryCond.databaseSchema"
-				:style="{ width: type == 0 ? '140px' : '100%' }"
-				filterable
-			>
-				<i-option
-					v-for="item in dataSchemaeList"
-					:value="item.value"
-					:key="item.value"
-				>
+			<i-select v-model="queryCond.databaseSchema" :style="{ width: type == 0 ? '140px' : '100%' }" filterable>
+				<i-option v-for="item in dataSchemaeList" :value="item.value" :key="item.value">
 					{{ item.value }}
 				</i-option>
 			</i-select>
 		</FormItem>
-		<FormItem
-			:style="{ width: type == 1 ? '100%' : '' }"
-			prop="tableName"
-			label="表名称"
-		>
-			<i-select
-				v-model="queryCond.tableName"
-				:style="{ width: type == 0 ? '140px' : '100%' }"
-				filterable
-			>
-				<i-option
-					v-for="item in tableList"
-					:value="item.value"
-					:key="item.value"
-				>
+		<FormItem :style="{ width: type == 1 ? '100%' : '' }" prop="tableName" label="表名称">
+			<i-select v-model="queryCond.tableName" :style="{ width: type == 0 ? '140px' : '100%' }" filterable>
+				<i-option v-for="item in tableList" :value="item.value" :key="item.value">
 					{{ item.value }}
 				</i-option>
 			</i-select>
@@ -98,22 +56,10 @@
 			v-show="item.index == 0 || queryCondShow"
 			:key="index"
 		>
-			<Row
-				:gutter="10"
-				:style="index == 0 ? 'transform:translateX(-5px)' : ''"
-			>
+			<Row :gutter="10" :style="index == 0 ? 'transform:translateX(-5px)' : ''">
 				<i-col :span="type == 0 ? 2 : 5">
-					<i-select
-						v-model="item.operator"
-						v-if="index > 0"
-						transfer
-						filterable
-					>
-						<i-option
-							v-for="item in querylogicList"
-							:value="item.value"
-							:key="item.value"
-						>
+					<i-select v-model="item.operator" v-if="index > 0" transfer filterable>
+						<i-option v-for="item in querylogicList" :value="item.value" :key="item.value">
 							{{ item.label }}
 						</i-option>
 					</i-select>
@@ -123,60 +69,32 @@
 						v-model="item.fieldName"
 						clearable
 						transfer
-						@on-change="
-							changeFieldName(null, item.fieldName, index)
-						"
+						@on-change="changeFieldName(null, item.fieldName, index)"
 						filterable
 					>
-						<i-option
-							v-for="item in queryFieldList"
-							:value="item.value"
-							:key="item.value"
-						>
+						<i-option v-for="item in queryFieldList" :value="item.value" :key="item.value">
 							{{ item.label }}
 						</i-option>
 					</i-select>
 				</i-col>
 				<i-col :span="type == 0 ? 2 : 4">
 					<i-select v-model="item.fieldCond" transfer filterable>
-						<i-option
-							v-for="item in queryCondList"
-							:value="item.value"
-							:key="item.value"
-						>
+						<i-option v-for="item in queryCondList" :value="item.value" :key="item.value">
 							{{ item.label }}
 						</i-option>
 					</i-select>
 				</i-col>
 				<i-col :span="type == 0 ? 2 : 6">
-					<Input
-						type="text"
-						v-model="item.fieldValue"
-						placeholder="请输入"
-					/>
+					<Input type="text" v-model="item.fieldValue" placeholder="请输入" />
 				</i-col>
-				<i-col
-					:span="type == 0 ? 2 : 6"
-					v-if="item.fieldCond == 'between'"
-				>
+				<i-col :span="type == 0 ? 2 : 6" v-if="item.fieldCond == 'between'">
 					<Input type="text" disabled value="and" />
 				</i-col>
-				<i-col
-					:span="type == 0 ? 2 : 6"
-					v-if="item.fieldCond == 'between'"
-				>
-					<Input
-						type="text"
-						v-model="betweenField"
-						placeholder="请输入"
-					/>
+				<i-col :span="type == 0 ? 2 : 6" v-if="item.fieldCond == 'between'">
+					<Input type="text" v-model="betweenField" placeholder="请输入" />
 				</i-col>
 				<i-col span="4">
-					<Icon
-						type="md-add-circle"
-						@click="searchCondAdd"
-						class="btn add"
-					/>
+					<Icon type="md-add-circle" @click="searchCondAdd" class="btn add" />
 					<Icon
 						type="md-remove-circle"
 						@click="searchCondRemove(index)"
@@ -186,21 +104,11 @@
 				</i-col>
 			</Row>
 		</FormItem>
-		<FormItem
-			prop="limitNum"
-			:class="{ chart: type == 1 }"
-			label="条数限制"
-			:label-width="64"
-			v-if="type == 0"
-		>
+		<FormItem prop="limitNum" :class="{ chart: type == 1 }" label="条数限制" :label-width="64" v-if="type == 0">
 			<div style="display: flex">
 				<Checkbox v-model="queryCond.isLimit"></Checkbox>
 				<i-select v-model="queryCond.limitNum" v-if="queryCond.isLimit">
-					<i-option
-						v-for="item in queryCond.limitNumList"
-						:value="item.value"
-						:key="item.value"
-					>
+					<i-option v-for="item in queryCond.limitNumList" :value="item.value" :key="item.value">
 						{{ item.label }}
 					</i-option>
 				</i-select>
@@ -210,17 +118,7 @@
 </template>
 
 <script>
-import {
-	Form,
-	FormItem,
-	Select,
-	Option,
-	Checkbox,
-	Input,
-	Col,
-	Row,
-	Icon,
-} from 'view-design'
+import { Form, FormItem, Select, Option, Checkbox, Input, Col, Row, Icon } from 'view-design'
 import {
 	getSourceList,
 	getSourceDatabaseList,
@@ -403,8 +301,7 @@ export default {
 			}
 
 			this.queryCond.databaseType = row.databaseType
-			this.databaseType =
-				row.databaseType == 'MYSQL' || row.databaseType == '' ? 0 : 1
+			this.databaseType = row.databaseType == 'MYSQL' || row.databaseType == '' ? 0 : 1
 			this.isEcho = true
 			this.singleCond = {
 				databaseName: row.databaseName,
@@ -421,8 +318,7 @@ export default {
 			if (val) {
 				this.queryFieldList.forEach(ele => {
 					if (ele.value == val) {
-						this.queryCond.analyseCondition[index].filedType =
-							ele.fieldType
+						this.queryCond.analyseCondition[index].filedType = ele.fieldType
 					}
 				})
 			}
@@ -481,8 +377,7 @@ export default {
 						}
 						this.databaseList = list
 						// 回显设置
-						if (this.isEcho)
-							this.queryCond.databaseName = this.singleCond.databaseName
+						if (this.isEcho) this.queryCond.databaseName = this.singleCond.databaseName
 					})
 				}
 			},
@@ -511,8 +406,7 @@ export default {
 							}
 							this.tableList = list
 							// 回显设置
-							if (this.isEcho)
-								this.queryCond.tableName = this.singleCond.tableName
+							if (this.isEcho) this.queryCond.tableName = this.singleCond.tableName
 						})
 					} else {
 						this.queryCond.databaseSchema = ''
@@ -533,8 +427,7 @@ export default {
 							}
 							this.dataSchemaeList = list
 							// 回显设置
-							if (this.isEcho)
-								this.queryCond.databaseSchema = this.singleCond.databaseSchema
+							if (this.isEcho) this.queryCond.databaseSchema = this.singleCond.databaseSchema
 						})
 					}
 				}
@@ -564,8 +457,7 @@ export default {
 						}
 						this.tableList = list
 						// 回显设置
-						if (this.isEcho)
-							this.queryCond.tableName = this.singleCond.tableName
+						if (this.isEcho) this.queryCond.tableName = this.singleCond.tableName
 					})
 				}
 			},
@@ -603,9 +495,7 @@ export default {
 						data.map(item => {
 							list.push({
 								value: item.fieldName,
-								label: item.fieldDesc
-									? item.fieldDesc
-									: item.fieldName,
+								label: item.fieldDesc ? item.fieldDesc : item.fieldName,
 								fieldType: item.fieldType,
 							})
 						})

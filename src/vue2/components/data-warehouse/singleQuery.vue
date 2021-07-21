@@ -26,11 +26,7 @@
 						transfer
 						filterable
 					>
-						<i-option
-							v-for="v in querySingleList.projectList"
-							:value="v.value"
-							:key="v.value"
-						>
+						<i-option v-for="v in querySingleList.projectList" :value="v.value" :key="v.value">
 							{{ v.label }}
 						</i-option>
 					</i-select>
@@ -43,11 +39,7 @@
 						transfer
 						filterable
 					>
-						<i-option
-							v-for="v in querySingleList.projectList"
-							:value="v.value"
-							:key="v.value"
-						>
+						<i-option v-for="v in querySingleList.projectList" :value="v.value" :key="v.value">
 							{{ v.label }}
 						</i-option>
 					</i-select>
@@ -60,11 +52,7 @@
 						transfer
 						filterable
 					>
-						<i-option
-							v-for="v in querySingleList.databaseList"
-							:value="v.value"
-							:key="v.value"
-						>
+						<i-option v-for="v in querySingleList.databaseList" :value="v.value" :key="v.value">
 							{{ v.label }}
 						</i-option>
 					</i-select>
@@ -77,11 +65,7 @@
 						transfer
 						filterable
 					>
-						<i-option
-							v-for="v in querySingleList.tableList"
-							:value="v.value"
-							:key="v.value"
-						>
+						<i-option v-for="v in querySingleList.tableList" :value="v.value" :key="v.value">
 							{{ v.label }}
 						</i-option>
 					</i-select>
@@ -92,24 +76,10 @@
 					v-for="(item, index) in querySingle.cond.itemList"
 					:key="index"
 				>
-					<Row
-						:gutter="4"
-						:style="index == 0 ? 'transform:translateX(-2px)' : ''"
-					>
-						<i-col
-							:span="item.fieldCond == 'between' ? '4' : '6'"
-							v-if="index > 0"
-						>
-							<i-select
-								v-model="item.operator"
-								transfer
-								filterable
-							>
-								<i-option
-									v-for="v in querySingleList.condList"
-									:value="v.value"
-									:key="v.value"
-								>
+					<Row :gutter="4" :style="index == 0 ? 'transform:translateX(-2px)' : ''">
+						<i-col :span="item.fieldCond == 'between' ? '4' : '6'" v-if="index > 0">
+							<i-select v-model="item.operator" transfer filterable>
+								<i-option v-for="v in querySingleList.condList" :value="v.value" :key="v.value">
 									{{ v.label }}
 								</i-option>
 							</i-select>
@@ -118,31 +88,17 @@
 							<i-select
 								v-model="item.fieldName"
 								transfer
-								@on-change="
-									changeFieldName(null, item.fieldName, index)
-								"
+								@on-change="changeFieldName(null, item.fieldName, index)"
 								filterable
 							>
-								<i-option
-									v-for="v in querySingleList.fieldList"
-									:value="v.value"
-									:key="v.value"
-								>
+								<i-option v-for="v in querySingleList.fieldList" :value="v.value" :key="v.value">
 									{{ v.label }}
 								</i-option>
 							</i-select>
 						</i-col>
 						<i-col :span="item.fieldCond == 'between' ? '4' : '6'">
-							<i-select
-								v-model="item.fieldCond"
-								transfer
-								filterable
-							>
-								<i-option
-									v-for="v in querySingleList.fieldCond"
-									:value="v.value"
-									:key="v.value"
-								>
+							<i-select v-model="item.fieldCond" transfer filterable>
+								<i-option v-for="v in querySingleList.fieldCond" :value="v.value" :key="v.value">
 									{{ v.label }}
 								</i-option>
 							</i-select>
@@ -154,18 +110,10 @@
 							<Input type="text" disabled value="and" />
 						</i-col>
 						<i-col span="3" v-if="item.fieldCond == 'between'">
-							<Input
-								type="text"
-								v-model="querySingleList.betweenField"
-								placeholder="请输入"
-							/>
+							<Input type="text" v-model="querySingleList.betweenField" placeholder="请输入" />
 						</i-col>
 						<i-col span="2" style="display: flex">
-							<Icon
-								type="md-add-circle"
-								@click="addSingleCond"
-								class="btn add"
-							/>
+							<Icon type="md-add-circle" @click="addSingleCond" class="btn add" />
 							<Icon
 								type="md-remove-circle"
 								@click="removeSingleCond(index)"
@@ -177,34 +125,13 @@
 				</FormItem>
 			</Form>
 		</div>
-		<source-tag
-			ref="getsource"
-			@setSource="setSource"
-			v-else
-			:type="1"
-		></source-tag>
+		<source-tag ref="getsource" @setSource="setSource" v-else :type="1"></source-tag>
 	</div>
 </template>
 <script>
 import sourceTag from './source'
-import {
-	RadioGroup,
-	Radio,
-	Input,
-	Form,
-	FormItem,
-	Select,
-	Col,
-	Row,
-	Option,
-	Icon,
-} from 'view-design'
-import {
-	getProList,
-	getProDatabaseList,
-	getDatabaseTableList,
-	getTableDetail,
-} from '@/vue2/api/dataWarehouse.api'
+import { RadioGroup, Radio, Input, Form, FormItem, Select, Col, Row, Option, Icon } from 'view-design'
+import { getProList, getProDatabaseList, getDatabaseTableList, getTableDetail } from '@/vue2/api/dataWarehouse.api'
 
 export default {
 	components: {
@@ -417,8 +344,7 @@ export default {
 			if (val) {
 				this.querySingleList.fieldList.forEach(ele => {
 					if (ele.value == val) {
-						this.querySingle.cond.itemList[index].filedType =
-							ele.fieldType
+						this.querySingle.cond.itemList[index].filedType = ele.fieldType
 					}
 				})
 			}
@@ -499,11 +425,7 @@ export default {
 			handler(obj) {
 				const params = JSON.parse(JSON.stringify(obj))
 				delete params.cond
-				this.$set(
-					params,
-					'chartCondition',
-					JSON.stringify(obj.cond.itemList),
-				)
+				this.$set(params, 'chartCondition', JSON.stringify(obj.cond.itemList))
 				this.$set(params, 'dataType', 0)
 				this.$emit('getQueryCond', params, 0)
 			},
@@ -513,19 +435,12 @@ export default {
 			immediate: true,
 			handler(type) {
 				if (type === '0') {
-					const {
-						projectId,
-						databaseId,
-						tableId,
-						chartCondition,
-					} = this.lastQuery
+					const { projectId, databaseId, tableId, chartCondition } = this.lastQuery
 					this.getProList()
 					this.querySingle.projectId = projectId
 					this.querySingle.databaseId = databaseId
 					this.querySingle.tableId = tableId
-					this.querySingle.cond.itemList = chartCondition
-						? JSON.parse(chartCondition)
-						: null
+					this.querySingle.cond.itemList = chartCondition ? JSON.parse(chartCondition) : null
 				} else {
 					this.$nextTick(() => {
 						this.$refs.getsource.reShowChart(this.lastQuery)

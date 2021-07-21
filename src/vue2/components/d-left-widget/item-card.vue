@@ -44,9 +44,9 @@ export default class ItemCard extends Vue {
 		padding: 0 5px;
 		font-size: 12px;
 		line-height: 22px;
+		color: #fff;
 		white-space: nowrap;
 		background: #212326;
-		color: #fff;
 	}
 }
 

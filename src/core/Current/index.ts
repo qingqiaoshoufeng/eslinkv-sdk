@@ -58,7 +58,7 @@ export default class Current extends Factory<Current> {
 		localStorage.setItem('xRoomL2', `${this.xRoomL2}`)
 	}
 	taggerXRoomR1(): void {
-		this.xRoomR1 = this.xRoomR1 > 0 ? 0 : 350
+		this.xRoomR1 = this.xRoomR1 > 0 ? 0 : 335
 		localStorage.setItem('xRoomR1', `${this.xRoomR1}`)
 	}
 	/* 放大画布 */

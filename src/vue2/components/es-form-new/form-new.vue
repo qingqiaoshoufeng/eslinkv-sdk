@@ -35,11 +35,7 @@
 							<slot name="itemContent" :data="templet"></slot>
 						</template>
 						<template :slot="'endItem-' + templet.enName">
-							<slot
-								:name="'endItem-' + templet.enName"
-								:template="templet"
-								:model="model"
-							></slot>
+							<slot :name="'endItem-' + templet.enName" :template="templet" :model="model"></slot>
 						</template>
 					</es-form-item>
 				</template>
@@ -100,10 +96,7 @@ export default {
 		},
 		// formItem是否展示
 		isShow(template) {
-			if (
-				(template.addHidden && this.editFlag === 0) ||
-				(template.modifyHidden && this.editFlag === 1)
-			) {
+			if ((template.addHidden && this.editFlag === 0) || (template.modifyHidden && this.editFlag === 1)) {
 				return false
 			} else {
 				return true
@@ -167,85 +160,39 @@ export default {
 		},
 		data: {
 			handler(value) {
-				if (
-					value &&
-					value.templetDetailList &&
-					value.templetDetailList.length > 0
-				) {
+				if (value && value.templetDetailList && value.templetDetailList.length > 0) {
 					value.templetDetailList.forEach(item => {
-						if (
-							item.relation &&
-							item.relationList &&
-							item.relationList.length > 0
-						) {
+						if (item.relation && item.relationList && item.relationList.length > 0) {
 							this.$watch(
 								'model.' + item.enName,
 								(newValue, oldValue) => {
-									console.log(
-										'watch change enName = ' +
-											item.enName +
-											', value = ' +
-											newValue,
-									)
+									console.log('watch change enName = ' + item.enName + ', value = ' + newValue)
 									item.relationList.forEach(relation => {
-										if (
-											relation.enNameList &&
-											relation.enNameList.length > 0
-										) {
-											relation.enNameList.forEach(
-												rule => {
-													// 0:隐藏, 1:显示
-													let hiddenFlag
-													if (
-														newValue ===
-														relation.relationValue
-													) {
-														if (
-															rule.operateType ===
-															0
-														) {
-															hiddenFlag = 1
-														} else {
-															hiddenFlag = 0
-														}
+										if (relation.enNameList && relation.enNameList.length > 0) {
+											relation.enNameList.forEach(rule => {
+												// 0:隐藏, 1:显示
+												let hiddenFlag
+												if (newValue === relation.relationValue) {
+													if (rule.operateType === 0) {
+														hiddenFlag = 1
 													} else {
-														if (
-															rule.operateType ===
-															0
-														) {
-															hiddenFlag = 0
-														} else {
-															hiddenFlag = 1
-														}
+														hiddenFlag = 0
 													}
-													const idx = findIndex(
-														this.data
-															.templetDetailList,
-														{
-															enName:
-																rule.relationEnName,
-														},
-													)
-													/* eslint-disable */
-													this.$set(
-														this.data
-															.templetDetailList[
-															idx
-														],
-														'addHidden',
-														hiddenFlag,
-													)
-													this.$set(
-														this.data
-															.templetDetailList[
-															idx
-														],
-														'modifyHidden',
-														hiddenFlag,
-													)
-													/* eslint-enable */
-												},
-											)
+												} else {
+													if (rule.operateType === 0) {
+														hiddenFlag = 0
+													} else {
+														hiddenFlag = 1
+													}
+												}
+												const idx = findIndex(this.data.templetDetailList, {
+													enName: rule.relationEnName,
+												})
+												/* eslint-disable */
+												this.$set(this.data.templetDetailList[idx], 'addHidden', hiddenFlag)
+												this.$set(this.data.templetDetailList[idx], 'modifyHidden', hiddenFlag)
+												/* eslint-enable */
+											})
 										}
 									})
 								},
@@ -263,10 +210,7 @@ export default {
 	},
 	computed: {
 		showForm() {
-			if (
-				(this.data.addHidden && this.editFlag === 0) ||
-				(this.data.modifyHidden && this.editFlag === 1)
-			) {
+			if ((this.data.addHidden && this.editFlag === 0) || (this.data.modifyHidden && this.editFlag === 1)) {
 				return false
 			} else {
 				return true
@@ -274,10 +218,7 @@ export default {
 		},
 		// formItem是否禁用
 		isDisabled() {
-			if (
-				(this.data.addDisabled && this.editFlag === 0) ||
-				(this.data.modifyDisabled && this.editFlag === 1)
-			) {
+			if ((this.data.addDisabled && this.editFlag === 0) || (this.data.modifyDisabled && this.editFlag === 1)) {
 				return true
 			} else {
 				return false
@@ -289,9 +230,7 @@ export default {
 				let length = 0
 				let columns = 0
 				if (this.data) {
-					length = this.data.templetDetailList
-						? this.data.templetDetailList.length
-						: 0
+					length = this.data.templetDetailList ? this.data.templetDetailList.length : 0
 					columns = Number(this.data.columns) || 1
 				}
 				return length <= columns
@@ -304,10 +243,7 @@ export default {
 			get() {
 				const self = this
 				let maxLength = 0
-				if (
-					self.data.templetDetailList &&
-					self.data.templetDetailList.length > 0
-				) {
+				if (self.data.templetDetailList && self.data.templetDetailList.length > 0) {
 					self.data.templetDetailList.forEach(item => {
 						let length = item.name.length
 						if (item.required) {

@@ -23,18 +23,18 @@
 			i-form-item
 				input#originFile.fn-hide(type="file", accept="application/json", @change="handleFile")
 				label.ivu-btn.ivu-btn-primary.d-detail-import-button(for="originFile") 选择导入文件
-	d-search(v-model="searchModal", :hide="() => (searchModal = false)")
+	search(v-model="searchModal", :hide="() => (searchModal = false)")
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Button, Modal, Form, FormItem, Input, Tooltip } from 'view-design'
 import loadMask from '../load-mask/index.vue'
 import { downloadFile, getQueryString } from '@/vue2/utils'
-import dSearch from '@/vue2/components/d-search/index.vue'
+import search from './search.vue'
 import Editor from '@/core/Editor'
 import { detail, detailFile, create, update } from '@/vue2/api/screen.api'
 import { screenShareUpdate } from '@/vue2/api/screenShare.api'
-import left from './left'
+import left from './left.vue'
 
 @Component({
 	components: {
@@ -45,7 +45,7 @@ import left from './left'
 		'i-form-item': FormItem,
 		'i-input': Input,
 		'i-tooltip': Tooltip,
-		dSearch,
+		search,
 		left,
 	},
 })
@@ -199,8 +199,8 @@ export default class DDetail extends Vue {
 		}
 
 		&:hover {
-			background-color: #30333d;
 			color: #fff;
+			background-color: #30333d;
 		}
 	}
 }
