@@ -23,7 +23,8 @@
 			i-option(value="config.api.params") 更新请求参数
 			i-option(value="config.api.data") 更新响应数据
 			i-option(value="config.config") 更新自定义数据
-			i-option(value="custom" v-if="editor.currentWidget.config.customEvent") 自定义事件
+			template(v-if="isShowCustomEvents")
+				i-option(:value="m.type" v-for="(m, n) in editor.currentWidget.config.customEvents" :key="n") {{m.name}}
 		d-code(
 			v-if="isComponentClass",
 			label="更新加工",
@@ -74,6 +75,12 @@ export default class FuncData extends func {
 
 	get isSceneClass(): boolean {
 		return this.editor.currentWidget.events[this.eventType][this.activeIndex].eventClass === 'scene'
+	}
+	
+	get isShowCustomEvents () {
+		const ids = this.editor.currentWidget.events[this.eventType][this.activeIndex].ids
+		if (ids.length !== 1) return false
+		return !!this.editor.screenWidgets[ids[0]].__handleCustomEvent__
 	}
 }
 </script>

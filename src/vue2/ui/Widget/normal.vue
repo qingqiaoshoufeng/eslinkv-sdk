@@ -9,7 +9,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class widgetNormal extends Vue {
 	@Prop() value
 	@Prop() customConfig
-	@Prop() customEvent
+	@Prop() customEvents
 	@Prop({
 		default() {
 			return []
@@ -37,7 +37,7 @@ export default class widgetNormal extends Vue {
 		;(this.$parent as any).parseConfigValue(this.value, this.customConfig)
 		;(this.$parent as any).dataSetting(this.setting, this.settingData)
 		;(this.$parent as any).eventTypesSetting(this.eventTypes)
-		;(this.$parent as any).setCustomEvent(this.customEvent)
+		;(this.$parent as any).setCustomEvent(this.customEvents)
 	}
 }
 </script>
