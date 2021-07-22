@@ -11,6 +11,7 @@ export default class HttpBase {
 	}
 
 	public request(config: any): Promise<any> {
+		const request = axios.create()
 		return new Promise<any>((resolve, reject) => {
 			const requestConfig: AxiosRequestConfig = {
 				method: this.method,
@@ -19,8 +20,7 @@ export default class HttpBase {
 				data: this.params,
 				...config,
 			}
-			console.log(/requestConfig/, requestConfig)
-			axios
+			request
 				.request(requestConfig)
 				.then((res: any) => {
 					resolve(res.data)

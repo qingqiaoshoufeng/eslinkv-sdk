@@ -5,9 +5,6 @@ component.widget-part.animate__animated(
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
 	v-bind="{ events, config, readonly,settingData, ...$attrs }",
-	@query-start="querying = true",
-	@query-end="querying = false",
-	@query-failed="querying = true",
 	v-on="$listeners",
 	v-if="widgetType !== 'group'",
 	ref="widgets")
@@ -37,9 +34,6 @@ export default class WidgetNormal extends Vue {
 	@Prop() settingData
 	@Prop({ default: false }) readonly
 	componentVersion = ''
-	querying = false
-	queryFailed = false
-	replayAnimation = false
 	ready = false
 	animationClass = null
 	duration = `.6s`
@@ -66,9 +60,6 @@ export default class WidgetNormal extends Vue {
 		el.style.animationDuration = ` ${animation.duration}ms`
 		el.style.animationDelay = `${animation.delay}ms`
 	}
-	handleAnimationEnd(): void {
-		this.replayAnimation = false
-	}
 	setAnimation(): void {
 		if (!this.animationEnabled || !this.animation) {
 			this.removeAnimation()
@@ -78,7 +69,6 @@ export default class WidgetNormal extends Vue {
 		this.duration = `${duration / 1000}s`
 		enter ? (this.animationClass = `animate__${enter}`) : void 0
 		const timer = setTimeout(() => {
-			this.handleAnimationEnd()
 			clearTimeout(timer)
 		}, delay)
 	}
@@ -130,10 +120,6 @@ export default class WidgetNormal extends Vue {
 	@Watch('ready')
 	onReadyChange(): void {
 		this.setAnimation()
-	}
-	@Watch('replayAnimation')
-	onReplayAnimationChange(value: boolean): void {
-		value ? this.setAnimation() : this.removeAnimation()
 	}
 	mounted(): void {
 		if (this.market) {

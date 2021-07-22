@@ -22,16 +22,16 @@ export default class Http extends Emitter {
 		super()
 	}
 
-	public init() {}
+	init(): void {}
 
-	public sortTask() {
+	sortTask(): void {
 		//todo 按权重排序，有优化空间
 		this.waitPool.sort((a: Task, b: Task): number => {
 			return b.weight - a.weight
 		})
 	}
 
-	public pushOne(task: Task) {
+	pushOne(task: Task): void {
 		if (task.loopTime > 0) {
 			this.loopPool.push(task)
 			this.startInterval()
@@ -53,7 +53,10 @@ export default class Http extends Emitter {
 	private retry(t: Task) {
 		t.errorCount++
 		if (t.errorCount < t.maxErrorCount) {
+			t.status = Task.STATUS_READY
 			this.push2Wait(t)
+		} else {
+			// todo 异常提醒
 		}
 	}
 
@@ -81,7 +84,7 @@ export default class Http extends Emitter {
 			Promise.allSettled(list).then(result => {
 				this.emit(Http.POOL_UPDATE)
 				result.forEach((res, index) => {
-					let t: Task = this.currentPool[index]
+					const t: Task = this.currentPool[index]
 					if (res.status === 'rejected') {
 						//todo 定时刷新的接口不用尝试重联
 						if (t.loopTime === 0) {
@@ -100,11 +103,9 @@ export default class Http extends Emitter {
 		}
 	}
 
-	abortOne() {}
-	/**
-	 * 清空队列中的请求
-	 */
-	public abortAll() {
+	abortOne(): void {}
+	/* 清空队列中的请求 */
+	public abortAll(): void {
 		this.waitPool = []
 		this.loopPool = []
 		this.currentPool = []

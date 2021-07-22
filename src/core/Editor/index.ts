@@ -4,6 +4,7 @@ import { configMerge } from '@/core/utils'
 import commonConfigValue from '@/core/common-config-value.js'
 import { useList } from '@/vue2/api/marketComponent.api'
 import Agent from '@/core/Editor/agent'
+import HttpTask from '@/core/Http/task'
 
 class Editor extends Agent {
 	init(res?: any): any {
@@ -334,6 +335,18 @@ class Editor extends Agent {
 		const test = JSON.parse(JSON.stringify(this.screen.screenWidgets))
 		if (eventTypes) this.eventTypesSettingFind(id, eventTypes, test)
 		this.screen.screenWidgets = { ...test }
+	}
+
+	request(method: string, url: string, params: any) {
+		this.http.pushOne(
+			new HttpTask(method, url, params)
+				.then(res => {
+					console.log(res)
+				})
+				.catch(e => {
+					console.warn(`${url}接口请求失败`, e)
+				}),
+		)
 	}
 }
 

@@ -1,10 +1,10 @@
-import fetch from '@/vue2/fetch.js'
+import fetch from '@/vue2/fetch'
 import dataProcess from '@/vue2/data-process.js'
 import { createSandbox } from '@/vue2/data-process'
 import { usePath } from '@/vue2/utils'
 import Editor from '@/core/Editor'
 
-const mx = {
+export default {
 	mixins: [fetch, dataProcess],
 	props: {
 		settingData: {
@@ -165,12 +165,6 @@ const mx = {
 		},
 		id(): string {
 			const now = +new Date()
-			if (this.config) {
-				if (this.config.widget) {
-					return `d-${this.config.widget.id ? this.config.widget.id : ''}${now}`
-				}
-				return `d-${now}`
-			}
 			return `d-${now}`
 		},
 		eventLength(): number {
@@ -202,4 +196,3 @@ const mx = {
 		this.inPreview = this.editor.editorStatus === 'inPreview'
 	},
 }
-export default mx

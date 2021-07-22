@@ -5,11 +5,11 @@ export default class EditorBase extends Factory<EditorBase> {
 	rulerContainerId = rulerContainerId
 	/* 大屏ID */
 	screenId: string
-	/* 大屏平台状态 是否自动贴靠参考线*/
+	/* 大屏平台状态 是否自动贴靠参考线 */
 	autoAlignGuide = true
-	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中*/
+	/* 大屏状态 inEdit  在编辑器中  inPreview 在预览中 */
 	editorStatus = 'inPreview'
-	/* 大屏平台状态 是否全屏*/
+	/* 大屏平台状态 是否全屏 */
 	fullscreen = false
 	/* 组件加载状态 */
 	widgetLoaded = {}

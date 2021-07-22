@@ -1,5 +1,6 @@
-import axios from 'axios'
-import { databaseQuery } from '@/vue2/api/dataWarehouse.api'
+import Editor from '@/core/Editor'
+const editor: Editor = Editor.Instance()
+import { databaseQuery } from '@/vue2/api/dataWarehouse.api.js'
 const parseParams = (params = {}) => {
 	if (typeof params === 'string' && params !== '') {
 		try {
@@ -10,10 +11,6 @@ const parseParams = (params = {}) => {
 	}
 	return params
 }
-
-const fetcher = axios.create({
-	withCredentials: false,
-})
 
 const filterFalsyKey = input => {
 	if (!input) return
@@ -41,47 +38,28 @@ export default {
 		}
 	},
 	methods: {
-		outerQuery(api) {
+		outerQuery(api): void {
 			const { url, method } = api
 			if (!url) return
-			this.querying = true
-			this.queryFailed = false
-			// 解析 params
 			const params = parseParams(api.params)
-			fetcher({
-				method,
-				url,
-				[method.toUpperCase() === 'GET' ? 'params' : 'data']: params,
-			})
-				.then(response => {
-					this.parseQueryResult(response, api)
-				})
-				.catch(e => {
-					console.warn(`${this.$options.label}接口请求失败`, e)
-					this.queryFailed = true
-				})
-				.finally(() => {
-					this.querying = false
-					this.lastFetchDoneTime = Date.now()
-				})
+			editor.request(method, url, params)
+			// .then(response => {
+			// 	this.parseQueryResult(response, api)
+			// })
+			// .finally(() => {
+			// 	this.querying = false
+			// 	this.lastFetchDoneTime = Date.now()
+			// })
 		},
-		innerQuery(api) {
-			let {
-				interface: innerUrl,
-				params: conditions,
-				path = 'data',
-				method = 'POST',
-			} = api.system
+		innerQuery(api): void {
+			const { interface: innerUrl, params: conditions, path = 'data', method = 'POST' } = api.system
 			if (!innerUrl) return
 			// 解析 params
 			let params = { ...parseParams(api.params) }
 			if (typeof params === 'object') {
 				Object.keys(params).forEach(key => {
 					const value = params[key]
-					params[key] =
-						typeof value !== 'object'
-							? value
-							: JSON.stringify(value)
+					params[key] = typeof value !== 'object' ? value : JSON.stringify(value)
 				})
 				Object.assign(params, filterFalsyKey(conditions))
 			} else {
@@ -100,9 +78,8 @@ export default {
 				this.lastFetchDoneTime = Date.now()
 			})
 		},
-		dispatchQuery(api) {
-			const system = api.system
-			if (!system || !system.enable) {
+		dispatchQuery(api): void {
+			if (!api.system || !api.system.enable) {
 				// 调用外部接口
 				this.outerQuery(api)
 				return
@@ -110,7 +87,7 @@ export default {
 			// 调用数仓接口
 			this.innerQuery(api)
 		},
-		handleApiChange() {
+		handleApiChange(): void {
 			const api = this.config.api
 			if (!api) return
 			if (this.queryTimer) clearTimeout(this.queryTimer)
@@ -119,7 +96,7 @@ export default {
 				this.queryTimer = null
 			}, 400)
 		},
-		startAutoFetch() {
+		startAutoFetch(): void {
 			this.stopAutoFetch()
 			if (this.queryTimer) {
 				this.fetchTimer = setTimeout(() => {
@@ -132,21 +109,16 @@ export default {
 			if (!this.lastFetchDoneTime) this.lastFetchDoneTime = Date.now()
 			this.fetchTimer = setInterval(() => {
 				if (this.querying) return
-				if (
-					Date.now() - this.lastFetchDoneTime >=
-					api.autoFetch.duration
-				)
-					this.dispatchQuery(api)
+				if (Date.now() - this.lastFetchDoneTime >= api.autoFetch.duration) this.dispatchQuery(api)
 			}, 100)
 		},
-		stopAutoFetch() {
+		stopAutoFetch(): void {
 			this.fetchTimer && clearInterval(this.fetchTimer)
 		},
 	},
 	computed: {
 		apiChangeWatcher() {
-			const { url, params, method, path, process = {}, system = {} } =
-				this.config.api || {}
+			const { url, params, method, path, process = {}, system = {} } = this.config.api || {}
 			const { enable: processEnable, methodBody } = process
 			const {
 				enable: systemEnable,
@@ -175,10 +147,10 @@ export default {
 		},
 	},
 	watch: {
-		querying(value) {
+		querying(value): void {
 			this.$emit(value ? 'query-start' : 'query-end')
 		},
-		queryFailed(value) {
+		queryFailed(value): void {
 			value && this.$emit('query-failed')
 		},
 		apiChangeWatcher: {
@@ -201,7 +173,7 @@ export default {
 			immediate: true,
 		},
 	},
-	beforeDestroy() {
+	beforeDestroy(): void {
 		this.fetchTimer && clearTimeout(this.fetchTimer)
 		this.queryTimer && clearTimeout(this.queryTimer)
 	},
