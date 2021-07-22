@@ -14,10 +14,10 @@
 			span 清除全部参考线
 	ul.list
 		item-card(@click="zoomIn", :keyItem="hotKeys[1].key")
-			d-svg.pointer(icon-class="zoomIn", :size="12")
+			e-svg.pointer(icon-class="zoomIn", :size="12")
 			span 画布放大
 		item-card(@click="zoomOut", :keyItem="hotKeys[2].key")
-			d-svg.pointer(icon-class="zoomOut", :size="12") 
+			e-svg.pointer(icon-class="zoomOut", :size="12") 
 			span 画布缩小
 		item-card(@click="resetZoom")
 			i-icon(type="md-happy")

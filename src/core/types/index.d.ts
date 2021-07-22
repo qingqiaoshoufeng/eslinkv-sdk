@@ -68,6 +68,10 @@ export interface EditorInstance {
 	localInit: localInit
 	createWidget: createWidget
 	init: init
+	/**
+	 * 当前大屏背景色
+	 */
+	backgroundColor: string
 }
 
 declare module '@eslinkv/core' {

@@ -3,19 +3,19 @@
 	left
 	ul.d-detail-right.fn-flex
 		li.fn-flex.flex-column.pointer(@click.stop="search")
-			d-svg(icon-class="search", :size="18")
+			e-svg(icon-class="search", :size="18")
 			span 搜索
 		li.fn-flex.flex-column.pointer(@click="preview")
-			d-svg(icon-class="preview", :size="20")
+			e-svg(icon-class="preview", :size="20")
 			span 预览
 		li.fn-flex.flex-column.pointer(@click="handleExport")
-			d-svg(icon-class="export", :size="20")
+			e-svg(icon-class="export", :size="20")
 			span 导出
 		li.fn-flex.flex-column.pointer(@click="importModal = true")
-			d-svg(icon-class="import", :size="20")
+			e-svg(icon-class="import", :size="20")
 			span 导入
 		li.fn-flex.flex-column.pointer(@click="handleSave")
-			d-svg(icon-class="save", :size="20")
+			e-svg(icon-class="save", :size="20")
 			span 保存
 	load-mask(:show="loading") {{ loadingMsg }}
 	i-modal(v-model="importModal", :footer-hide="true")

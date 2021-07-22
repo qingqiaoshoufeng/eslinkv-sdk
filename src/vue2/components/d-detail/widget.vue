@@ -17,7 +17,6 @@
 		.d-left-widget-list.fn-flex(v-if="current", v-show="openList[current.componentTypeId]")
 			item-card(
 				v-for="widget in list[current.componentTypeId]",
-				:key="widget.componentId",
 				:market="current.market",
 				:componentEnTitle="widget.componentEnTitle",
 				:componentConfig="widget.componentConfig",
@@ -88,15 +87,6 @@ export default class Widget extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.d-left-widget-list {
-	flex-wrap: wrap;
-	align-items: baseline;
-	width: 100%;
-	padding: 10px;
-	background: var(--background-4);
-	border: 1px solid rgba(36, 38, 46, 0.4);
-}
-
 .d-widget-list-img {
 	height: 100px;
 }
@@ -133,14 +123,29 @@ export default class Widget extends Vue {
 		user-select: none;
 	}
 }
-
+.d-left-widget-list {
+	flex-wrap: wrap;
+	align-items: baseline;
+	width: 100%;
+	padding: 10px;
+	background: var(--background-4);
+	border: 1px solid rgba(36, 38, 46, 0.4);
+	overflow-y: auto;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
 .d-left-widget-bottom {
 	top: 60px;
 	width: 402px;
 	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.57);
-
+	max-height: 400px;
 	ul {
 		background: var(--background-2);
+		overflow-y: auto;
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 
 	li {

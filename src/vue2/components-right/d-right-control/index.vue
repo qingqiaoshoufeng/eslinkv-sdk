@@ -3,7 +3,7 @@
 	label
 		span(style="margin-right: 5px") {{ label }}
 		i-tooltip(:content="title", placement="top", v-if="title")
-			d-svg.pos-r.pointer(:icon-class="icon", size="16", :style="{ top: '3px' }")
+			e-svg.pos-r.pointer(:icon-class="icon", size="16", :style="{ top: '3px' }")
 	.d-manage-modal-control-right
 		slot
 </template>

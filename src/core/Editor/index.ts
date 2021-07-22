@@ -63,35 +63,39 @@ class Editor extends Factory<Editor> {
 				})
 			}
 		})
-		useList({ list }).then((res: any) => {
-			res.forEach((item: any, index: number) => {
-				p.push(
-					new Promise(resolve => {
-						if (item) {
-							const script = document.createElement('script')
-							script.onload = () => {
+		if (list.length > 0) {
+			useList({ list }).then((res: any) => {
+				res.forEach((item: any, index: number) => {
+					p.push(
+						new Promise(resolve => {
+							if (item) {
+								const script = document.createElement('script')
+								script.onload = () => {
+									resolve(true)
+								}
+								script.src = item.componentJsUrl
+								document.head.appendChild(script)
+							} else {
 								resolve(true)
+								console.error(list[index])
+								console.error('组件初始化加载失败')
 							}
-							script.src = item.componentJsUrl
-							document.head.appendChild(script)
-						} else {
-							resolve(true)
-							console.error(list[index])
-							console.error('组件初始化加载失败')
+						}),
+					)
+				})
+				Promise.all(p).then(() => {
+					for (const key in screen.screenWidgets) {
+						if (screen.screenWidgets[key].value) {
+							screen.screenWidgets[key].config = screen.screenWidgets[key].value
+							delete screen.screenWidgets[key].value
 						}
-					}),
-				)
-			})
-			Promise.all(p).then(() => {
-				for (const key in screen.screenWidgets) {
-					if (screen.screenWidgets[key].value) {
-						screen.screenWidgets[key].config = screen.screenWidgets[key].value
-						delete screen.screenWidgets[key].value
 					}
-				}
-				this.screen.screenWidgets = screen.screenWidgets
+					this.screen.screenWidgets = screen.screenWidgets
+				})
 			})
-		})
+		} else {
+			this.screen.screenWidgets = screen.screenWidgets
+		}
 	}
 	/* ---------------------------------------------------Ruler---------------------------------------------------*/
 	createGuide(num: string | number, type: string): void {
