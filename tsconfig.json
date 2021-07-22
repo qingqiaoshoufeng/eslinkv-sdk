@@ -21,13 +21,8 @@
 		"paths": {
 			"@/*": ["./src/*"]
 		},
-		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+		"lib": ["es6", "esnext", "dom", "es2015.promise", "dom.iterable", "scripthost", "ES2020"]
 	},
-	"include": [
-		"src/**/*.ts",
-		"src/**/*.tsx",
-		"src/**/*.vue",
-		"types/Common.d.ts"
-	],
+	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "types/Common.d.ts"],
 	"exclude": ["node_modules", "src/demo"]
 }
