@@ -95,7 +95,11 @@ export default {
 								const processor = createSandbox(methodBody)
 								data = processor({ data })
 								coms.forEach((v: any) => {
-									if (!['config.api.params', 'config.api.data', 'config.config'].includes(item.triggerType)) {
+									if (
+										!['config.api.params', 'config.api.data', 'config.config'].includes(
+											item.triggerType,
+										)
+									) {
 										v.__handleCustomEvent__[item.triggerType](data)
 									} else {
 										this.editor.updateComponentTarget(v.id, item.triggerType, data)
@@ -107,7 +111,11 @@ export default {
 							}
 						} else {
 							coms.forEach((v: any) => {
-								if (!['config.api.params', 'config.api.data', 'config.config'].includes(item.triggerType)) {
+								if (
+									!['config.api.params', 'config.api.data', 'config.config'].includes(
+										item.triggerType,
+									)
+								) {
 									v.__handleCustomEvent__[item.triggerType](data)
 								} else {
 									this.editor.updateComponentTarget(v.id, item.triggerType, data)
@@ -152,6 +160,14 @@ export default {
 		},
 	},
 	computed: {
+		widgetId(): string {
+			if (this.config) {
+				if (this.config.widget) {
+					return this.config.widget.id
+				}
+			}
+			return ''
+		},
 		styles() {
 			const { layout } = this.config
 			return {

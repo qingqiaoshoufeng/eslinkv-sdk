@@ -42,10 +42,7 @@ export default {
 			const { url, method } = api
 			if (!url) return
 			const params = parseParams(api.params)
-			editor.request(method, url, params)
-			// .then(response => {
-			// 	this.parseQueryResult(response, api)
-			// })
+			editor.request(method, url, params, this.widgetId)
 			// .finally(() => {
 			// 	this.querying = false
 			// 	this.lastFetchDoneTime = Date.now()

@@ -5,6 +5,7 @@ import commonConfigValue from '@/core/common-config-value.js'
 import { useList } from '@/vue2/api/marketComponent.api'
 import Agent from '@/core/Editor/agent'
 import HttpTask from '@/core/Http/task'
+import { usePath, useProcess } from '@/vue2/utils'
 
 class Editor extends Agent {
 	init(res?: any): any {
@@ -337,11 +338,18 @@ class Editor extends Agent {
 		this.screen.screenWidgets = { ...test }
 	}
 
-	request(method: string, url: string, params: any) {
+	request(method: string, url: string, params: any, id) {
+		const path = this.screenWidgets[id].config.api.path
+		const process = this.screenWidgets[id].config.api.process
+		const loopTime = this.screenWidgets[id].config.api.autoFetch.enable
+			? this.screenWidgets[id].config.api.autoFetch.duration
+			: 0
 		this.http.pushOne(
-			new HttpTask(method, url, params)
+			new HttpTask(method, url, params, loopTime)
 				.then(res => {
-					console.log(res)
+					let response = usePath(path, res)
+					response = useProcess(process, response)
+					if (response !== undefined) this.screenWidgets[id].config.api.data = response
 				})
 				.catch(e => {
 					console.warn(`${url}接口请求失败`, e)

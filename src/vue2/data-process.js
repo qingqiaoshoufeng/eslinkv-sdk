@@ -1,15 +1,5 @@
-import { usePath } from '@/vue2/utils'
-const buildWall = source => {
-	source = `with (wall) { ${source} }`
-	// eslint-disable-next-line no-new-func
-	return new Function('wall', source)
-}
+import { usePath, useProcess } from '@/vue2/utils'
 
-export const createSandbox = source => {
-	return function () {
-		return buildWall(source).call({ ...arguments[0] }, { ...arguments[0] })
-	}
-}
 export default {
 	data() {
 		return {
@@ -36,30 +26,12 @@ export default {
 				}
 			}
 		},
-		/**
-		 * @description 数据加工
-		 */
-		useProcess(process = {}, data) {
-			const { enable, methodBody } = process
-			if (enable && methodBody.trim()) {
-				try {
-					const processor = createSandbox(methodBody)
-					data = processor({ data })
-				} catch (err) {
-					console.warn('数据加工函数语法错误：', err.message)
-					this.$Message.warning(
-						'数据加工函数语法错误：' + err.message,
-					)
-				}
-			}
-			return data
-		},
 		parseQueryResult(response, { path, process }) {
 			if (!response.data || typeof response.data !== 'object') {
 				return
 			}
 			response = usePath(path, response)
-			response = this.useProcess(process, response)
+			response = useProcess(process, response)
 			this.data = response
 		},
 	},

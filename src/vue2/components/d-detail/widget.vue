@@ -126,7 +126,7 @@ export default class Widget extends Vue {
 .d-left-widget-list {
 	flex-wrap: wrap;
 	align-items: baseline;
-	width: 100%;
+	flex: 1;
 	padding: 10px;
 	background: var(--background-4);
 	border: 1px solid rgba(36, 38, 46, 0.4);
@@ -167,6 +167,7 @@ export default class Widget extends Vue {
 	label {
 		line-height: 40px;
 		user-select: none;
+		text-align: center;
 	}
 }
 </style>

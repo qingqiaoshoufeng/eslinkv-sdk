@@ -25,8 +25,9 @@ export default class Task extends HttpBase {
 
 	public thenCb: Function
 	public catchCB: Function
-	constructor(method: string, url: string, params: any) {
+	constructor(method: string, url: string, params: any, loopTime) {
 		super(method, url, params)
+		this.loopTime = loopTime
 		this.status = Task.STATUS_WAITTING
 		this.errorCount = 0
 	}

@@ -53,7 +53,7 @@ export default class Http extends Emitter {
 	private retry(t: Task) {
 		t.errorCount++
 		if (t.errorCount < t.maxErrorCount) {
-			t.status = Task.STATUS_READY
+			t.status = Task.STATUS_RETRY
 			this.push2Wait(t)
 		} else {
 			// todo 异常提醒
@@ -65,6 +65,7 @@ export default class Http extends Emitter {
 		this.timer = setInterval(() => {
 			this.loopPool.forEach((task: Task) => {
 				if (Date.now() - task.lastTime > task.loopTime) {
+					console.log(task.loopTime, 1)
 					this.push2Wait(task)
 				}
 			})
@@ -86,7 +87,6 @@ export default class Http extends Emitter {
 				result.forEach((res, index) => {
 					const t: Task = this.currentPool[index]
 					if (res.status === 'rejected') {
-						//todo 定时刷新的接口不用尝试重联
 						if (t.loopTime === 0) {
 							this.retry(t)
 						}

@@ -18,53 +18,29 @@ const mouseLeftImg =
 const hotKeys = [
 	{
 		name: '清除全部参考线',
-		key: [
-			{ value: alt, type: 'text' },
-			{ type: '+' },
-			{ value: 'C', type: 'text' },
-		],
+		key: [{ value: alt, type: 'text' }, { type: '+' }, { value: 'C', type: 'text' }],
 	},
 	{
 		name: '放大画布',
-		key: [
-			{ value: ctrl, type: 'text' },
-			{ type: '+' },
-			{ value: '+', type: 'text' },
-		],
+		key: [{ value: ctrl, type: 'text' }, { type: '+' }, { value: '+', type: 'text' }],
 	},
 	{
 		name: '缩小画布',
-		key: [
-			{ value: ctrl, type: 'text' },
-			{ type: '+' },
-			{ value: '-', type: 'text' },
-		],
+		key: [{ value: ctrl, type: 'text' }, { type: '+' }, { value: '-', type: 'text' }],
 	},
 	{
 		name: '缩放画布',
-		key: [
-			{ value: ctrl, type: 'text' },
-			{ type: '+' },
-			{ value: mouseWheelImg, type: 'img' },
-		],
+		key: [{ value: ctrl, type: 'text' }, { type: '+' }, { value: mouseWheelImg, type: 'img' }],
 	},
 	{
 		name: '拖动画布',
-		key: [
-			{ value: space, type: 'text' },
-			{ type: '+' },
-			{ value: mouseLeftImg, type: 'img' },
-		],
+		key: [{ value: space, type: 'text' }, { type: '+' }, { value: mouseLeftImg, type: 'img' }],
 	},
 	{ name: '抓手', key: [{ value: space, type: 'text' }] },
 	{ name: '删除组件', key: [{ value: del, type: 'text' }] },
 	{
 		name: '水平移动画布',
-		key: [
-			{ value: shift, type: 'text' },
-			{ type: '+' },
-			{ value: mouseWheelImg, type: 'img' },
-		],
+		key: [{ value: shift, type: 'text' }, { type: '+' }, { value: mouseWheelImg, type: 'img' }],
 	},
 	{
 		name: '垂直移动画布',
@@ -72,6 +48,30 @@ const hotKeys = [
 	},
 ]
 export { hotKeys }
+
+const buildWall = source => {
+	source = `with (wall) { ${source} }`
+	// eslint-disable-next-line no-new-func
+	return new Function('wall', source)
+}
+const createSandbox = source => {
+	return function () {
+		return buildWall(source).call({ ...arguments[0] }, { ...arguments[0] })
+	}
+}
+export const useProcess = (process = {}, data) => {
+	const { enable, methodBody } = process
+	if (enable && methodBody.trim()) {
+		try {
+			const processor = createSandbox(methodBody)
+			data = processor({ data })
+		} catch (err) {
+			console.warn('数据加工函数语法错误：', err.message)
+			Message.warning('数据加工函数语法错误：' + err.message)
+		}
+	}
+	return data
+}
 
 /**
  * @description 按照引用路径，查找末端数据
@@ -86,9 +86,7 @@ export const usePath = (path, data) => {
 		}
 		data = data[key]
 		if (data === undefined) {
-			Message.warning(
-				`数据源查找路径 ${path}，在 ${key} 处未引用到有效数据！`,
-			)
+			Message.warning(`数据源查找路径 ${path}，在 ${key} 处未引用到有效数据！`)
 			break
 		}
 	}
@@ -106,9 +104,7 @@ export const configMerge = function (from, to) {
 		const value = from[actualKey]
 		if (value && typeof value === 'object') {
 			if (!output[actualKey]) {
-				output[actualKey] = !Array.isArray(value)
-					? { ...value }
-					: [...value]
+				output[actualKey] = !Array.isArray(value) ? { ...value } : [...value]
 				return
 			}
 			output[actualKey] = configMerge(value, output[actualKey])
@@ -160,12 +156,7 @@ export const deepCopy = e => {
 export const desensitize = (e, t) => {
 	const r = new RegExp(t)
 	return e.replace(r, function () {
-		for (
-			let e = {}, t = '', r = arguments.length, n = new Array(r), o = 0;
-			o < r;
-			o++
-		)
-			n[o] = arguments[o]
+		for (let e = {}, t = '', r = arguments.length, n = new Array(r), o = 0; o < r; o++) n[o] = arguments[o]
 		for (const i in n[n.length - 1]) {
 			if (((e[i] = n[n.length - 1][i]), i.lastIndexOf('hide') >= 0)) {
 				e[i] = ''
@@ -217,10 +208,7 @@ export function handlerRules(template) {
 	if (template.required && template.type !== 16) {
 		// 时间段类型
 		if (template.type === 6) {
-			if (
-				template.timeType === 'daterange' ||
-				template.timeType === 'datetimerange'
-			) {
+			if (template.timeType === 'daterange' || template.timeType === 'datetimerange') {
 				validate.push({
 					type: 'array',
 					len: 2,
@@ -257,12 +245,7 @@ export function handlerRules(template) {
 			}
 		}
 		// 多选，多选类型的组件，数据模型为array
-		else if (
-			template.multiple ||
-			template.type === 3 ||
-			template.type === 8 ||
-			template.type === 10
-		) {
+		else if (template.multiple || template.type === 3 || template.type === 8 || template.type === 10) {
 			validate.push({
 				type: 'array',
 				required: true,
