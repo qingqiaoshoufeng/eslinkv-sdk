@@ -55,6 +55,9 @@ const mx = {
 		dataSetting(list = [], data): void {
 			this.editor.dataSetting(this.config.widget.id, list, data)
 		},
+		setCustomEvent(event): void {
+			this.editor.setCustomEvent(this.config.widget.id, event)
+		},
 		__handleEvent__(eventType = 'click', val): void {
 			if (this.events) {
 				if (!this.events[eventType]) {
@@ -82,28 +85,34 @@ const mx = {
 						}
 					}
 					if (item.eventClass === 'component') {
-						if (item.triggerType === 'update') {
-							const coms = Object.values(this.editor.screenWidgets).filter((v: any) =>
-								item.ids.includes(v.id),
-							)
-							let data = usePath(item.source.trim(), val)
-							const { enable, methodBody } = item.process
-							if (enable && methodBody.trim()) {
-								try {
-									const processor = createSandbox(methodBody)
-									data = processor({ data })
-									coms.forEach((v: any) => {
-										this.editor.updateComponentTarget(v.id, item.target, data)
-									})
-								} catch (err) {
-									console.warn('数据加工函数语法错误：', err.message)
-									this.$Message.warning('数据加工函数语法错误：' + err.message)
-								}
-							} else {
+						const coms = Object.values(this.editor.screenWidgets).filter((v: any) =>
+							item.ids.includes(v.id),
+						)
+						let data = usePath('', val)
+						const { enable, methodBody } = item.process
+						if (enable && methodBody.trim()) {
+							try {
+								const processor = createSandbox(methodBody)
+								data = processor({ data })
 								coms.forEach((v: any) => {
-									this.editor.updateComponentTarget(v.id, item.target, data)
+									if (this.config.customEvent) {
+										v.__handleCustomEvent__(data)
+									} else {
+										this.editor.updateComponentTarget(v.id, item.triggerType, data)
+									}
 								})
+							} catch (err) {
+								console.warn('数据加工函数语法错误：', err.message)
+								this.$Message.warning('数据加工函数语法错误：' + err.message)
 							}
+						} else {
+							coms.forEach((v: any) => {
+								if (this.config.customEvent) {
+									v.__handleCustomEvent__(data)
+								} else {
+									this.editor.updateComponentTarget(v.id, item.triggerType, data)
+								}
+							})
 						}
 					}
 				}

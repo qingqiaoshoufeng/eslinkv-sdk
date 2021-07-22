@@ -9,32 +9,21 @@
 			i-option(value="component") 组件事件
 		i-select(
 			v-if="isComponentClass",
-			:style="{ marginBottom: '10px' }",
-			v-model="editor.currentWidget.events[eventType][activeIndex].triggerType",
-			placeholder="事件类型")
-			i-option(value="update") 更新组件
-		i-select(
-			v-if="isComponentClass",
 			v-model="editor.currentWidget.events[eventType][activeIndex].ids",
 			:style="{ marginBottom: '10px' }",
 			placeholder="选择组件",
 			multiple,
 			filterable)
 			i-option(:value="k", :key="i", v-for="(k, i) in Object.keys(editor.screenWidgets)") {{ editor.screenWidgets[k].config.widget.name }}
-		i-input(
-			v-if="isComponentClass",
-			:style="{ marginBottom: '10px' }",
-			v-model="editor.currentWidget.events[eventType][activeIndex].source",
-			placeholder="源地址路径",)
 		i-select(
 			v-if="isComponentClass",
 			:style="{ marginBottom: '10px' }",
-			clearable,
-			v-model="editor.currentWidget.events[eventType][activeIndex].target",
-			placeholder="目标地址路径")
+			v-model="editor.currentWidget.events[eventType][activeIndex].triggerType",
+			placeholder="事件类型")
 			i-option(value="config.api.params") 更新请求参数
 			i-option(value="config.api.data") 更新响应数据
 			i-option(value="config.config") 更新自定义数据
+			i-option(value="custom" v-if="editor.currentWidget.config.customEvent") 自定义事件
 		d-code(
 			v-if="isComponentClass",
 			label="更新加工",
@@ -46,19 +35,19 @@
 		i-select(
 			v-if="isSceneClass",
 			:style="{ marginBottom: '10px' }",
-			v-model="editor.currentWidget.events[eventType][activeIndex].triggerType",
-			placeholder="事件类型")
-			i-option(value="openScene") 打开场景
-			i-option(value="closeScene") 关闭场景
-			i-option(value="changeScene") 切换场景
-		i-select(
-			v-if="isSceneClass",
-			:style="{ marginBottom: '10px' }",
 			v-model="editor.currentWidget.events[eventType][activeIndex].id",
 			filterable,
 			placeholder="目标场景")
 			i-option(:value="0") 主场景
 			i-option(:value="key", v-for="(item, key) in editor.sceneObj", :key="key") {{ item.name }}
+		i-select(
+			v-if="isSceneClass",
+			:style="{ marginBottom: '10px' }",
+			v-model="editor.currentWidget.events[eventType][activeIndex].triggerType",
+			placeholder="事件类型")
+			i-option(value="openScene") 打开场景
+			i-option(value="closeScene") 关闭场景
+			i-option(value="changeScene") 切换场景
 		i-select(
 			v-if="isSceneClass",
 			clearable,

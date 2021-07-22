@@ -3,6 +3,7 @@ widget-normal(
 	:value="value",
 	:customConfig="customConfig",
 	:setting="setting",
+	:customEvent="test"
 	:settingData="settingD")
 	.chart(:id="id")
 </template>
@@ -20,6 +21,7 @@ export default class extends mixins(widgetMixin) {
 	customConfig = customConfig
 	setting = setting
 	settingD = settingData
+
 	setOption(): void {
 		const option = getOption(this.config.config)
 		if (this.settingData['y'])
@@ -51,6 +53,11 @@ export default class extends mixins(widgetMixin) {
 				this.setOption(val)
 			})
 		}
+	}
+	
+	test (a) {
+		console.log(this.value)
+		console.log(a)
 	}
 }
 </script>

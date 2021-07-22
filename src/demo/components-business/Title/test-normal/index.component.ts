@@ -27,6 +27,7 @@ export const value = {
 	api: {
 		data: JSON.stringify({ title: '标题' }),
 	},
+	customEvent: true,
 	layout: {
 		size: {
 			width: 480,
