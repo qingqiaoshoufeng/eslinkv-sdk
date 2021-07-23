@@ -6,7 +6,7 @@ d-right-swiper(
 		:label="item.label",
 		v-for="item in editor.currentWidget.settingDataHandle")
 		i-select(
-			v-model="editor.currentWidget.settingData[item.key]",
+			v-model="editor.currentWidget.__settingData__[item.key]",
 			@on-change="handleChange",
 			:multiple="true")
 			i-option(v-for="item in list", :value="item") {{ item }}

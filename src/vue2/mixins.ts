@@ -7,7 +7,7 @@ import Editor from '@/core/Editor'
 export default {
 	mixins: [fetch, dataProcess],
 	props: {
-		settingData: {
+		__settingData__: {
 			type: Object,
 		},
 		events: {

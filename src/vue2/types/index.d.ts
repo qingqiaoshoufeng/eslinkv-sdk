@@ -63,7 +63,7 @@ declare module '@eslinkv/vue2' {
 	 *
 	 * props.customConfig 组件配置值
 	 *
-	 * props.settingData 自定义数据过滤默认值
+	 * props.__settingData__ 自定义数据过滤默认值
 	 *
 	 * props.setting 自定义数据过滤配置值
 	 */
@@ -105,7 +105,7 @@ declare module '@eslinkv/vue2' {
 		 *
 		 * 例如：[{x:'value'}]
 		 */
-		settingData: { [key: string]: string }[]
+		__settingData__: { [key: string]: string }[]
 		/**
 		 * widgetNormalMixin
 		 *

@@ -9,7 +9,7 @@ export default class Widget {
 	market: boolean
 	children = {}
 	settingDataHandle = []
-	settingData = {}
+	__settingData__ = {}
 	eventTypes = []
 	__handleCustomEvent__: void
 	customEventsConfig: any[]
@@ -23,7 +23,7 @@ export default class Widget {
 	) {
 		const {
 			// settingDataHandle = [],
-			// settingData = {},
+			// __settingData__ = {},
 			// eventTypes = [],
 			// events = {},
 			type,
@@ -36,7 +36,7 @@ export default class Widget {
 		} = data
 		this.type = type
 		// this.settingDataHandle = settingDataHandle
-		// this.settingData = settingData
+		// this.__settingData__ = __settingData__
 		// this.eventTypes = eventTypes
 		// this.events = events
 		this.market = market

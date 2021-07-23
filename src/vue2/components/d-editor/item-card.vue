@@ -26,7 +26,7 @@ dr(
 		:type="item.type",
 		:events="item.events",
 		:eventTypes="item.eventTypes",
-		:settingData="item.settingData",
+		:__settingData__="item.__settingData__",
 		:config="item.config",
 		:children="item.children",
 		:market="item.market")
