@@ -3,7 +3,7 @@ transition(name="fade")
 	.load-mask.pos-a.fn-flex.z-index-999(
 		v-if="show",
 		:style="`background-color: ${backgroundColor}; color: ${color}; font-size: ${fontSize}`")
-		e-svg(icon-class="loading", :size="iconSize")
+		e-svg.loading(icon-class="loading", :size="iconSize")
 		slot {{ text }}
 </template>
 <script lang="ts">
@@ -22,6 +22,17 @@ class loadMask extends Vue {
 export default loadMask
 </script>
 <style lang="scss">
+@keyframes rotate {
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.loading {
+	animation: rotate infinite 1s;
+}
 .load-mask {
 	top: 0;
 	right: 0;
