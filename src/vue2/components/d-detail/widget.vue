@@ -28,7 +28,7 @@
 <script lang="ts">
 import itemCard from './item-card.vue'
 import { Component, Vue } from 'vue-property-decorator'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 import { typeList } from '@/vue2/api/marketComponent.api'
 
 @Component({

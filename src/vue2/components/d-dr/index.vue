@@ -34,7 +34,7 @@
 <script lang="ts">
 import { addEvent, removeEvent } from './dom'
 import dDrKuang from '../d-dr-kuang/index.vue'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 
 export default {
 	components: {

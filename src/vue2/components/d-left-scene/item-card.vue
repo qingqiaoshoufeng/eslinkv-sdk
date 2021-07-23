@@ -24,7 +24,7 @@ li.pointer.pos-r.d-left-scene-list-li(
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Icon } from 'view-design'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 
 @Component({
 	components: {

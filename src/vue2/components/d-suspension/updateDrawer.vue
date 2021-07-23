@@ -11,7 +11,7 @@ drawer(title="组件升级", :closable="false", v-model="showDrawer")
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { Drawer, Checkbox, CheckboxGroup } from 'view-design'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 
 @Component({
 	components: {

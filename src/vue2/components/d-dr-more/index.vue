@@ -5,7 +5,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import dDrKuang from '@/vue2/components/d-dr-kuang/index.vue'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 @Component({
 	components: {
 		dDrKuang,

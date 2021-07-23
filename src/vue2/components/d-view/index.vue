@@ -52,7 +52,7 @@
 <script lang="ts">
 import loadMask from '../load-mask/index.vue'
 import { Component, Vue } from 'vue-property-decorator'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 
 @Component({
 	components: {

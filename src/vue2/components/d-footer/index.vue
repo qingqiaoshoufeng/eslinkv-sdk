@@ -17,7 +17,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Icon, Tooltip } from 'view-design'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 import { hotKeys } from '@/vue2/utils'
 import left from './left.vue'
 

@@ -10,7 +10,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 
 @Component
 export default class widgetGroupItem extends Vue {

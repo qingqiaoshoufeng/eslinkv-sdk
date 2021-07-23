@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Input, Modal, Icon } from 'view-design'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 import { copyText } from '@/vue2/utils'
 import ItemCard from '@/vue2/components/d-footer/item-card.vue'
 import { hotKeys } from '@/vue2/utils'

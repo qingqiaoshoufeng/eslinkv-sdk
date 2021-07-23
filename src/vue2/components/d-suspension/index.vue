@@ -10,7 +10,7 @@ import updateDrawer from './updateDrawer.vue'
 import { Component, Vue } from 'vue-property-decorator'
 import { Icon, Tooltip } from 'view-design'
 import { versionUpdateList } from '@/vue2/api/marketComponent.api'
-import { Editor } from '@/core/index'
+import { Editor } from '@eslinkv/core'
 
 @Component({
 	components: {

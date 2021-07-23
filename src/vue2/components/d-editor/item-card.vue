@@ -35,7 +35,7 @@ dr(
 import dr from '@/vue2/components/d-dr/index.vue'
 import dDrKuang from '@/vue2/components/d-dr-kuang/index.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 @Component({
 	components: {
 		dr,

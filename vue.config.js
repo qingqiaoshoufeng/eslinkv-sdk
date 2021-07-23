@@ -83,6 +83,11 @@ module.exports = {
 						amd: 'vue-class-component',
 					},
 					echarts: 'echarts',
+					'@eslinkv/core': {
+						commonjs: '@eslinkv/core',
+						commonjs2: '@eslinkv/core',
+						amd: '@eslinkv/core',
+					}
 				},
 			]
 		} else {
@@ -91,7 +96,7 @@ module.exports = {
 					vue: 'Vue',
 					'vue-router': 'VueRouter',
 					'vue-class-component': 'VueClassComponent',
-					echarts: 'echarts',
+					echarts: 'echarts'
 				},
 			]
 		}

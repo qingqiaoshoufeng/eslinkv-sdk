@@ -50,7 +50,7 @@ import drMore from '@/vue2/components/d-dr-more/index.vue'
 import dFooter from '../d-footer/index.vue'
 import ItemCard from './item-card.vue'
 import { Component, Vue } from 'vue-property-decorator'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 
 @Component({
 	components: {

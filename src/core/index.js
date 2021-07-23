@@ -1,11 +1,15 @@
 import Editor from './Editor/index.ts'
 import { loadCss, loadJs } from '@/core/utils'
+import colorTheme from '@/core/colorTheme'
+import Widget from '@/core/Widget/normal'
 
 const editor = Editor.Instance()
 const eslinkV = {
 	Editor,
 	loadCss,
 	loadJs,
+	colorTheme,
+	Widget,
 }
 if (window !== undefined) {
 	if (!window.eslinkV) {
@@ -39,5 +43,5 @@ window.eslinkV.instance = {
 		},
 	},
 }
-export { Editor, loadCss, loadJs }
+export { Editor, loadCss, loadJs, colorTheme, Widget }
 export default eslinkV

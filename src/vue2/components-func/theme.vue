@@ -14,7 +14,7 @@
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
-import colorTheme from '@/core/colorTheme.js'
+import {colorTheme} from '@eslinkv/core'
 
 @Component
 export default class FuncAnimation extends func {

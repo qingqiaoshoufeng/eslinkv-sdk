@@ -7,7 +7,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Button } from 'view-design'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 
 @Component({
 	components: {

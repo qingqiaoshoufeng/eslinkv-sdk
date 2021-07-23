@@ -36,7 +36,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Icon } from 'view-design'
-import Editor from '@/core/Editor'
+import {Editor} from '@eslinkv/core'
 import ClickOutside from 'vue-click-outside'
 import ItemCard from '@/vue2/components/right-menu/item-card.vue'
 import { create } from '@/vue2/api/collectionComponent.api.js'

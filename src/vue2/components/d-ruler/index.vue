@@ -15,8 +15,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import Editor from '@/core/Editor'
-import Widget from '@/core/Widget/normal'
+import {Editor} from '@eslinkv/core'
+import {Widget} from '@eslinkv/core'
 import rulerRightMenu from '@/vue2/components/right-menu/ruler.vue'
 
 @Component({
