@@ -1,6 +1,5 @@
-import Editor from '@/core/Editor'
-const editor: Editor = Editor.Instance()
-import { databaseQuery } from '@/vue2/api/dataWarehouse.api.js'
+import axios from 'axios'
+import { databaseQuery } from '@/vue2/api/dataWarehouse.api'
 const parseParams = (params = {}) => {
 	if (typeof params === 'string' && params !== '') {
 		try {
@@ -11,6 +10,10 @@ const parseParams = (params = {}) => {
 	}
 	return params
 }
+
+const fetcher = axios.create({
+	withCredentials: false,
+})
 
 const filterFalsyKey = input => {
 	if (!input) return
@@ -41,12 +44,26 @@ export default {
 		outerQuery(api): void {
 			const { url, method } = api
 			if (!url) return
+			this.querying = true
+			this.queryFailed = false
+			// 解析 params
 			const params = parseParams(api.params)
-			editor.request(method, url, params, this.widgetId)
-			// .finally(() => {
-			// 	this.querying = false
-			// 	this.lastFetchDoneTime = Date.now()
-			// })
+			fetcher({
+				method,
+				url,
+				[method.toUpperCase() === 'GET' ? 'params' : 'data']: params,
+			})
+				.then(response => {
+					this.parseQueryResult(response, api)
+				})
+				.catch(e => {
+					console.warn(`${this.$options.label}接口请求失败`, e)
+					this.queryFailed = true
+				})
+				.finally(() => {
+					this.querying = false
+					this.lastFetchDoneTime = Date.now()
+				})
 		},
 		innerQuery(api): void {
 			const { interface: innerUrl, params: conditions, path = 'data', method = 'POST' } = api.system

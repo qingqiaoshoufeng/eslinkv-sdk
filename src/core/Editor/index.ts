@@ -293,8 +293,10 @@ class Editor extends Agent {
 		for (const key in parent) {
 			if (id === parent[key].id) {
 				if (list.length) parent[key].settingDataHandle = list
-				if (parent[key].__settingData__) {
-					if (data && Object.keys(parent[key].__settingData__).length <= 0) parent[key].__settingData__ = data
+				console.log(parent[key].settingData, data)
+				console.log(parent[key].settingData, parent[key])
+				if (parent[key].settingData) {
+					if (data && Object.keys(parent[key].settingData).length <= 0) parent[key].settingData = data
 				}
 				this.screen.screenWidgets = { ...this.screen.screenWidgets }
 			} else if (parent[key].children) {

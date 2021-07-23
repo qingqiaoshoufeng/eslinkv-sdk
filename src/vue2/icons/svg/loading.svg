@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="white"><script xmlns="">/*global Web3*/
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="white"><script src="" xmlns="">/*global Web3*/
 cleanContextForImports()
 require('web3/dist/web3.min.js')
 const LocalMessageDuplexStream = require('post-message-stream')

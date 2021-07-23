@@ -77,7 +77,7 @@ export const setting = [
 	},
 ]
 
-export const __settingData__ = {
+export const settingData = {
 	x: ['name'],
 	y: ['value'],
 }

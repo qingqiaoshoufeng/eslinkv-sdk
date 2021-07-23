@@ -7,7 +7,7 @@ import Editor from '@/core/Editor'
 export default {
 	mixins: [fetch, dataProcess],
 	props: {
-		__settingData__: {
+		settingData: {
 			type: Object,
 		},
 		events: {
@@ -38,6 +38,7 @@ export default {
 			animateActiveIndex: -1,
 			output: null,
 			inPreview: true,
+			settingData: {},
 			editor: Editor.Instance(),
 		}
 	},

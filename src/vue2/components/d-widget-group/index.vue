@@ -8,7 +8,7 @@
 				:type="item.type",
 				:config="item.config",
 				:events="item.events",
-				:__settingData__="item.__settingData__",
+				:settingData="item.settingData",
 				:children="item.children",
 				:market="item.market",
 				v-else)

@@ -1,13 +1,15 @@
 <template lang="pug">
 div 
-	span(@click="clickPost") testPost
-	span(@click="clickGet") testGet
+	load-mask
 </template>
 <script lang="ts">
 import Editor from '@/core/Editor'
 import { Vue, Component } from 'vue-property-decorator'
+import LoadMask from '@/vue2/components/load-mask'
 
-@Component
+@Component({
+	components: { LoadMask },
+})
 export default class extends Vue {
 	editor: Editor = Editor.Instance()
 	clickPost(): void {

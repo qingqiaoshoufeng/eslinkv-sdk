@@ -4,7 +4,7 @@ component.widget-part.animate__animated(
 	:is="currentComponent",
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
-	v-bind="{ events, config, readonly,__settingData__, ...$attrs }",
+	v-bind="{ events, config, readonly,settingData, ...$attrs }",
 	v-on="$listeners",
 	v-if="widgetType !== 'group'",
 	ref="widgets")
@@ -13,7 +13,7 @@ eslinkv-group(
 	v-else,
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
-	v-bind="{ events, config, readonly,__settingData__, ...$attrs }",
+	v-bind="{ events, config, readonly,settingData, ...$attrs }",
 	v-on="$listeners")
 </template>
 <script lang="ts">
@@ -31,7 +31,7 @@ export default class WidgetNormal extends Vue {
 	@Prop() config
 	@Prop() events
 	@Prop() eventTypes
-	@Prop() __settingData__
+	@Prop() settingData
 	@Prop({ default: false }) readonly
 	componentVersion = ''
 	ready = false
