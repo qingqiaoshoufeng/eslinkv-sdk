@@ -94,7 +94,7 @@ export default {
 											item.triggerType,
 										)
 									) {
-										v.__handleCustomEvent__[item.triggerType](data)
+										v.customEventsConfig.find((c: any) => c.type === item.triggerType).handler(data)
 									} else {
 										this.editor.updateComponentTarget(v.id, item.triggerType, data)
 									}
@@ -110,7 +110,7 @@ export default {
 										item.triggerType,
 									)
 								) {
-									v.__handleCustomEvent__[item.triggerType](data)
+									v.customEventsConfig.find((c: any) => c.type === item.triggerType).handler(data)
 								} else {
 									this.editor.updateComponentTarget(v.id, item.triggerType, data)
 								}
@@ -150,11 +150,10 @@ export default {
 		},
 		__init__(obj): void {
 			this.configReady = true
-			const { value, customConfig, setting, settingData, eventTypes, customEvents, customEventsConfig } = obj
+			const { value, customConfig, setting, settingData, eventTypes, customEventsConfig } = obj
 			this.parseConfigValue(value, customConfig)
 			this.__eventTypesSetting__(eventTypes)
 			this.editor.dataSetting(this.config.widget.id, setting, settingData)
-			this.editor.setCustomEvent(this.config.widget.id, customEvents)
 			this.editor.setCustomEventConfig(this.config.widget.id, customEventsConfig)
 		},
 		parseConfigValue(localConfigValue, customConfig) {

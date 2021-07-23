@@ -11,7 +11,6 @@ export default class Widget {
 	settingDataHandle = []
 	settingData = {}
 	eventTypes = []
-	__handleCustomEvent__: void
 	customEventsConfig: any[]
 	events = {}
 	constructor(

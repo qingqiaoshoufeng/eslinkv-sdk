@@ -24,7 +24,7 @@
 			i-option(value="config.api.data") 更新响应数据
 			i-option(value="config.config") 更新自定义数据
 			template(v-if="isShowCustomEvents")
-				i-option(:value="m.type" v-for="(m, n) in editor.currentWidget.customEventsConfig" :key="n") {{m.name}}
+				i-option(:value="m.type" v-for="(m, n) in customEventsConfig" :key="n") {{m.name}}
 		d-code(
 			v-if="isComponentClass",
 			label="更新加工",
@@ -79,8 +79,13 @@ export default class FuncData extends func {
 	
 	get isShowCustomEvents () {
 		const ids = this.editor.currentWidget.events[this.eventType][this.activeIndex].ids
-		if (ids.length !== 1) return false
-		return !!this.editor.screenWidgets[ids[0]].__handleCustomEvent__
+		return ids.length === 1
+	}
+	
+	get customEventsConfig () {
+		const ids = this.editor.currentWidget.events[this.eventType][this.activeIndex].ids
+		if (ids.length !== 1) return []
+		return this.editor.screenWidgets[ids[0]].customEventsConfig
 	}
 }
 </script>

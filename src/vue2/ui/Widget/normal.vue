@@ -9,7 +9,6 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class widgetNormal extends Vue {
 	@Prop() value
 	@Prop() customConfig
-	@Prop() customEvents
 	@Prop() customEventsConfig
 	@Prop({
 		default() {
@@ -41,7 +40,6 @@ export default class widgetNormal extends Vue {
 			setting: this.setting,
 			settingData: this.settingData,
 			eventTypes: this.eventTypes,
-			customEvents: this.customEvents,
 			customEventsConfig: this.customEventsConfig,
 		})
 	}

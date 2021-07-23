@@ -2,8 +2,8 @@
 widget-normal(
 	:value="value",
 	:customConfig="customConfig",
+	:customEventsConfig="customEventsConfig"
 	:setting="setting",
-	:customEvents="{ testEvent: test1, test2: test2 }",
 	:settingData="settingD")
 	.chart(:id="id")
 </template>
@@ -52,7 +52,18 @@ export default class extends mixins(widgetMixin) {
 			})
 		}
 	}
-
+	customEventsConfig = [
+		{
+			type: 'test1',
+			name: '自定义事件1',
+			handler: this.test1
+		},
+		{
+			type: 'test2',
+			name: '自定义事件2',
+			handler: this.test2
+		}
+	]
 	test1(a) {
 		console.log('test1')
 		console.log(a)

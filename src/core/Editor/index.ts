@@ -302,18 +302,6 @@ class Editor extends Agent {
 			}
 		}
 	}
-	setCustomEvent(id: string, event): void {
-		this.setCustomEventFind(id, event, this.screen.screenWidgets)
-	}
-	private setCustomEventFind(id: string, event, parent) {
-		for (const key in parent) {
-			if (id === parent[key].id) {
-				parent[key].__handleCustomEvent__ = event
-			} else if (parent[key].children) {
-				this.setCustomEventFind(id, event, parent[key].children)
-			}
-		}
-	}
 	setCustomEventConfig(id: string, val): void {
 		this.setCustomEventConfigFind(id, val, this.screen.screenWidgets)
 	}

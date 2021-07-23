@@ -2,7 +2,6 @@
 widget-normal(
 	:value="value",
 	:customConfig="customConfig",
-	:customEventsConfig="customEventsConfig"
 	:eventTypes="[ { key: 'click', label: '点击' }, { key: 'mouseover', label: '悬停事件' }, ]")
 	.fn-flex.flex-row.h-title-1(v-if="data")
 		.h-title-1-icon
@@ -35,16 +34,6 @@ export default class extends mixins(widgetMixin) {
 	}
 	value = value
 	customConfig = customConfig
-	customEventsConfig = [
-		{
-			type: 'testEvent',
-			name: '自定义事件'
-		},
-		{
-			type: 'test2',
-			name: '自定义事件2'
-		}
-	]
 }
 </script>
 <style lang="scss">
