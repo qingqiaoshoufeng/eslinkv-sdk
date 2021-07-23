@@ -24,7 +24,7 @@
 			i-option(value="config.api.data") 更新响应数据
 			i-option(value="config.config") 更新自定义数据
 			template(v-if="isShowCustomEvents")
-				i-option(:value="m.type" v-for="(m, n) in editor.currentWidget.config.customEvents" :key="n") {{m.name}}
+				i-option(:value="m.type" v-for="(m, n) in editor.currentWidget.customEventsConfig" :key="n") {{m.name}}
 		d-code(
 			v-if="isComponentClass",
 			label="更新加工",

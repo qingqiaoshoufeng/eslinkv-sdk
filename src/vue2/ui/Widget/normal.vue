@@ -10,6 +10,7 @@ export default class widgetNormal extends Vue {
 	@Prop() value
 	@Prop() customConfig
 	@Prop() customEvents
+	@Prop() customEventsConfig
 	@Prop({
 		default() {
 			return []
@@ -38,6 +39,7 @@ export default class widgetNormal extends Vue {
 		;(this.$parent as any).dataSetting(this.setting, this.settingData)
 		;(this.$parent as any).eventTypesSetting(this.eventTypes)
 		;(this.$parent as any).setCustomEvent(this.customEvents)
+		;(this.$parent as any).setCustomEventConfig(this.customEventsConfig)
 	}
 }
 </script>

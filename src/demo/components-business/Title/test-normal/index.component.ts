@@ -27,16 +27,6 @@ export const value = {
 	api: {
 		data: JSON.stringify({ title: '标题' }),
 	},
-	customEvents: [
-		{
-			type: 'testEvent',
-			name: '自定义事件'
-		},
-		{
-			type: 'test2',
-			name: '自定义事件2'
-		}
-	],
 	layout: {
 		size: {
 			width: 480,

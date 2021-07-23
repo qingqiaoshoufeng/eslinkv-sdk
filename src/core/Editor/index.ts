@@ -314,6 +314,18 @@ class Editor extends Agent {
 			}
 		}
 	}
+	setCustomEventConfig(id: string, val): void {
+		this.setCustomEventConfigFind(id, val, this.screen.screenWidgets)
+	}
+	private setCustomEventConfigFind(id: string, val, parent) {
+		for (const key in parent) {
+			if (id === parent[key].id) {
+				parent[key].customEventsConfig = val
+			} else if (parent[key].children) {
+				this.setCustomEventConfigFind(id, val, parent[key].children)
+			}
+		}
+	}
 	dataSetting(id: string, list, data): void {
 		this.dataSettingFind(id, list, data, this.screen.screenWidgets)
 	}

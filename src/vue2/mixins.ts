@@ -58,6 +58,9 @@ export default {
 		setCustomEvent(event): void {
 			this.editor.setCustomEvent(this.config.widget.id, event)
 		},
+		setCustomEventConfig(val): void {
+			this.editor.setCustomEventConfig(this.config.widget.id, val)
+		},
 		__handleEvent__(eventType = 'click', val): void {
 			if (this.events) {
 				if (!this.events[eventType]) {

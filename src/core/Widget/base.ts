@@ -12,6 +12,7 @@ export default class Widget {
 	settingData = {}
 	eventTypes = []
 	__handleCustomEvent__: void
+	customEventsConfig: any[]
 	events = {}
 	constructor(
 		offsetX: number,
