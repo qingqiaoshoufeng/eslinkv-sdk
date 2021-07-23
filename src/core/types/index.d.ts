@@ -57,6 +57,9 @@ interface init {
 	 */
 	(res: any): void
 }
+interface screen {
+	screenWidgets: any
+}
 export interface EditorInstance {
 	/**
 	 * 当前场景key值
@@ -72,6 +75,7 @@ export interface EditorInstance {
 	 * 当前大屏背景色
 	 */
 	backgroundColor: string
+	screen: screen
 }
 
 declare module '@eslinkv/core' {

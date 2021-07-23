@@ -1,14 +1,7 @@
 <template lang="pug">
-d-right-swiper(
-	title="自定义数据过滤器",
-	v-if="editor.currentWidget.settingDataHandle.length > 0")
-	d-right-control(
-		:label="item.label",
-		v-for="item in editor.currentWidget.settingDataHandle")
-		i-select(
-			v-model="editor.currentWidget.settingData[item.key]",
-			@on-change="handleChange",
-			:multiple="true")
+d-right-swiper(title="自定义数据过滤器", v-if="editor.currentWidget.settingDataHandle.length > 0")
+	d-right-control(:label="item.label", v-for="item in editor.currentWidget.settingDataHandle")
+		i-select(v-model="editor.currentWidget.settingData[item.key]", :multiple="true")
 			i-option(v-for="item in list", :value="item") {{ item }}
 </template>
 <script lang="ts">
@@ -28,10 +21,6 @@ export default class DataEcharts extends func {
 			}
 		})
 		return result
-	}
-
-	handleChange(): void {
-		this.editor.refreshWidget()
 	}
 }
 </script>

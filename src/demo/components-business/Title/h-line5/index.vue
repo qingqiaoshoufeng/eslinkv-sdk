@@ -24,14 +24,12 @@ export default class extends mixins(widgetMixin) {
 
 	setOption(): void {
 		const option = getOption(this.config.config)
-		if (this.settingData['y'])
-			this.settingData['y'].forEach((child, index) => {
-				option.series[index].data = this.data.map(item => item[child])
-			})
-		if (this.settingData['x'])
-			this.settingData['x'].forEach((child, index) => {
-				option.xAxis[index].data = this.data.map(item => item[child])
-			})
+		this.__settingData__('y').forEach((child, index) => {
+			option.series[index].data = child
+		})
+		this.__settingData__('x').forEach((child, index) => {
+			option.xAxis[index].data = child
+		})
 		this.instance.setOption(option)
 	}
 

@@ -38,7 +38,6 @@ export default {
 			animateActiveIndex: -1,
 			output: null,
 			inPreview: true,
-			settingData: {},
 			editor: Editor.Instance(),
 		}
 	},
@@ -50,17 +49,8 @@ export default {
 		this.animateActiveIndex = -1
 	},
 	methods: {
-		eventTypesSetting(eventTypes): void {
+		__eventTypesSetting__(eventTypes): void {
 			this.editor.eventTypesSetting(this.config.widget.id, eventTypes)
-		},
-		dataSetting(list = [], data): void {
-			this.editor.dataSetting(this.config.widget.id, list, data)
-		},
-		setCustomEvent(event): void {
-			this.editor.setCustomEvent(this.config.widget.id, event)
-		},
-		setCustomEventConfig(val): void {
-			this.editor.setCustomEventConfig(this.config.widget.id, val)
 		},
 		__handleEvent__(eventType = 'click', val): void {
 			if (this.events) {
@@ -129,7 +119,7 @@ export default {
 					}
 				}
 			} else {
-				this.eventTypesSetting([{ key: 'click', label: '点击事件' }])
+				this.__eventTypesSetting__([{ key: 'click', label: '点击事件' }])
 			}
 		},
 		__handleClick__(val): void {
@@ -158,12 +148,31 @@ export default {
 				})
 			}
 		},
-		parseConfigValue(localConfigValue, customConfig) {
+		__init__(obj): void {
 			this.configReady = true
+			const { value, customConfig, setting, settingData, eventTypes, customEvents, customEventsConfig } = obj
+			this.parseConfigValue(value, customConfig)
+			this.__eventTypesSetting__(eventTypes)
+			this.editor.dataSetting(this.config.widget.id, setting, settingData)
+			this.editor.setCustomEvent(this.config.widget.id, customEvents)
+			this.editor.setCustomEventConfig(this.config.widget.id, customEventsConfig)
+		},
+		parseConfigValue(localConfigValue, customConfig) {
 			return this.editor.updateWidgetConfig(this.config.widget.id, localConfigValue, customConfig)
 		},
 	},
 	computed: {
+		__settingData__() {
+			return type => {
+				if (this.settingData[type]) {
+					return this.settingData[type].map(child => {
+						return this.data.map(item => item[child])
+					})
+				} else {
+					return []
+				}
+			}
+		},
 		widgetId(): string {
 			if (this.config) {
 				if (this.config.widget) {
@@ -195,6 +204,7 @@ export default {
 			const events = this.events
 			let e = []
 			for (const key in events) {
+				// @ts-ignore
 				e = [...e, ...events[key]]
 			}
 			return (

@@ -35,11 +35,15 @@ export default class widgetNormal extends Vue {
 	}
 
 	created(): void {
-		;(this.$parent as any).parseConfigValue(this.value, this.customConfig)
-		;(this.$parent as any).dataSetting(this.setting, this.settingData)
-		;(this.$parent as any).eventTypesSetting(this.eventTypes)
-		;(this.$parent as any).setCustomEvent(this.customEvents)
-		;(this.$parent as any).setCustomEventConfig(this.customEventsConfig)
+		;(this.$parent as any).__init__({
+			value: this.value,
+			customConfig: this.customConfig,
+			setting: this.setting,
+			settingData: this.settingData,
+			eventTypes: this.eventTypes,
+			customEvents: this.customEvents,
+			customEventsConfig: this.customEventsConfig,
+		})
 	}
 }
 </script>

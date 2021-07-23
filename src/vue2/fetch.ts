@@ -25,6 +25,7 @@ const filterFalsyKey = input => {
 			return value !== undefined && value !== null && value !== ''
 		})
 		.forEach(key => {
+			// @ts-ignore
 			!isArray ? (output[key] = input[key]) : output.push(input[key])
 		})
 	return output
