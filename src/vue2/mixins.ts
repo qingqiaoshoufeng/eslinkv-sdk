@@ -1,8 +1,7 @@
 import fetch from '@/vue2/fetch'
 import dataProcess from '@/vue2/data-process.js'
-import { createSandbox } from '@/vue2/data-process'
-import { usePath } from '@/vue2/utils'
-import {Editor} from '@eslinkv/core'
+import { usePath, createSandbox } from '@/vue2/utils'
+import Editor from '@/core/Editor'
 
 export default {
 	mixins: [fetch, dataProcess],

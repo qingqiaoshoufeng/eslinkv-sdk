@@ -8,7 +8,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import DManageItem from './item.vue'
-import {Editor} from '@eslinkv/core'
+import Editor from '@/core/Editor'
 
 @Component({ components: { DManageItem } })
 export default class DManageItemList extends Vue {

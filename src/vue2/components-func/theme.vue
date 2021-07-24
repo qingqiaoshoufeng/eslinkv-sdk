@@ -14,7 +14,7 @@
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
-import {colorTheme} from '@eslinkv/core'
+import colorTheme from '@/core/colorTheme.js'
 
 @Component
 export default class FuncAnimation extends func {
@@ -45,9 +45,7 @@ export default class FuncAnimation extends func {
 		if (!this.editor.currentWidget.config.config.colorTheme.colorDisk) {
 			this.editor.currentWidget.config.config.colorTheme.colorDisk = []
 		}
-		this.editor.currentWidget.config.config.colorTheme.colorDisk[
-			index
-		] = val
+		this.editor.currentWidget.config.config.colorTheme.colorDisk[index] = val
 		this.handleSync()
 	}
 

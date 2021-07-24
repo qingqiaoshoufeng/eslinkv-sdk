@@ -29,7 +29,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import itemList from './item-list.vue'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
-import {Editor} from '@eslinkv/core'
+import Editor from '@/core/Editor'
 
 @Component({
 	components: {

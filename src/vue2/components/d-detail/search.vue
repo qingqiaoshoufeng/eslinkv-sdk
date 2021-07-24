@@ -11,8 +11,8 @@
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
-import {Editor} from '@eslinkv/core'
-import {Widget} from '@eslinkv/core'
+import Editor from '@/core/Editor'
+import Widget from '@/core/Widget/normal'
 
 @Component({
 	components: {

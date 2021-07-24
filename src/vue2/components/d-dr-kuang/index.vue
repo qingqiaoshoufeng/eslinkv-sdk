@@ -7,7 +7,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import {Editor} from '@eslinkv/core'
+import Editor from '@/core/Editor'
 
 @Component
 export default class Kuang extends Vue {

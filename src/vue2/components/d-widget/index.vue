@@ -18,7 +18,7 @@ eslinkv-group(
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import {Editor} from '@eslinkv/core'
+import Editor from '@/core/Editor'
 import { use } from '@/vue2/api/marketComponent.api'
 
 const prefix1 = 'market-'

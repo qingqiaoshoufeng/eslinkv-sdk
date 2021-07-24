@@ -27,7 +27,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Icon, Input, Select, Option } from 'view-design'
 import ItemCard from './item-card.vue'
 import draggable from 'vuedraggable'
-import {Editor} from '@eslinkv/core'
+import Editor from '@/core/Editor'
 import { market } from '@/vue2/api/marketComponentType.api'
 
 @Component({

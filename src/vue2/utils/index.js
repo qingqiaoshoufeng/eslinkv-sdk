@@ -54,7 +54,7 @@ const buildWall = source => {
 	// eslint-disable-next-line no-new-func
 	return new Function('wall', source)
 }
-const createSandbox = source => {
+export const createSandbox = source => {
 	return function () {
 		return buildWall(source).call({ ...arguments[0] }, { ...arguments[0] })
 	}

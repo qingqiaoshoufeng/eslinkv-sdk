@@ -34,7 +34,7 @@
 <script lang="ts">
 import { addEvent, removeEvent } from './dom'
 import dDrKuang from '../d-dr-kuang/index.vue'
-import {Editor} from '@eslinkv/core'
+import Editor from '@/core/Editor'
 
 export default {
 	components: {
@@ -138,32 +138,16 @@ export default {
 	mounted(): void {
 		this.rawRight = -this.rawWidth - this.rawLeft
 		this.rawBottom = -this.rawHeight - this.rawTop
-		addEvent(
-			document.getElementById('ruler-content'),
-			'mousedown',
-			this.deselect,
-		)
-		addEvent(
-			document.documentElement,
-			'touchend touchcancel',
-			this.deselect,
-		)
+		addEvent(document.getElementById('ruler-content'), 'mousedown', this.deselect)
+		addEvent(document.documentElement, 'touchend touchcancel', this.deselect)
 	},
 	beforeDestroy(): void {
-		removeEvent(
-			document.getElementById('ruler-content'),
-			'mousedown',
-			this.deselect,
-		)
+		removeEvent(document.getElementById('ruler-content'), 'mousedown', this.deselect)
 		removeEvent(document.documentElement, 'touchstart', this.handleUp)
 		removeEvent(document.documentElement, 'mousemove', this.move)
 		removeEvent(document.documentElement, 'touchmove', this.move)
 		removeEvent(document.documentElement, 'mouseup', this.handleUp)
-		removeEvent(
-			document.documentElement,
-			'touchend touchcancel',
-			this.deselect,
-		)
+		removeEvent(document.documentElement, 'touchend touchcancel', this.deselect)
 	},
 	methods: {
 		elementEnable(): void {
@@ -204,12 +188,8 @@ export default {
 						}
 					})
 				}
-				this.mouseClickPosition.mouseX = e.touches
-					? e.touches[0].pageX
-					: e.pageX
-				this.mouseClickPosition.mouseY = e.touches
-					? e.touches[0].pageY
-					: e.pageY
+				this.mouseClickPosition.mouseX = e.touches ? e.touches[0].pageX : e.pageX
+				this.mouseClickPosition.mouseY = e.touches ? e.touches[0].pageY : e.pageY
 
 				this.mouseClickPosition.left = this.left
 				this.mouseClickPosition.right = this.right
@@ -230,11 +210,7 @@ export default {
 					this.$emit('deactivated')
 					this.$emit('update:active', false)
 				}
-				removeEvent(
-					document.documentElement,
-					'mousemove',
-					this.handleMove,
-				)
+				removeEvent(document.documentElement, 'mousemove', this.handleMove)
 			}
 			this.resetBoundsAndMouseState()
 		},
@@ -254,12 +230,8 @@ export default {
 				this.handle = handle
 			}
 			this.resizing = true
-			this.mouseClickPosition.mouseX = e.touches
-				? e.touches[0].pageX
-				: e.pageX
-			this.mouseClickPosition.mouseY = e.touches
-				? e.touches[0].pageY
-				: e.pageY
+			this.mouseClickPosition.mouseX = e.touches ? e.touches[0].pageX : e.pageX
+			this.mouseClickPosition.mouseY = e.touches ? e.touches[0].pageY : e.pageY
 			this.mouseClickPosition.left = this.left
 			this.mouseClickPosition.right = this.right
 			this.mouseClickPosition.top = this.top
@@ -282,15 +254,9 @@ export default {
 			const axis = this.axis
 			const mouseClickPosition = this.mouseClickPosition
 			const tmpDeltaX =
-				axis && axis !== 'y'
-					? mouseClickPosition.mouseX -
-					  (e.touches ? e.touches[0].pageX : e.pageX)
-					: 0
+				axis && axis !== 'y' ? mouseClickPosition.mouseX - (e.touches ? e.touches[0].pageX : e.pageX) : 0
 			const tmpDeltaY =
-				axis && axis !== 'x'
-					? mouseClickPosition.mouseY -
-					  (e.touches ? e.touches[0].pageY : e.pageY)
-					: 0
+				axis && axis !== 'x' ? mouseClickPosition.mouseY - (e.touches ? e.touches[0].pageY : e.pageY) : 0
 			const deltaX = Math.round(tmpDeltaX / this.scaleRatio)
 			const deltaY = Math.round(tmpDeltaY / this.scaleRatio)
 			this.rawTop = mouseClickPosition.top - deltaY
@@ -304,12 +270,8 @@ export default {
 		handleMove(e): void {
 			const handle = this.handle
 			const mouseClickPosition = this.mouseClickPosition
-			const tmpDeltaX =
-				mouseClickPosition.mouseX -
-				(e.touches ? e.touches[0].pageX : e.pageX)
-			const tmpDeltaY =
-				mouseClickPosition.mouseY -
-				(e.touches ? e.touches[0].pageY : e.pageY)
+			const tmpDeltaX = mouseClickPosition.mouseX - (e.touches ? e.touches[0].pageX : e.pageX)
+			const tmpDeltaY = mouseClickPosition.mouseY - (e.touches ? e.touches[0].pageY : e.pageY)
 			const deltaX = Math.round(tmpDeltaX / this.scaleRatio)
 			const deltaY = Math.round(tmpDeltaY / this.scaleRatio)
 			if (handle.includes('b')) {
@@ -346,13 +308,7 @@ export default {
 			if (this.resizing) {
 				this.resizing = false
 				this.$emit('refLineParams', refLine)
-				this.$emit(
-					'resizestop',
-					this.width,
-					this.height,
-					this.left,
-					this.top,
-				)
+				this.$emit('resizestop', this.width, this.height, this.left, this.top)
 			}
 			if (this.dragging) {
 				this.dragging = false
@@ -391,20 +347,12 @@ export default {
 			for (let item of nodes) {
 				let w = item.offsetWidth
 				let h = item.offsetHeight
-				const l = Number(
-					item.getAttribute('data-left').replace('px', ''),
-				) // 对齐目标的left
+				const l = Number(item.getAttribute('data-left').replace('px', '')) // 对齐目标的left
 				const r = l + w // 对齐目标right
-				const t = Number(
-					item.getAttribute('data-top').replace('px', ''),
-				) // 参考线取 data-top 值 普通取top值
+				const t = Number(item.getAttribute('data-top').replace('px', '')) // 参考线取 data-top 值 普通取top值
 				const b = t + h // 对齐目标的bottom
-				const hc =
-					Math.abs(activeTop + height / 2 - (t + h / 2)) <=
-					this.snapTolerance //  y 中线
-				const vc =
-					Math.abs(activeLeft + width / 2 - (l + w / 2)) <=
-					this.snapTolerance // 垂直中线
+				const hc = Math.abs(activeTop + height / 2 - (t + h / 2)) <= this.snapTolerance //  y 中线
+				const vc = Math.abs(activeLeft + width / 2 - (l + w / 2)) <= this.snapTolerance // 垂直中线
 				const ts = Math.abs(t - activeBottom) <= this.snapTolerance // y 最下面的线
 				const TS = Math.abs(b - activeBottom) <= this.snapTolerance // 从上到下
 				const bs = Math.abs(t - activeTop) <= this.snapTolerance //
@@ -413,34 +361,8 @@ export default {
 				const LS = Math.abs(r - activeRight) <= this.snapTolerance // 外左
 				const rs = Math.abs(l - activeLeft) <= this.snapTolerance // 外右
 				const RS = Math.abs(r - activeLeft) <= this.snapTolerance // 外右
-				tem['display'] = [
-					ts,
-					TS,
-					bs,
-					BS,
-					hc,
-					hc,
-					ls,
-					LS,
-					rs,
-					RS,
-					vc,
-					vc,
-				]
-				tem['position'] = [
-					t,
-					b,
-					t,
-					b,
-					t + h / 2,
-					t + h / 2,
-					l,
-					r,
-					l,
-					r,
-					l + w / 2,
-					l + w / 2,
-				]
+				tem['display'] = [ts, TS, bs, BS, hc, hc, ls, LS, rs, RS, vc, vc]
+				tem['position'] = [t, b, t, b, t + h / 2, t + h / 2, l, r, l, r, l + w / 2, l + w / 2]
 				if (ts) {
 					this.rawTop = t - height
 					this.rawBottom = -this.rawTop - height
@@ -498,12 +420,9 @@ export default {
 					const xory = i < 6 ? 'y' : 'x'
 					const horv = i < 6 ? 'hLine' : 'vLine'
 					if (tem.display[i]) {
-						const { origin, length } = this.calcLineValues(
-							tem.value[xory][arrTem[i]],
-						)
+						const { origin, length } = this.calcLineValues(tem.value[xory][arrTem[i]])
 						refLine[horv][arrTem[i]].display = tem.display[i]
-						refLine[horv][arrTem[i]].position =
-							tem.position[i] + 'px'
+						refLine[horv][arrTem[i]].position = tem.position[i] + 'px'
 						refLine[horv][arrTem[i]].origin = origin
 						refLine[horv][arrTem[i]].lineLength = length
 					}
@@ -549,16 +468,10 @@ export default {
 			return -this.top - this.bottom
 		},
 		resizingOnX(): any {
-			return (
-				Boolean(this.handle) &&
-				(this.handle.includes('l') || this.handle.includes('r'))
-			)
+			return Boolean(this.handle) && (this.handle.includes('l') || this.handle.includes('r'))
 		},
 		resizingOnY(): any {
-			return (
-				Boolean(this.handle) &&
-				(this.handle.includes('t') || this.handle.includes('b'))
-			)
+			return Boolean(this.handle) && (this.handle.includes('t') || this.handle.includes('b'))
 		},
 	},
 	watch: {

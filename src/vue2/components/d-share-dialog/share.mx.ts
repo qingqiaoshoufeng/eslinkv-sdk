@@ -1,6 +1,6 @@
 import { copyText } from '../../utils/index'
 import { screenShareUpdate, screenShareDetail } from '../../api/screenShare.api.js'
-import { Editor } from '@eslinkv/core'
+import Editor from '@/core/Editor'
 function fixZero(n) {
 	if (n > 9) {
 		return n

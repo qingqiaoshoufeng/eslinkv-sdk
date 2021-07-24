@@ -22,7 +22,7 @@ import dRightSwiperList from '@/vue2/components-right/d-right-swiper-list/index.
 import dRightSwiperEye from '@/vue2/components-right/d-right-swiper-eye/index.vue'
 import dRightControl from '@/vue2/components-right/d-right-control/index.vue'
 import dInput from '@/vue2/components/d-input/index.vue'
-import {Editor} from '@eslinkv/core'
+import Editor from '@/core/Editor'
 
 @Component({
 	// @ts-ignore

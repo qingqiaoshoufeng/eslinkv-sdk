@@ -51,7 +51,7 @@ import { Component } from 'vue-property-decorator'
 import html2canvas from 'html2canvas'
 import dUpload from '@/vue2/components-right/d-upload/index.vue'
 import { Tooltip } from 'view-design'
-import {Editor} from '@eslinkv/core'
+import Editor from '@/core/Editor'
 import { file } from '@/vue2/api/upload.api'
 
 @Component({

@@ -10,7 +10,7 @@
 			slot(:index="i", :activeIndex="index", v-if="i === index")
 </template>
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import dRightSwiper from '../d-right-swiper/index.vue'
 
 const emptyImg = require('../../assets/empty.png')

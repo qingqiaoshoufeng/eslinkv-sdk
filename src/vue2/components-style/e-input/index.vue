@@ -9,15 +9,19 @@ input.e-input(
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+
 @Component
 export default class EInput extends Vue {
 	@Prop({ default: '152px' }) width
 	@Prop() value
-	currentValue = this.value
+	currentValue = ''
 
 	@Watch('value')
 	valueChange(val): void {
 		this.currentValue = val
+	}
+	mounted(): void {
+		this.currentValue = this.value
 	}
 }
 </script>

@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es5",
+		"target": "esnext",
 		"module": "esnext",
 		"jsx": "preserve", // 指定 jsx 代码的生成: 'preserve', 'react-native', or 'react'
 		"importHelpers": true, // 从 tslib 导入辅助工具函数
@@ -14,16 +14,18 @@
 		"sourceMap": false,
 		"removeComments": true,
 		"baseUrl": ".",
-		"typeRoots": ["./node_modules/@types/"], // 包含类型声明的文件列表
+		"typeRoots": ["./node_modules/@types/", "./node_modules/vue/types"], // 包含类型声明的文件列表
 		"strict": false,
+		"strictFunctionTypes": false,
 		"noImplicitAny": false, // 在表达式和声明上有隐含的 any类型时报错
 		"noImplicitThis": false, // 在"this"表达式上有隐含的 any类型时报错
+		"pretty": true, // 给错误和消息设置样式，使用颜色和上下文。
 		"types": ["webpack-env"],
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["src/*"]
 		},
-		"lib": ["es6", "esnext", "dom", "es2015.promise", "dom.iterable", "scripthost", "ES2020"]
+		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},
-	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "types/Common.d.ts"],
+	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "types/common.d.ts", "types/vue.d.ts"],
 	"exclude": ["node_modules", "src/demo", "src/core/lib", "src/vue2/lib"]
 }

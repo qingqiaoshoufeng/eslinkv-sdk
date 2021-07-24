@@ -11,8 +11,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Icon } from 'view-design'
-import {Editor} from '@eslinkv/core'
-import eInput from '@/vue2/components-style/e-input'
+import Editor from '@/core/Editor'
+import eInput from '@/vue2/components-style/e-input/index.vue'
 import widget from './widget.vue'
 @Component({
 	components: {
