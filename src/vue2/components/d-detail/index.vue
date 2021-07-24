@@ -212,6 +212,7 @@ export default class DDetail extends Vue {
 .d-detail {
 	align-items: center;
 	width: 100%;
+	min-width: 1088px;
 	height: 60px;
 	color: var(--text-tab);
 	background: var(--background-2);

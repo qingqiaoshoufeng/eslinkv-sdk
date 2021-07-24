@@ -6,8 +6,7 @@
 		d-suspension
 		d-right-manage(v-if="!editor.currentWidgetId")
 		d-right-setting(v-if="editor.currentWidgetId")
-		d-right-setting-more(
-			v-if="editor.currentWidgetList && editor.currentWidgetList.length > 1")
+		d-right-setting-more(v-if="editor.currentWidgetList && editor.currentWidgetList.length > 1")
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
@@ -41,6 +40,7 @@ export default class dScreen extends Vue {
 
 .d-screen {
 	width: 100%;
+	min-width: 1088px;
 }
 
 #screen:-webkit-full-screen {

@@ -8,11 +8,7 @@
 	// 标尺容器
 	d-ruler(ref="rulerCanvas")
 		// 大屏
-		#screen.pos-r(
-			:style="canvasStyle",
-			@drop="createWidget",
-			@click.stop,
-			@dragover.prevent)
+		#screen.pos-r(:style="canvasStyle", @drop="createWidget", @click.stop, @dragover.prevent)
 			// 小工具清单
 			item-card(
 				:item="item",
@@ -27,10 +23,7 @@
 				data-top="0px",
 				:style="{ width: 0, height: `${editor.height}px` }",
 				:data-left="`${editor.width}px`")
-			.d-editor-line(
-				data-top="0px",
-				data-left="0px",
-				:style="{ height: `${editor.height}px`, width: 0 }")
+			.d-editor-line(data-top="0px", data-left="0px", :style="{ height: `${editor.height}px`, width: 0 }")
 			// 参考线
 			span.ref-line.v-line.pos-a(
 				v-for="item in vLine",
@@ -133,7 +126,7 @@ export default class DEditor extends Vue {
 
 .d-editor {
 	background-color: #313239;
-
+	min-width: 500px;
 	&.fullscreen {
 		top: 0 !important;
 		right: 0 !important;
