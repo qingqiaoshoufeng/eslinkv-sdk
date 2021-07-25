@@ -25,7 +25,7 @@
 		i-input(
 			v-model="editor.backgroundColor",
 			:disabled="true",
-			:style="{ width: '166px', marginLeft: '10px' }")
+			:style="{ width: '166px', marginLeft: '9px' }")
 	d-right-control(label="背景图", title="支持jpg，png，gif")
 		d-upload(v-model="editor.backgroundImage", :data="backGroundFormData")
 	d-right-control(label="适配模式")
