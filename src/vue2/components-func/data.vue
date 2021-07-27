@@ -2,9 +2,7 @@
 .d-manage-modal-control-data
 	d-right-swiper(title="数据请求", :show="true")
 		d-right-control(label="数据类型")
-			i-select(
-				v-model="apiType",
-				:style="{ width: apiType === '数仓平台' ? '122px' : '208px' }")
+			i-select(v-model="apiType", :style="{ width: apiType === '数仓平台' ? '122px' : '208px' }")
 				i-option(value="静态数据") 静态数据
 				i-option(value="API接口") API接口
 				i-option(value="数仓平台") 数仓平台
@@ -18,33 +16,23 @@
 		d-right-control(label="接口地址", v-if="apiType === 'API接口'")
 			i-input(v-model="editor.currentWidget.config.api.url")
 		d-right-control(v-if="apiType === 'API接口'")
-			i-select(
-				v-model="editor.currentWidget.config.api.method",
-				:style="{ marginRight: '10px', width: '100px' }")
+			i-select(v-model="editor.currentWidget.config.api.method", :style="{ marginRight: '10px', width: '100px' }")
 				i-option(value="GET") GET
 				i-option(value="POST") POST
 				i-option(value="PUT") PUT
 				i-option(value="DELETE") DELETE
 				i-option(value="PATCH") PATCH
-			i-input(
-				v-model="editor.currentWidget.config.api.path",
-				:style="{ width: '100px' }")
-		d-right-control(
-			label="接口地址",
-			v-if="editor.currentWidget.config.api.system.enable")
+			i-input(v-model="editor.currentWidget.config.api.path", :style="{ width: '100px' }")
+		d-right-control(label="接口地址", v-if="editor.currentWidget.config.api.system.enable")
 			i-input(v-model="editor.currentWidget.config.api.system.interface")
 		d-right-control(v-if="editor.currentWidget.config.api.system.enable")
-			i-select(
-				v-model="editor.currentWidget.config.api.system.method",
-				:style="{ marginRight: '10px', width: '100px' }")
+			i-select(v-model="editor.currentWidget.config.api.system.method", :style="{ marginRight: '10px', width: '100px' }")
 				i-option(value="GET") GET
 				i-option(value="POST") POST
 				i-option(value="PUT") PUT
 				i-option(value="DELETE") DELETE
 				i-option(value="PATCH") PATCH
-			i-input(
-				v-model="editor.currentWidget.config.api.system.path",
-				:style="{ width: '100px' }")
+			i-input(v-model="editor.currentWidget.config.api.system.path", :style="{ width: '100px' }")
 			database-config(
 				ref="dataBaseConfig",
 				:showModal="showDatabaseConfigModal",
@@ -56,11 +44,7 @@
 			lang="json",
 			:code="typeof editor.currentWidget.config.api.params === 'string' ? editor.currentWidget.config.api.params : JSON.stringify(editor.currentWidget.config.api.params)",
 			@update:code="value => (editor.currentWidget.config.api.params = JSON.parse(value))")
-		d-code(
-			label="响应数据",
-			lang="json",
-			:code="apiData",
-			@update:code="value => (apiData = value)")
+		d-code(label="响应数据", lang="json", :code="apiData", @update:code="value => (apiData = value)")
 	d-right-swiper-eye(
 		title="数据过滤器",
 		:enable="editor.currentWidget.config.api.process.enable",
@@ -93,10 +77,7 @@
 			filterable,
 			multiple,
 			:style="{ width: '100px', marginLeft: '10px' }")
-			i-option(
-				:value="editor.currentWidget.id",
-				v-for="(item, key) in relateList",
-				:key="key") {{ item.id }}
+			i-option(:value="editor.currentWidget.id", v-for="(item, key) in relateList", :key="key") {{ item.id }}
 </template>
 <script lang="ts">
 import func from '@/vue2/components-func/func.mx'
