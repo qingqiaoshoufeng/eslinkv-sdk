@@ -333,9 +333,9 @@ class Editor extends Agent {
 		}
 	}
 	eventTypesSetting(id: string, eventTypes: { key: string; label: string }[]) {
-		const test = JSON.parse(JSON.stringify(this.screen.screenWidgets))
-		if (eventTypes) this.eventTypesSettingFind(id, eventTypes, test)
-		this.screen.screenWidgets = { ...test }
+		const obj = JSON.parse(JSON.stringify(this.screen.screenWidgets))
+		if (eventTypes) this.eventTypesSettingFind(id, eventTypes, obj)
+		this.screen.screenWidgets = { ...obj }
 	}
 
 	request(method: string, url: string, params: any, id) {
