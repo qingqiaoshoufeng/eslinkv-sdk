@@ -6,7 +6,7 @@ interface __handleClick__ {
 	 *
 	 * 组件事件、场景事件配置
 	 *
-	 * 目前支持更新组件、场景切换、添加场景、移除场景
+	 * 目前支持更新组件、场景切换、添加场景、移除场景、及自定义
 	 */
 	(val?: any): void
 }
@@ -17,9 +17,19 @@ interface __handleEvent__ {
 	 *
 	 * 组件事件、场景事件配置
 	 *
-	 * 目前支持更新组件、场景切换、添加场景、移除场景
+	 * 目前支持更新组件、场景切换、添加场景、移除场景、及自定义
 	 */
 	(eventType: string, val?: any): void
+}
+
+interface __settingData__ {
+	/**
+	 * widgetNormalMixin
+	 *
+	 * 自定义过滤
+	 *
+	 */
+	(type: string): any[]
 }
 
 /**
@@ -70,6 +80,7 @@ export declare class widgetNormalMixin extends Vue {
 	config: any
 	__handleClick__: __handleClick__
 	__handleEvent__: __handleEvent__
+	__settingData__: __settingData__
 	/**
 	 * widgetNormalMixin
 	 *

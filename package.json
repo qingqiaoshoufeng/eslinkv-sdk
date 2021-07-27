@@ -20,7 +20,7 @@
 		"html2canvas": "^1.0.0-rc.7",
 		"qs": "^6.9.6",
 		"regenerator-runtime": "^0.13.7",
-		"view-design": "^4.6.1",
+		"view-design": "^4.5.0",
 		"vue": "^2.6.12",
 		"vue-class-component": "^7.2.3",
 		"vue-click-outside": "^1.1.0",
@@ -94,6 +94,7 @@
 		"lib",
 		"vue2.d.ts"
 	],
+	"license": "MIT",
 	"_customHasUsedEsStandard": true,
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,html,css,vue,less,scss}": "prettier  --plugin-search-dir ./node_modules --write"

@@ -2,21 +2,20 @@
 widget-normal(
 	:value="value",
 	:customConfig="customConfig",
-	:customEventsConfig="customEventsConfig"
+	:customEventsConfig="customEventsConfig",
 	:setting="setting",
 	:settingData="settingD")
 	.chart(:id="id")
 </template>
 <script lang="ts">
 import getOption from './options'
-import widgetMixin from '@/vue2/mixins'
 import { Component, Watch } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
+import { widgetNormalMixin } from '@/vue2'
 import widgetNormal from '@/vue2/ui/Widget/normal.vue'
 import { value, customConfig, setting, settingData } from './index.component'
 
 @Component({ components: { widgetNormal } })
-export default class extends mixins(widgetMixin) {
+export default class extends widgetNormalMixin {
 	value = value
 	customConfig = customConfig
 	setting = setting
@@ -56,13 +55,13 @@ export default class extends mixins(widgetMixin) {
 		{
 			type: 'test1',
 			name: '自定义事件1',
-			handler: this.test1
+			handler: this.test1,
 		},
 		{
 			type: 'test2',
 			name: '自定义事件2',
-			handler: this.test2
-		}
+			handler: this.test2,
+		},
 	]
 	test1(a) {
 		console.log('test1')

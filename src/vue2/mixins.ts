@@ -30,7 +30,7 @@ export default {
 		return {
 			ready: false,
 			data: null,
-			configReady: false,
+			__configReady__: false,
 			time: Date.now(),
 			instance: null,
 			animateTimer: null,
@@ -148,7 +148,7 @@ export default {
 			}
 		},
 		__init__(obj): void {
-			this.configReady = true
+			this.__configReady__ = true
 			const { value, customConfig, setting, settingData, eventTypes, customEventsConfig } = obj
 			this.parseConfigValue(value, customConfig)
 			this.__eventTypesSetting__(eventTypes)
@@ -211,7 +211,7 @@ export default {
 		},
 	},
 	watch: {
-		configReady(value): void {
+		__configReady__(value): void {
 			if (value) {
 				requestAnimationFrame(() => {
 					this.readonly && this.$el.classList.add('readonly')

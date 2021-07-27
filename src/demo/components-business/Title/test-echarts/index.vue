@@ -3,14 +3,13 @@ widget-echarts(:value="value", :customConfig="customConfig")
 	.chart(:id="id")
 </template>
 <script lang="ts">
-import widgetMixin from '@/vue2/mixins'
 import { Component, Watch } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
+import { widgetNormalMixin } from '@/vue2'
 import widgetEcharts from '@/vue2/ui/Widget/echarts.vue'
 import { value, customConfig } from './index.component'
 
 @Component({ components: { widgetEcharts } })
-export default class extends mixins(widgetMixin) {
+export default class extends widgetNormalMixin {
 	value = value
 	customConfig = customConfig
 

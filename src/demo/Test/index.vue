@@ -1,16 +1,20 @@
 <template lang="pug">
 div 
-	load-mask
+	i-select(v-model="a")
+		i-option(:value="1") 1
+		i-option(:value="2") 2
 </template>
 <script lang="ts">
 import Editor from '@/core/Editor'
 import { Vue, Component } from 'vue-property-decorator'
 import LoadMask from '@/vue2/components/load-mask'
+import { Select, Option } from 'view-design'
 
 @Component({
-	components: { LoadMask },
+	components: { LoadMask, 'i-select': Select, 'i-option': Option },
 })
 export default class extends Vue {
+	a = 1
 	editor: Editor = Editor.Instance()
 	clickPost(): void {
 		this.editor.request('post', '/node/market/component/list', { p: 1 })
