@@ -58,9 +58,10 @@ export default {
 					return
 				}
 				for (const item of this.events[eventType]) {
+					const finalType = item.triggerType || item.target
 					if (item.eventClass === 'scene') {
 						const sceneId = item.id
-						switch (item.triggerType) {
+						switch (finalType) {
 							case 'openScene':
 								if (this.editor.current.currentCreateSceneList.includes(sceneId)) return
 								this.editor.activeWidgetId = this.config.widget.id
@@ -90,12 +91,12 @@ export default {
 								coms.forEach((v: any) => {
 									if (
 										!['config.api.params', 'config.api.data', 'config.config'].includes(
-											item.triggerType,
+											finalType,
 										)
 									) {
-										v.customEventsConfig.find((c: any) => c.type === item.triggerType).handler(data)
+										v.customEventsConfig.find((c: any) => c.type === finalType).handler(data)
 									} else {
-										this.editor.updateComponentTarget(v.id, item.triggerType, data)
+										this.editor.updateComponentTarget(v.id, finalType, data)
 									}
 								})
 							} catch (err) {
@@ -106,12 +107,12 @@ export default {
 							coms.forEach((v: any) => {
 								if (
 									!['config.api.params', 'config.api.data', 'config.config'].includes(
-										item.triggerType,
+										finalType,
 									)
 								) {
-									v.customEventsConfig.find((c: any) => c.type === item.triggerType).handler(data)
+									v.customEventsConfig.find((c: any) => c.type === finalType).handler(data)
 								} else {
-									this.editor.updateComponentTarget(v.id, item.triggerType, data)
+									this.editor.updateComponentTarget(v.id, finalType, data)
 								}
 							})
 						}
