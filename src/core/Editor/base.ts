@@ -21,4 +21,7 @@ export default class EditorBase extends Factory<EditorBase> {
 	updateEditorStatus(status: string): void {
 		this.editorStatus = status
 	}
+	constructor() {
+		super()
+	}
 }

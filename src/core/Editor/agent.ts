@@ -16,7 +16,9 @@ export default class Agent extends EditorBase {
 	http: Http = Http.Instance()
 	local: Local = Local.Instance()
 	ruler: Ruler | null
-
+	constructor() {
+		super()
+	}
 	/* ---------------------------------------------------Ruler---------------------------------------------------*/
 	createGuide(num: string | number, type: string): void {
 		this.ruler.createGuide(num, type)
