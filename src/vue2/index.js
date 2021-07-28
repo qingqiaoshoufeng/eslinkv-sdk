@@ -11,6 +11,7 @@ import widgetNormal from '@/vue2/ui/Widget/normal.vue'
 import { mixins } from 'vue-class-component'
 
 const widgetNormalMixin = mixins(widgetMixin)
+
 const eslinkV = {
 	widgetNormalMixin,
 	widgetMixin,
@@ -27,6 +28,9 @@ if (window !== undefined) {
 	if (!window.eslinkV) {
 		window.eslinkV = {}
 	}
+	console.log('eslinkv vue2')
+	console.log(eslinkV.widgetMixin.mounted)
+	console.log(eslinkV.widgetNormalMixin)
 	window.eslinkV = { ...window.eslinkV, ...eslinkV }
 }
 

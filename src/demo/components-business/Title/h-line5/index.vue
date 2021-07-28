@@ -13,9 +13,11 @@ import { Component, Watch } from 'vue-property-decorator'
 import { widgetNormalMixin } from '@/vue2'
 import widgetNormal from '@/vue2/ui/Widget/normal.vue'
 import { value, customConfig, setting, settingData } from './index.component'
+import { mixins } from 'vue-class-component'
+import widgetMixin from '@/vue2/mixins'
 
 @Component({ components: { widgetNormal } })
-export default class extends widgetNormalMixin {
+export default class extends mixins(widgetMixin) {
 	value = value
 	customConfig = customConfig
 	setting = setting
