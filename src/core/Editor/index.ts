@@ -289,6 +289,27 @@ class Editor extends Agent {
 		}
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 	}
+
+	/**
+	 * @description 预置事件初始化
+	 */
+	setCustomEventConfig(id: string, val): void {
+		if (val && val.length) {
+			this.setCustomEventConfigFind(id, val, this.screen.screenWidgets)
+		}
+	}
+	private setCustomEventConfigFind(id: string, val, parent) {
+		for (const key in parent) {
+			if (id === parent[key].id) {
+				parent[key].customEventsConfig = val
+			} else if (parent[key].children) {
+				this.setCustomEventConfigFind(id, val, parent[key].children)
+			}
+		}
+	}
+	/**
+	 * @description 自定义过滤初始化
+	 */
 	private dataSettingFind(id: string, list, data, parent) {
 		for (const key in parent) {
 			if (id === parent[key].id) {
@@ -302,21 +323,14 @@ class Editor extends Agent {
 			}
 		}
 	}
-	setCustomEventConfig(id: string, val): void {
-		this.setCustomEventConfigFind(id, val, this.screen.screenWidgets)
-	}
-	private setCustomEventConfigFind(id: string, val, parent) {
-		for (const key in parent) {
-			if (id === parent[key].id) {
-				parent[key].customEventsConfig = val
-			} else if (parent[key].children) {
-				this.setCustomEventConfigFind(id, val, parent[key].children)
-			}
+	dataSetting(id: string, list, data): void {
+		if (list && list.length) {
+			this.dataSettingFind(id, list, data, this.screen.screenWidgets)
 		}
 	}
-	dataSetting(id: string, list, data): void {
-		this.dataSettingFind(id, list, data, this.screen.screenWidgets)
-	}
+	/**
+	 * @description 触发事件初始化
+	 */
 	private eventTypesSettingFind(id: string, eventTypes: { key: string; label: string }[], parent) {
 		for (const key in parent) {
 			if (id === parent[key].id) {
@@ -333,11 +347,12 @@ class Editor extends Agent {
 		}
 	}
 	eventTypesSetting(id: string, eventTypes: { key: string; label: string }[]) {
-		const obj = JSON.parse(JSON.stringify(this.screen.screenWidgets))
-		if (eventTypes) this.eventTypesSettingFind(id, eventTypes, obj)
-		this.screen.screenWidgets = { ...obj }
+		if (eventTypes && eventTypes.length) {
+			const obj = JSON.parse(JSON.stringify(this.screen.screenWidgets))
+			if (eventTypes) this.eventTypesSettingFind(id, eventTypes, obj)
+			this.screen.screenWidgets[id] = obj[id]
+		}
 	}
-
 	request(method: string, url: string, params: any, id) {
 		const path = this.screenWidgets[id].config.api.path
 		const process = this.screenWidgets[id].config.api.process
