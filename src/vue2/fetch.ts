@@ -1,4 +1,5 @@
-import axios from 'axios'
+import Editor from '@/core/Editor'
+const editor: Editor = Editor.Instance()
 import { databaseQuery } from '@/vue2/api/dataWarehouse.api'
 const parseParams = (params = {}) => {
 	if (typeof params === 'string' && params !== '') {
@@ -10,10 +11,6 @@ const parseParams = (params = {}) => {
 	}
 	return params
 }
-
-const fetcher = axios.create({
-	withCredentials: false,
-})
 
 const filterFalsyKey = input => {
 	if (!input) return
@@ -49,22 +46,7 @@ export default {
 			this.queryFailed = false
 			// 解析 params
 			const params = parseParams(api.params)
-			fetcher({
-				method,
-				url,
-				[method.toUpperCase() === 'GET' ? 'params' : 'data']: params,
-			})
-				.then(response => {
-					this.parseQueryResult(response, api)
-				})
-				.catch(e => {
-					console.warn(`${this.$options.label}接口请求失败`, e)
-					this.queryFailed = true
-				})
-				.finally(() => {
-					this.querying = false
-					this.lastFetchDoneTime = Date.now()
-				})
+			editor.request(method, url, params, this.__widgetId__)
 		},
 		innerQuery(api): void {
 			const { interface: innerUrl, params: conditions, path = 'data', method = 'POST' } = api.system
@@ -124,7 +106,11 @@ export default {
 			if (!this.lastFetchDoneTime) this.lastFetchDoneTime = Date.now()
 			this.fetchTimer = setInterval(() => {
 				if (this.querying) return
-				if (Date.now() - this.lastFetchDoneTime >= api.autoFetch.duration) this.dispatchQuery(api)
+				if (Date.now() - this.lastFetchDoneTime >= api.autoFetch.duration) {
+					if (api.system && api.system.enable) {
+						this.dispatchQuery(api)
+					}
+				}
 			}, 100)
 		},
 		stopAutoFetch(): void {
