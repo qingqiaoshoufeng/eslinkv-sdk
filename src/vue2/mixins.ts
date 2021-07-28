@@ -91,9 +91,7 @@ export default {
 								data = processor({ data })
 								coms.forEach((v: any) => {
 									if (
-										!['config.api.params', 'config.api.data', 'config.config'].includes(
-											finalType,
-										)
+										!['config.api.params', 'config.api.data', 'config.config'].includes(finalType)
 									) {
 										v.customEventsConfig.find((c: any) => c.type === finalType).handler(data)
 									} else {
@@ -106,11 +104,7 @@ export default {
 							}
 						} else {
 							coms.forEach((v: any) => {
-								if (
-									!['config.api.params', 'config.api.data', 'config.config'].includes(
-										finalType,
-									)
-								) {
+								if (!['config.api.params', 'config.api.data', 'config.config'].includes(finalType)) {
 									v.customEventsConfig.find((c: any) => c.type === finalType).handler(data)
 								} else {
 									this.editor.updateComponentTarget(v.id, finalType, data)

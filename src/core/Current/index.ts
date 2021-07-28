@@ -4,8 +4,8 @@ import Widget from '@/core/Widget/normal'
 export default class Current extends Factory<Current> {
 	rulerContainerId: string
 	xRoomL1 = 0
-	xRoomL2: number = +localStorage.getItem('xRoomL2')
-	xRoomR1: number = +localStorage.getItem('xRoomR1')
+	xRoomL2 = 238
+	xRoomR1 = 335
 	yRoom = 60
 	/* 当前场景动画 */
 	sceneAnimate = ''
@@ -51,15 +51,12 @@ export default class Current extends Factory<Current> {
 
 	// taggerXRoomL1(): void {
 	// 	this.xRoomL1 = this.xRoomL1 > 0 ? 0 : 238
-	// 	localStorage.setItem('xRoomL1', `${this.xRoomL1}`)
 	// }
 	taggerXRoomL2(): void {
 		this.xRoomL2 = this.xRoomL2 > 0 ? 0 : 238
-		localStorage.setItem('xRoomL2', `${this.xRoomL2}`)
 	}
 	taggerXRoomR1(): void {
 		this.xRoomR1 = this.xRoomR1 > 0 ? 0 : 335
-		localStorage.setItem('xRoomR1', `${this.xRoomR1}`)
 	}
 	/* 放大画布 */
 	zoomIn(step = 2): void {

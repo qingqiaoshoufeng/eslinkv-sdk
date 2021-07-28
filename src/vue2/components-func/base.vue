@@ -11,28 +11,20 @@
 				append="X",
 				v-model="editor.currentWidget.config.layout.position.left",
 				:style="{ width: '100px', marginRight: '10px' }")
-			d-input(
-				append="Y",
-				v-model="editor.currentWidget.config.layout.position.top",
-				:style="{ width: '100px' }")
+			d-input(append="Y", v-model="editor.currentWidget.config.layout.position.top", :style="{ width: '100px' }")
 		d-right-control(label="宽高")
 			d-input(
 				append="W",
 				v-model="editor.currentWidget.config.layout.size.width",
 				:style="{ width: '100px', marginRight: '10px' }")
-			d-input(
-				append="H",
-				v-model="editor.currentWidget.config.layout.size.height",
-				:style="{ width: '100px' }")
+			d-input(append="H", v-model="editor.currentWidget.config.layout.size.height", :style="{ width: '100px' }")
 		d-right-control(label="场景")
 			i-select(v-model="editor.currentWidget.scene")
 				i-option(:value="0") 主场景
 				i-option(:value="key", v-for="(item, key) in editor.sceneObj", :key="key") {{ item.name }}
 				i-option(:value="-1") 回收站
 		d-right-control(label="缩放比例")
-			i-input(
-				v-model="scale",
-				:style="{ width: '100px' }")
+			i-input(v-model="scale", :style="{ width: '100px' }")
 	d-right-swiper-eye(
 		title="载入动画",
 		@open-click="editor.currentWidget.config.animation.transitionEnable = true",
@@ -40,16 +32,11 @@
 		:enable="editor.currentWidget.config.animation.transitionEnable")
 		d-right-control(label="动画形式")
 			i-select(v-model="editor.currentWidget.config.animation.enter")
-				i-option(
-					:value="k.value",
-					v-for="k in animationEnterNames",
-					:key="k.value") {{ k.label }}
+				i-option(:value="k.value", v-for="k in animationEnterNames", :key="k.value") {{ k.label }}
 		d-right-control(label="延时时长")
 			d-input(append="ms", v-model="editor.currentWidget.config.animation.delay")
 		d-right-control(label="动画时长")
-			d-input(
-				append="ms",
-				v-model="editor.currentWidget.config.animation.duration")
+			d-input(append="ms", v-model="editor.currentWidget.config.animation.duration")
 	//d-right-echarts
 </template>
 <script lang="ts">
