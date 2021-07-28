@@ -58,7 +58,8 @@ export default {
 					return
 				}
 				for (const item of this.events[eventType]) {
-					const finalType = item.triggerType || item.target
+					let finalType = item.triggerType
+					if (finalType === 'update') finalType = item.target
 					if (item.eventClass === 'scene') {
 						const sceneId = item.id
 						switch (finalType) {
