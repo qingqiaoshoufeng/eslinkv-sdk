@@ -75,6 +75,10 @@ export default class DDetail extends Vue {
 		}
 	}
 
+	beforeDestroy(): void {
+		this.editor.clear()
+	}
+
 	mounted(): void {
 		const templateId = this.$route.query.templateId
 		const id = this.$route.params.id || templateId

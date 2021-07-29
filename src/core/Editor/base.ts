@@ -1,7 +1,21 @@
 import Factory from '@/core/Base/factory'
+import ScreenPc from '@/core/Screen/pc'
+import Current from '@/core/Current'
+import Scene from '@/core/Scene'
+import Http from '@/core/Http'
+import Local from '@/core/Local'
+import Ruler from '@/core/ui/Ruler'
 
 const rulerContainerId = `drag-content-${+new Date()}`
 export default class EditorBase extends Factory<EditorBase> {
+	screen: ScreenPc = ScreenPc.Instance()
+	current: Current = Current.Instance({
+		rulerContainerId,
+	})
+	scene: Scene = Scene.Instance()
+	http: Http = Http.Instance()
+	local: Local = Local.Instance()
+	ruler: Ruler | null
 	rulerContainerId = rulerContainerId
 	/* 大屏ID */
 	screenId: string

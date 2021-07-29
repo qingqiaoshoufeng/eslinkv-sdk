@@ -20,6 +20,12 @@ class Editor extends Agent {
 		return { screen }
 	}
 
+	clear(): void {
+		this.screen.clear()
+		this.current.clear()
+		this.scene.clear()
+	}
+
 	loadMarketComponent(screen: any) {
 		const list = []
 		const p = []

@@ -18,6 +18,19 @@ export default class ScreenPc extends ScreenBase {
 	// 	}
 	// 	return res
 	// }
+	clear(): void {
+		this.screenWidgets = {}
+		this.screenType = 'CUSTOM'
+		this.screenLayoutMode = 'full-size'
+		this.screenName = '未命名'
+		this.screenWidth = 1920
+		this.screenHeight = 1080
+		this.screenBackGroundColor = 'rgba(24, 27, 36,1)'
+		this.screenBackGroundImage = ''
+		this.screenAvatar = ''
+		this.screenVersion = ''
+		this.screenMainScene = undefined
+	}
 	/* 初始化配置 */
 	init(res: any): any {
 		if (res.screenId) this.screenId = res.screenId

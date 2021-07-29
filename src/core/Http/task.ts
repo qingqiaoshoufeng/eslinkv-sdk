@@ -1,7 +1,7 @@
 /**
  * 请求任务类
  */
-import HttpBase from './base'
+import HttpBase from './taskBase'
 
 export default class Task extends HttpBase {
 	static STATUS_WAITTING = 0 // 请求被创建未推送到任务列表
