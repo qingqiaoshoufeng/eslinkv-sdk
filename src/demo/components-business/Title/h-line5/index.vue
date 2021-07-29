@@ -10,7 +10,7 @@ widget-normal(
 <script lang="ts">
 import getOption from './options'
 import { Component, Watch } from 'vue-property-decorator'
-import { widgetNormalMixin } from '@/vue2'
+import { widgetNormalMixin } from '@/vue2/index.js'
 import widgetNormal from '@/vue2/ui/Widget/normal.vue'
 import { value, customConfig, setting, settingData } from './index.component'
 import { mixins } from 'vue-class-component'

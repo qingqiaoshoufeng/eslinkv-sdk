@@ -4,7 +4,7 @@ widget-echarts(:value="value", :customConfig="customConfig")
 </template>
 <script lang="ts">
 import { Component, Watch } from 'vue-property-decorator'
-import { widgetNormalMixin } from '@/vue2'
+import { widgetNormalMixin } from '@/vue2/index.js'
 import widgetEcharts from '@/vue2/ui/Widget/echarts.vue'
 import { value, customConfig } from './index.component'
 
