@@ -267,7 +267,7 @@ export default class DRuler extends Vue {
 		// }
 	}
 
-	keydown(e: any): void {
+	keydown(e: KeyboardEvent): void {
 		if (
 			(e.ctrlKey === true || e.metaKey === true) &&
 			(e.which === 189 ||

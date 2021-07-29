@@ -58,7 +58,7 @@ export default class Screen extends Factory<Screen> {
 				const inputConfig = Object.freeze(obj[key].config || {})
 				const res = configMerge(inputConfig, mergedValue)
 				res.widget.name = res.widget.name || '未知组件'
-				obj[key].widgetType = localConfigValue.widgetType
+				obj[key].widgetType = localConfigValue ? localConfigValue.widgetType || 'normal' : 'normal'
 				if (customConfig) {
 					customConfig.map(item => {
 						if (!item.prop.includes('config.config')) {
@@ -74,15 +74,13 @@ export default class Screen extends Factory<Screen> {
 			}
 		}
 	}
-	/* 大屏样式 */
-	get screenStyle() {
+	changeLayoutMode(value: string): string {
 		let scaleX = 0,
 			scaleY = 1,
 			actualScaleRatio = 1,
 			scale = ''
 		const { clientWidth, clientHeight } = document.body
-		const layoutMode = getQueryString('layoutMode')
-		switch (layoutMode) {
+		switch (value) {
 			case 'full-size':
 				scaleX = clientWidth / this.screenWidth
 				scaleY = clientHeight / this.screenHeight
@@ -94,18 +92,23 @@ export default class Screen extends Factory<Screen> {
 				actualScaleRatio = clientHeight / this.screenHeight
 				break
 		}
-		if (layoutMode === 'full-size') {
+		if (value === 'full-size') {
 			scale = `${scaleX},${scaleY}`
 		} else {
 			scale = `${actualScaleRatio}`
 		}
+		return `scale(${scale}) translate3d(0, 0, 0)`
+	}
+	/* 大屏样式 */
+	get screenStyle() {
+		const layoutMode = getQueryString('layoutMode')
 		return {
 			width: `${this.screenWidth}px`,
 			height: `${this.screenHeight}px`,
 			backgroundColor: this.screenBackGroundColor,
 			backgroundImage: `url(${this.screenBackGroundImage})`,
 			overflow: 'hidden',
-			transform: `scale(${scale}) translate3d(0, 0, 0)`,
+			transform: this.changeLayoutMode(layoutMode),
 		}
 	}
 
