@@ -167,7 +167,7 @@ export default {
 				}
 			}
 		},
-		__widgetId__(): string {
+		widgetId(): string {
 			if (this.config) {
 				if (this.config.widget) {
 					return this.config.widget.id

@@ -1,5 +1,6 @@
 import Editor from '@/core/Editor'
 const editor: Editor = Editor.Instance()
+import { databaseQuery } from '@/vue2/api/dataWarehouse.api'
 const parseParams = (params = {}) => {
 	if (typeof params === 'string' && params !== '') {
 		try {
@@ -28,16 +29,27 @@ const filterFalsyKey = input => {
 }
 
 export default {
+	data() {
+		return {
+			querying: false,
+			queryFailed: false,
+			queryTimer: null,
+			fetchTimer: null,
+			lastFetchDoneTime: null,
+		}
+	},
 	methods: {
 		outerQuery(api): void {
 			const { url, method } = api
 			if (!url) return
+			this.querying = true
+			this.queryFailed = false
 			// 解析 params
 			const params = parseParams(api.params)
 			editor.request(method, url, params, this.__widgetId__)
 		},
 		innerQuery(api): void {
-			const { interface: innerUrl, params: conditions, method = 'POST' } = api.system
+			const { interface: innerUrl, params: conditions, path = 'data', method = 'POST' } = api.system
 			if (!innerUrl) return
 			// 解析 params
 			let params = { ...parseParams(api.params) }
@@ -51,9 +63,17 @@ export default {
 				params = filterFalsyKey(conditions)
 			}
 			if (!Object.keys(params).length) return
-			params.queryId = params.dataAnalyseId
-			params.params = JSON.stringify(params)
-			editor.request(method, 'server/' + innerUrl, params, this.__widgetId__)
+			this.querying = true
+			this.queryFailed = false
+			databaseQuery(params, method, innerUrl).then(response => {
+				const process = api.process
+				this.parseQueryResult(response, {
+					path,
+					process,
+				})
+				this.querying = false
+				this.lastFetchDoneTime = Date.now()
+			})
 		},
 		dispatchQuery(api): void {
 			if (!api.system || !api.system.enable) {
@@ -67,8 +87,35 @@ export default {
 		handleApiChange(): void {
 			const api = this.config.api
 			if (!api) return
-			this.dispatchQuery(api)
-		}
+			if (this.queryTimer) clearTimeout(this.queryTimer)
+			this.queryTimer = setTimeout(() => {
+				this.dispatchQuery(api)
+				this.queryTimer = null
+			}, 400)
+		},
+		startAutoFetch(): void {
+			this.stopAutoFetch()
+			if (this.queryTimer) {
+				this.fetchTimer = setTimeout(() => {
+					this.startAutoFetch()
+				}, 400)
+				return
+			}
+			const api = this.config.api
+			if (!api) return
+			if (!this.lastFetchDoneTime) this.lastFetchDoneTime = Date.now()
+			this.fetchTimer = setInterval(() => {
+				if (this.querying) return
+				if (Date.now() - this.lastFetchDoneTime >= api.autoFetch.duration) {
+					if (api.system && api.system.enable) {
+						this.dispatchQuery(api)
+					}
+				}
+			}, 100)
+		},
+		stopAutoFetch(): void {
+			this.fetchTimer && clearInterval(this.fetchTimer)
+		},
 	},
 	computed: {
 		apiChangeWatcher() {
@@ -94,13 +141,41 @@ export default {
 				innerPath,
 				innerMethod,
 			}
-		}
+		},
+		autoFetchApi() {
+			const api = this.config.api
+			return api && api.autoFetch && api.autoFetch.enable
+		},
 	},
 	watch: {
+		querying(value): void {
+			this.$emit(value ? 'query-start' : 'query-end')
+		},
+		queryFailed(value): void {
+			value && this.$emit('query-failed')
+		},
 		apiChangeWatcher: {
 			handler: 'handleApiChange',
 			immediate: true,
 			deep: true,
-		}
-	}
+		},
+		'config.api.params': {
+			handler: 'handleApiChange',
+			deep: true,
+		},
+		autoFetchApi: {
+			handler: function (value) {
+				if (value) {
+					this.startAutoFetch()
+				} else {
+					this.stopAutoFetch()
+				}
+			},
+			immediate: true,
+		},
+	},
+	beforeDestroy(): void {
+		this.fetchTimer && clearTimeout(this.fetchTimer)
+		this.queryTimer && clearTimeout(this.queryTimer)
+	},
 }
