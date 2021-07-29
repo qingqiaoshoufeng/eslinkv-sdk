@@ -42,11 +42,31 @@ export default class Current extends Factory<Current> {
 		height: 0,
 		z: 0,
 	}
-
 	currentRightSettingIndex = 0
+
 	constructor(obj: any) {
 		super()
 		this.rulerContainerId = obj.rulerContainerId
+	}
+
+	clear(): void {
+		this.contentMove = false
+		this.widgetMove = false
+		this.activeSceneId = 0
+		this.currentRightSettingIndex = 0
+		this.activeWidgetId = ''
+		this.sceneAnimate = ''
+		this.currentWidgetId = ''
+		this.currentWidget = {}
+		this.currentSceneIndex = 0
+		this.currentCreateSceneList = []
+		this.currentWidgetListConfig = {
+			left: 0,
+			top: 0,
+			width: 0,
+			height: 0,
+			z: 0,
+		}
 	}
 
 	// taggerXRoomL1(): void {

@@ -6,6 +6,11 @@ export default class SceneBase extends Factory<SceneBase> {
 	screenScene: any = {}
 	/* 大屏场景数据序列化 */
 	sceneObj = {}
+
+	clear(): void {
+		this.sceneObj = {}
+		this.screenScene = {}
+	}
 	/* 更新场景名称 */
 	setSceneName(index: string | number, name: string): void {
 		this.sceneObj[index].name = name.replace(/ /g, '')

@@ -1,21 +1,7 @@
-import ScreenPc from '@/core/Screen/pc'
-import Scene from '@/core/Scene'
-import Ruler from '@/core/ui/Ruler'
 import Widget from '@/core/Widget/normal'
-import Current from '@/core/Current'
-import Http from '@/core/Http'
-import Local from '@/core/Local'
 import EditorBase from '@/core/Editor/base'
 
 export default class Agent extends EditorBase {
-	screen: ScreenPc = ScreenPc.Instance()
-	current: Current = Current.Instance({
-		rulerContainerId: this.rulerContainerId,
-	})
-	scene: Scene = Scene.Instance()
-	http: Http = Http.Instance()
-	local: Local = Local.Instance()
-	ruler: Ruler | null
 	constructor() {
 		super()
 	}
