@@ -25,22 +25,27 @@ export default class DSuspension extends Vue {
 	updateInfo = []
 	async update() {
 		const req = []
-		Object.values(this.editor.sceneWidgets[this.editor.current.currentSceneIndex]).forEach((v: any) => {
-			if (v.market) {
-				req.push({
-					componentEnTitle: v.type,
-					componentVersion: v.config.widget.componentVersion,
-					componentId: v.id,
-					componentTitle: v.config.widget.name,
-				})
+		const obj = this.editor.sceneWidgets[this.editor.current.currentSceneIndex]
+		if (obj) {
+			Object.values(obj).forEach((v: any) => {
+				if (v.market) {
+					req.push({
+						componentEnTitle: v.type,
+						componentVersion: v.config.widget.componentVersion,
+						componentId: v.id,
+						componentTitle: v.config.widget.name,
+					})
+				}
+			})
+			this.updateInfo = await versionUpdateList({ components: req })
+			if (this.updateInfo.length === 0) {
+				this.$Message.warning('暂无可更新组件')
+				return
 			}
-		})
-		this.updateInfo = await versionUpdateList({ components: req })
-		if (this.updateInfo.length === 0) {
+			this.showDrawer = true
+		} else {
 			this.$Message.warning('暂无可更新组件')
-			return
 		}
-		this.showDrawer = true
 	}
 }
 </script>
