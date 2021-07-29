@@ -53,6 +53,7 @@
 import loadMask from '../load-mask/index.vue'
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
+import { getQueryString } from '@/vue2/utils'
 
 @Component({
 	components: {
@@ -61,12 +62,53 @@ import Editor from '@/core/Editor'
 })
 export default class DView extends Vue {
 	editor: Editor = Editor.Instance()
-
+	currentLayoutMode = getQueryString('layoutMode')
 	currentAnimate(sceneId: string | number): string {
 		if (this.editor.current.activeSceneId === sceneId || this.editor.current.currentSceneIndex === sceneId) {
 			return `scene-container animated ${this.editor.current.sceneAnimate}`
 		}
 		return 'scene-container'
+	}
+	beforeDestroy(): void {
+		document.documentElement.removeEventListener('keydown', this.init)
+	}
+
+	layoutModeChange(): void {
+		switch (this.currentLayoutMode) {
+			case 'full-size':
+				this.currentLayoutMode = 'full-width'
+				break
+			case 'full-width':
+				this.currentLayoutMode = 'full-height'
+				break
+			case 'full-height':
+				this.currentLayoutMode = 'full-size'
+				break
+			default:
+				this.currentLayoutMode = 'full-size'
+		}
+		document.getElementById('screen').style.transform = this.editor.changeLayoutMode(this.currentLayoutMode)
+	}
+
+	init(e: KeyboardEvent): void {
+		if (
+			(e.ctrlKey === true || e.metaKey === true) &&
+			(e.which === 189 ||
+				e.which === 187 ||
+				e.which === 173 ||
+				e.which === 61 ||
+				e.which === 107 ||
+				e.which === 109)
+		) {
+			e.preventDefault()
+		}
+		if (e.keyCode === 88) {
+			this.layoutModeChange()
+		}
+	}
+
+	mounted(): void {
+		document.documentElement.addEventListener('keydown', this.init)
 	}
 }
 </script>

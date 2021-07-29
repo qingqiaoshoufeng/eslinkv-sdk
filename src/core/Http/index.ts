@@ -5,7 +5,7 @@ export default class Http extends Emitter {
 
 	//时间loop任务队列
 	private loopPool: Array<Task> = []
-	private loopPoolObj: Object<Task> = {}
+	private loopPoolObj: { [key: string]: Task } = {}
 
 	//待请求任务队列
 	private waitPool: Array<Task> = []
@@ -20,11 +20,11 @@ export default class Http extends Emitter {
 
 	// todo
 	// 每次请求的日志
-	private httpLog = []
+	// private httpLog = []
 
 	// todo
 	// 报错捕获是否抛出，node服务增加字段，默认false
-	private httpErrorDebugger = false
+	// private httpErrorDebugger = false
 
 	private timer: any = null
 	constructor() {

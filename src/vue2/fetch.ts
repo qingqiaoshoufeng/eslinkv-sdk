@@ -57,7 +57,7 @@ export default {
 			if (!Object.keys(params).length) return
 			params.queryId = params.dataAnalyseId
 			params.params = JSON.stringify(params)
-			editor.request(method, '/server/' + innerUrl, params, this.__widgetId__)
+			this.editor.request(method, '/server/' + innerUrl, params, this.__widgetId__)
 		},
 		dispatchQuery(api): void {
 			if (!api.system || !api.system.enable) {

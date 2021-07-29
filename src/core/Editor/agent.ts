@@ -214,6 +214,9 @@ export default class Agent extends EditorBase {
 	screenData(): any {
 		return this.screen.screenData()
 	}
+	changeLayoutMode(value: string): string {
+		return this.screen.changeLayoutMode(value)
+	}
 	/* 更新组件 */
 	updateComponentTarget(id, target, value): void {
 		this.screen.updateComponentTarget(id, target, value)
