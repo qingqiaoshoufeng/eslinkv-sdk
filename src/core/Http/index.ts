@@ -5,6 +5,7 @@ export default class Http extends Emitter {
 
 	//时间loop任务队列
 	private loopPool: Array<Task> = []
+	private loopPoolObj: Object<Task> = {}
 
 	//待请求任务队列
 	private waitPool: Array<Task> = []
@@ -17,6 +18,14 @@ export default class Http extends Emitter {
 	static POOL_UPDATE = 'pool_update'
 	static POOL_STOP = 'pool_stop'
 
+	// todo
+	// 每次请求的日志
+	private httpLog = []
+
+	// todo
+	// 报错捕获是否抛出，node服务增加字段，默认false
+	private httpErrorDebugger = false
+
 	private timer: any = null
 	constructor() {
 		super()
@@ -24,15 +33,22 @@ export default class Http extends Emitter {
 
 	init(): void {}
 
-	sortTask(): void {
-		//todo 按权重排序，有优化空间
-		this.waitPool.sort((a: Task, b: Task): number => {
-			return b.weight - a.weight
-		})
-	}
+	// sortTask(): void {
+	// 	this.waitPool.sort((a: Task, b: Task): number => {
+	// 		return b.weight - a.weight
+	// 	})
+	// }
 
-	pushOne(task: Task): void {
+	pushOne(task: Task, id?: string): void {
 		if (task.loopTime > 0) {
+			if (id) {
+				if (this.loopPoolObj[id]) {
+					this.push2Wait(this.loopPoolObj[id])
+					return
+				} else {
+					this.loopPoolObj[id] = task
+				}
+			}
 			this.loopPool.push(task)
 			this.startInterval()
 		}
