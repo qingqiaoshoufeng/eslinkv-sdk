@@ -1,6 +1,6 @@
 {
 	"name": "@eslinkv/vue2",
-	"version": "1.0.39",
+	"version": "1.0.41",
 	"main": "lib/v2.umd.min.js",
 	"types": "types/index.d.ts",
 	"dependencies": {

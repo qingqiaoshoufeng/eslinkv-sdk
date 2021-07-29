@@ -375,6 +375,7 @@ class Editor extends Agent {
 				.catch(e => {
 					console.warn(`${url}接口请求失败`, e)
 				}),
+			id,
 		)
 	}
 }

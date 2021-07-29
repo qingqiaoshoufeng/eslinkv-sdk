@@ -4,8 +4,8 @@ export default class Http extends Emitter {
 	limit = 1
 
 	//时间loop任务队列
-	private loopPool: Array<Task> = []
-	private loopPoolObj: { [key: string]: Task } = {}
+	private loopPool: { [key: string]: Task } = {}
+	// private loopPoolObj: { [key: string]: Task } = {}
 
 	//待请求任务队列
 	private waitPool: Array<Task> = []
@@ -41,15 +41,21 @@ export default class Http extends Emitter {
 
 	pushOne(task: Task, id?: string): void {
 		if (task.loopTime > 0) {
-			if (id) {
-				if (this.loopPoolObj[id]) {
-					this.push2Wait(this.loopPoolObj[id])
-					return
-				} else {
-					this.loopPoolObj[id] = task
-				}
-			}
-			this.loopPool.push(task)
+			// if (id) {
+			// 	if (this.loopPoolObj[id]) {
+			// 		console.log(this.loopPoolObj[id])
+			// 		console.log(task)
+			// 		this.loopPoolObj[id] = task
+			// 		// this.loopPool.push(this.loopPoolObj[id])
+			// 		// this.startInterval()
+			// 		// this.push2Wait(this.loopPoolObj[id])
+			// 		// return
+			// 	} else {
+			// 		this.loopPoolObj[id] = task
+			// 	}
+			// }
+			this.loopPool[id] = task
+			this.loopPool = { ...this.loopPool }
 			this.startInterval()
 		}
 		this.push2Wait(task)
@@ -79,9 +85,10 @@ export default class Http extends Emitter {
 	private startInterval(): void {
 		if (this.timer) return
 		this.timer = setInterval(() => {
-			this.loopPool.forEach((task: Task) => {
-				if (Date.now() - task.lastTime > task.loopTime) {
-					this.push2Wait(task)
+			Object.keys(this.loopPool).forEach(key => {
+				console.log(this.loopPool[key], 1)
+				if (Date.now() - this.loopPool[key].lastTime > this.loopPool[key].loopTime) {
+					this.push2Wait(this.loopPool[key])
 				}
 			})
 		}, 1000)
@@ -122,7 +129,7 @@ export default class Http extends Emitter {
 	/* 清空队列中的请求 */
 	public abortAll(): void {
 		this.waitPool = []
-		this.loopPool = []
+		this.loopPool = {}
 		this.currentPool = []
 		this.stop()
 		this.stopLoop()

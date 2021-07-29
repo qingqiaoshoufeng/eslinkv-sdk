@@ -90,3 +90,13 @@ export function getSourceDatabaseList(data) {
 		data: qs.stringify(data),
 	})
 }
+
+export function databaseQuery(params, method, url) {
+	params.queryId = params.dataAnalyseId
+	params.params = JSON.stringify(params)
+	return request0000({
+		url: `${serverURL}/${url}`,
+		method: 'get',
+		params: params,
+	})
+}

@@ -96,11 +96,11 @@ module.exports = {
 						amd: 'vue-class-component',
 					},
 					echarts: 'echarts',
-					'@eslinkv/core': {
-						commonjs: '@eslinkv/core',
-						commonjs2: '@eslinkv/core',
-						amd: '@eslinkv/core',
-					},
+					// '@eslinkv/core': {
+					// 	commonjs: '@eslinkv/core',
+					// 	commonjs2: '@eslinkv/core',
+					// 	amd: '@eslinkv/core',
+					// },
 				},
 			]
 		} else {
