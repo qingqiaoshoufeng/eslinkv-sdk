@@ -65,7 +65,6 @@ export default class Http extends Emitter {
 		this.timer = setInterval(() => {
 			this.loopPool.forEach((task: Task) => {
 				if (Date.now() - task.lastTime > task.loopTime) {
-					console.log(task.loopTime, 1)
 					this.push2Wait(task)
 				}
 			})

@@ -15,7 +15,6 @@ if (window !== undefined) {
 	if (!window.eslinkV) {
 		window.eslinkV = {}
 	}
-	console.log('eslinkv core')
 	window.eslinkV = { ...window.eslinkV, ...eslinkV }
 }
 window.eslinkV.scene = {

@@ -28,9 +28,6 @@ if (window !== undefined) {
 	if (!window.eslinkV) {
 		window.eslinkV = {}
 	}
-	console.log('eslinkv vue2')
-	console.log(eslinkV.widgetMixin.mounted)
-	console.log(eslinkV.widgetNormalMixin)
 	window.eslinkV = { ...window.eslinkV, ...eslinkV }
 }
 
