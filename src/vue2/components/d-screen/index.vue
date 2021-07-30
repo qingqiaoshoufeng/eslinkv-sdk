@@ -7,6 +7,8 @@
 		d-right-manage(v-if="!editor.currentWidgetId")
 		d-right-setting(v-if="editor.currentWidgetId")
 		d-right-setting-more(v-if="editor.currentWidgetList && editor.currentWidgetList.length > 1")
+	slot(v-if="editor.marketComponentLoading" name="loading")
+		load-mask(:show="true") 加载中...
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
@@ -17,9 +19,11 @@ import dRightSetting from '@/vue2/components-right/d-right-setting/index.vue'
 import dRightSettingMore from '@/vue2/components-right/d-right-setting-more/index.vue'
 import dSuspension from '@/vue2/components/d-suspension/index.vue'
 import Editor from '@/core/Editor'
+import loadMask from '../load-mask/index.vue'
 
 @Component({
 	components: {
+		loadMask,
 		dLeftScene,
 		dRightManage,
 		dRightSetting,
