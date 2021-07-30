@@ -78,6 +78,9 @@ export const useProcess = (process = {}, data) => {
  */
 export const usePath = (path, data) => {
 	const keys = path ? path.split('.') : []
+	if (!path) {
+		return data
+	}
 	while (keys.length) {
 		const key = keys.shift()
 		if (!key) {

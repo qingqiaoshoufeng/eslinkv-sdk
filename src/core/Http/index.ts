@@ -1,11 +1,12 @@
 import Emitter from './emitter'
 import Task from './task'
+import Log from './log'
 export default class Http extends Emitter {
 	limit = 1
 
 	//时间loop任务队列
-	private loopPool: Array<Task> = []
-	private loopPoolObj: { [key: string]: Task } = {}
+	private loopPool: { [key: string]: Task } = {}
+	// private loopPoolObj: { [key: string]: Task } = {}
 
 	//待请求任务队列
 	private waitPool: Array<Task> = []
@@ -18,9 +19,8 @@ export default class Http extends Emitter {
 	static POOL_UPDATE = 'pool_update'
 	static POOL_STOP = 'pool_stop'
 
-	// todo
-	// 每次请求的日志
-	// private httpLog = []
+	// 错误请求的日志
+	httpErrorLog = []
 
 	// todo
 	// 报错捕获是否抛出，node服务增加字段，默认false
@@ -41,15 +41,7 @@ export default class Http extends Emitter {
 
 	pushOne(task: Task, id?: string): void {
 		if (task.loopTime > 0) {
-			if (id) {
-				if (this.loopPoolObj[id]) {
-					this.push2Wait(this.loopPoolObj[id])
-					return
-				} else {
-					this.loopPoolObj[id] = task
-				}
-			}
-			this.loopPool.push(task)
+			this.loopPool[id] = task
 			this.startInterval()
 		}
 		this.push2Wait(task)
@@ -66,22 +58,22 @@ export default class Http extends Emitter {
 		}
 	}
 
-	private retry(t: Task) {
+	private retry(t: Task, res) {
 		t.errorCount++
 		if (t.errorCount < t.maxErrorCount) {
 			t.status = Task.STATUS_RETRY
 			this.push2Wait(t)
 		} else {
-			// todo 异常提醒
+			this.httpErrorLog.push(new Log({ ...res, errorCount }))
 		}
 	}
 
 	private startInterval(): void {
 		if (this.timer) return
 		this.timer = setInterval(() => {
-			this.loopPool.forEach((task: Task) => {
-				if (Date.now() - task.lastTime > task.loopTime) {
-					this.push2Wait(task)
+			Object.keys(this.loopPool).forEach(key => {
+				if (Date.now() - this.loopPool[key].lastTime > this.loopPool[key].loopTime) {
+					this.push2Wait(this.loopPool[key])
 				}
 			})
 		}, 1000)
@@ -103,7 +95,7 @@ export default class Http extends Emitter {
 					const t: Task = this.currentPool[index]
 					if (res.status === 'rejected') {
 						if (t.loopTime === 0) {
-							this.retry(t)
+							this.retry(t, res)
 						}
 					} else {
 						t.status = Task.STATUS_FINISH
@@ -122,7 +114,7 @@ export default class Http extends Emitter {
 	/* 清空队列中的请求 */
 	public abortAll(): void {
 		this.waitPool = []
-		this.loopPool = []
+		this.loopPool = {}
 		this.currentPool = []
 		this.stop()
 		this.stopLoop()

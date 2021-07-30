@@ -1,4 +1,5 @@
 import Editor from '@/core/Editor'
+import { usePath, useProcess } from '@/vue2/utils'
 const parseParams = (params = {}) => {
 	if (typeof params === 'string' && params !== '') {
 		try {
@@ -33,6 +34,32 @@ export default {
 		}
 	},
 	methods: {
+		updateApiData(value) {
+			if (!this.config || !this.config.api) return
+			const api = this.config.api
+			if (typeof value === 'object') {
+				api.data = JSON.stringify(value)
+				return
+			}
+			api.data = value
+		},
+		updateInnerData(value) {
+			if (value !== '') {
+				try {
+					this.data = JSON.parse(value)
+				} catch (e) {
+					this.data = value
+				}
+			}
+		},
+		parseQueryResult(response, { path, process }) {
+			if (!response.data || typeof response.data !== 'object') {
+				return
+			}
+			response = usePath(path, response)
+			response = useProcess(process, response)
+			this.data = response
+		},
 		outerQuery(api): void {
 			const { url, method } = api
 			if (!url) return
@@ -61,12 +88,10 @@ export default {
 		},
 		dispatchQuery(api): void {
 			if (!api.system || !api.system.enable) {
-				// 调用外部接口
-				this.outerQuery(api)
+				this.outerQuery(api) // 调用外部接口
 				return
 			}
-			// 调用数仓接口
-			this.innerQuery(api)
+			this.innerQuery(api) // 调用数仓接口
 		},
 		handleApiChange(): void {
 			const api = this.config.api
@@ -101,13 +126,20 @@ export default {
 		},
 	},
 	watch: {
-		apiChangeWatcher: {
-			handler: 'handleApiChange',
+		'config.api.data': {
+			handler(newVal) {
+				if (newVal === undefined) return
+				this.updateInnerData(newVal)
+			},
 			immediate: true,
 			deep: true,
 		},
-		'config.api.params': {
+		data(value) {
+			this.updateApiData(value)
+		},
+		apiChangeWatcher: {
 			handler: 'handleApiChange',
+			immediate: true,
 			deep: true,
 		},
 	},
