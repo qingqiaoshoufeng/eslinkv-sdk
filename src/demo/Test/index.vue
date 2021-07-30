@@ -7,11 +7,10 @@ div
 <script lang="ts">
 import Editor from '@/core/Editor'
 import { Vue, Component } from 'vue-property-decorator'
-import LoadMask from '@/vue2/components/load-mask'
 import { Select, Option } from 'view-design'
 
 @Component({
-	components: { LoadMask, 'i-select': Select, 'i-option': Option },
+	components: { 'i-select': Select, 'i-option': Option },
 })
 export default class extends Vue {
 	a = 1

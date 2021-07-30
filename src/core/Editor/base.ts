@@ -25,6 +25,8 @@ export default class EditorBase extends Factory<EditorBase> {
 	editorStatus = 'inPreview'
 	/* 大屏平台状态 是否全屏 */
 	fullscreen = false
+	/* 组件加载 */
+	marketComponentLoading = false
 	/* 组件加载状态 */
 	widgetLoaded = {}
 	/* 更新组件加载状态 */

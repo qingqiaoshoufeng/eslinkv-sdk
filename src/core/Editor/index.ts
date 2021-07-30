@@ -39,6 +39,7 @@ class Editor extends Agent {
 			}
 		})
 		if (list.length > 0) {
+			this.marketComponentLoading = true
 			useList({ list }).then((res: any) => {
 				res.forEach((item: any, index: number) => {
 					p.push(
@@ -66,6 +67,7 @@ class Editor extends Agent {
 						}
 					}
 					this.screen.screenWidgets = screen.screenWidgets
+					this.marketComponentLoading = false
 				})
 			})
 		} else {

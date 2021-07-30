@@ -2,10 +2,16 @@ const path = require('path')
 const pkg = require('./package.json')
 const isProduction = process.env.NODE_ENV === 'production'
 const needReport = false
+// const proxyUrl = 'http://192.168.1.44:2000'
+const proxyUrl = 'http://eslinkv.eslink.cc'
+// const proxyUrl = 'http://127.0.0.1:7001'
+// const proxyUrl = 'http://10.30.3.156:7001'
+// const proxyUrl = 'https://kv-etbc.eslink.com'
 
 function resolve(dir) {
 	return path.join(__dirname, dir)
 }
+
 module.exports = {
 	transpileDependencies: ['@simonwep', 'swiper', 'dom7'],
 	assetsDir: './',
@@ -23,36 +29,28 @@ module.exports = {
 		disableHostCheck: true,
 		proxy: {
 			'^/etbc': {
-				// target: 'https://kv-etbc.eslink.com',
-				target: 'http://eslinkv.eslink.cc',
-				// target: 'http://192.168.1.44:2000',
+				target: proxyUrl,
 				changeOrigin: true,
 				// pathRewrite: {
 				// 	'^/node': '/',
 				// },
 			},
 			'^/node': {
-				// target: 'https://kv-etbc.eslink.com',
-				target: 'http://eslinkv.eslink.cc',
-				// target: 'http://192.168.1.44:2000',
+				target: proxyUrl,
 				changeOrigin: true,
 				// pathRewrite: {
 				// 	'^/node': '/',
 				// },
 			},
 			'^/server': {
-				// target: 'https://kv-etbc.eslink.com',
-				target: 'http://eslinkv.eslink.cc',
-				// target: 'http://192.168.1.44:2000',
+				target: proxyUrl,
 				changeOrigin: true,
 				// pathRewrite: {
 				// 	'^/server': '/',
 				// },
 			},
 			'^/cdn': {
-				// target: 'https://kv-etbc.eslink.com',
-				target: 'http://eslinkv.eslink.cc',
-				// target: 'http://192.168.1.44:2000',
+				target: proxyUrl,
 				changeOrigin: true,
 				// pathRewrite: {
 				// 	'^/cdn': '/',

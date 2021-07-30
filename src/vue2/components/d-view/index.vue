@@ -48,6 +48,8 @@
 			:market="item.market",
 			:style="item.config.widget.hide ? 'display: none' : ''",
 			readonly)
+	slot(v-if="editor.marketComponentLoading" name="loading")
+		load-mask(:show="true") 加载中...
 </template>
 <script lang="ts">
 import loadMask from '../load-mask/index.vue'
