@@ -1,6 +1,9 @@
 <template lang="pug">
 .widget-item-wrapper.pos-r
-	.fn-flex.flex-column.d-widget-list-card.pointer(draggable="true", @dragstart="dragstart($event)")
+	.fn-flex.flex-column.d-widget-list-card.pointer(
+		draggable="true",
+		@dragstart="dragstart($event)"
+	)
 		.d-widget-list-img.fn-flex(:style="{ backgroundImage: `url(${componentAvatar})` }")
 		h2.ellipsis(:title="componentTitle") {{ componentTitle }}
 </template>
@@ -33,6 +36,9 @@ export default class ItemCard extends Vue {
 				startY: e.offsetY,
 			}),
 		)
+		setTimeout(() => {
+			this.$parent.widgetShow = false
+		}, 300)
 	}
 }
 </script>
