@@ -64,7 +64,7 @@ export default class Http extends Emitter {
 			t.status = Task.STATUS_RETRY
 			this.push2Wait(t)
 		} else {
-			this.httpErrorLog.push(new Log({ ...res, errorCount }))
+			this.httpErrorLog.push(new Log({ ...res, errorCount: t.errorCount }))
 		}
 	}
 

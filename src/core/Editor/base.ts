@@ -5,16 +5,21 @@ import Scene from '@/core/Scene'
 import Http from '@/core/Http'
 import Local from '@/core/Local'
 import Ruler from '@/core/ui/Ruler'
+import ImageCache from '@/core/ImageCache'
+import IndexDB from '@/core/IndexDB'
 
+const db = new IndexDB()
 const rulerContainerId = `drag-content-${+new Date()}`
 export default class EditorBase extends Factory<EditorBase> {
 	screen: ScreenPc = ScreenPc.Instance()
 	current: Current = Current.Instance({
 		rulerContainerId,
 	})
+	indexDB: db
 	scene: Scene = Scene.Instance()
 	http: Http = Http.Instance()
 	local: Local = Local.Instance()
+	imageCache: ImageCache = ImageCache.Instance(db)
 	ruler: Ruler | null
 	rulerContainerId = rulerContainerId
 	/* 大屏ID */
