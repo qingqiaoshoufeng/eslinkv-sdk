@@ -23,22 +23,18 @@ module.exports = {
 		disableHostCheck: true,
 		proxy: {
 			'^/etbc': {
-				// target: 'http://127.0.0.1:7001',
 				// target: 'https://kv-etbc.eslink.com',
-				// target: 'http://eslinkv.eslink.cc',
-				target: 'http://192.168.1.44:2000',
-				// target: 'http://10.30.3.156:7001',
+				target: 'http://eslinkv.eslink.cc',
+				// target: 'http://192.168.1.44:2000',
 				changeOrigin: true,
 				// pathRewrite: {
 				// 	'^/node': '/',
 				// },
 			},
 			'^/node': {
-				// target: 'http://127.0.0.1:7001',
 				// target: 'https://kv-etbc.eslink.com',
-				// target: 'http://eslinkv.eslink.cc',
-				target: 'http://192.168.1.44:2000',
-				// target: 'http://10.30.3.156:7001',
+				target: 'http://eslinkv.eslink.cc',
+				// target: 'http://192.168.1.44:2000',
 				changeOrigin: true,
 				// pathRewrite: {
 				// 	'^/node': '/',
@@ -46,31 +42,29 @@ module.exports = {
 			},
 			'^/server': {
 				// target: 'https://kv-etbc.eslink.com',
-				// target: 'http://eslinkv.eslink.cc',
-				// target: 'http://10.20.10.154:3000',
-				target: 'http://192.168.1.44:2000',
+				target: 'http://eslinkv.eslink.cc',
+				// target: 'http://192.168.1.44:2000',
 				changeOrigin: true,
 				// pathRewrite: {
 				// 	'^/server': '/',
 				// },
 			},
 			'^/cdn': {
-				// target: 'http://127.0.0.1:7001',
-				// target: 'http://eslinkv.eslink.cc',
-				// target: 'http://10.30.3.156:7001',
-				target: 'http://192.168.1.44:2000',
+				// target: 'https://kv-etbc.eslink.com',
+				target: 'http://eslinkv.eslink.cc',
+				// target: 'http://192.168.1.44:2000',
 				changeOrigin: true,
 				// pathRewrite: {
 				// 	'^/cdn': '/',
 				// },
 			},
-			'/huaxin': {
-				target: 'http://119.3.5.149:16000',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/huaxin': '/',
-				},
-			},
+			// '/huaxin': {
+			// 	target: 'http://119.3.5.149:16000',
+			// 	changeOrigin: true,
+			// 	pathRewrite: {
+			// 		'^/huaxin': '/',
+			// 	},
+			// },
 		},
 	},
 	css: {
