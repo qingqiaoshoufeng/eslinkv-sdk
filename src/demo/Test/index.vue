@@ -3,17 +3,16 @@ div
 	i-select(v-model="a")
 		i-option(:value="1") 1
 		i-option(:value="2") 2
-	
-	dIndexdbImage.test-img(path="/node/0eea7812-1522-4377-bce1-1a4576065af2/componentBackGround/1627631713184.jpg")
+	d-image.test-img(path="/node/0eea7812-1522-4377-bce1-1a4576065af2/componentBackGround/1627631713184.jpg")
 </template>
 <script lang="ts">
 import Editor from '@/core/Editor'
 import { Vue, Component } from 'vue-property-decorator'
 import { Select, Option } from 'view-design'
-import dIndexdbImage from '@/vue2/components/d-indexdb-image'
+import dImage from '@/vue2/components/d-image'
 
 @Component({
-	components: { 'i-select': Select, 'i-option': Option, dIndexdbImage },
+	components: { 'i-select': Select, 'i-option': Option, dImage },
 })
 export default class extends Vue {
 	a = 1

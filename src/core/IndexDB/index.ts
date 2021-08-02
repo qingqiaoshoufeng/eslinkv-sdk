@@ -1,7 +1,7 @@
 import Dexie from 'dexie'
 
 export default class IndexDB extends Dexie {
-	public imageCache: Dexie.Table<ImageCache, number>
+	public imageCache: Dexie.Table<IImageCache, number>
 
 	public constructor() {
 		super('EslinkVDB')

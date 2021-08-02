@@ -15,7 +15,7 @@ export default class EditorBase extends Factory<EditorBase> {
 	current: Current = Current.Instance({
 		rulerContainerId,
 	})
-	indexDB: db
+	indexDB = db
 	scene: Scene = Scene.Instance()
 	http: Http = Http.Instance()
 	local: Local = Local.Instance()
