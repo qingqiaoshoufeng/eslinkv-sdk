@@ -4,6 +4,7 @@ import dDetail from '@/vue2/components/d-detail/index.vue'
 import dShareDialog from '@/vue2/components/d-share-dialog/index.vue'
 import dView from '@/vue2/components/d-view/index.vue'
 import loadMask from '@/vue2/components/load-mask/index.vue'
+import dIndexdbImage from '@/vue2/components/d-indexdb-image.vue'
 import '@/vue2/plugin.js'
 import colorTheme from '@/core/colorTheme'
 import widgetEcharts from '@/vue2/ui/Widget/echarts.vue'
@@ -23,6 +24,7 @@ const eslinkV = {
 	dDetail,
 	dView,
 	loadMask,
+	dIndexdbImage,
 }
 if (window !== undefined) {
 	if (!window.eslinkV) {
@@ -42,5 +44,6 @@ export {
 	dShareDialog,
 	dView,
 	loadMask,
+	dIndexdbImage,
 }
 export default eslinkV
