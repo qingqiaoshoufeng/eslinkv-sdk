@@ -64,7 +64,7 @@ export default class Http extends Emitter {
 			t.status = Task.STATUS_RETRY
 			this.push2Wait(t)
 		} else {
-			this.httpErrorLog.push(new Log({ ...res, errorCount }))
+			this.httpErrorLog.push(new Log({ ...res, errorCount: t.errorCount }))
 		}
 	}
 
@@ -72,7 +72,7 @@ export default class Http extends Emitter {
 		if (this.timer) return
 		this.timer = setInterval(() => {
 			Object.keys(this.loopPool).forEach(key => {
-				if (Date.now() - this.loopPool[key].lastTime > this.loopPool[key].loopTime) {
+				if (Date.now() - this.loopPool[key].lastTime > this.loopPool[key].loopTime && this.loopPool[key]) {
 					this.push2Wait(this.loopPool[key])
 				}
 			})
@@ -109,8 +109,11 @@ export default class Http extends Emitter {
 			this.stop()
 		}
 	}
+	// 停止某一个请求
+	abortOne(id: string): void {
+		delete this.loopPool[id]
+	}
 
-	abortOne(): void {}
 	/* 清空队列中的请求 */
 	public abortAll(): void {
 		this.waitPool = []

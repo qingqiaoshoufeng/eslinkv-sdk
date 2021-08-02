@@ -5,10 +5,9 @@ export default class Log {
 	errorCount: number
 	constructor(res) {
 		const request: XMLHttpRequest = res.reason.request
-		console.log(res.reason.request)
 		this.responseURL = request.responseURL
 		this.status = request.status
 		this.responseText = request.responseText
-		this.errorCount = request.errorCount
+		this.errorCount = res.errorCount
 	}
 }

@@ -2,12 +2,14 @@ import axios, { AxiosRequestConfig } from 'axios'
 export default class HttpBase {
 	method = ''
 	url = ''
+	headers = {}
 	params: any = ''
 
-	constructor(method: string, url: string, params: any) {
+	constructor(method: string, url: string, params: any, headers?: any) {
 		this.method = method
 		this.url = url
 		this.params = params
+		this.headers = headers
 	}
 
 	public request(config: any): Promise<any> {
