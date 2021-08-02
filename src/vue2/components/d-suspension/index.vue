@@ -4,9 +4,14 @@
 		i-tooltip(content="更新组件", placement="left")
 			i-icon.pointer(type="md-sync", @click="update", :size="22")
 		updateDrawer(v-model="showDrawer", :data="updateInfo")
+	.d-suspension-item.pointer.pos-r.fn-flex
+		i-tooltip(content="全局请求设置", placement="left")
+			i-icon.pointer(type="md-cog", @click="configRequest", :size="22")
+		globalRequestConfig(v-model="globalRequestConfigShow")
 </template>
 <script lang="ts">
 import updateDrawer from './updateDrawer.vue'
+import globalRequestConfig from './globalRequestConfig.vue'
 import { Component, Vue } from 'vue-property-decorator'
 import { Icon, Tooltip } from 'view-design'
 import { versionUpdateList } from '@/vue2/api/marketComponent.api'
@@ -17,12 +22,19 @@ import Editor from '@/core/Editor'
 		'i-icon': Icon,
 		'i-tooltip': Tooltip,
 		updateDrawer,
+		globalRequestConfig,
 	},
 })
 export default class DSuspension extends Vue {
 	editor = Editor.Instance()
 	showDrawer = false
+	globalRequestConfigShow = false
 	updateInfo = []
+
+	configRequest () {
+		this.globalRequestConfigShow = true
+	}
+	
 	async update() {
 		const req = []
 		const obj = this.editor.sceneWidgets[this.editor.current.currentSceneIndex]
