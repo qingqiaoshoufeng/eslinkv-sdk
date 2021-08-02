@@ -44,6 +44,10 @@ export default class Screen extends Factory<Screen> {
 	screenMainScene: string | number
 	/* 大屏平台类型 PC:PC */
 	screenPlatform: string
+	/* 大屏组件接口Domain */
+	screenDomain: string
+	/* 大屏组件接口Headers */
+	screenHeaders: { [key: string]: string }
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
 		const mergedValue = localConfigValue
