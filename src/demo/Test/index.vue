@@ -3,7 +3,7 @@ div
 	i-select(v-model="a")
 		i-option(:value="1") 1
 		i-option(:value="2") 2
-	d-image.test-img(path="/node/0eea7812-1522-4377-bce1-1a4576065af2/componentBackGround/1627631713184.jpg")
+	d-image.test-img(src="/node/0eea7812-1522-4377-bce1-1a4576065af2/componentBackGround/1627631713184.jpg")
 </template>
 <script lang="ts">
 import Editor from '@/core/Editor'

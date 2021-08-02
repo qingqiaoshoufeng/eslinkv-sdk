@@ -57,7 +57,7 @@ export default {
 					console.error(`自定义事件：${eventType} 未初始化`)
 					return
 				}
-				for (const item of this.events[eventType]) {
+				this.events[eventType].forEach(item => {
 					let finalType = item.triggerType
 					if (finalType === 'update') finalType = item.target
 					if (item.eventClass === 'scene') {
@@ -112,7 +112,7 @@ export default {
 							})
 						}
 					}
-				}
+				})
 			} else {
 				this.__eventTypesSetting__([{ key: 'click', label: '点击事件' }])
 			}

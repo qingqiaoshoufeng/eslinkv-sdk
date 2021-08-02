@@ -1,5 +1,5 @@
 <template lang="pug">
-img(:src="src", v-bind="{ ...$props, ...$attrs }", v-on="$listeners")
+img(:src="currentSrc", v-bind="{ ...$props, ...$attrs }", v-on="$listeners")
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
@@ -7,13 +7,13 @@ import Editor from '@/core/Editor'
 
 @Component
 export default class DImage extends Vue {
-	@Prop(String) path: string
+	@Prop(String) src: string
 
 	editor: Editor = Editor.Instance()
-	src = ''
+	currentSrc = ''
 
 	async created() {
-		this.src = await this.editor.imageCache.get(this.path)
+		this.currentSrc = await this.editor.imageCache.get(this.src)
 	}
 }
 </script>
