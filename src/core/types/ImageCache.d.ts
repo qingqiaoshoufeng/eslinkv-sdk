@@ -1,5 +1,5 @@
-interface ImageCache {
+interface IImageCache {
 	id?: number
-	picture?: string
+	picture?: Blob
 	name?: string
 }

@@ -10,7 +10,7 @@ export default class ImageCache extends Factory<ImageCache> {
 	// eslinkV.Editor.Instance().imageCache.add('/node/0eea7812-1522-4377-bce1-1a4576065af2/componentBackGround/1627631713184.jpg')
 	// eslinkV.Editor.Instance().imageCache.get('/node/0eea7812-1522-4377-bce1-1a4576065af2/componentBackGround/1627631713184.jpg')
 
-	async add(name: string): void {
+	async add(name: string): Promise<void> {
 		const res = await fetch(name)
 		const blob = await res.blob()
 		await this.db.imageCache.put({
@@ -28,8 +28,8 @@ export default class ImageCache extends Factory<ImageCache> {
 		}
 	}
 
-	async updateImg(name: string): void {
-		const res = await fetch(url)
+	async updateImg(name: string): Promise<void> {
+		const res = await fetch(name)
 		const blob = await res.blob()
 		await this.db.imageCache.put({
 			name,
@@ -37,16 +37,17 @@ export default class ImageCache extends Factory<ImageCache> {
 		})
 	}
 
-	async get(name: string): ImageCache {
+	async get(name: string): Promise<string> {
 		if (!name) return
-		const collection: ImageCache = await this.db.imageCache.get({ name })
+		const collection: IImageCache = await this.db.imageCache.get({ name })
 		if (collection) {
-			const img = document.createElement('img')
-			img.src = window.URL.createObjectURL(collection.picture)
-			document.body.appendChild(img)
-			this.updateImg(name)
-			return collection
+			// const img = document.createElement('img')
+			// img.src = window.URL.createObjectURL(collection.picture)
+			// document.body.appendChild(img)
+			// this.updateImg(name)
+			return window.URL.createObjectURL(collection.picture)
 		} else {
+			this.add(name)
 			return name
 		}
 	}
