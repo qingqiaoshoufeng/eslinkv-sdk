@@ -177,10 +177,12 @@ export default class DDetail extends Vue {
 				this.loading = false
 			} catch (e) {
 				console.error(e)
+				this.loading = false
 				this.$Message.error('配置文件识别失败')
 			}
 		}
 		reader.onerror = () => {
+			this.loading = false
 			this.$Message.error('配置文件识别失败')
 		}
 		reader.readAsText(file)

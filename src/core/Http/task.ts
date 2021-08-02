@@ -32,8 +32,8 @@ export default class Task extends HttpBase {
 		this.errorCount = 0
 	}
 
-	execut(): Promise<any> {
-		return this.request({})
+	execut(obj = {}): Promise<any> {
+		return this.request(obj)
 	}
 
 	then(cb: Function): Task {

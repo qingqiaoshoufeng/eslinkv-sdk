@@ -6,7 +6,7 @@
 		updateDrawer(v-model="showDrawer", :data="updateInfo")
 	.d-suspension-item.pointer.pos-r.fn-flex
 		i-tooltip(content="全局请求设置", placement="left")
-			i-icon.pointer(type="md-cog", @click="configRequest", :size="22")
+			i-icon.pointer(type="md-planet", @click="configRequest", :size="22")
 		globalRequestConfig(v-model="globalRequestConfigShow")
 </template>
 <script lang="ts">
@@ -31,10 +31,10 @@ export default class DSuspension extends Vue {
 	globalRequestConfigShow = false
 	updateInfo = []
 
-	configRequest () {
+	configRequest() {
 		this.globalRequestConfigShow = true
 	}
-	
+
 	async update() {
 		const req = []
 		const obj = this.editor.sceneWidgets[this.editor.current.currentSceneIndex]

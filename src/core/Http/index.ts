@@ -3,7 +3,10 @@ import Task from './task'
 import Log from './log'
 export default class Http extends Emitter {
 	limit = 1
-
+	/* 大屏组件接口Domain */
+	screenDomain: string
+	/* 大屏组件接口Headers */
+	screenHeaders: string
 	//时间loop任务队列
 	private loopPool: { [key: string]: Task } = {}
 	// private loopPoolObj: { [key: string]: Task } = {}
@@ -86,7 +89,7 @@ export default class Http extends Emitter {
 			const list: Array<Promise<any>> = []
 			this.currentPool.forEach(task => {
 				task.status = Task.STATUS_READY
-				list.push(task.execut())
+				list.push(task.execut({ screenDomain: this.screenDomain, screenHeaders: this.screenHeaders }))
 			})
 			//todo allSettled 兼容性问题
 			Promise.allSettled(list).then(result => {

@@ -1,9 +1,9 @@
 <template lang="pug">
-	drawer(title="全局请求设置", :closable="false", v-model="isShow" :width="300")
+	drawer(title="全局请求设置", :closable="false", v-model="isShow" :width="335")
 		i-form
-			i-form-item(label="domain")
-				d-input(v-model="editor.screen.screenDomain")
-			i-form-item(label="headers")
+			i-form-item(label="请求链接前缀")
+				d-input(v-model="editor.screen.screenDomain" placeholder="http://example.com")
+			i-form-item(label="请求头设置")
 				editor.d-manage-modal-control-editor(
 					v-model="editor.screen.screenHeaders",
 					@init="editorInit",
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import {Drawer, FormItem, Form} from 'view-design'
+import { Drawer, FormItem, Form } from 'view-design'
 import dInput from '@/vue2/components/d-input/index.vue'
 import Editor from '@/core/Editor'
 const editor = require('vue2-ace-editor')
@@ -43,7 +43,7 @@ export default class MarketEditDialog extends Vue {
 	onModalShow(val) {
 		this.$emit('input', val)
 	}
-	
+
 	editorInit() {
 		require('brace/ext/language_tools')
 		require('brace/mode/html')

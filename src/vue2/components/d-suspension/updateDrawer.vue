@@ -1,5 +1,5 @@
 <template lang="pug">
-drawer(title="组件升级", :closable="false", v-model="showDrawer")
+drawer(title="组件升级", :closable="false", v-model="showDrawer", :width="335")
 	.drawer-tool
 		checkbox(:indeterminate="indeterminate", :value="checkAll", @click.prevent.native="handleCheckAll") 可更新组件
 		.update-btn(@click="update") 更新

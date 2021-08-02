@@ -15,12 +15,24 @@ export default class HttpBase {
 	public request(config: any): Promise<any> {
 		const request = axios.create()
 		return new Promise<any>((resolve, reject) => {
+			let url = this.url
+			let headers = this.headers
+			if (config.screenHeaders) {
+				try {
+					headers = { ...JSON.parse(config.screenHeaders), ...headers }
+				} catch (e) {
+					console.warn('全局请求头格式不正确')
+				}
+			}
+			if (config.screenDomain) {
+				url = config.screenDomain + this.url
+			}
 			const requestConfig: AxiosRequestConfig = {
 				method: this.method,
-				url: this.url,
+				url,
 				params: this.params,
 				data: this.params,
-				...config,
+				headers,
 			}
 			request
 				.request(requestConfig)

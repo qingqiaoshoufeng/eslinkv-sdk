@@ -367,6 +367,8 @@ class Editor extends Agent {
 		const loopTime = this.screenWidgets[id].config.api.autoFetch.enable
 			? this.screenWidgets[id].config.api.autoFetch.duration
 			: 0
+		this.http.screenDomain = this.screen.screenDomain
+		this.http.screenHeaders = this.screen.screenHeaders
 		this.http.pushOne(
 			new HttpTask(method, url, params, loopTime)
 				.then(res => {
