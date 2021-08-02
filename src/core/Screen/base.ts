@@ -122,6 +122,8 @@ export default class Screen extends Factory<Screen> {
 			screenWidgets: this.screenWidgets,
 			screenType: this.screenType,
 			screenAvatar: this.screenAvatar,
+			screenDomain: this.screenDomain,
+			screenHeaders: this.screenHeaders,
 			screenBackGroundColor: this.screenBackGroundColor,
 			screenBackGroundImage: this.screenBackGroundImage,
 			screenHeight: this.screenHeight,
