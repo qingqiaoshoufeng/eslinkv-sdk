@@ -4,10 +4,10 @@ export default class Log {
 	responseText: string
 	errorCount: number
 	constructor(res) {
-		const request = res.reason.request
+		const request: XMLHttpRequest = res.reason.request
 		this.responseURL = request.responseURL
 		this.status = request.status
 		this.responseText = request.responseText
-		this.errorCount = request.errorCount
+		this.errorCount = res.errorCount
 	}
 }

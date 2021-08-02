@@ -43,6 +43,7 @@ export default {
 		this.instance = null
 		clearInterval(this.animateTimer)
 		clearTimeout(this.animateTimer)
+		this.editor.http.abortOne(this.__widgetId__)
 		this.animateTimer = null
 		this.animateActiveIndex = -1
 	},

@@ -41,6 +41,12 @@ interface selectSceneIndex {
 	(index: string | number): void
 }
 
+interface clear {
+	/**
+	 * 清空大屏数据
+	 */
+	(): void
+}
 interface EditorInstance {
 	/**
 	 * 当前场景key值
@@ -52,6 +58,7 @@ interface EditorInstance {
 	localInit: localInit
 	createWidget: createWidget
 	init: init
+	clear: clear
 	/**
 	 * 当前大屏背景色
 	 */
