@@ -9,22 +9,7 @@
 		@on-visible-change="setVisibility"
 	>
 		<div class="modal-body">
-			<Tabs v-if="isVisible" type="card" :animated="false" value="querySelect" @on-click="clickTabs" ref="tab">
-				<TabPane label="选择查询" name="querySelect">
-					<select-query ref="selectQuery" @getQueryCond="getQueryCond" :lastQuery="lastQuery"></select-query>
-				</TabPane>
-				<TabPane label="单表查询" name="querySingle">
-					<single-query ref="singleQuery" @getQueryCond="getQueryCond" :lastQuery="lastQuery"></single-query>
-				</TabPane>
-				<TabPane label="自定义查询" name="queryCustom">
-					<custom-query
-						v-if="chartType === 2"
-						ref="customQuery"
-						@getQueryCond="getQueryCond"
-						:lastQuery="lastQuery"
-					></custom-query>
-				</TabPane>
-			</Tabs>
+			<select-query ref="selectQuery" @getQueryCond="getQueryCond" :lastQuery="lastQuery"></select-query>
 		</div>
 		<div slot="footer">
 			<Button type="default" @click="exit">取消</Button>
@@ -34,15 +19,11 @@
 </template>
 <script>
 import selectQuery from './selectQuery'
-import singleQuery from './singleQuery'
-import customQuery from './customQuery'
 import { Modal, Tabs, TabPane, Button } from 'view-design'
 
 export default {
 	components: {
 		selectQuery,
-		singleQuery,
-		customQuery,
 		Modal,
 		Tabs,
 		TabPane,
@@ -58,19 +39,12 @@ export default {
 	data() {
 		return {
 			height: '100%',
-			chartType: 0, // 0：选择查询；1：单表查询；2：自定义查询
 			queryCond: {},
 			lastQuery: {},
 			isVisible: false,
 		}
 	},
 	methods: {
-		// 选择查询模式
-		clickTabs(name) {
-			if (name === 'querySelect') this.chartType = 0
-			else if (name === 'querySingle') this.chartType = 1
-			else this.chartType = 2
-		},
 		getQueryCond(obj) {
 			this.queryCond = obj
 		},
@@ -83,7 +57,7 @@ export default {
 		ok() {
 			this.$emit('update', {
 				...this.queryCond,
-				chartQueryType: this.chartType,
+				chartQueryType: 0, // 0：选择查询；1：单表查询；2：自定义查询
 			})
 		},
 		setVisibility(status) {

@@ -82,7 +82,7 @@
 <script lang="ts">
 import func from '@/vue2/components-func/func.mx'
 import { Component } from 'vue-property-decorator'
-import databaseConfig from '../components/data-warehouse/index.vue'
+import databaseConfig from '../components-base/data-warehouse/index.vue'
 import dCode from '@/vue2/components-right/d-code/index.vue'
 import { animates } from './config.js'
 import DataEvent from '@/vue2/components-right/data-event/index.vue'
