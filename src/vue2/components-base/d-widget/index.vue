@@ -1,6 +1,6 @@
 <template lang="pug">
 component.widget-part.animate__animated(
-	:style="{ animationDuration: duration }",
+	:style="{ animationDuration, animationDelay }",
 	:is="currentComponent",
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
@@ -24,7 +24,7 @@ import { use } from '@/vue2/api/marketComponent.api'
 const prefix1 = 'market-'
 const prefix2 = 'eslinkv-'
 @Component
-export default class WidgetNormal extends Vue {
+export default class DWidget extends Vue {
 	@Prop({ default: 'normal' }) widgetType
 	@Prop({ default: false }) market
 	@Prop() type
@@ -34,10 +34,12 @@ export default class WidgetNormal extends Vue {
 	@Prop() eventTypes
 	@Prop() settingData
 	@Prop({ default: false }) readonly
+
 	componentVersion = ''
 	ready = false
 	animationClass = null
-	duration = `.6s`
+	animationDuration = `.6s`
+	animationDelay = `0s`
 	editor: Editor = Editor.Instance()
 
 	get currentComponent(): string | null {
@@ -49,24 +51,15 @@ export default class WidgetNormal extends Vue {
 		}
 		return null
 	}
-	get animationEnabled(): boolean {
-		return this.animation.transitionEnable
-	}
-	beforeEnter(el, animation): void {
-		el.style.animationDuration = ` ${animation.duration}ms`
-		el.style.animationDelay = `${animation.delay}ms`
-	}
 	setAnimation(): void {
-		if (!this.animationEnabled || !this.animation) {
+		if (!this.animation.transitionEnable) {
 			this.removeAnimation()
 			return
 		}
-		const { enter, duration, delay } = this.animation
-		this.duration = `${duration / 1000}s`
-		enter ? (this.animationClass = `animate__${enter}`) : void 0
-		const timer = setTimeout(() => {
-			clearTimeout(timer)
-		}, delay)
+		const { entry, duration, delay } = this.animation
+		this.animationDuration = `${duration / 1000}s`
+		this.animationDelay = `${delay / 1000}s`
+		entry ? (this.animationClass = `animate__${entry}`) : void 0
 	}
 	removeAnimation(): void {
 		this.animationClass = null
@@ -109,7 +102,7 @@ export default class WidgetNormal extends Vue {
 			this.loadMarket()
 		}
 	}
-	@Watch('animationEnabled')
+	@Watch('animation.transitionEnable', { deep: true })
 	onAnimationEnabledChange(value: boolean): void {
 		value && this.setAnimation()
 	}

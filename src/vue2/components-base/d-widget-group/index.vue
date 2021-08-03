@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 @Component
-export default class WidgetGroup extends Vue {
+export default class DWidgetGroup extends Vue {
 	@Prop() config
 	@Prop() children
 	get styles() {

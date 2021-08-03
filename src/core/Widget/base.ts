@@ -13,11 +13,11 @@ export default class Widget {
 	eventTypes = []
 	customEventsConfig: any[]
 	events = {}
-
-	// 组件入场动画
+	// 组件动画
 	animation = {
 		transitionEnable: true,
-		enter: 'fadeIn',
+		entry: 'fadeIn',
+		leave: 'fadeOut',
 		delay: 0,
 		duration: 600,
 	}

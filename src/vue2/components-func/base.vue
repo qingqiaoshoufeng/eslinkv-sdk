@@ -31,7 +31,7 @@
 		@close-click="editor.currentWidget.animation.transitionEnable = false",
 		:enable="editor.currentWidget.animation.transitionEnable")
 		d-right-control(label="动画形式")
-			i-select(v-model="editor.currentWidget.animation.enter")
+			i-select(v-model="editor.currentWidget.animation.entry")
 				i-option(:value="k.value", v-for="k in animationEnterNames", :key="k.value") {{ k.label }}
 		d-right-control(label="延时时长")
 			d-input(append="ms", v-model="editor.currentWidget.animation.delay")

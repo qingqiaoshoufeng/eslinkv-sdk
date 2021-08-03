@@ -94,6 +94,9 @@ export default class ScreenPc extends ScreenBase {
 				item.animation = item.config.animation
 				delete item.config.animation
 			}
+			if (item.animation) {
+				item.animation.entry = item.animation.enter
+			}
 			if (item.config.event) {
 				if (!item.eventTypes) item.eventTypes = []
 				item.eventTypes.push({ key: 'click', label: '点击事件' })
