@@ -21,7 +21,7 @@ import dRightSwiper from '@/vue2/components-right/d-right-swiper/index.vue'
 import dRightSwiperList from '@/vue2/components-right/d-right-swiper-list/index.vue'
 import dRightSwiperEye from '@/vue2/components-right/d-right-swiper-eye/index.vue'
 import dRightControl from '@/vue2/components-right/d-right-control/index.vue'
-import dInput from '@/vue2/components-base/d-input/index.vue'
+import dInput from '@/vue2/components-style/d-input/index.vue'
 import Editor from '@/core/Editor'
 
 @Component({

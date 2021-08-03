@@ -16,9 +16,7 @@
 		@mousedown.stop.prevent="handleDown(handle, $event)",
 		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
 	d-dr-kuang
-	.dr-tip-top.pos-a(
-		v-if="tipShow",
-		:style="{ top: `-${top}px`, height: `${top}px`, borderWidth: `${returnRatio}px` }")
+	.dr-tip-top.pos-a(v-if="tipShow", :style="{ top: `-${top}px`, height: `${top}px`, borderWidth: `${returnRatio}px` }")
 		span.pos-a(
 			:style="{ fontSize: `${14 * returnRatio}px`, right: `${5 * returnRatio}px`, bottom: `${30 * returnRatio}px` }") {{ left }}
 	.dr-tip-left.pos-a(
@@ -27,9 +25,9 @@
 		span.pos-a(
 			:style="{ fontSize: `${14 * returnRatio}px`, right: `${30 * returnRatio}px`, bottom: `${5 * returnRatio}px` }") {{ top }}
 	slot
-	//.dr-disabled-event.pos-a(
-//		:style="{ width: '100%', height: '100%', top: 0, left: 0 }",
-//		v-if="!event.componentsDisabled[id]")
+	.dr-disabled-event.pos-a(
+		:style="{ width: '100%', height: '100%', top: 0, left: 0, zIndex: z }",
+		v-if="editor.current.currentEventDisabled")
 </template>
 <script lang="ts">
 import { addEvent, removeEvent } from './dom'

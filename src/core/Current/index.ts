@@ -7,6 +7,8 @@ export default class Current extends Factory<Current> {
 	xRoomL2 = 238
 	xRoomR1 = 335
 	yRoom = 60
+	/* 拖动模式/预览模式 控制组件内部事件关闭 */
+	currentEventDisabled = true
 	/* 当前场景动画 */
 	sceneAnimate = ''
 	/* 被激活的场景对应组件 */

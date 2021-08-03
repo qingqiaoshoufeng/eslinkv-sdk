@@ -4,7 +4,6 @@
 		.func-group-tab.fn-flex.flex-row(v-if="list.length > 0")
 			span.pointer(@click="handleClickTab(i)", v-for="(v, i) in list", :class="{ active: index === i }") {{ prefix }}{{ i + 1 }}
 		.func-group-empty.fn-flex.flex-row(v-else)
-			img(:src="emptyImg")
 			span 暂无数据
 		template(v-for="(v, i) in list")
 			slot(:index="i", :activeIndex="index", v-if="i === index")
@@ -13,8 +12,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import dRightSwiper from '../d-right-swiper/index.vue'
 
-const emptyImg = require('../../assets/empty.png')
-
 @Component({ components: { dRightSwiper } })
 export default class DRightSwiperList extends Vue {
 	@Prop() title: string
@@ -22,7 +19,6 @@ export default class DRightSwiperList extends Vue {
 	@Prop({ default: false }) show: boolean
 	@Prop({ default: () => [] }) list
 	index = 0
-	emptyImg = emptyImg
 	icon = [
 		{ icon: 'md-add-circle', msg: '加一个' },
 		{ icon: 'md-trash', msg: '减一个' },
@@ -53,7 +49,7 @@ export default class DRightSwiperList extends Vue {
 	}
 
 	span {
-		padding: 5px 10px 0 10px;
+		padding: 5px 10px 10px 10px;
 		font-size: 12px;
 		color: #bfbfbf;
 	}

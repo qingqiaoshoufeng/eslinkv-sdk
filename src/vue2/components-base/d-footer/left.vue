@@ -14,6 +14,9 @@
 	.d-footer-bar.fn-flex
 		label.d-footer-hot-keys.fn-flex.flex-row
 			.d-footer-bar-text.pointer.ellipsis(@click="showHotKey = !showHotKey", v-click-outside="hideHotKey") 快捷键
+	.d-footer-bar.fn-flex
+		label(:style="{ marginRight: '10px' }") {{ editor.current.currentEventDisabled ? '拖动模式' : '预览模式' }}
+		i-switch(size="small", v-model="editor.current.currentEventDisabled")
 	ul.d-footer-hot-key-list.pos-a(v-show="showHotKey")
 		item-card(v-for="item in hotKeys", :key="item.name", :item="item")
 	i-modal(v-model="copyModal", title="场景ID", :footer-hide="true")
@@ -23,7 +26,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Input, Modal, Icon } from 'view-design'
+import { Input, Modal, Icon, Switch } from 'view-design'
 import Editor from '@/core/Editor'
 import { copyText } from '@/vue2/utils'
 import ItemCard from '@/vue2/components-base/d-footer/item-card.vue'
@@ -35,6 +38,7 @@ import ClickOutside from 'vue-click-outside'
 		'i-input': Input,
 		'i-modal': Modal,
 		'i-icon': Icon,
+		'i-switch': Switch,
 		ItemCard,
 	},
 	directives: { ClickOutside },
@@ -93,7 +97,7 @@ export default class Left extends Vue {
 	line-height: 30px;
 	cursor: pointer;
 	user-select: none;
-
+	align-items: center;
 	&:hover {
 		.d-footer-bar-text {
 			color: var(--text-3);
