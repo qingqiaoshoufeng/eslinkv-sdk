@@ -13,7 +13,7 @@ dr(
 	:x="item.config.layout.position.left",
 	:y="item.config.layout.position.top",
 	:z="item.config.layout.zIndex",
-	:snap="editor.autoAlignGuide",
+	:snap="editor.current.autoAlignGuide",
 	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 	:snap-to-target="['.d-editor-line', '.dr-unactive', '.d-ruler-guide-x', '.d-ruler-guide-y']",
 	@resizestop="onResizeStop",

@@ -1,7 +1,7 @@
 <template lang="pug">
 input.e-input(
 	:value="currentValue",
-	:style="{ width }",
+	:style="{ width, display }",
 	@focus="$emit('focus', $event)",
 	@blur="$emit('blur', $event)",
 	@change="$emit('change', $event)",
@@ -12,7 +12,8 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
 @Component
 export default class EInput extends Vue {
-	@Prop({ default: '152px' }) width
+	@Prop({ default: '100%' }) width
+	@Prop({ default: 'block' }) display
 	@Prop() value
 	currentValue = ''
 
@@ -33,6 +34,7 @@ export default class EInput extends Vue {
 	border: 1px solid var(--border-color-base);
 	border-radius: 2px;
 	box-shadow: none;
+	width: 100%;
 
 	&:focus {
 		border-color: var(--primary-color);

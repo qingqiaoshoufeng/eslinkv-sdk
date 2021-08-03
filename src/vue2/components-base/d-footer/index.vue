@@ -8,9 +8,9 @@
 		i-tooltip(content="放大")
 			e-svg.pointer(:size="18", icon-class="zoomIn", @click.native="() => editor.zoomIn()")
 	.d-footer-bar.fn-flex(:style="{ marginRight: '0' }")
-		i-tooltip(:content="editor.fullscreen ? '退出全屏' : '全屏'")
+		i-tooltip(:content="editor.current.fullscreen ? '退出全屏' : '全屏'")
 			e-svg.pointer(
-				:icon-class="editor.fullscreen ? 'unfullscreen' : 'fullscreen'",
+				:icon-class="editor.current.fullscreen ? 'unfullscreen' : 'fullscreen'",
 				:size="18",
 				@click="handleFullscreen")
 </template>
@@ -33,7 +33,7 @@ export default class DFooter extends Vue {
 	editor: Editor = Editor.Instance()
 
 	handleFullscreen(): void {
-		if (this.editor.fullscreen) {
+		if (this.editor.current.fullscreen) {
 			document.exitFullscreen()
 		} else {
 			document.body.requestFullscreen()

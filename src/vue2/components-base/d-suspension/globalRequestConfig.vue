@@ -1,28 +1,30 @@
 <template lang="pug">
-	drawer(title="全局请求设置", :closable="false", v-model="isShow" :width="335")
-		i-form
-			i-form-item(label="请求链接前缀")
-				d-input(v-model="editor.screen.screenDomain" placeholder="http://example.com")
-			i-form-item(label="请求头设置")
-				editor.d-manage-modal-control-editor(
-					v-model="editor.screen.screenHeaders",
-					@init="editorInit",
-					lang="javascript",
-					theme="idle_fingers",
-					height="200")
+drawer(title="全局请求设置", :closable="false", v-model="isShow", :width="335")
+	i-form
+		e-label(value="请求链接前缀")
+		e-input(v-model="editor.screen.screenDomain", placeholder="http://example.com")
+		e-label(value="请求头设置")
+		editor.d-manage-modal-control-editor(
+			v-model="editor.screen.screenHeaders",
+			@init="editorInit",
+			lang="javascript",
+			theme="idle_fingers",
+			height="200")
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { Drawer, FormItem, Form } from 'view-design'
-import dInput from '@/vue2/components-style/d-input/index.vue'
+import eInput from '@/vue2/components-style/e-input/index.vue'
+import eLabel from '@/vue2/components-style/e-label/index.vue'
 import Editor from '@/core/Editor'
 const editor = require('vue2-ace-editor')
 
 @Component({
 	components: {
 		editor,
-		dInput,
+		eInput,
+		eLabel,
 		Drawer,
 		'i-form': Form,
 		'i-form-item': FormItem,

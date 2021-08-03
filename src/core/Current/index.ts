@@ -7,6 +7,8 @@ export default class Current extends Factory<Current> {
 	xRoomL2 = 238
 	xRoomR1 = 335
 	yRoom = 60
+	/* 大屏平台状态 是否自动贴靠参考线 */
+	autoAlignGuide = true
 	/* 拖动模式/预览模式 控制组件内部事件关闭 */
 	currentEventDisabled = true
 	/* 当前场景动画 */
@@ -19,6 +21,8 @@ export default class Current extends Factory<Current> {
 	contentMove = false
 	/* 组件点击开始拖拽 */
 	widgetMove = false
+	/* 大屏平台状态 是否全屏 */
+	fullscreen = false
 	/* 当前标尺zoom */
 	zoom = 1
 	/* 当前标尺zoom步长 */

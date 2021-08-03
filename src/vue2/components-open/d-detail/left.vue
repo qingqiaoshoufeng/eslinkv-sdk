@@ -4,7 +4,7 @@
 		.d-detail-left-icon.fn-flex.pointer(@click="backHandler")
 			i-icon(type="ios-arrow-dropleft", size="22")
 	.d-detail-title.fn-flex.pointer(:title="editor.name", @click="editName = true")
-		e-input(v-model="editor.name", v-if="editName", @blur="editName = false", :autofocus="true")
+		e-input(width="152px" v-model="editor.name", v-if="editName", @blur="editName = false", :autofocus="true")
 		span.fn-flex.d-detail-title.ellipsis(v-else) {{ editor.name }}
 	widget
 </template>

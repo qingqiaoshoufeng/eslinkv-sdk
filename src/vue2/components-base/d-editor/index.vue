@@ -2,7 +2,7 @@
 // 操作区
 #d-editor.d-editor.pos-r(
 	ref="canvas-wrapper",
-	:class="{ fullscreen: editor.fullscreen }",
+	:class="{ fullscreen: editor.current.fullscreen }",
 	:style="{ width: `calc(100% - ${editor.xRoomL2 + editor.xRoomR1}px)`, marginLeft: `${editor.xRoomL2}px` }",
 	@contextmenu.stop.prevent)
 	// 标尺容器
@@ -91,10 +91,10 @@ export default class DEditor extends Vue {
 		})
 	}
 	fullscreenchange(): void {
-		this.editor.fullscreen = !this.editor.fullscreen
+		this.editor.current.fullscreen = !this.editor.current.fullscreen
 	}
 	beforeDestroy(): void {
-		this.editor.fullscreen = false
+		this.editor.current.fullscreen = false
 		this.editor.ruler = null
 		document.removeEventListener('fullscreenchange', this.fullscreenchange)
 	}
