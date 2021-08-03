@@ -9,7 +9,7 @@ div
 import Editor from '@/core/Editor'
 import { Vue, Component } from 'vue-property-decorator'
 import { Select, Option } from 'view-design'
-import dImage from '@/vue2/components/d-image'
+import dImage from '@/vue2/components-open/d-image'
 
 @Component({
 	components: { 'i-select': Select, 'i-option': Option, dImage },

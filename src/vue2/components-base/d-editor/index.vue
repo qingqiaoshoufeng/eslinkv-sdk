@@ -39,7 +39,7 @@
 <script lang="ts">
 import widgetRightMenu from '../right-menu/widget.vue'
 import dRuler from '../d-ruler/index.vue'
-import drMore from '@/vue2/components/d-dr-more/index.vue'
+import drMore from '@/vue2/components-base/d-dr-more/index.vue'
 import dFooter from '../d-footer/index.vue'
 import ItemCard from './item-card.vue'
 import { Component, Vue } from 'vue-property-decorator'

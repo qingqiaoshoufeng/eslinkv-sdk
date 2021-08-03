@@ -1,11 +1,7 @@
 <template>
 	<!--todo: 移除es-form-new的依赖-->
 	<div>
-		<es-form-new
-			:data="selectObj"
-			:model="selectObjModel"
-			ref="select"
-		></es-form-new>
+		<es-form-new :data="selectObj" :model="selectObjModel" ref="select"></es-form-new>
 	</div>
 </template>
 <script>
@@ -54,9 +50,7 @@ export default {
 						onOpenChange: value => {
 							if (value) {
 								this.selectObj.templetDetailList[1].dataSourceList = []
-								this.getQueryName(
-									this.selectObjModel.dataSourceId,
-								)
+								this.getQueryName(this.selectObjModel.dataSourceId)
 							}
 						},
 					},

@@ -8,9 +8,9 @@ import '@/vue2/scss/animate-widget.min.scss'
 import '@/vue2/scss/font.scss'
 import Vue from 'vue'
 
-import group from '@/vue2/components/d-widget-group'
-import widgetGroup from '@/vue2/components/d-left-scene/widget-group'
-import widget from '@/vue2/components/d-widget'
+import group from '@/vue2/components-base/d-widget-group'
+import widgetGroup from '@/vue2/components-base/d-left-scene/widget-group'
+import widget from '@/vue2/components-base/d-widget'
 Vue.component('scene-group', widgetGroup)
 Vue.component('eslinkv-group', group)
 Vue.component('eslinkv-widget', widget)

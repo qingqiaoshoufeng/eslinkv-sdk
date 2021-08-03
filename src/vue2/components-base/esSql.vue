@@ -56,10 +56,7 @@ export default {
 			const options = {
 				...this.options,
 			}
-			this.sqlEditor = CodeMirror.fromTextArea(
-				this.$refs.textarea,
-				options,
-			)
+			this.sqlEditor = CodeMirror.fromTextArea(this.$refs.textarea, options)
 			this.sqlEditor.setValue(this.value)
 			this.sqlEditor.on('inputRead', () => {
 				this.sqlEditor.showHint()

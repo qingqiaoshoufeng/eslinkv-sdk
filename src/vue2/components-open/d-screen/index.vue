@@ -12,12 +12,12 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import dLeftScene from '../d-left-scene/index.vue'
-import dEditor from '../d-editor/index.vue'
+import dLeftScene from '@/vue2/components-base/d-left-scene/index.vue'
+import dEditor from '@/vue2/components-base/d-editor/index.vue'
 import dRightManage from '@/vue2/components-right/d-right-manage/index.vue'
 import dRightSetting from '@/vue2/components-right/d-right-setting/index.vue'
 import dRightSettingMore from '@/vue2/components-right/d-right-setting-more/index.vue'
-import dSuspension from '@/vue2/components/d-suspension/index.vue'
+import dSuspension from '@/vue2/components-base/d-suspension/index.vue'
 import Editor from '@/core/Editor'
 import loadMask from '../load-mask/index.vue'
 

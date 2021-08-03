@@ -9,27 +9,12 @@
 		@on-visible-change="setVisibility"
 	>
 		<div class="modal-body">
-			<Tabs
-				v-if="isVisible"
-				type="card"
-				:animated="false"
-				value="querySelect"
-				@on-click="clickTabs"
-				ref="tab"
-			>
+			<Tabs v-if="isVisible" type="card" :animated="false" value="querySelect" @on-click="clickTabs" ref="tab">
 				<TabPane label="选择查询" name="querySelect">
-					<select-query
-						ref="selectQuery"
-						@getQueryCond="getQueryCond"
-						:lastQuery="lastQuery"
-					></select-query>
+					<select-query ref="selectQuery" @getQueryCond="getQueryCond" :lastQuery="lastQuery"></select-query>
 				</TabPane>
 				<TabPane label="单表查询" name="querySingle">
-					<single-query
-						ref="singleQuery"
-						@getQueryCond="getQueryCond"
-						:lastQuery="lastQuery"
-					></single-query>
+					<single-query ref="singleQuery" @getQueryCond="getQueryCond" :lastQuery="lastQuery"></single-query>
 				</TabPane>
 				<TabPane label="自定义查询" name="queryCustom">
 					<custom-query

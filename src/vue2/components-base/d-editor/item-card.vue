@@ -32,8 +32,8 @@ dr(
 		:market="item.market")
 </template>
 <script lang="ts">
-import dr from '@/vue2/components/d-dr/index.vue'
-import dDrKuang from '@/vue2/components/d-dr-kuang/index.vue'
+import dr from '@/vue2/components-base/d-dr/index.vue'
+import dDrKuang from '@/vue2/components-base/d-dr-kuang/index.vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 @Component({

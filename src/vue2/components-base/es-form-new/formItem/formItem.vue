@@ -12,11 +12,7 @@
 		>
 			<!-- 当类型等于23（卡片式表单）的时候；使用数组动态表单校验方式 -->
 			<FormItem
-				:prop="
-					parentData.type === 23
-						? parentData.enName + '.' + index + '.' + data.enName
-						: data.enName
-				"
+				:prop="parentData.type === 23 ? parentData.enName + '.' + index + '.' + data.enName : data.enName"
 				:label="data.labelWidth === 0 ? '' : data.name"
 				:error="data.error"
 				:rules="rules"
@@ -119,10 +115,7 @@ export default {
 	methods: {
 		// formItem是否禁用
 		isDisabled(template) {
-			if (
-				(template.addEdit && this.editFlag === 0) ||
-				(template.modifyEdit && this.editFlag === 1)
-			) {
+			if ((template.addEdit && this.editFlag === 0) || (template.modifyEdit && this.editFlag === 1)) {
 				return false
 			} else {
 				return true
@@ -141,11 +134,8 @@ export default {
 					if (self.$refs.esFormItem) {
 						self.$refs.esFormItem.style.width = self.width
 					}
-					const formItemWidth = self.$refs.esFormItem
-						? self.$refs.esFormItem.clientWidth
-						: 0
-					const formItemLabelWidth =
-						self.labelWidth || self.itemLabelWidth
+					const formItemWidth = self.$refs.esFormItem ? self.$refs.esFormItem.clientWidth : 0
+					const formItemLabelWidth = self.labelWidth || self.itemLabelWidth
 					self.offset = -(formItemWidth - formItemLabelWidth) / 2
 				})
 			},
@@ -169,10 +159,7 @@ export default {
 		rules: {
 			get() {
 				let validate = []
-				if (
-					this.data.childrenList &&
-					this.data.childrenList.length > 0
-				) {
+				if (this.data.childrenList && this.data.childrenList.length > 0) {
 				} else {
 					validate = handlerRules(this.data)
 				}

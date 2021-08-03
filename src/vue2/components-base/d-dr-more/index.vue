@@ -4,7 +4,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import dDrKuang from '@/vue2/components/d-dr-kuang/index.vue'
+import dDrKuang from '@/vue2/components-base/d-dr-kuang/index.vue'
 import Editor from '@/core/Editor'
 @Component({
 	components: {

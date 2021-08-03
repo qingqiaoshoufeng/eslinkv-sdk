@@ -7,8 +7,8 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import dDetail from '@/vue2/components/d-detail/index.vue'
-import dView from '@/vue2/components/d-view/index.vue'
+import dDetail from '@/vue2/components-open/d-detail/index.vue'
+import dView from '@/vue2/components-open/d-view/index.vue'
 import Editor from '@/core/Editor'
 
 @Component({

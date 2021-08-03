@@ -12,7 +12,7 @@ import widgetMixin from '@/vue2/mixins'
 import { widgetNormalMixin } from '@/vue2'
 import { Component, Watch } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
-import widgetNormal from '@/vue2/ui/Widget/normal'
+import widgetNormal from '@/vue2/components-open/Widget/normal'
 import { value, customConfig } from './index.component'
 
 @Component({ components: { widgetNormal } })

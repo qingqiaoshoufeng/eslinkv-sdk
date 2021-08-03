@@ -9,17 +9,8 @@
 				<Radio label="1"><span>数据源</span></Radio>
 			</RadioGroup>
 		</div>
-		<es-form-new
-			v-if="dataType == 0"
-			:data="selectObj"
-			:model="selectObjModel"
-			ref="select"
-		></es-form-new>
-		<select-source
-			@getSource="getSource"
-			ref="selectSource"
-			v-else
-		></select-source>
+		<es-form-new v-if="dataType == 0" :data="selectObj" :model="selectObjModel" ref="select"></es-form-new>
+		<select-source @getSource="getSource" ref="selectSource" v-else></select-source>
 	</div>
 </template>
 <script>

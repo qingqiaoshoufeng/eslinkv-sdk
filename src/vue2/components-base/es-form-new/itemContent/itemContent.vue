@@ -35,13 +35,7 @@
 	</div>
 </template>
 <script>
-import {
-	handlerRules,
-	isEmpty,
-	desensitize,
-	setDefaultBool,
-	isEmptyObject,
-} from '../../../utils'
+import { handlerRules, isEmpty, desensitize, setDefaultBool, isEmptyObject } from '../../../utils'
 import findIndex from 'lodash/findIndex'
 
 import { Select, Option } from 'view-design'
@@ -161,17 +155,13 @@ export default {
 							})
 							this.$nextTick(() => {
 								// todo 调用内部api
-								this.$refs[
-									'es-item-' + this.data.enName
-								].onOptionClick({
+								this.$refs['es-item-' + this.data.enName].onOptionClick({
 									label: value,
 									value: value,
 								})
 							})
 						} else {
-							this.$refs[
-								'es-item-' + this.data.enName
-							].onOptionClick({
+							this.$refs['es-item-' + this.data.enName].onOptionClick({
 								label: value,
 								value: value,
 							})
@@ -182,15 +172,13 @@ export default {
 	},
 	methods: {
 		clickIcon(e) {
-			this.data.onClick &&
-				this.data.onClick.apply(this, [e, this.data, this.model])
+			this.data.onClick && this.data.onClick.apply(this, [e, this.data, this.model])
 		},
 		onOpenChange(flag) {
 			this.data.onOpenChange && this.data.onOpenChange.apply(this, [flag])
 		},
 		onQueryChange(query) {
-			this.data.onQueryChange &&
-				this.data.onQueryChange.apply(this, [query])
+			this.data.onQueryChange && this.data.onQueryChange.apply(this, [query])
 		},
 		onClear() {
 			this.$set(this.model, this.data.enName, '')
@@ -199,11 +187,7 @@ export default {
 		},
 		onFocus() {
 			// 获取到焦点，脱敏字段去除；
-			this.$set(
-				this.data,
-				'desensitizeEnName',
-				this.model[this.data.enName],
-			)
+			this.$set(this.data, 'desensitizeEnName', this.model[this.data.enName])
 			const params = this.model[this.data.enName]
 			this.data.onFocus && this.data.onFocus.apply(this, [params])
 		},
@@ -217,31 +201,24 @@ export default {
 		desensitizeRegexFn() {
 			// 脱敏正则。如果存在，开始脱敏
 			if (this.data.desensitizeRegex) {
-				const desensitizeEnName = desensitize(
-					this.data.desensitizeEnName,
-					this.data.desensitizeRegex,
-				)
+				const desensitizeEnName = desensitize(this.data.desensitizeEnName, this.data.desensitizeRegex)
 				this.$set(this.data, 'desensitizeEnName', desensitizeEnName)
 			}
 		},
 		onChange(params) {
 			switch (this.data.type) {
 				case 1:
-					this.data.onChange &&
-						this.data.onChange.apply(this, [params.target.value])
+					this.data.onChange && this.data.onChange.apply(this, [params.target.value])
 					break
 				case 5:
-					this.data.onChange &&
-						this.data.onChange.apply(this, [params.target.value])
+					this.data.onChange && this.data.onChange.apply(this, [params.target.value])
 					break
 				case 6:
 					this.model[this.data.enName] = params
-					this.data.onChange &&
-						this.data.onChange.apply(this, [params])
+					this.data.onChange && this.data.onChange.apply(this, [params])
 					break
 				default:
-					this.data.onChange &&
-						this.data.onChange.apply(this, [params])
+					this.data.onChange && this.data.onChange.apply(this, [params])
 					break
 			}
 		},

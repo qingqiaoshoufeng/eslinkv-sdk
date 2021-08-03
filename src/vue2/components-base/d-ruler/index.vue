@@ -17,7 +17,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 import Widget from '@/core/Widget/normal'
-import rulerRightMenu from '@/vue2/components/right-menu/ruler.vue'
+import rulerRightMenu from '@/vue2/components-base/right-menu/ruler.vue'
 
 @Component({
 	components: {

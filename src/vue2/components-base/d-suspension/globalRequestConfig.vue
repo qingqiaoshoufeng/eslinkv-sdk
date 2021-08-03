@@ -15,7 +15,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { Drawer, FormItem, Form } from 'view-design'
-import dInput from '@/vue2/components/d-input/index.vue'
+import dInput from '@/vue2/components-base/d-input/index.vue'
 import Editor from '@/core/Editor'
 const editor = require('vue2-ace-editor')
 
