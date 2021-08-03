@@ -50,16 +50,6 @@ const commonConfigValue = (type = 'normal') => {
 				enable: false,
 				methodBody: '',
 			},
-			bind: {
-				enable: false,
-				refIds: [],
-			},
-		},
-		animation: {
-			transitionEnable: true,
-			enter: 'fadeIn',
-			delay: 0,
-			duration: 600,
 		},
 		widgetType: 'normal',
 	}

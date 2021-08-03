@@ -27,16 +27,16 @@
 			i-input(v-model="scale", :style="{ width: '100px' }")
 	d-right-swiper-eye(
 		title="载入动画",
-		@open-click="editor.currentWidget.config.animation.transitionEnable = true",
-		@close-click="editor.currentWidget.config.animation.transitionEnable = false",
-		:enable="editor.currentWidget.config.animation.transitionEnable")
+		@open-click="editor.currentWidget.animation.transitionEnable = true",
+		@close-click="editor.currentWidget.animation.transitionEnable = false",
+		:enable="editor.currentWidget.animation.transitionEnable")
 		d-right-control(label="动画形式")
-			i-select(v-model="editor.currentWidget.config.animation.enter")
+			i-select(v-model="editor.currentWidget.animation.enter")
 				i-option(:value="k.value", v-for="k in animationEnterNames", :key="k.value") {{ k.label }}
 		d-right-control(label="延时时长")
-			d-input(append="ms", v-model="editor.currentWidget.config.animation.delay")
+			d-input(append="ms", v-model="editor.currentWidget.animation.delay")
 		d-right-control(label="动画时长")
-			d-input(append="ms", v-model="editor.currentWidget.config.animation.duration")
+			d-input(append="ms", v-model="editor.currentWidget.animation.duration")
 	//d-right-echarts
 </template>
 <script lang="ts">

@@ -4,7 +4,7 @@ component.widget-part.animate__animated(
 	:is="currentComponent",
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
-	v-bind="{ events, config, readonly,settingData, ...$attrs }",
+	v-bind="{ events, config, readonly, settingData, animation, ...$attrs }",
 	v-on="$listeners",
 	v-if="widgetType !== 'group'",
 	ref="widgets")
@@ -13,7 +13,7 @@ eslinkv-group(
 	v-else,
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
-	v-bind="{ events, config, readonly,settingData, ...$attrs }",
+	v-bind="{ events, config, readonly, settingData, animation, ...$attrs }",
 	v-on="$listeners")
 </template>
 <script lang="ts">
@@ -29,6 +29,7 @@ export default class WidgetNormal extends Vue {
 	@Prop({ default: false }) market
 	@Prop() type
 	@Prop() config
+	@Prop() animation
 	@Prop() events
 	@Prop() eventTypes
 	@Prop() settingData
@@ -38,6 +39,7 @@ export default class WidgetNormal extends Vue {
 	animationClass = null
 	duration = `.6s`
 	editor: Editor = Editor.Instance()
+
 	get currentComponent(): string | null {
 		if (this.ready) {
 			if (this.market && this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]) {
@@ -46,12 +48,6 @@ export default class WidgetNormal extends Vue {
 			return `${prefix2}${this.type}`
 		}
 		return null
-	}
-	get animation(): any {
-		if (this.config && this.config.animation) {
-			return this.config.animation
-		}
-		return {}
 	}
 	get animationEnabled(): boolean {
 		return this.animation.transitionEnable

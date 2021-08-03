@@ -90,6 +90,10 @@ export default class ScreenPc extends ScreenBase {
 			delete item.config.api.system.params.executeSql
 			delete item.config.api.system.params.tableId
 			delete item.config.api.system.params.tableName
+			if (item.config.animation) {
+				item.animation = item.config.animation
+				delete item.config.animation
+			}
 			if (item.config.event) {
 				if (!item.eventTypes) item.eventTypes = []
 				item.eventTypes.push({ key: 'click', label: '点击事件' })
