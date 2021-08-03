@@ -67,8 +67,6 @@
 				:formatter="value => `${value} ms`",
 				v-model="editor.currentWidget.config.api.autoFetch.duration")
 	data-event
-	//d-right-control(label="开启组件内部事件")
-	//	i-switch(v-model="event.componentsDisabled[editor.currentWidgetId]")
 	d-right-control(label="组件关联", v-if="editor.currentWidget.config.api.bind")
 		i-switch(v-model="editor.currentWidget.config.api.bind.enable")
 		i-select(
@@ -171,12 +169,12 @@ export default class FuncData extends func {
 		return list
 	}
 
-	updateApiSystem(value) {
+	updateApiSystem(value): void {
 		Object.assign(this.editor.currentWidget.config.api.system.params, value)
 		this.showDatabaseConfigModal = false
 	}
 
-	openSystemConfig() {
+	openSystemConfig(): void {
 		const value = this.editor.currentWidget.config
 		if (!value) return
 		this.showDatabaseConfigModal = true

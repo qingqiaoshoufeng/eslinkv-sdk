@@ -16,10 +16,9 @@ export default class Widget {
 	// 组件动画
 	animation = {
 		transitionEnable: true,
-		entry: 'fadeIn',
-		leave: 'fadeOut',
-		delay: 0,
-		duration: 600,
+		type: 'fadeIn',
+		enter: 600,
+		leave: 0,
 	}
 	constructor(
 		offsetX: number,

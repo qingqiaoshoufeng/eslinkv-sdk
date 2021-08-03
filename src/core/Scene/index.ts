@@ -22,7 +22,6 @@ export default class SceneBase extends Factory<SceneBase> {
 	}
 	/* 创建场景 */
 	createScene(name: number | string): void {
-		console.log(new Scene(name))
 		this.sceneObj = { ...this.sceneObj, [name]: { name: `场景${name}` } }
 	}
 	/* 删除场景 */

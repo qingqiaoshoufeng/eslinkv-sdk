@@ -1,71 +1,6 @@
 .animate__animated {
 	animation-duration: 1s;
-	animation-duration: var(--animate-duration);
 	animation-fill-mode: both;
-}
-
-.animate__animated.animate__infinite {
-	animation-iteration-count: infinite;
-}
-
-.animate__animated.animate__repeat-1 {
-	animation-iteration-count: 1;
-	animation-iteration-count: var(--animate-repeat);
-}
-
-.animate__animated.animate__repeat-2 {
-	animation-iteration-count: 2;
-	animation-iteration-count: calc(var(--animate-repeat) * 2);
-}
-
-.animate__animated.animate__repeat-3 {
-	animation-iteration-count: 3;
-	animation-iteration-count: calc(var(--animate-repeat) * 3);
-}
-
-.animate__animated.animate__delay-1s {
-	animation-delay: 1s;
-	animation-delay: var(--animate-delay);
-}
-
-.animate__animated.animate__delay-2s {
-	animation-delay: 2s;
-	animation-delay: calc(var(--animate-delay) * 2);
-}
-
-.animate__animated.animate__delay-3s {
-	animation-delay: 3s;
-	animation-delay: calc(var(--animate-delay) * 3);
-}
-
-.animate__animated.animate__delay-4s {
-	animation-delay: 4s;
-	animation-delay: calc(var(--animate-delay) * 4);
-}
-
-.animate__animated.animate__delay-5s {
-	animation-delay: 5s;
-	animation-delay: calc(var(--animate-delay) * 5);
-}
-
-.animate__animated.animate__faster {
-	animation-duration: 0.5s;
-	animation-duration: calc(var(--animate-duration) / 2);
-}
-
-.animate__animated.animate__fast {
-	animation-duration: 0.8s;
-	animation-duration: calc(var(--animate-duration) * 0.8);
-}
-
-.animate__animated.animate__slow {
-	animation-duration: 2s;
-	animation-duration: calc(var(--animate-duration) * 2);
-}
-
-.animate__animated.animate__slower {
-	animation-duration: 3s;
-	animation-duration: calc(var(--animate-duration) * 3);
 }
 
 @media (prefers-reduced-motion: reduce), print {
@@ -90,7 +25,7 @@
 	}
 }
 
-.animate__fadeIn {
+.animate__fadeIn__enter {
 	animation-name: fadeIn;
 }
 
@@ -106,7 +41,7 @@
 	}
 }
 
-.animate__fadeInDown {
+.animate__fadeInDown__enter {
 	animation-name: fadeInDown;
 }
 
@@ -122,7 +57,7 @@
 	}
 }
 
-.animate__fadeInLeft {
+.animate__fadeInLeft__enter {
 	animation-name: fadeInLeft;
 }
 
@@ -138,7 +73,7 @@
 	}
 }
 
-.animate__fadeInRight {
+.animate__fadeInRight__enter {
 	animation-name: fadeInRight;
 }
 
@@ -154,7 +89,7 @@
 	}
 }
 
-.animate__fadeInUp {
+.animate__fadeInUp__enter {
 	animation-name: fadeInUp;
 }
 
@@ -172,7 +107,7 @@
 	}
 }
 
-.animate__fadeInTopLeft {
+.animate__fadeInTopLeft__enter {
 	animation-name: fadeInTopLeft;
 }
 
@@ -190,7 +125,7 @@
 	}
 }
 
-.animate__fadeInTopRight {
+.animate__fadeInTopRight__enter {
 	animation-name: fadeInTopRight;
 }
 
@@ -208,7 +143,7 @@
 	}
 }
 
-.animate__fadeInBottomLeft {
+.animate__fadeInBottomLeft__enter {
 	animation-name: fadeInBottomLeft;
 }
 
@@ -226,7 +161,7 @@
 	}
 }
 
-.animate__fadeInBottomRight {
+.animate__fadeInBottomRight__enter {
 	animation-name: fadeInBottomRight;
 }
 
@@ -240,7 +175,7 @@
 	}
 }
 
-.animate__fadeOut {
+.animate__fadeOut__enter {
 	animation-name: fadeOut;
 }
 
@@ -256,7 +191,7 @@
 	}
 }
 
-.animate__fadeOutDown {
+.animate__fadeOutDown__enter {
 	animation-name: fadeOutDown;
 }
 
@@ -272,7 +207,7 @@
 	}
 }
 
-.animate__fadeOutLeft {
+.animate__fadeOutLeft__enter {
 	animation-name: fadeOutLeft;
 }
 
@@ -288,7 +223,7 @@
 	}
 }
 
-.animate__fadeOutRight {
+.animate__fadeOutRight__enter {
 	animation-name: fadeOutRight;
 }
 
@@ -304,7 +239,7 @@
 	}
 }
 
-.animate__fadeOutUp {
+.animate__fadeOutUp__enter {
 	animation-name: fadeOutUp;
 }
 
@@ -322,7 +257,7 @@
 	}
 }
 
-.animate__fadeOutTopLeft {
+.animate__fadeOutTopLeft__enter {
 	animation-name: fadeOutTopLeft;
 }
 
@@ -340,7 +275,7 @@
 	}
 }
 
-.animate__fadeOutTopRight {
+.animate__fadeOutTopRight__enter {
 	animation-name: fadeOutTopRight;
 }
 
@@ -358,7 +293,7 @@
 	}
 }
 
-.animate__fadeOutBottomRight {
+.animate__fadeOutBottomRight__enter {
 	animation-name: fadeOutBottomRight;
 }
 
@@ -376,7 +311,7 @@
 	}
 }
 
-.animate__fadeOutBottomLeft {
+.animate__fadeOutBottomLeft__enter {
 	animation-name: fadeOutBottomLeft;
 }
 
@@ -391,7 +326,7 @@
 	}
 }
 
-.animate__slideInDown {
+.animate__slideInDown__enter {
 	animation-name: slideInDown;
 }
 
@@ -406,7 +341,7 @@
 	}
 }
 
-.animate__slideInLeft {
+.animate__slideInLeft__enter {
 	animation-name: slideInLeft;
 }
 
@@ -421,7 +356,7 @@
 	}
 }
 
-.animate__slideInRight {
+.animate__slideInRight__enter {
 	animation-name: slideInRight;
 }
 
@@ -436,7 +371,7 @@
 	}
 }
 
-.animate__slideInUp {
+.animate__slideInUp__enter {
 	animation-name: slideInUp;
 }
 
@@ -451,7 +386,7 @@
 	}
 }
 
-.animate__slideOutDown {
+.animate__slideOutDown__enter {
 	animation-name: slideOutDown;
 }
 
@@ -466,7 +401,7 @@
 	}
 }
 
-.animate__slideOutLeft {
+.animate__slideOutLeft__enter {
 	animation-name: slideOutLeft;
 }
 
@@ -481,7 +416,7 @@
 	}
 }
 
-.animate__slideOutRight {
+.animate__slideOutRight__enter {
 	animation-name: slideOutRight;
 }
 
@@ -496,6 +431,6 @@
 	}
 }
 
-.animate__slideOutUp {
+.animate__slideOutUp__enter {
 	animation-name: slideOutUp;
 }

@@ -95,9 +95,12 @@ export default class ScreenPc extends ScreenBase {
 			if (item.config.animation) {
 				item.animation = item.config.animation
 				delete item.config.animation
-			}
-			if (item.animation) {
-				item.animation.entry = item.animation.enter
+				if (item.animation) {
+					item.animation.type = item.animation.enter
+					item.animation.enter = item.animation.duration
+					item.animation.leave = 0
+					delete item.animation.delay
+				}
 			}
 			if (item.config.event) {
 				if (!item.eventTypes) item.eventTypes = []
