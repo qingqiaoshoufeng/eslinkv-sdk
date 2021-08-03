@@ -156,14 +156,5 @@ export default class Current extends Factory<Current> {
 		if (index === -1) return
 		this.activeSceneId = id
 		this.activeWidgetId = ''
-		// 动画结束后再删除
-		const delay = this.sceneAnimate ? 1000 : 0
-		setTimeout(() => {
-			this.currentCreateSceneList.splice(index, 1)
-			this.sceneAnimate = ''
-			let event = new CustomEvent('DestroyScene', { detail: { index } })
-			document.dispatchEvent(event)
-			event = null
-		}, delay)
 	}
 }
