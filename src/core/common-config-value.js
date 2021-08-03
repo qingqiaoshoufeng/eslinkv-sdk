@@ -5,7 +5,6 @@ const commonConfigValue = (type = 'normal') => {
 		widget: {
 			name: '',
 			id: Date.now(),
-			remark: '',
 			componentVersion: '',
 			locked: false,
 			hide: false,
@@ -40,19 +39,11 @@ const commonConfigValue = (type = 'normal') => {
 				method: 'GET',
 				path: 'data',
 				params: {
-					chartCondition: '',
-					analyseCondition: '',
 					chartQueryType: '',
 					dataAnalyseId: '',
-					databaseId: '',
-					databaseType: '',
-					databaseName: '',
 					dataSourceId: '',
 					dataType: '',
-					executeSql: '',
 					projectId: '',
-					tableId: '',
-					tableName: '',
 				},
 			},
 			process: {

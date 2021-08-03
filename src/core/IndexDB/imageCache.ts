@@ -1,4 +1,4 @@
-import BaseCache from '@/core/IndexDB/base'
+import BaseCache from '@/core/IndexDB/baseCache'
 
 export default class ImageCache extends BaseCache {
 	async add(name: string): Promise<any> {
