@@ -1,5 +1,5 @@
 <template lang="pug">
-d-drawer(title="全局请求设置", v-model="isShow")
+d-drawer(title="主题风格", v-model="isShow")
 	i-form
 		e-label(value="色盘")
 		i-color-picker(
