@@ -99,7 +99,6 @@ export default class ScreenPc extends ScreenBase {
 					item.animation.type = item.animation.enter
 					item.animation.enter = item.animation.duration
 					item.animation.leave = 0
-					delete item.animation.delay
 				}
 			}
 			if (item.config.event) {

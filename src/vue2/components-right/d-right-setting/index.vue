@@ -42,7 +42,7 @@ import Editor from '@/core/Editor'
 export default class DRightSetting extends Vue {
 	editName = false
 	editor: Editor = Editor.Instance()
-	title = ['基础', '交互', '主题', '自定义']
+	title = ['基础', '数据', '交互', '自定义']
 	chooseList = []
 
 	close(): void {
@@ -62,7 +62,7 @@ export default class DRightSetting extends Vue {
 				key: [{ type: 'data' }],
 			},
 			{
-				key: [{ type: 'theme' }],
+				key: [{ type: 'interactive' }],
 			},
 			{
 				key: this.editor.currentWidget.config.customConfig,

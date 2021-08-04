@@ -147,9 +147,8 @@ export default class DEditor extends Vue {
 
 #screen {
 	background-size: contain;
-	box-shadow: rgba(0, 0, 0, 0.5) 0 0 30px 0;
+	box-shadow: rgba(0, 0, 0, 0.19) 0 6px 6px 0;
 	transition: background-image 0.5s;
-
 	&::before {
 		display: flex;
 		content: '';

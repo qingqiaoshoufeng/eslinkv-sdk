@@ -1,17 +1,22 @@
 <template lang="pug">
 .d-suspension.fn-flex.flex-column.pos-a.z-index-999(:style="{ right: `${editor.xRoomR1 + 20}px` }")
-	.d-suspension-item.pointer.pos-r.fn-flex
+	.d-suspension-item.pointer.pos-r.fn-flex(@click="update")
 		i-tooltip(content="更新组件", placement="left")
-			i-icon.pointer(type="md-sync", @click="update", :size="22")
+			i-icon.pointer(type="md-sync", :size="22")
 		updateDrawer(v-model="showDrawer", :data="updateInfo")
-	.d-suspension-item.pointer.pos-r.fn-flex
+	.d-suspension-item.pointer.pos-r.fn-flex(@click="globalRequestConfigShow = true")
 		i-tooltip(content="全局请求设置", placement="left")
-			i-icon.pointer(type="md-planet", @click="configRequest", :size="22")
+			i-icon.pointer(type="md-planet", :size="22")
 		globalRequestConfig(v-model="globalRequestConfigShow")
+	.d-suspension-item.pointer.pos-r.fn-flex(v-if="editor.currentWidgetId", @click="themeShow = true")
+		i-tooltip(content="主题风格", placement="left")
+			i-icon.pointer(type="md-color-palette", :size="22")
+		theme(v-model="themeShow")
 </template>
 <script lang="ts">
 import updateDrawer from './updateDrawer.vue'
 import globalRequestConfig from './globalRequestConfig.vue'
+import theme from './theme.vue'
 import { Component, Vue } from 'vue-property-decorator'
 import { Icon, Tooltip } from 'view-design'
 import { versionUpdateList } from '@/vue2/api/marketComponent.api'
@@ -23,17 +28,15 @@ import Editor from '@/core/Editor'
 		'i-tooltip': Tooltip,
 		updateDrawer,
 		globalRequestConfig,
+		theme,
 	},
 })
 export default class DSuspension extends Vue {
 	editor = Editor.Instance()
 	showDrawer = false
 	globalRequestConfigShow = false
+	themeShow = false
 	updateInfo = []
-
-	configRequest() {
-		this.globalRequestConfigShow = true
-	}
 
 	async update() {
 		const req = []

@@ -10,6 +10,7 @@ component.widget-part.animate__animated(
 	slot
 eslinkv-group(
 	v-else,
+	:style="{ animationDuration, animationDelay }",
 	:class="animationClass",
 	:id="config.widget && config.widget.id",
 	v-bind="{ events, config, readonly, settingData, animation, ...$attrs }",
@@ -50,19 +51,14 @@ export default class DWidget extends Vue {
 		}
 		return null
 	}
-	beforeDestroy() {
-		const { leave, type } = this.animation
-		this.animationDuration = `${leave / 1000}s`
-		type ? (this.animationClass = `animate__${type}__leave`) : void 0
-	}
-
 	setAnimation(): void {
 		if (!this.animation.transitionEnable) {
 			this.removeAnimation()
 			return
 		}
-		const { enter, type } = this.animation
+		const { enter, type, delay } = this.animation
 		this.animationDuration = `${enter / 1000}s`
+		this.animationDelay = `${delay / 1000}s`
 		type ? (this.animationClass = `animate__${type}__enter`) : void 0
 	}
 	removeAnimation(): void {

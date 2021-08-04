@@ -1,5 +1,5 @@
 <template lang="pug">
-drawer(title="全局请求设置", :closable="false", v-model="isShow", :width="335")
+d-drawer(title="全局请求设置", v-model="isShow")
 	i-form
 		e-label(value="请求链接前缀")
 		e-input(v-model="editor.screen.screenDomain", placeholder="http://example.com")
@@ -14,18 +14,19 @@ drawer(title="全局请求设置", :closable="false", v-model="isShow", :width="
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { Drawer, FormItem, Form } from 'view-design'
+import { FormItem, Form } from 'view-design'
 import eInput from '@/vue2/components-style/e-input/index.vue'
 import eLabel from '@/vue2/components-style/e-label/index.vue'
 import Editor from '@/core/Editor'
 const editor = require('vue2-ace-editor')
+import DDrawer from '@/vue2/components-style/d-drawer/index.vue'
 
 @Component({
 	components: {
 		editor,
 		eInput,
 		eLabel,
-		Drawer,
+		DDrawer,
 		'i-form': Form,
 		'i-form-item': FormItem,
 	},
@@ -37,16 +38,16 @@ export default class MarketEditDialog extends Vue {
 	editor: Editor = Editor.Instance()
 
 	@Watch('value')
-	onValueChange(val) {
+	onValueChange(val: boolean): void {
 		this.isShow = val
 	}
 
 	@Watch('isShow')
-	onModalShow(val) {
+	onModalShow(val: boolean): void {
 		this.$emit('input', val)
 	}
 
-	editorInit() {
+	editorInit(): void {
 		require('brace/ext/language_tools')
 		require('brace/mode/html')
 		require('brace/mode/javascript')
@@ -59,20 +60,6 @@ export default class MarketEditDialog extends Vue {
 </script>
 <style lang="scss" scoped>
 ::v-deep {
-	.ivu-drawer-content {
-		background: #22242b;
-
-		.ivu-drawer-header-inner {
-			color: #fff;
-		}
-	}
-
-	.ivu-checkbox-inner {
-		margin-right: 4px;
-		background-color: rgb(24, 27, 36);
-		border-color: #393b4a;
-	}
-
 	.ace_scrollbar-v {
 		&::-webkit-scrollbar {
 			width: 4px;

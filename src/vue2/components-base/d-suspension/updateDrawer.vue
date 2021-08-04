@@ -1,5 +1,5 @@
 <template lang="pug">
-drawer(title="组件升级", :closable="false", v-model="showDrawer", :width="335")
+d-drawer(title="组件升级", v-model="showDrawer")
 	.drawer-tool
 		checkbox(:indeterminate="indeterminate", :value="checkAll", @click.prevent.native="handleCheckAll") 可更新组件
 		.update-btn(@click="update") 更新
@@ -10,14 +10,15 @@ drawer(title="组件升级", :closable="false", v-model="showDrawer", :width="33
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { Drawer, Checkbox, CheckboxGroup } from 'view-design'
+import { Checkbox, CheckboxGroup } from 'view-design'
 import Editor from '@/core/Editor'
+import DDrawer from '@/vue2/components-style/d-drawer/index.vue'
 
 @Component({
 	components: {
 		CheckboxGroup,
 		Checkbox,
-		Drawer,
+		DDrawer,
 	},
 })
 export default class MarketEditDialog extends Vue {
@@ -30,16 +31,16 @@ export default class MarketEditDialog extends Vue {
 	editor: Editor = Editor.Instance()
 
 	@Watch('value')
-	onValueChange(val) {
+	onValueChange(val: boolean): void {
 		this.showDrawer = val
 	}
 
 	@Watch('showDrawer')
-	onModalShow(val) {
+	onModalShow(val: boolean): void {
 		this.$emit('input', val)
 	}
 
-	handleCheckAll() {
+	handleCheckAll(): void {
 		if (this.indeterminate) {
 			this.checkAll = false
 		} else {
@@ -53,7 +54,7 @@ export default class MarketEditDialog extends Vue {
 			this.checkAllGroup = []
 		}
 	}
-	checkAllGroupChange(data) {
+	checkAllGroupChange(data): void {
 		if (data.length === this.data.length) {
 			this.indeterminate = false
 			this.checkAll = true
@@ -65,7 +66,7 @@ export default class MarketEditDialog extends Vue {
 			this.checkAll = false
 		}
 	}
-	update() {
+	update(): void {
 		if (this.checkAllGroup.length === 0) return
 		this.$Modal.confirm({
 			title: `更新组件`,
@@ -87,22 +88,6 @@ export default class MarketEditDialog extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-::v-deep {
-	.ivu-drawer-content {
-		background: #22242b;
-
-		.ivu-drawer-header-inner {
-			color: #fff;
-		}
-	}
-
-	.ivu-checkbox-inner {
-		margin-right: 4px;
-		background-color: rgb(24, 27, 36);
-		border-color: #393b4a;
-	}
-}
-
 .drawer-tool {
 	display: flex;
 	align-items: center;
