@@ -35,6 +35,7 @@ export default class ScreenPc extends ScreenBase {
 	init(res: any): any {
 		if (res.screenId) this.screenId = res.screenId
 		this.screenName = res.screenName
+		this.screenFilter = res.screenFilter
 		this.screenAvatar = res.screenAvatar
 		this.screenPublish = res.screenPublish
 		this.screenType = res.screenType || 'CUSTOM'
