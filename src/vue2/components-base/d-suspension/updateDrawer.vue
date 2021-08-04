@@ -1,5 +1,5 @@
 <template lang="pug">
-d-drawer(title="组件升级", v-model="showDrawer")
+d-drawer(title="组件升级", v-model="currentVal")
 	.drawer-tool
 		checkbox(:indeterminate="indeterminate", :value="checkAll", @click.prevent.native="handleCheckAll") 可更新组件
 		.update-btn(@click="update") 更新
@@ -21,10 +21,10 @@ import DDrawer from '@/vue2/components-style/d-drawer/index.vue'
 		DDrawer,
 	},
 })
-export default class MarketEditDialog extends Vue {
+export default class UpdateDrawer extends Vue {
 	@Prop(Boolean) value!: boolean
 	@Prop(Array) data: any
-	showDrawer = false
+	currentVal = false
 	checkAllGroup = []
 	checkAll = false
 	indeterminate = false
@@ -32,11 +32,11 @@ export default class MarketEditDialog extends Vue {
 
 	@Watch('value')
 	onValueChange(val: boolean): void {
-		this.showDrawer = val
+		this.currentVal = val
 	}
 
-	@Watch('showDrawer')
-	onModalShow(val: boolean): void {
+	@Watch('currentVal')
+	onCurrentVal(val: boolean): void {
 		this.$emit('input', val)
 	}
 
@@ -77,7 +77,7 @@ export default class MarketEditDialog extends Vue {
 					this.editor.sceneWidgets[this.editor.current.currentSceneIndex][
 						t.componentId
 					].config.widget.componentVersion = t.componentVersion
-					this.showDrawer = false
+					this.currentVal = false
 					this.$Message.success('组件升级成功')
 				})
 			},

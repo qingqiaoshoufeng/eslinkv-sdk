@@ -1,5 +1,5 @@
 <template lang="pug">
-drawer.d-drawer(v-bind="{ ...$props, ...$attrs }", v-model="isShow", :closable="false", :width="width")
+drawer.d-drawer(v-bind="{ ...$props, ...$attrs }", v-on="$listeners", v-model="currentVal", :width="width")
 	slot
 </template>
 <script lang="ts">
@@ -11,16 +11,16 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 	},
 })
 export default class DDrawer extends Vue {
-	isShow = false
+	currentVal = false
 	@Prop(Boolean) value!: boolean
 	@Prop({ default: 335 }) width: number
 	@Watch('value')
 	onValueChange(val: boolean): void {
-		this.isShow = val
+		this.currentVal = val
 	}
 
-	@Watch('isShow')
-	onModalShow(val: boolean): void {
+	@Watch('currentVal')
+	onCurrentVal(val: boolean): void {
 		this.$emit('input', val)
 	}
 }
@@ -28,6 +28,13 @@ export default class DDrawer extends Vue {
 <style lang="scss" scoped>
 .d-drawer {
 	::v-deep {
+		.ivu-drawer {
+			height: calc(100vh - 60px);
+			top: 60px;
+		}
+		.ivu-drawer-mask {
+			background-color: rgba(0, 0, 0, 0);
+		}
 		.ivu-drawer-header {
 			border: none;
 		}

@@ -1,5 +1,7 @@
 export default class Scene {
-	constructor(name) {
+	name: number | string
+
+	constructor(name: number | string) {
 		this[name] = `场景${name}`
 	}
 }

@@ -1,8 +1,9 @@
 <template lang="pug">
-d-drawer(title="全局请求设置", v-model="isShow")
-	i-form
+d-drawer(title="全局请求设置", v-model="currentVal")
+	e-form-item(direction="column", align="start")
 		e-label(value="请求链接前缀")
 		e-input(v-model="editor.screen.screenDomain", placeholder="http://example.com")
+	e-form-item(direction="column", align="start")
 		e-label(value="请求头设置")
 		editor.d-manage-modal-control-editor(
 			v-model="editor.screen.screenHeaders",
@@ -14,36 +15,33 @@ d-drawer(title="全局请求设置", v-model="isShow")
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { FormItem, Form } from 'view-design'
 import eInput from '@/vue2/components-style/e-input/index.vue'
 import eLabel from '@/vue2/components-style/e-label/index.vue'
 import Editor from '@/core/Editor'
 const editor = require('vue2-ace-editor')
 import DDrawer from '@/vue2/components-style/d-drawer/index.vue'
-
+import EFormItem from '@/vue2/components-style/e-form-item/index.vue'
 @Component({
 	components: {
 		editor,
 		eInput,
 		eLabel,
 		DDrawer,
-		'i-form': Form,
-		'i-form-item': FormItem,
+		EFormItem,
 	},
 })
-export default class MarketEditDialog extends Vue {
+export default class GlobalRequestConfig extends Vue {
 	@Prop(Boolean) value!: boolean
-	@Prop(Array) data: any
-	isShow = false
+	currentVal = false
 	editor: Editor = Editor.Instance()
 
 	@Watch('value')
 	onValueChange(val: boolean): void {
-		this.isShow = val
+		this.currentVal = val
 	}
 
-	@Watch('isShow')
-	onModalShow(val: boolean): void {
+	@Watch('currentVal')
+	onCurrentVal(val: boolean): void {
 		this.$emit('input', val)
 	}
 

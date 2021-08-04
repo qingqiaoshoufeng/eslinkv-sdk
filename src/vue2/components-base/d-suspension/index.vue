@@ -8,6 +8,10 @@
 		i-tooltip(content="全局请求设置", placement="left")
 			i-icon.pointer(type="md-planet", :size="22")
 		globalRequestConfig(v-model="globalRequestConfigShow")
+	.d-suspension-item.pointer.pos-r.fn-flex(@click="test")
+		i-tooltip(content="全局滤镜", placement="left")
+			i-icon.pointer(type="ios-color-filter", :size="22")
+		global-filter(v-model="filterShow")
 	.d-suspension-item.pointer.pos-r.fn-flex(v-if="editor.currentWidgetId", @click="themeShow = true")
 		i-tooltip(content="主题风格", placement="left")
 			i-icon.pointer(type="md-color-palette", :size="22")
@@ -17,6 +21,7 @@
 import updateDrawer from './updateDrawer.vue'
 import globalRequestConfig from './globalRequestConfig.vue'
 import theme from './theme.vue'
+import globalFilter from './globalFilter.vue'
 import { Component, Vue } from 'vue-property-decorator'
 import { Icon, Tooltip } from 'view-design'
 import { versionUpdateList } from '@/vue2/api/marketComponent.api'
@@ -29,6 +34,7 @@ import Editor from '@/core/Editor'
 		updateDrawer,
 		globalRequestConfig,
 		theme,
+		globalFilter,
 	},
 })
 export default class DSuspension extends Vue {
@@ -36,8 +42,11 @@ export default class DSuspension extends Vue {
 	showDrawer = false
 	globalRequestConfigShow = false
 	themeShow = false
+	filterShow = false
 	updateInfo = []
-
+	test() {
+		this.filterShow = true
+	}
 	async update() {
 		const req = []
 		const obj = this.editor.sceneWidgets[this.editor.current.currentSceneIndex]
@@ -81,7 +90,13 @@ export default class DSuspension extends Vue {
 	color: #bfbfbf;
 	cursor: pointer;
 	border-bottom: 1px solid #393b4a;
-
+	&:hover {
+		::v-deep {
+			.ivu-icon {
+				color: var(--text-3);
+			}
+		}
+	}
 	&:last-child {
 		border: none;
 	}

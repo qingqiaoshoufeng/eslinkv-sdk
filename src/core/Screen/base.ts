@@ -49,6 +49,16 @@ export default class Screen extends Factory<Screen> {
 	/* 大屏组件接口Headers */
 	screenHeaders: string
 	/* 更新大屏组件配置 */
+
+	screenFilter = {
+		enable: false, // 开启状态
+		grayscale: 0, // 灰度
+		opacity: 100, // 不透明度
+		contrast: 0, // 对比度
+		brightness: 0, // 明度
+		saturate: 0, // 饱和度
+		hueRotate: 0, // 色相
+	}
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
 		const mergedValue = localConfigValue
 			? configMerge(localConfigValue, commonConfigValue(localConfigValue.widgetType))
@@ -103,6 +113,27 @@ export default class Screen extends Factory<Screen> {
 		}
 		return `scale(${scale}) translate3d(0, 0, 0)`
 	}
+
+	get screenFilterStyle() {
+		let grayscale = '',
+			opacity = '',
+			contrast = '',
+			brightness = '',
+			saturate = '',
+			hueRotate = ''
+		if (this.screenFilter.enable) {
+			grayscale = this.screenFilter.grayscale > 0 ? `grayscale(${this.screenFilter.grayscale}%)` : ''
+			opacity = this.screenFilter.opacity < 100 ? `opacity(${this.screenFilter.opacity}%)` : ''
+			contrast = this.screenFilter.contrast !== 0 ? `contrast(${this.screenFilter.contrast + 100}%)` : ''
+			brightness = this.screenFilter.brightness !== 0 ? `brightness(${this.screenFilter.brightness + 100}%)` : ''
+			saturate = this.screenFilter.saturate !== 0 ? `saturate(${this.screenFilter.saturate + 100}%)` : ''
+			hueRotate = this.screenFilter.hueRotate !== 0 ? `hue-rotate(${this.screenFilter.hueRotate}deg)` : ''
+		}
+		if (grayscale || opacity || contrast || brightness || saturate || hueRotate)
+			return { filter: `${grayscale} ${opacity} ${contrast} ${brightness} ${saturate} ${hueRotate}` }
+		return {}
+	}
+
 	/* 大屏样式 */
 	get screenStyle() {
 		const layoutMode = getQueryString('layoutMode')
@@ -113,12 +144,14 @@ export default class Screen extends Factory<Screen> {
 			backgroundImage: `url(${this.screenBackGroundImage})`,
 			overflow: 'hidden',
 			transform: this.changeLayoutMode(layoutMode),
+			...this.screenFilterStyle,
 		}
 	}
 
 	/* 获取大屏数据 */
 	screenData(): any {
 		return {
+			screenFilter: this.screenFilter,
 			screenWidgets: this.screenWidgets,
 			screenType: this.screenType,
 			screenAvatar: this.screenAvatar,

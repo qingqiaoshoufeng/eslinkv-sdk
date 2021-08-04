@@ -63,8 +63,9 @@ export default class DEditor extends Vue {
 			return {
 				width: `${this.editor.width}px`,
 				height: `${this.editor.height}px`,
-				'background-color': this.editor.backgroundColor,
-				'background-image': `url(${this.editor.backgroundImage})`,
+				backgroundColor: this.editor.backgroundColor,
+				backgroundImage: `url(${this.editor.backgroundImage})`,
+				...this.editor.screen.screenFilterStyle,
 			}
 		}
 		return {}

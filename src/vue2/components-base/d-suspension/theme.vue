@@ -1,5 +1,5 @@
 <template lang="pug">
-d-drawer(title="主题风格", v-model="isShow")
+d-drawer(title="主题风格", v-model="currentVal")
 	i-form
 		e-label(value="色盘")
 		i-color-picker(
@@ -28,18 +28,17 @@ import DDrawer from '@/vue2/components-style/d-drawer/index.vue'
 		'i-color-picker': ColorPicker,
 	},
 })
-export default class MarketEditDialog extends Vue {
+export default class Theme extends Vue {
 	@Prop(Boolean) value!: boolean
-	@Prop(Array) data: any
-	isShow = false
+	currentVal = false
 	editor: Editor = Editor.Instance()
 	@Watch('value')
 	onValueChange(val: boolean): void {
-		this.isShow = val
+		this.currentVal = val
 	}
 
-	@Watch('isShow')
-	onModalShow(val: boolean): void {
+	@Watch('currentVal')
+	onCurrentVal(val: boolean): void {
 		this.$emit('input', val)
 	}
 
@@ -84,4 +83,3 @@ export default class MarketEditDialog extends Vue {
 	}
 }
 </script>
-<style lang="scss" scoped></style>
