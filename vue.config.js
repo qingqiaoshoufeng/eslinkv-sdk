@@ -56,13 +56,13 @@ module.exports = {
 				// 	'^/cdn': '/',
 				// },
 			},
-			// '/huaxin': {
-			// 	target: 'http://119.3.5.149:16000',
-			// 	changeOrigin: true,
-			// 	pathRewrite: {
-			// 		'^/huaxin': '/',
-			// 	},
-			// },
+			'^/huaxin': {
+				target: proxyUrl,
+				changeOrigin: true,
+				// pathRewrite: {
+				// 	'^/cdn': '/',
+				// },
+			},
 		},
 	},
 	css: {

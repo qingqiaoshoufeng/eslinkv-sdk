@@ -56,10 +56,10 @@ export default class DWidget extends Vue {
 			this.removeAnimation()
 			return
 		}
-		const { enter, type, delay } = this.animation
-		this.animationDuration = `${enter / 1000}s`
+		const { duration, enter, delay } = this.animation
+		this.animationDuration = `${duration / 1000}s`
 		this.animationDelay = `${delay / 1000}s`
-		type ? (this.animationClass = `animate__${type}__enter`) : void 0
+		enter ? (this.animationClass = `animate__${enter}`) : void 0
 	}
 	removeAnimation(): void {
 		this.animationClass = null
