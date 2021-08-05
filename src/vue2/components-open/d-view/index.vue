@@ -51,7 +51,7 @@
 			:market="item.market",
 			:style="item.config.widget.hide ? 'display: none' : ''",
 			readonly)
-	slot(v-if="editor.marketComponentLoading" name="loading")
+	slot(v-if="editor.marketComponentLoading", name="loading")
 		load-mask(:show="true") 加载中...
 </template>
 <script lang="ts">
@@ -72,7 +72,7 @@ import { linkList } from '@/vue2/api/screen.api.js'
 export default class DView extends Vue {
 	editor: Editor = Editor.Instance()
 	currentLayoutMode = getQueryString('layoutMode')
-	
+
 	beforeDestroy(): void {
 		document.documentElement.removeEventListener('keydown', this.init)
 	}
@@ -110,16 +110,16 @@ export default class DView extends Vue {
 			this.layoutModeChange()
 		}
 	}
-	
-	async loadExtraLink () {
-		const res = await linkList({screenId: this.$route.params.id})
+
+	async loadExtraLink() {
+		const res = await linkList({ screenId: this.$route.params.id })
 		if (!res.length) return
 		const arr = []
 		for (let i = 0; i < res.length; i++) {
-			if (res[i].linkType === 'javascript') {
-				arr.push(loadJs(res[i].linkUrl))
+			if (res[i].linkType === 'javascript' || res[i].linkType === 'iconfont') {
+				arr.push(loadJs(res[i].linkUrl, res[i].linkUrl))
 			} else if (res[i].linkType === 'css') {
-				arr.push(loadCss(res[i].linkUrl))
+				arr.push(loadCss(res[i].linkUrl, res[i].linkUrl))
 			}
 		}
 		await Promise.all(arr)
@@ -128,7 +128,7 @@ export default class DView extends Vue {
 	mounted(): void {
 		document.documentElement.addEventListener('keydown', this.init)
 	}
-	
+
 	async created() {
 		await this.loadExtraLink()
 	}

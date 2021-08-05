@@ -29,15 +29,18 @@ export default class DDrawer extends Vue {
 .d-drawer {
 	::v-deep {
 		.ivu-drawer {
-			height: calc(100vh - 60px);
 			top: 60px;
+			height: calc(100vh - 60px);
 		}
+
 		.ivu-drawer-mask {
 			background-color: rgba(0, 0, 0, 0);
 		}
+
 		.ivu-drawer-header {
 			border: none;
 		}
+
 		.ivu-drawer-content {
 			background: #22242b;
 
@@ -45,6 +48,7 @@ export default class DDrawer extends Vue {
 				color: #fff;
 			}
 		}
+
 		.ivu-checkbox-inner {
 			margin-right: 4px;
 			background-color: rgb(24, 27, 36);

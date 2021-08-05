@@ -26,13 +26,16 @@ export default loadMask
 	0% {
 		transform: rotate(0);
 	}
+
 	100% {
 		transform: rotate(360deg);
 	}
 }
+
 .loading {
 	animation: rotate infinite 1s;
 }
+
 .load-mask {
 	top: 0;
 	right: 0;

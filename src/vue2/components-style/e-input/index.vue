@@ -29,13 +29,13 @@ export default class EInput extends Vue {
 </script>
 <style lang="scss" scoped>
 .e-input {
+	width: 100%;
 	padding: 4px 8px;
 	color: rgb(191, 191, 191);
 	background-color: var(--component-background);
 	border: 1px solid var(--border-color-base);
 	border-radius: 2px;
 	box-shadow: none;
-	width: 100%;
 
 	&:focus {
 		border-color: var(--primary-color);

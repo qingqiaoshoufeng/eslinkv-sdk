@@ -1,20 +1,20 @@
 <template lang="pug">
 .d-suspension.fn-flex.flex-column.pos-a.z-index-999(:style="{ right: `${editor.xRoomR1 + 20}px` }")
-	.d-suspension-item.pointer.pos-r.fn-flex(@click="update")
-		i-tooltip(content="更新组件", placement="left")
-			i-icon.pointer(type="md-sync", :size="22")
+	item-card(title="更新组件", icon="md-sync", @click="update")
 		updateDrawer(v-model="showDrawer", :data="updateInfo")
-	.d-suspension-item.pointer.pos-r.fn-flex(@click="globalRequestConfigShow = true")
-		i-tooltip(content="全局请求设置", placement="left")
-			i-icon.pointer(type="md-planet", :size="22")
+	item-card(
+		title="全局请求设置",
+		icon="md-planet",
+		@click="globalRequestConfigShow = true",
+		:active="editor.screen.screenDomain || editor.screen.screenHeaders")
 		globalRequestConfig(v-model="globalRequestConfigShow")
-	.d-suspension-item.pointer.pos-r.fn-flex(@click="test")
-		i-tooltip(content="全局滤镜", placement="left")
-			i-icon.pointer(type="ios-color-filter", :size="22")
+	item-card(
+		title="全局滤镜",
+		icon="ios-color-filter",
+		@click="filterShow = true",
+		:active="editor.screen.screenFilter.enable")
 		global-filter(v-model="filterShow")
-	.d-suspension-item.pointer.pos-r.fn-flex(v-if="editor.currentWidgetId", @click="themeShow = true")
-		i-tooltip(content="主题风格", placement="left")
-			i-icon.pointer(type="md-color-palette", :size="22")
+	item-card(v-if="editor.currentWidgetId", title="主题风格", icon="md-color-palette", @click="themeShow = true")
 		theme(v-model="themeShow")
 </template>
 <script lang="ts">
@@ -23,14 +23,12 @@ import globalRequestConfig from './globalRequestConfig.vue'
 import theme from './theme.vue'
 import globalFilter from './globalFilter.vue'
 import { Component, Vue } from 'vue-property-decorator'
-import { Icon, Tooltip } from 'view-design'
 import { versionUpdateList } from '@/vue2/api/marketComponent.api'
 import Editor from '@/core/Editor'
-
+import ItemCard from '@/vue2/components-base/d-suspension/item-card.vue'
 @Component({
 	components: {
-		'i-icon': Icon,
-		'i-tooltip': Tooltip,
+		ItemCard,
 		updateDrawer,
 		globalRequestConfig,
 		theme,
@@ -44,9 +42,6 @@ export default class DSuspension extends Vue {
 	themeShow = false
 	filterShow = false
 	updateInfo = []
-	test() {
-		this.filterShow = true
-	}
 	async update() {
 		const req = []
 		const obj = this.editor.sceneWidgets[this.editor.current.currentSceneIndex]
@@ -80,25 +75,5 @@ export default class DSuspension extends Vue {
 	width: 46px;
 	background: #22242b;
 	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.5);
-}
-
-.d-suspension-item {
-	align-items: center;
-	justify-content: center;
-	width: 46px;
-	height: 46px;
-	color: #bfbfbf;
-	cursor: pointer;
-	border-bottom: 1px solid #393b4a;
-	&:hover {
-		::v-deep {
-			.ivu-icon {
-				color: var(--text-3);
-			}
-		}
-	}
-	&:last-child {
-		border: none;
-	}
 }
 </style>

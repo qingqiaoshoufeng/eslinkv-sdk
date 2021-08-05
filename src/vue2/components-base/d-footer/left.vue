@@ -94,11 +94,12 @@ export default class Left extends Vue {
 }
 
 .d-footer-bar {
+	align-items: center;
 	padding: 0 10px;
 	line-height: 30px;
 	cursor: pointer;
 	user-select: none;
-	align-items: center;
+
 	&:hover {
 		.d-footer-bar-text {
 			color: var(--text-3);

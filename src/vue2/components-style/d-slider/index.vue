@@ -30,36 +30,43 @@ export default class DSlider extends Vue {
 </script>
 <style lang="scss" scoped>
 .d-slider {
-	width: 232px;
 	align-items: center;
+	width: 232px;
+
 	::v-deep {
 		.ivu-slider-wrap {
 			background-color: var(--background-gray-6);
 		}
+
 		.ivu-slider-bar {
 			background-color: var(--primary-color);
 		}
+
 		.ivu-slider {
 			width: 160px;
 			margin-right: 10px;
 		}
+
 		.ivu-slider-button-wrap {
-			width: 8px;
-			height: 8px;
 			top: -2px;
 			z-index: 9;
+			width: 8px;
+			height: 8px;
 		}
+
 		.ivu-slider-button {
 			width: 8px;
 			height: 8px;
-			border: 2px solid #fff;
 			background-color: var(--primary-color);
+			border: 2px solid #fff;
 		}
+
 		.ivu-slider-button-dragging {
 			box-shadow: 0 0 0 5px rgba(36, 145, 247, 0.5);
 		}
 	}
 }
+
 .d-slider-opacity,
 .d-slider-saturate,
 .d-slider-brightness,
@@ -70,10 +77,11 @@ export default class DSlider extends Vue {
 		}
 	}
 }
+
 .d-slider-hue-rotate {
 	::v-deep {
 		.ivu-slider-wrap {
-			background-image: linear-gradient(-90deg, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000);
+			background-image: linear-gradient(-90deg, #f00, #f0f, #00f, #0ff, #0f0, #ff0, #f00);
 		}
 	}
 }
@@ -81,31 +89,34 @@ export default class DSlider extends Vue {
 .d-slider-saturate {
 	::v-deep {
 		.ivu-slider-wrap {
-			background-image: linear-gradient(90deg, #6d6d6d, #ff0000);
+			background-image: linear-gradient(90deg, #6d6d6d, #f00);
 		}
 	}
 }
+
 .d-slider-brightness {
 	::v-deep {
 		.ivu-slider-wrap {
-			background-image: linear-gradient(90deg, #000000, #ffffff);
+			background-image: linear-gradient(90deg, #000, #fff);
 		}
 	}
 }
+
 .d-slider-opacity {
 	::v-deep {
 		.ivu-slider-wrap {
+			background-color: #818181;
 			background-image: linear-gradient(45deg, #969696 25%, transparent 0, transparent 75%, #969696 0),
 				linear-gradient(45deg, #969696 25%, transparent 0, transparent 75%, #969696 0);
-			background-size: 6px 6px;
-			background-color: #818181;
 			background-position: 0 0, 3px 3px;
-			&:after {
+			background-size: 6px 6px;
+
+			&::after {
 				position: absolute;
-				content: '';
 				width: 100%;
 				height: 100%;
-				background-image: linear-gradient(90deg, rgba(0, 0, 0, 0), #000000);
+				content: '';
+				background-image: linear-gradient(90deg, rgba(0, 0, 0, 0), #000);
 			}
 		}
 	}

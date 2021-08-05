@@ -28,8 +28,8 @@ export default class DInput extends Vue {
 .d-switch {
 	&::v-deep {
 		&.ivu-switch-checked {
-			border-color: var(--primary-color);
 			background-color: var(--primary-color);
+			border-color: var(--primary-color);
 		}
 	}
 }

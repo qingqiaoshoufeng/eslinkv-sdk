@@ -126,8 +126,9 @@ export default class DEditor extends Vue {
 }
 
 .d-editor {
-	background-color: #313239;
 	min-width: 500px;
+	background-color: #313239;
+
 	&.fullscreen {
 		top: 0 !important;
 		right: 0 !important;
@@ -150,6 +151,7 @@ export default class DEditor extends Vue {
 	background-size: contain;
 	box-shadow: rgba(0, 0, 0, 0.19) 0 6px 6px 0;
 	transition: background-image 0.5s;
+
 	&::before {
 		display: flex;
 		content: '';

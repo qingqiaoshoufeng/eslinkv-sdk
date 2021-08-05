@@ -11,12 +11,12 @@ export default class ELabel extends Vue {
 </script>
 <style lang="scss" scoped>
 .e-label {
-	min-height: 32px;
-	line-height: 32px;
-	color: rgb(191, 191, 191);
 	display: block;
+	min-width: 60px;
+	min-height: 32px;
 	margin-right: 10px;
 	font-size: 12px;
-	min-width: 60px;
+	line-height: 32px;
+	color: rgb(191, 191, 191);
 }
 </style>
