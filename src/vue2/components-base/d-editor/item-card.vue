@@ -7,7 +7,7 @@ dr(
 	:draggable="widgetEditable(item)",
 	:resizable="widgetEditable(item)",
 	:scale="item.config.layout.scale",
-	:active="item.id === editor.currentWidgetId && widgetEditable(item)",
+	:active="editor.currentWidgetList.includes(item.id) && widgetEditable(item)",
 	:w="item.config.layout.size.width",
 	:h="item.config.layout.size.height",
 	:x="item.config.layout.position.left",
@@ -19,10 +19,10 @@ dr(
 	@resizestop="onResizeStop",
 	@refLineParams="params => getRefLineParams(params, item)",
 	@dragstop="onDragStop",
-	@activated="editor.selectWidget(item)",
+	@on-click="handleClick($event, item)",
 	@contextmenu.native.stop="showRightMenu($event, item)")
 	eslinkv-widget(
-		:widget-type="item.widgetType",
+		:widgetType="item.widgetType",
 		:type="item.type",
 		:events="item.events",
 		:animation="item.animation",
@@ -57,6 +57,14 @@ export default class ItemCard extends Vue {
 			zIndex: this.item.config.layout.zIndex,
 		}
 	}
+	handleClick(e, item): void {
+		if (e.shiftKey) {
+			this.editor.selectWidget(item)
+		} else {
+			this.editor.unSelectWidget()
+			this.editor.selectWidget(item)
+		}
+	}
 
 	showRightMenu(e: MouseEvent, item: any): void {
 		e.preventDefault()
@@ -74,11 +82,13 @@ export default class ItemCard extends Vue {
 	}
 
 	onDragStop(left: number, top: number): void {
-		const diffLeft = left - this.editor.currentWidget.config.layout.position.left
-		const diffTop = top - this.editor.currentWidget.config.layout.position.top
-		this.editor.currentWidget.config.layout.position.left = left
-		this.editor.currentWidget.config.layout.position.top = top
-		this.onGroupDragStop(this.editor.currentWidget, diffLeft, diffTop)
+		if (this.editor.currentWidget) {
+			const diffLeft = left - this.editor.currentWidget.config.layout.position.left
+			const diffTop = top - this.editor.currentWidget.config.layout.position.top
+			this.editor.currentWidget.config.layout.position.left = left
+			this.editor.currentWidget.config.layout.position.top = top
+			this.onGroupDragStop(this.editor.currentWidget, diffLeft, diffTop)
+		}
 	}
 
 	onGroupDragStop(item: any, diffLeft: number, diffTop: number): void {

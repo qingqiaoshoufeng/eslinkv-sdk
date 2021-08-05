@@ -8,14 +8,15 @@
 	@click="elementEnable",
 	@mousedown="elementDown",
 	@touchstart="elementTouchDown")
-	.dr-handle(
-		v-for="handle in actualHandles",
-		:key="handle",
-		:class="[`dr-handle-${handle}`]",
-		:style="{ display: enabled ? 'block' : 'none', transform: `scale(${returnRatio})` }",
-		@mousedown.stop.prevent="handleDown(handle, $event)",
-		@touchstart.stop.prevent="handleTouchDown(handle, $event)")
-	d-dr-kuang
+	template(v-if="editor.currentWidgetList.length === 1")
+		.dr-handle(
+			v-for="handle in actualHandles",
+			:key="handle",
+			:class="[`dr-handle-${handle}`]",
+			:style="{ display: enabled ? 'block' : 'none', transform: `scale(${returnRatio})` }",
+			@mousedown.stop.prevent="handleDown(handle, $event)",
+			@touchstart.stop.prevent="handleTouchDown(handle, $event)")
+	d-dr-kuang(v-if="editor.currentWidgetList.length === 1")
 	.dr-tip-top.pos-a(v-if="tipShow", :style="{ top: `-${top}px`, height: `${top}px`, borderWidth: `${returnRatio}px` }")
 		span.pos-a(
 			:style="{ fontSize: `${14 * returnRatio}px`, right: `${5 * returnRatio}px`, bottom: `${30 * returnRatio}px` }") {{ left }}
@@ -148,7 +149,8 @@ export default {
 		removeEvent(document.documentElement, 'touchend touchcancel', this.deselect)
 	},
 	methods: {
-		elementEnable(): void {
+		elementEnable(e): void {
+			this.$emit('on-click', e)
 			if (this.enabled) return
 			this.enabled = true
 			this.$emit('activated')

@@ -24,3 +24,8 @@ export default class DDrMore extends Vue {
 	}
 }
 </script>
+<style lang="scss" scoped>
+.dr-more {
+	pointer-events: none;
+}
+</style>

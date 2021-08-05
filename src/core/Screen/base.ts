@@ -68,23 +68,26 @@ export default class Screen extends Factory<Screen> {
 	}
 	private findWidget(id, obj, mergedValue, localConfigValue, customConfig = []): void {
 		for (const key in obj) {
-			if (id === obj[key].id) {
-				const inputConfig = Object.freeze(obj[key].config || {})
-				const res = configMerge(inputConfig, mergedValue)
-				res.widget.name = res.widget.name || '未知组件'
-				obj[key].widgetType = localConfigValue ? localConfigValue.widgetType || 'normal' : 'normal'
-				if (customConfig) {
-					customConfig.map(item => {
-						if (!item.prop.includes('config.config')) {
-							item.prop = `config.config.${item.prop}`
-						}
-					})
-					res.customConfig = [{ type: 'custom' }, ...customConfig]
+			if (obj[key]) {
+				if (id === obj[key].id) {
+					const inputConfig = Object.freeze(obj[key].config || {})
+					const res = configMerge(inputConfig, mergedValue)
+					res.widget.name = res.widget.name || '未知组件'
+					if (!obj[key].widgetType)
+						obj[key].widgetType = localConfigValue ? localConfigValue.widgetType || 'normal' : 'normal'
+					if (customConfig) {
+						customConfig.map(item => {
+							if (!item.prop.includes('config.config')) {
+								item.prop = `config.config.${item.prop}`
+							}
+						})
+						res.customConfig = [{ type: 'custom' }, ...customConfig]
+					}
+					obj[key].config = res
+				} else if (obj[key].children) {
+					if (Object.values(obj[key].children).length > 0)
+						this.findWidget(id, obj[key].children, mergedValue, localConfigValue, customConfig)
 				}
-				obj[key].config = res
-			} else if (obj[key].children) {
-				if (Object.values(obj[key].children).length > 0)
-					this.findWidget(id, obj[key].children, mergedValue, localConfigValue, customConfig)
 			}
 		}
 	}

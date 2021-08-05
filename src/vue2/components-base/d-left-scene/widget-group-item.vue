@@ -2,7 +2,7 @@
 .main
 	.child.fn-flex.flex-row(
 		@click.stop="editor.selectWidget(child)",
-		:class="{ active: editor.currentWidgetId === child.id }")
+		:class="{ active: editor.currentWidgetList[0] === child.id }")
 		.d-left-scene-left
 			h2 {{ child.config.widget.name }}
 		.d-left-scene-right

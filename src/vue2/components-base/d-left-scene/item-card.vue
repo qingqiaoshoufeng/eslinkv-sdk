@@ -1,6 +1,6 @@
 <template lang="pug">
 li.pointer.pos-r.d-left-scene-list-li(
-	:class="{ active: editor.currentWidgetId === item.id }",
+	:class="{ active: editor.currentWidgetList.includes(item.id) }",
 	@click.stop="editor.selectWidget(item)")
 	.parent.fn-flex
 		.d-left-scene-left
