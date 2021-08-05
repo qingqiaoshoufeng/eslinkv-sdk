@@ -14,7 +14,11 @@
 		@click="filterShow = true",
 		:active="editor.screen.screenFilter.enable")
 		global-filter(v-model="filterShow")
-	item-card(v-if="editor.currentWidgetId", title="主题风格", icon="md-color-palette", @click="themeShow = true")
+	item-card(
+		v-if="editor.currentWidgetList[0] && editor.currentWidget",
+		title="主题风格",
+		icon="md-color-palette",
+		@click="themeShow = true")
 		theme(v-model="themeShow")
 </template>
 <script lang="ts">

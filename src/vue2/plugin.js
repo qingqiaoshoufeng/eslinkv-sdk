@@ -8,11 +8,13 @@ import '@/vue2/scss/animate-widget.min.scss'
 import '@/vue2/scss/font.scss'
 import Vue from 'vue'
 
-import group from '@/vue2/components-base/d-widget-group'
-import widgetGroup from '@/vue2/components-base/d-left-scene/widget-group'
-import widget from '@/vue2/components-base/d-widget'
-Vue.component('scene-group', widgetGroup)
-Vue.component('eslinkv-group', group)
+import sceneGroup from '@/vue2/components-base/d-left-scene/widget-group'
+import widgetGroup from '@/vue2/components-base/d-widget/group.vue'
+import widgetNormal from '@/vue2/components-base/d-widget/normal.vue'
+import widget from '@/vue2/components-base/d-widget/index.vue'
+Vue.component('scene-group', sceneGroup)
+Vue.component('eslinkv-group', widgetGroup)
+Vue.component('eslinkv-normal', widgetNormal)
 Vue.component('eslinkv-widget', widget)
 
 const toThousand = value => {

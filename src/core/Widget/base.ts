@@ -25,14 +25,19 @@ export default class Widget {
 		offsetY: number,
 		data: any,
 		currentSceneIndex: number | string,
-		currentMaxZIndex: number,
+		currentMaxZIndex = 10,
 	) {
 		const {
 			// settingDataHandle = [],
 			// settingData = {},
 			// eventTypes = [],
 			// events = {},
+			children,
+			widgetType,
 			type,
+			name,
+			width,
+			height,
 			config: inputConfig,
 			startX,
 			startY,
@@ -47,9 +52,14 @@ export default class Widget {
 		// this.events = events
 		this.market = market
 		this.scene = currentSceneIndex
-		const { layout = {}, config = {}, widget = {}, api } = inputConfig || {}
+		const { layout = { size: {}, position: {} }, config = {}, widget = {}, api } = inputConfig || {}
 		if (!layout.size) layout.size = {}
 		if (!layout.position) layout.position = {}
+		if (children) this.children = children
+		if (widgetType) this.widgetType = widgetType
+		if (name) widget.name = name
+		if (width) layout.size.width = width
+		if (height) layout.size.height = height
 		const top = offsetY - startY
 		const left = offsetX - startX
 		layout.position.top = top
@@ -59,6 +69,7 @@ export default class Widget {
 		widget.id = this.id
 		widget.componentVersion = componentVersion
 		widget.componentId = componentId
+
 		this.config = {
 			layout,
 			widget,

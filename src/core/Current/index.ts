@@ -32,10 +32,9 @@ export default class Current extends Factory<Current> {
 	/* 当前位置y */
 	offsetY = 0
 	/* 当前组件 */
-	currentWidgetId = ''
 	currentWidget = {}
 	/* 当前选中组件-多组件 */
-	currentWidgetList: Widget[] = []
+	currentWidgetList: string[] = []
 	/* 当前场景 */
 	currentSceneIndex: number | string = 0
 	/* 当前打开的场景集合 */
@@ -62,9 +61,9 @@ export default class Current extends Factory<Current> {
 		this.currentRightSettingIndex = 0
 		this.activeWidgetId = ''
 		this.sceneAnimate = ''
-		this.currentWidgetId = ''
 		this.currentWidget = {}
 		this.currentSceneIndex = 0
+		this.currentWidgetList = []
 		this.currentCreateSceneList = []
 		this.currentWidgetListConfig = {
 			left: 0,
@@ -113,13 +112,19 @@ export default class Current extends Factory<Current> {
 		if (widget.config.widget.hide) {
 			return
 		}
-		this.currentWidgetId = widget.id
-		this.currentWidget = widget
-		this.currentWidgetList = []
+		if (this.currentWidgetList.includes(widget.id)) {
+			this.currentWidgetList.splice(this.currentWidgetList.indexOf(widget.id), 1)
+		} else {
+			this.currentWidgetList = [...this.currentWidgetList, widget.id]
+		}
+		if (this.currentWidgetList.length == 1) {
+			this.currentWidget = widget
+		} else {
+			this.currentWidget = null
+		}
 	}
 	/* 取消选中组件 */
 	unSelectWidget(): void {
-		this.currentWidgetId = ''
 		this.currentWidget = null
 		this.currentWidgetList = []
 	}
@@ -129,10 +134,6 @@ export default class Current extends Factory<Current> {
 	}
 	selectWidgetList(config: any): void {
 		this.currentWidgetListConfig = config
-	}
-	/* 添加到选中组件集合 */
-	addWidgetList(list: Widget): void {
-		this.currentWidgetList = [...this.currentWidgetList, list]
 	}
 	/* 选中场景 */
 	selectSceneIndex(val: number | string): void {

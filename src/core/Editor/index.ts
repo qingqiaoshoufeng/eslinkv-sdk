@@ -1,11 +1,10 @@
 import Ruler from '@/core/ui/Ruler'
 import { uuid } from '@/core/utils'
-import { configMerge } from '@/core/utils'
-import commonConfigValue from '@/core/common-config-value.js'
 import { useList } from '@/vue2/api/marketComponent.api'
 import Agent from '@/core/Editor/agent'
 import HttpTask from '@/core/Http/task'
 import { usePath, useProcess } from '@/vue2/utils'
+import Widget from '@/core/Widget/normal'
 
 class Editor extends Agent {
 	init(res?: any): any {
@@ -130,9 +129,9 @@ class Editor extends Agent {
 	}
 	/* 刷新当前组件 */
 	refreshWidget(): void {
-		const item = this.screen.screenWidgets[this.current.currentWidgetId]
+		const item = this.screen.screenWidgets[this.current.currentWidgetList[0]]
 		if (item) {
-			delete this.screen.screenWidgets[this.current.currentWidgetId]
+			delete this.screen.screenWidgets[this.current.currentWidgetList[0]]
 			this.screen.screenWidgets = { ...this.screen.screenWidgets }
 			setTimeout(() => {
 				this.screen.screenWidgets[item.id] = item
@@ -154,8 +153,8 @@ class Editor extends Agent {
 	}
 	/* 给组件取消打组 */
 	relieveWidgetGroup(): void {
-		const item = this.screen.screenWidgets[this.current.currentWidgetId]
-		delete this.screen.screenWidgets[this.current.currentWidgetId]
+		const item = this.screen.screenWidgets[this.current.currentWidgetList[0]]
+		delete this.screen.screenWidgets[this.current.currentWidgetList[0]]
 		for (const key in item.children) {
 			this.screen.screenWidgets[key] = item.children[key]
 		}
@@ -167,38 +166,28 @@ class Editor extends Agent {
 		this.current.currentWidgetList.map(item => {
 			children = {
 				...children,
-				[item.id]: this.screen.screenWidgets[item.id],
+				[item]: this.screen.screenWidgets[item],
 			}
-			delete this.screen.screenWidgets[item.id]
+			delete this.screen.screenWidgets[item]
 		})
-		const id = uuid()
-		const config = configMerge(
-			{
-				widgetType: 'group',
-				widget: { id, name: '分组' },
-				layout: {
-					size: {
-						width: this.current.currentWidgetListConfig.width,
-						height: this.current.currentWidgetListConfig.height,
-					},
-					position: {
-						left: this.current.currentWidgetListConfig.left,
-						top: this.current.currentWidgetListConfig.top,
-					},
-				},
-			},
-			commonConfigValue(),
+		const offsetX = this.current.currentWidgetListConfig.left
+		const offsetY = this.current.currentWidgetListConfig.top
+		const width = this.current.currentWidgetListConfig.width
+		const height = this.current.currentWidgetListConfig.height
+		const widgetType = 'group'
+		const name = '分组'
+		const widgetItem = new Widget(
+			offsetX,
+			offsetY,
+			{ width, height, children, widgetType, name, startX: 0, startY: 0 },
+			this.current.currentSceneIndex,
 		)
-		this.screen.screenWidgets[id] = {
-			config,
-			id,
-			market: false,
-			scene: this.current.currentSceneIndex,
-			widgetType: 'group',
-			children,
+		this.screen.screenWidgets = {
+			...this.screen.screenWidgets,
+			[widgetItem.id]: widgetItem,
 		}
-		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 		this.current.unSelectWidget()
+		this.current.selectWidget(widgetItem)
 	}
 	/* 删除多个组件 */
 	deleteWidgets(): void {
@@ -216,11 +205,11 @@ class Editor extends Agent {
 		} else {
 			if (id) this.screen.deleteWidget(id)
 		}
-		if (id === this.currentWidgetId) this.current.unSelectWidget()
+		if (id === this.currentWidgetList[0]) this.current.unSelectWidget()
 	}
 	/* 复制组件 */
 	copyWidget(): void {
-		this.screen.copyWidget(this.current.currentWidgetId)
+		this.screen.copyWidget(this.current.currentWidgetList[0])
 	}
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
@@ -381,6 +370,58 @@ class Editor extends Agent {
 				}),
 			id,
 		)
+	}
+	/* 添加到选中组件集合 */
+	selectWidget(widget: Widget) {
+		this.current.selectWidget(widget)
+		if (this.currentWidgetList.length > 1) {
+			this.updateCurrentWidgetListConfig()
+		}
+	}
+
+	updateCurrentWidgetListConfig(): void {
+		let minLeft = null,
+			maxLeft = null,
+			width = 0,
+			height = 0,
+			minTop = null,
+			maxTop = null,
+			zIndex = 10
+		this.currentWidgetList.map(item => {
+			const m = this.screen.screenWidgets[item]
+			zIndex = m.config.layout.zIndex
+			if (minLeft === null) {
+				minLeft = m.config.layout.position.left
+			}
+			if (maxLeft === null) {
+				maxLeft = m.config.layout.position.left
+				width = m.config.layout.size.width
+			}
+			if (minTop === null) {
+				minTop = m.config.layout.position.top
+			}
+			if (maxTop === null) {
+				maxTop = m.config.layout.position.top
+				height = m.config.layout.size.height
+			}
+			if (minLeft > m.config.layout.position.left) minLeft = m.config.layout.position.left
+			if (maxLeft < m.config.layout.position.left) {
+				maxLeft = m.config.layout.position.left
+				width = m.config.layout.size.width
+			}
+			if (minTop > m.config.layout.position.top) minTop = m.config.layout.position.top
+			if (maxTop < m.config.layout.position.top) {
+				maxTop = m.config.layout.position.top
+				height = m.config.layout.size.height
+			}
+		})
+		this.selectWidgetList({
+			left: minLeft,
+			top: minTop,
+			width: width + (maxLeft - minLeft),
+			height: height + (maxTop - minTop),
+			z: zIndex,
+		})
 	}
 }
 

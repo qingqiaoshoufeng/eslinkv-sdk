@@ -4,8 +4,8 @@
 		d-left-scene
 		d-editor
 		d-suspension
-		d-right-manage(v-if="!editor.currentWidgetId")
-		d-right-setting(v-if="editor.currentWidgetId")
+		d-right-manage(v-if="editor.currentWidgetList.length === 0")
+		d-right-setting(v-if="editor.currentWidgetList.length === 1")
 		d-right-setting-more(v-if="editor.currentWidgetList && editor.currentWidgetList.length > 1")
 	slot(v-if="editor.marketComponentLoading", name="loading")
 		load-mask(:show="true") 加载中...

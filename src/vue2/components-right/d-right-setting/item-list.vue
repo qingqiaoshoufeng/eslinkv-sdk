@@ -3,7 +3,7 @@
 	d-manage-item(
 		:config="child",
 		v-for="(child, i) in list",
-		:key="`${i}-${editor.currentWidgetId}`")
+		:key="`${i}-${editor.currentWidgetList[0]}`")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'

@@ -82,9 +82,11 @@ export default class DRuler extends Vue {
 			if (this.editor.contentMove) {
 				document.getElementById(this.editor.rulerContainerId).style.cursor = 'grab'
 			}
+			return
 		}
 		if (this.editor.widgetMove) {
 			this.editor.widgetMove = false
+			return
 		}
 		if (this.kuangMove) {
 			document.getElementById('d-kuang').style.display = 'none'
@@ -116,56 +118,10 @@ export default class DRuler extends Vue {
 						minPointerY < widgetEndY &&
 						widgetEndY < maxPointerY
 					) {
-						this.editor.addWidgetList(v)
+						this.editor.selectWidget(v)
 					}
 				}
 			})
-			let minLeft = null,
-				maxLeft = null,
-				width = 0,
-				height = 0,
-				minTop = null,
-				maxTop = null,
-				zIndex = 10
-			if (this.editor.currentWidgetList.length === 1) {
-				this.editor.selectWidget(this.editor.currentWidgetList[0])
-			} else {
-				this.editor.currentWidgetList.map(item => {
-					const m = this.editor.screenWidgets[item.id]
-					zIndex = m.config.layout.zIndex
-					if (minLeft === null) {
-						minLeft = m.config.layout.position.left
-					}
-					if (maxLeft === null) {
-						maxLeft = m.config.layout.position.left
-						width = m.config.layout.size.width
-					}
-					if (minTop === null) {
-						minTop = m.config.layout.position.top
-					}
-					if (maxTop === null) {
-						maxTop = m.config.layout.position.top
-						height = m.config.layout.size.height
-					}
-					if (minLeft > m.config.layout.position.left) minLeft = m.config.layout.position.left
-					if (maxLeft < m.config.layout.position.left) {
-						maxLeft = m.config.layout.position.left
-						width = m.config.layout.size.width
-					}
-					if (minTop > m.config.layout.position.top) minTop = m.config.layout.position.top
-					if (maxTop < m.config.layout.position.top) {
-						maxTop = m.config.layout.position.top
-						height = m.config.layout.size.height
-					}
-				})
-				this.editor.selectWidgetList({
-					left: minLeft,
-					top: minTop,
-					width: width + (maxLeft - minLeft),
-					height: height + (maxTop - minTop),
-					z: zIndex,
-				})
-			}
 		}
 	}
 
@@ -182,12 +138,14 @@ export default class DRuler extends Vue {
 			this.contentDrag = true
 			document.getElementById(this.editor.rulerContainerId).style.cursor = 'grabbing'
 		}
-		if (!this.editor.widgetMove) {
+		if (!this.editor.widgetMove && !e.shiftKey) {
 			this.editor.unSelectWidget()
+		}
+		if (!this.editor.widgetMove) {
 			const rightMenu = document.getElementById('widget-right-menu')
 			rightMenu.classList.remove('active')
 		}
-		if (!this.editor.contentMove && !this.editor.widgetMove) {
+		if (!this.editor.contentMove && !this.editor.widgetMove && !e.shiftKey) {
 			this.kuangMove = true
 			let kuang = document.getElementById('d-kuang')
 			if (!kuang) {

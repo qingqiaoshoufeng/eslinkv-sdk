@@ -1,4 +1,3 @@
-import Widget from '@/core/Widget/normal'
 import EditorBase from '@/core/Editor/base'
 
 export default class Agent extends EditorBase {
@@ -45,20 +44,12 @@ export default class Agent extends EditorBase {
 	get currentWidgetListConfig(): any {
 		return this.current.currentWidgetListConfig
 	}
-	/* 当前组件 */
-	get currentWidgetId(): string {
-		return this.current.currentWidgetId
-	}
 	get currentWidget() {
 		return this.current.currentWidget
 	}
 	/* 当前选中组件-多组件 */
 	get currentWidgetList(): any {
 		return this.current.currentWidgetList
-	}
-	/* 选中组件 */
-	selectWidget(widget: Widget): void {
-		this.current.selectWidget(widget)
 	}
 	/* 取消选中组件 */
 	unSelectWidget(): void {
@@ -67,10 +58,6 @@ export default class Agent extends EditorBase {
 	/* 取消选中组件集合 */
 	unSelectWidgetList(): void {
 		this.current.unSelectWidgetList()
-	}
-	/* 添加到选中组件集合 */
-	addWidgetList(list: Widget): void {
-		this.current.addWidgetList(list)
 	}
 	selectWidgetList(config: any): void {
 		this.current.selectWidgetList(config)
@@ -213,7 +200,7 @@ export default class Agent extends EditorBase {
 	}
 	/* 复制组件 */
 	copyWidget(): void {
-		this.screen.copyWidget(this.current.currentWidgetId)
+		this.screen.copyWidget(this.current.currentWidgetList[0])
 	}
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
