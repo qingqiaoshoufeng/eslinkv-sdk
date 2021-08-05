@@ -54,6 +54,15 @@ export function update(data) {
 	})
 }
 
+export function linkList(data) {
+	return request({
+		url: '/screen/linkList',
+		method: 'post',
+		data,
+		headers,
+	})
+}
+
 export function detailFile(url) {
 	return requestNoBaseURL({
 		url,

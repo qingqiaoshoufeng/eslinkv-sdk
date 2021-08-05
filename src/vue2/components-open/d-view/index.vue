@@ -60,6 +60,8 @@ import dScene from '../../components-base/d-scene/index.vue'
 import { Component, Vue } from 'vue-property-decorator'
 import Editor from '@/core/Editor'
 import { getQueryString } from '@/vue2/utils'
+import { loadJs, loadCss } from '@/core/utils'
+import { linkList } from '@/vue2/api/screen.api.js'
 
 @Component({
 	components: {
@@ -108,9 +110,27 @@ export default class DView extends Vue {
 			this.layoutModeChange()
 		}
 	}
+	
+	async loadExtraLink () {
+		const res = await linkList({screenId: this.$route.params.id})
+		if (!res.length) return
+		const arr = []
+		for (let i = 0; i < res.length; i++) {
+			if (res[i].linkType === 'javascript') {
+				arr.push(loadJs(res[i].linkUrl))
+			} else if (res[i].linkType === 'css') {
+				arr.push(loadCss(res[i].linkUrl))
+			}
+		}
+		await Promise.all(arr)
+	}
 
 	mounted(): void {
 		document.documentElement.addEventListener('keydown', this.init)
+	}
+	
+	async created() {
+		await this.loadExtraLink()
 	}
 }
 </script>

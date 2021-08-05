@@ -7,7 +7,7 @@
 		d-right-manage(v-if="!editor.currentWidgetId")
 		d-right-setting(v-if="editor.currentWidgetId")
 		d-right-setting-more(v-if="editor.currentWidgetList && editor.currentWidgetList.length > 1")
-	slot(v-if="editor.marketComponentLoading" name="loading")
+	slot(v-if="editor.marketComponentLoading", name="loading")
 		load-mask(:show="true") 加载中...
 </template>
 <script lang="ts">
@@ -20,6 +20,8 @@ import dRightSettingMore from '@/vue2/components-right/d-right-setting-more/inde
 import dSuspension from '@/vue2/components-base/d-suspension/index.vue'
 import Editor from '@/core/Editor'
 import loadMask from '../load-mask/index.vue'
+import { linkList } from '@/vue2/api/screen.api'
+import { loadCss, loadJs } from '@/core/utils'
 
 @Component({
 	components: {
@@ -34,6 +36,26 @@ import loadMask from '../load-mask/index.vue'
 })
 export default class dScreen extends Vue {
 	editor: Editor = Editor.Instance()
+
+	async loadExtraLink() {
+		const res = await linkList({ screenId: this.$route.params.id })
+		if (!res.length) return
+		const arr = []
+		for (let i = 0; i < res.length; i++) {
+			if (res[i].linkType === 'javascript') {
+				arr.push(loadJs(res[i].linkUrl))
+			} else if (res[i].linkType === 'css') {
+				arr.push(loadCss(res[i].linkUrl))
+			}
+		}
+		await Promise.all(arr)
+	}
+
+	async created() {
+		if (this.$route.params.id) {
+			await this.loadExtraLink()
+		}
+	}
 }
 </script>
 <style lang="scss" scoped>
