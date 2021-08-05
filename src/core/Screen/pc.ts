@@ -30,12 +30,33 @@ export default class ScreenPc extends ScreenBase {
 		this.screenAvatar = ''
 		this.screenVersion = ''
 		this.screenMainScene = undefined
+		this.screenFilter = {
+			enable: false,
+			grayscale: 0,
+			opacity: 100,
+			contrast: 0,
+			brightness: 0,
+			saturate: 0,
+			hueRotate: 0,
+		}
 	}
 	/* 初始化配置 */
 	init(res: any): any {
 		if (res.screenId) this.screenId = res.screenId
 		this.screenName = res.screenName
-		this.screenFilter = res.screenFilter
+		if (!res.screenFilter) {
+			this.screenFilter = {
+				enable: false,
+				grayscale: 0,
+				opacity: 100,
+				contrast: 0,
+				brightness: 0,
+				saturate: 0,
+				hueRotate: 0,
+			}
+		} else {
+			this.screenFilter = res.screenFilter
+		}
 		this.screenAvatar = res.screenAvatar
 		this.screenPublish = res.screenPublish
 		this.screenType = res.screenType || 'CUSTOM'
