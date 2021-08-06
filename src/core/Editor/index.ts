@@ -5,6 +5,7 @@ import Agent from '@/core/Editor/agent'
 import HttpTask from '@/core/Http/task'
 import { usePath, useProcess } from '@/vue2/utils'
 import Widget from '@/core/Widget/normal'
+import { Method } from 'axios'
 
 class Editor extends Agent {
 	init(res?: any): any {
@@ -105,8 +106,10 @@ class Editor extends Agent {
 	get sceneWidgets() {
 		const res = { 0: {} }
 		for (const widgetId in this.screenWidgets) {
-			if (!res[this.screenWidgets[widgetId].scene]) res[this.screenWidgets[widgetId].scene] = {}
-			res[this.screenWidgets[widgetId].scene][widgetId] = this.screenWidgets[widgetId]
+			if (this.screenWidgets[widgetId]) {
+				if (!res[this.screenWidgets[widgetId].scene]) res[this.screenWidgets[widgetId].scene] = {}
+				res[this.screenWidgets[widgetId].scene][widgetId] = this.screenWidgets[widgetId]
+			}
 		}
 		return res
 	}
@@ -350,7 +353,7 @@ class Editor extends Agent {
 			this.screen.screenWidgets[id] = obj[id]
 		}
 	}
-	request(method: string, url: string, params: any, id) {
+	request(method: Method, url: string, params: any, id) {
 		const path = this.screenWidgets[id].config.api.path
 		const process = this.screenWidgets[id].config.api.process
 		const loopTime = this.screenWidgets[id].config.api.autoFetch.enable
@@ -385,32 +388,40 @@ class Editor extends Agent {
 			width = 0,
 			height = 0,
 			minTop = null,
-			maxTop = null,
-			zIndex = 10
+			maxTop = null
 		this.currentWidgetList.map(item => {
 			const m = this.screen.screenWidgets[item]
-			zIndex = m.config.layout.zIndex
 			if (minLeft === null) {
-				minLeft = m.config.layout.position.left
+				minLeft = Number(m.config.layout.position.left)
 			}
 			if (maxLeft === null) {
-				maxLeft = m.config.layout.position.left
-				width = m.config.layout.size.width
+				maxLeft = Number(m.config.layout.position.left)
+				width = Number(m.config.layout.size.width)
 			}
 			if (minTop === null) {
-				minTop = m.config.layout.position.top
+				minTop = Number(m.config.layout.position.top)
 			}
 			if (maxTop === null) {
-				maxTop = m.config.layout.position.top
-				height = m.config.layout.size.height
+				maxTop = Number(m.config.layout.position.top)
+				height = Number(m.config.layout.size.height)
 			}
-			if (minLeft > m.config.layout.position.left) minLeft = m.config.layout.position.left
-			if (maxLeft < m.config.layout.position.left) {
+			if (minLeft > Number(m.config.layout.position.left)) {
+				minLeft = m.config.layout.position.left
+			}
+			if (
+				Number(maxLeft) + Number(width) <
+				Number(m.config.layout.position.left) + Number(m.config.layout.size.width)
+			) {
 				maxLeft = m.config.layout.position.left
 				width = m.config.layout.size.width
 			}
-			if (minTop > m.config.layout.position.top) minTop = m.config.layout.position.top
-			if (maxTop < m.config.layout.position.top) {
+			if (minTop > Number(m.config.layout.position.top)) {
+				minTop = m.config.layout.position.top
+			}
+			if (
+				Number(maxTop) + Number(height) <
+				Number(m.config.layout.position.top) + Number(m.config.layout.size.height)
+			) {
 				maxTop = m.config.layout.position.top
 				height = m.config.layout.size.height
 			}
@@ -418,9 +429,9 @@ class Editor extends Agent {
 		this.selectWidgetList({
 			left: minLeft,
 			top: minTop,
-			width: width + (maxLeft - minLeft),
-			height: height + (maxTop - minTop),
-			z: zIndex,
+			width: Number(width) + (Number(maxLeft) - Number(minLeft)),
+			height: Number(height) + (Number(maxTop) - Number(minTop)),
+			z: this.currentMaxZIndex,
 		})
 	}
 }

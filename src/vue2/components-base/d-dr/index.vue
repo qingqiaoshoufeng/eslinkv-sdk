@@ -27,6 +27,7 @@
 			:style="{ fontSize: `${14 * returnRatio}px`, right: `${30 * returnRatio}px`, bottom: `${5 * returnRatio}px` }") {{ top }}
 	slot
 	.dr-disabled-event.pos-a(
+		@contextmenu.stop="showRightMenu($event, item)",
 		:style="{ width: '100%', height: '100%', top: 0, left: 0, zIndex: z }",
 		v-if="editor.current.currentEventDisabled")
 </template>
@@ -42,6 +43,7 @@ export default {
 	replace: true,
 	name: 'd-dr',
 	props: {
+		item: {},
 		id: {
 			type: [String, Number],
 			default: '',
@@ -149,6 +151,21 @@ export default {
 		removeEvent(document.documentElement, 'touchend touchcancel', this.deselect)
 	},
 	methods: {
+		showRightMenu(e: MouseEvent, item: any): void {
+			e.preventDefault()
+			this.editor.unSelectWidget()
+			this.editor.selectWidget(item)
+			const rightMenu = document.getElementById('widget-right-menu')
+			rightMenu.classList.add('active')
+			const rulerRightMenu = document.getElementById('ruler-right-menu')
+			rulerRightMenu.classList.remove('active')
+			if (e.clientY + rightMenu.scrollHeight > window.innerHeight) {
+				rightMenu.style.top = e.clientY - rightMenu.scrollHeight + 'px'
+			} else {
+				rightMenu.style.top = e.clientY + 'px'
+			}
+			rightMenu.style.left = e.clientX + 'px'
+		},
 		elementEnable(e): void {
 			this.$emit('on-click', e)
 			if (this.enabled) return

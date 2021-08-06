@@ -1,11 +1,11 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, Method } from 'axios'
 export default class HttpBase {
-	method = ''
+	method: Method = 'get'
 	url = ''
 	headers = {}
 	params: any = ''
 
-	constructor(method: string, url: string, params: any, headers?: any) {
+	constructor(method: Method, url: string, params: any, headers?: any) {
 		this.method = method
 		this.url = url
 		this.params = params

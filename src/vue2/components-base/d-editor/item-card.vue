@@ -14,6 +14,7 @@ dr(
 	:y="item.config.layout.position.top",
 	:z="item.config.layout.zIndex",
 	:snap="editor.current.autoAlignGuide",
+	:item="item"
 	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 	:snap-to-target="['.d-editor-line', '.dr-unactive', '.d-ruler-guide-x', '.d-ruler-guide-y']",
 	@resizestop="onResizeStop",
@@ -68,6 +69,7 @@ export default class ItemCard extends Vue {
 
 	showRightMenu(e: MouseEvent, item: any): void {
 		e.preventDefault()
+		this.editor.unSelectWidget()
 		this.editor.selectWidget(item)
 		const rightMenu = document.getElementById('widget-right-menu')
 		rightMenu.classList.add('active')

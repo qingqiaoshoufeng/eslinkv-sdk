@@ -1,7 +1,7 @@
 <template lang="pug">
 li.pointer.pos-r.d-left-scene-list-li(
 	:class="{ active: editor.currentWidgetList.includes(item.id) }",
-	@click.stop="editor.selectWidget(item)")
+	@click.stop="handleClick($event, item)")
 	.parent.fn-flex
 		.d-left-scene-left
 			h2 {{ item.config.widget.name }}
@@ -37,6 +37,15 @@ export default class DLeftSceneItem extends Vue {
 	editor: Editor = Editor.Instance()
 	@Prop() item
 
+	handleClick(e, item): void {
+		if (e.shiftKey) {
+			this.editor.selectWidget(item)
+		} else {
+			this.editor.unSelectWidget()
+			this.editor.selectWidget(item)
+		}
+	}
+
 	handleUnLock(id: string): void {
 		this.editor.screenWidgets[id].config.widget.locked = false
 	}
@@ -51,7 +60,6 @@ export default class DLeftSceneItem extends Vue {
 	margin: 10px 0;
 	font-size: 12px;
 	border: 1px solid #393b4a;
-	transition: all 0.3s;
 
 	.parent {
 		padding: 10px;
