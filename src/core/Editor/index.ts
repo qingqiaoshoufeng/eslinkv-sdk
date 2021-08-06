@@ -353,26 +353,39 @@ class Editor extends Agent {
 			this.screen.screenWidgets[id] = obj[id]
 		}
 	}
-	request(method: Method, url: string, params: any, id) {
-		const path = this.screenWidgets[id].config.api.path
-		const process = this.screenWidgets[id].config.api.process
-		const loopTime = this.screenWidgets[id].config.api.autoFetch.enable
-			? this.screenWidgets[id].config.api.autoFetch.duration
-			: 0
-		this.http.screenDomain = this.screen.screenDomain
-		this.http.screenHeaders = this.screen.screenHeaders
-		this.http.pushOne(
-			new HttpTask(method, url, params, loopTime)
-				.then(res => {
-					let response = usePath(path, res)
-					response = useProcess(process, response)
-					if (response !== undefined) this.screenWidgets[id].config.api.data = response
-				})
-				.catch(e => {
-					console.warn(`${url}接口请求失败`, e)
-				}),
-			id,
-		)
+
+	findRequest(id: string, data, parent): void {
+		for (const key in parent) {
+			if (parent[key]) {
+				if (id === parent[key].id) {
+					const { method, url, params } = data
+					const path = parent[id].config.api.path
+					const process = parent[id].config.api.process
+					const loopTime = parent[id].config.api.autoFetch.enable
+						? parent[id].config.api.autoFetch.duration
+						: 0
+					this.http.screenDomain = this.screen.screenDomain
+					this.http.screenHeaders = this.screen.screenHeaders
+					this.http.pushOne(
+						new HttpTask(method, url, params, loopTime)
+							.then(res => {
+								let response = usePath(path, res)
+								response = useProcess(process, response)
+								if (response !== undefined) parent[id].config.api.data = response
+							})
+							.catch(e => {
+								console.warn(`${url}接口请求失败`, e)
+							}),
+						id,
+					)
+				} else if (parent[key].children) {
+					this.findRequest(id, data, parent[key].children)
+				}
+			}
+		}
+	}
+	request(method: Method, url: string, params: any, id): void {
+		this.findRequest(id, { method, url, params }, this.screen.screenWidgets)
 	}
 	/* 添加到选中组件集合 */
 	selectWidget(widget: Widget) {
