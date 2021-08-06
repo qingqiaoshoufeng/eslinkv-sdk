@@ -64,18 +64,21 @@ export default class Screen extends Factory<Screen> {
 	_widgetCache = {}
 
 	findWidget(id: string, parent: any, path = []): Widget {
+		if (parent[id]) {
+			if (path.length) {
+				this._widgetCache[id] = path
+			}
+			return parent[id]
+		}
+		let res: any
 		for (const key in parent) {
-			if (id === parent[key].id) {
-				if (path.length) {
-					this._widgetCache[id] = path
-				}
-				return parent[key]
-			} else if (parent[key].children) {
+			if (parent[key].children) {
 				if (this._widgetCache[id]) {
 					return this._resolveWidgetCache(id)
 				}
 				path.push(key)
-				return this.findWidget(id, parent[key].children, path)
+				res = this.findWidget(id, parent[key].children, path)
+				if (res) return res
 			}
 		}
 	}
