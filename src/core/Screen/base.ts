@@ -63,10 +63,10 @@ export default class Screen extends Factory<Screen> {
 		const mergedValue = localConfigValue
 			? configMerge(localConfigValue, commonConfigValue(localConfigValue.widgetType))
 			: commonConfigValue()
-		this.findWidget(id, this.screenWidgets, mergedValue, localConfigValue, customConfig)
+		this.setWidget(id, this.screenWidgets, mergedValue, localConfigValue, customConfig)
 		// 过滤可用属性
 	}
-	private findWidget(id, obj, mergedValue, localConfigValue, customConfig = []): void {
+	private setWidget(id, obj, mergedValue, localConfigValue, customConfig = []): void {
 		for (const key in obj) {
 			if (obj[key]) {
 				if (id === obj[key].id) {
@@ -86,7 +86,7 @@ export default class Screen extends Factory<Screen> {
 					obj[key].config = res
 				} else if (obj[key].children) {
 					if (Object.values(obj[key].children).length > 0)
-						this.findWidget(id, obj[key].children, mergedValue, localConfigValue, customConfig)
+						this.setWidget(id, obj[key].children, mergedValue, localConfigValue, customConfig)
 				}
 			}
 		}

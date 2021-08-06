@@ -32,6 +32,10 @@ export default class EditorBase extends Factory<EditorBase> {
 	marketComponentLoading = false
 	/* 组件加载状态 */
 	widgetLoaded = {}
+	/* 当前组件查找路径 */
+	_widgetPath = []
+	/* 当前组件缓存 */
+	_widgetCache = {}
 	/* 更新组件加载状态 */
 	updateWidgetLoaded(key: string): void {
 		this.widgetLoaded[key] = true

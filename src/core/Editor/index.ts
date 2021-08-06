@@ -295,97 +295,87 @@ class Editor extends Agent {
 	 */
 	setCustomEventConfig(id: string, val): void {
 		if (val && val.length) {
-			this.setCustomEventConfigFind(id, val, this.screen.screenWidgets)
-		}
-	}
-	private setCustomEventConfigFind(id: string, val, parent) {
-		for (const key in parent) {
-			if (id === parent[key].id) {
-				parent[key].customEventsConfig = val
-			} else if (parent[key].children) {
-				this.setCustomEventConfigFind(id, val, parent[key].children)
-			}
+			const target = this.findWidget(id, this.screen.screenWidgets)
+			target.customEventsConfig = val
 		}
 	}
 	/**
 	 * @description 自定义过滤初始化
 	 */
-	private dataSettingFind(id: string, list, data, parent) {
+	dataSetting(id: string, list, data): void {
+		if (list && list.length) {
+			const target = this.findWidget(id, this.screen.screenWidgets)
+			if (list.length) target.settingDataHandle = list
+			if (target.settingData) {
+				if (data && Object.keys(target.settingData).length <= 0) target.settingData = data
+			}
+			this.screen.screenWidgets = { ...this.screen.screenWidgets }
+		}
+	}
+
+	findWidget (id: string, parent: any, path = []) {
 		for (const key in parent) {
 			if (id === parent[key].id) {
-				if (list.length) parent[key].settingDataHandle = list
-				if (parent[key].settingData) {
-					if (data && Object.keys(parent[key].settingData).length <= 0) parent[key].settingData = data
+				if (path.length) {
+					this._widgetCache[id] = path
 				}
-				this.screen.screenWidgets = { ...this.screen.screenWidgets }
+				return parent[key]
 			} else if (parent[key].children) {
-				this.dataSettingFind(id, list, data, parent[key].children)
+				if (this._widgetCache[id]) {
+					return this._resolveWidgetCache(id)
+				}
+				path.push(key)
+				return this.findWidget(id, parent[key].children, path)
 			}
 		}
 	}
-	dataSetting(id: string, list, data): void {
-		if (list && list.length) {
-			this.dataSettingFind(id, list, data, this.screen.screenWidgets)
+
+	_resolveWidgetCache (id) {
+		let path = this._widgetCache[id]
+		let res = this.screen.screenWidgets[path[0]]
+		for (let i = 1; i < path.length; i++) {
+			res = res.children[path[i]]
 		}
+		return res
 	}
+	
 	/**
 	 * @description 触发事件初始化
 	 */
-	private eventTypesSettingFind(id: string, eventTypes: { key: string; label: string }[], parent) {
-		for (const key in parent) {
-			if (id === parent[key].id) {
-				if (eventTypes.length) {
-					parent[key].eventTypes = eventTypes
-					if (!parent[key].events) parent[key].events = {}
-					eventTypes.forEach(item => {
-						if (!parent[key].events[item['key']]) parent[key].events[item['key']] = []
-					})
-				}
-			} else if (parent[key].children) {
-				this.eventTypesSettingFind(id, eventTypes, parent[key].children)
-			}
-		}
-	}
 	eventTypesSetting(id: string, eventTypes: { key: string; label: string }[]) {
 		if (eventTypes && eventTypes.length) {
 			const obj = JSON.parse(JSON.stringify(this.screen.screenWidgets))
-			if (eventTypes) this.eventTypesSettingFind(id, eventTypes, obj)
+			const target = this.findWidget(id, obj)
+			target.eventTypes = eventTypes
+			if (!target.events) target.events = {}
+			eventTypes.forEach(item => {
+				if (!target.events[item['key']]) target.events[item['key']] = []
+			})
 			this.screen.screenWidgets[id] = obj[id]
 		}
 	}
 
-	findRequest(id: string, data, parent): void {
-		for (const key in parent) {
-			if (parent[key]) {
-				if (id === parent[key].id) {
-					const { method, url, params } = data
-					const path = parent[id].config.api.path
-					const process = parent[id].config.api.process
-					const loopTime = parent[id].config.api.autoFetch.enable
-						? parent[id].config.api.autoFetch.duration
-						: 0
-					this.http.screenDomain = this.screen.screenDomain
-					this.http.screenHeaders = this.screen.screenHeaders
-					this.http.pushOne(
-						new HttpTask(method, url, params, loopTime)
-							.then(res => {
-								let response = usePath(path, res)
-								response = useProcess(process, response)
-								if (response !== undefined) parent[id].config.api.data = response
-							})
-							.catch(e => {
-								console.warn(`${url}接口请求失败`, e)
-							}),
-						id,
-					)
-				} else if (parent[key].children) {
-					this.findRequest(id, data, parent[key].children)
-				}
-			}
-		}
-	}
 	request(method: Method, url: string, params: any, id): void {
-		this.findRequest(id, { method, url, params }, this.screen.screenWidgets)
+		const target = this.findWidget(id, this.screen.screenWidgets)
+		const path = target.config.api.path
+		const process = target.config.api.process
+		const loopTime = target.config.api.autoFetch.enable
+			? target.config.api.autoFetch.duration
+			: 0
+		this.http.screenDomain = this.screen.screenDomain
+		this.http.screenHeaders = this.screen.screenHeaders
+		this.http.pushOne(
+			new HttpTask(method, url, params, loopTime)
+				.then(res => {
+					let response = usePath(path, res)
+					response = useProcess(process, response)
+					if (response !== undefined) target.config.api.data = response
+				})
+				.catch(e => {
+					console.warn(`${url}接口请求失败`, e)
+				}),
+			id,
+		)
 	}
 	/* 添加到选中组件集合 */
 	selectWidget(widget: Widget) {
