@@ -1,6 +1,5 @@
 import Emitter from './emitter'
 import Task from './task'
-import Log from './log'
 export default class Http extends Emitter {
 	limit = 1
 	/* 大屏组件接口Domain */
@@ -21,9 +20,6 @@ export default class Http extends Emitter {
 	static POOL_ADD = 'pool_add'
 	static POOL_UPDATE = 'pool_update'
 	static POOL_STOP = 'pool_stop'
-
-	// 错误请求的日志
-	httpErrorLog = []
 
 	// todo
 	// 报错捕获是否抛出，node服务增加字段，默认false
@@ -67,7 +63,7 @@ export default class Http extends Emitter {
 			t.status = Task.STATUS_RETRY
 			this.push2Wait(t)
 		} else {
-			this.httpErrorLog.push(new Log({ ...res, errorCount: t.errorCount }))
+			t.catchCB(res)
 		}
 	}
 

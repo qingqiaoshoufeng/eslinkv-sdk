@@ -6,6 +6,7 @@ import HttpTask from '@/core/Http/task'
 import { usePath, useProcess } from '@/vue2/utils'
 import Widget from '@/core/Widget/normal'
 import { Method } from 'axios'
+import Log from '@/core/Log/base'
 
 class Editor extends Agent {
 	init(res?: any): any {
@@ -52,9 +53,13 @@ class Editor extends Agent {
 								script.src = item.componentJsUrl
 								document.head.appendChild(script)
 							} else {
+								this.log.push(
+									new Log({
+										code: 'LOAD_COMPONENT_ERROR',
+										errorMessage: `${list[index].componentEnTitle}${list[index].componentVersion}`,
+									}),
+								)
 								resolve(true)
-								console.error(list[index])
-								console.error('组件初始化加载失败')
 							}
 						}),
 					)
@@ -312,7 +317,7 @@ class Editor extends Agent {
 			this.screen.screenWidgets = { ...this.screen.screenWidgets }
 		}
 	}
-	
+
 	/**
 	 * @description 触发事件初始化
 	 */
@@ -333,20 +338,22 @@ class Editor extends Agent {
 		const target = this.findWidget(id, this.screen.screenWidgets)
 		const path = target.config.api.path
 		const process = target.config.api.process
-		const loopTime = target.config.api.autoFetch.enable
-			? target.config.api.autoFetch.duration
-			: 0
+		const loopTime = target.config.api.autoFetch.enable ? target.config.api.autoFetch.duration : 0
 		this.http.screenDomain = this.screen.screenDomain
 		this.http.screenHeaders = this.screen.screenHeaders
 		this.http.pushOne(
 			new HttpTask(method, url, params, loopTime)
 				.then(res => {
-					let response = usePath(path, res)
-					response = useProcess(process, response)
+					let response = usePath(path, res, errorMessage => {
+						this.log.push(new Log({ code: 'DATA_FILTER_ERROR', widget: target, errorMessage }))
+					})
+					response = useProcess(process, response, () => {
+						this.log.push(new Log({ code: 'DATA_FILTER_ERROR', widget: target }))
+					})
 					if (response !== undefined) target.config.api.data = response
 				})
 				.catch(e => {
-					console.warn(`${url}接口请求失败`, e)
+					this.log.push(new Log({ code: 'HTTP_ERROR', ...e, widget: target }))
 				}),
 			id,
 		)

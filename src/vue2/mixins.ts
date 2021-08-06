@@ -1,6 +1,7 @@
 import fetch from '@/vue2/fetch'
 import { usePath, createSandbox } from '@/vue2/utils'
 import Editor from '@/core/Editor'
+import Log from '@/core/Log/base'
 
 export default {
 	mixins: [fetch],
@@ -54,8 +55,12 @@ export default {
 		__handleEvent__(eventType = 'click', val): void {
 			if (this.events) {
 				if (!this.events[eventType]) {
-					console.error(
-						`检测到你使用旧API __handleClick__ 请及时更换新API __handleEvent__ \n\nhttps://eslink-web.yuque.com/books/share/55b0e7ab-4fac-41f5-9062-901636ef4792/phnay2`,
+					this.editor.log.push(
+						new Log({
+							id: this.__widgetId__,
+							code: 'OLD_METHOD_WARN',
+							errorMessage: `检测到你使用旧API __handleClick__ 请及时更换新API __handleEvent__ \n\nhttps://eslink-web.yuque.com/books/share/55b0e7ab-4fac-41f5-9062-901636ef4792/phnay2`,
+						}),
 					)
 					this.__eventTypesSetting__([{ key: 'click', label: '点击事件' }])
 					return
@@ -86,7 +91,11 @@ export default {
 						const coms = Object.values(this.editor.screenWidgets).filter((v: any) =>
 							item.ids.includes(v.id),
 						)
-						let data = usePath('', val)
+						let data = usePath('', val, errorMessage => {
+							this.editor.log.push(
+								new Log({ code: 'DATA_FILTER_ERROR', id: this.__widgetId__, errorMessage }),
+							)
+						})
 						const { enable, methodBody } = item.process
 						if (enable && methodBody.trim()) {
 							try {
@@ -102,8 +111,7 @@ export default {
 									}
 								})
 							} catch (err) {
-								console.warn('数据加工函数语法错误：', err.message)
-								this.$Message.warning('数据加工函数语法错误：' + err.message)
+								this.editor.log.push(new Log({ code: 'DATA_FILTER_ERROR', id: this.__widgetId__ }))
 							}
 						} else {
 							coms.forEach((v: any) => {

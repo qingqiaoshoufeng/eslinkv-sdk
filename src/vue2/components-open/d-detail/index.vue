@@ -5,6 +5,9 @@
 		li.fn-flex.flex-column.pointer(@click.stop="search")
 			e-svg(icon-class="search", :size="18")
 			span 搜索
+		li.fn-flex.flex-column.pointer.pos-r(@click.stop="notice", :class="{ active: Object.keys(this.editor.log.list).length }")
+			e-svg(icon-class="notice", :size="18")
+			span 消息
 		li.fn-flex.flex-column.pointer(@click="preview")
 			e-svg(icon-class="preview", :size="20")
 			span 预览
@@ -24,6 +27,7 @@
 				input#originFile.fn-hide(type="file", accept="application/json", @change="handleFile")
 				label.ivu-btn.ivu-btn-primary.d-detail-import-button(for="originFile") 选择导入文件
 	search(v-model="searchModal", :hide="() => (searchModal = false)")
+	notice(v-model="noticeModal")
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
@@ -31,6 +35,7 @@ import { Button, Modal, Form, FormItem, Input, Tooltip } from 'view-design'
 import loadMask from '../load-mask/index.vue'
 import { downloadFile, getQueryString } from '@/vue2/utils'
 import search from './search.vue'
+import notice from './notice.vue'
 import Editor from '@/core/Editor'
 import { detail, detailFile, create, update } from '@/vue2/api/screen.api'
 import { screenShareUpdate } from '@/vue2/api/screenShare.api'
@@ -46,6 +51,7 @@ import left from './left.vue'
 		'i-input': Input,
 		'i-tooltip': Tooltip,
 		search,
+		notice,
 		left,
 	},
 })
@@ -57,8 +63,11 @@ export default class DDetail extends Vue {
 	searchModal = false
 	loading = false
 	importModal = false
+	noticeModal = false
 	isNew = true
-
+	notice(): void {
+		this.noticeModal = true
+	}
 	search(): void {
 		this.searchModal = true
 	}
@@ -210,6 +219,18 @@ export default class DDetail extends Vue {
 		&:hover {
 			color: #fff;
 			background-color: #30333d;
+		}
+		&.active {
+			&::before {
+				position: absolute;
+				top: 5px;
+				right: 5px;
+				width: 4px;
+				height: 4px;
+				content: '';
+				background-color: var(--primary-color);
+				border-radius: 50%;
+			}
 		}
 	}
 }

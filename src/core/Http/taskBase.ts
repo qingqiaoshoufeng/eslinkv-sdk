@@ -21,7 +21,7 @@ export default class HttpBase {
 				try {
 					headers = { ...JSON.parse(config.screenHeaders), ...headers }
 				} catch (e) {
-					console.warn('全局请求头格式不正确')
+					console.warnning('全局请求头格式不正确')
 				}
 			}
 			if (config.screenDomain) {

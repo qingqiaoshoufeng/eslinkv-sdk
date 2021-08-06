@@ -14,7 +14,7 @@ dr(
 	:y="item.config.layout.position.top",
 	:z="item.config.layout.zIndex",
 	:snap="editor.current.autoAlignGuide",
-	:item="item"
+	:item="item",
 	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
 	:snap-to-target="['.d-editor-line', '.dr-unactive', '.d-ruler-guide-x', '.d-ruler-guide-y']",
 	@resizestop="onResizeStop",
@@ -97,8 +97,10 @@ export default class ItemCard extends Vue {
 		if (item.children) {
 			if (Object.values(item.children).length > 0)
 				for (let key in item.children) {
-					item.children[key].config.layout.position.left += diffLeft
-					item.children[key].config.layout.position.top += diffTop
+					item.children[key].config.layout.position.left =
+						Number(item.children[key].config.layout.position.left) + diffLeft
+					item.children[key].config.layout.position.top =
+						Number(item.children[key].config.layout.position.top) + diffTop
 					this.onGroupDragStop(item.children[key], diffLeft, diffTop)
 					item.children = { ...item.children }
 				}

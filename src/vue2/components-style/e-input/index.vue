@@ -1,6 +1,6 @@
 <template lang="pug">
 input.e-input(
-	:value="currentValue",
+	:value="currentVal",
 	:style="{ width, display, height }",
 	@focus="$emit('focus', $event)",
 	@blur="$emit('blur', $event)",
@@ -16,14 +16,14 @@ export default class EInput extends Vue {
 	@Prop({ default: '' }) height
 	@Prop({ default: 'block' }) display
 	@Prop() value
-	currentValue = ''
+	currentVal = ''
 
 	@Watch('value')
 	valueChange(val): void {
-		this.currentValue = val
+		this.currentVal = val
 	}
 	mounted(): void {
-		this.currentValue = this.value
+		this.currentVal = this.value
 	}
 }
 </script>

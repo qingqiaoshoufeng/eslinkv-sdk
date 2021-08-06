@@ -104,7 +104,7 @@ export default class FuncConfig extends func {
 				this.editor.avatar = (res as any).url
 			})
 			.catch(e => {
-				console.warn(e)
+				console.warnning(e)
 				this.screenAvatarLoading = false
 				this.$Message.error('截屏创建失败')
 			})

@@ -62,8 +62,8 @@ export default class Screen extends Factory<Screen> {
 	_widgetPath = []
 	/* 当前组件缓存 */
 	_widgetCache = {}
-	
-	findWidget (id: string, parent: any, path = []) {
+
+	findWidget(id: string, parent: any, path = []): Widget {
 		for (const key in parent) {
 			if (id === parent[key].id) {
 				if (path.length) {
@@ -80,15 +80,15 @@ export default class Screen extends Factory<Screen> {
 		}
 	}
 
-	_resolveWidgetCache (id) {
-		let path = this._widgetCache[id]
+	_resolveWidgetCache(id: string): Widget {
+		const path = this._widgetCache[id]
 		let res = this.screenWidgets[path[0]]
 		for (let i = 1; i < path.length; i++) {
 			res = res.children[path[i]]
 		}
 		return res
 	}
-	
+
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
 		const mergedValue = localConfigValue
 			? configMerge(localConfigValue, commonConfigValue(localConfigValue.widgetType))
@@ -109,7 +109,7 @@ export default class Screen extends Factory<Screen> {
 		}
 		target.config = res
 	}
-	
+
 	changeLayoutMode(value: string): string {
 		let scaleX = 0,
 			scaleY = 1,

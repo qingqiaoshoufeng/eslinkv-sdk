@@ -1,12 +1,11 @@
 import Editor from '@/core/Editor'
 import { usePath, useProcess } from '@/vue2/utils'
+import Log from '@/core/Log/base'
 const parseParams = (params = {}) => {
 	if (typeof params === 'string' && params !== '') {
 		try {
 			return JSON.parse(params)
-		} catch (e) {
-			console.warn(e)
-		}
+		} catch (e) {}
 	}
 	return params
 }
@@ -56,8 +55,12 @@ export default {
 			if (!response.data || typeof response.data !== 'object') {
 				return
 			}
-			response = usePath(path, response)
-			response = useProcess(process, response)
+			response = usePath(path, response, errorMessage => {
+				this.editor.log.push(new Log({ code: 'DATA_FILTER_ERROR', id: this.__widgetId__, errorMessage }))
+			})
+			response = useProcess(process, response, () => {
+				this.editor.log.push(new Log({ code: 'DATA_FILTER_ERROR', id: this.__widgetId__ }))
+			})
 			this.data = response
 		},
 		outerQuery(api): void {

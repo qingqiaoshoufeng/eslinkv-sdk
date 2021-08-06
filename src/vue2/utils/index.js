@@ -1,6 +1,7 @@
 import Clipboard from 'clipboard'
 import { Message } from 'view-design'
 import copy from 'fast-copy'
+import Log from '@/core/Log/base'
 
 const isMac = /macintosh|mac os x/i.test(navigator.userAgent)
 const alt = isMac ? '⌥' : 'Alt'
@@ -59,15 +60,14 @@ export const createSandbox = source => {
 		return buildWall(source).call({ ...arguments[0] }, { ...arguments[0] })
 	}
 }
-export const useProcess = (process = {}, data) => {
+export const useProcess = (process = {}, data, callback) => {
 	const { enable, methodBody } = process
 	if (enable && methodBody.trim()) {
 		try {
 			const processor = createSandbox(methodBody)
 			data = processor({ data })
 		} catch (err) {
-			console.warn('数据加工函数语法错误：', err.message)
-			Message.warning('数据加工函数语法错误：' + err.message)
+			typeof callback === 'function' && callback()
 		}
 	}
 	return data
@@ -76,7 +76,7 @@ export const useProcess = (process = {}, data) => {
 /**
  * @description 按照引用路径，查找末端数据
  */
-export const usePath = (path, data) => {
+export const usePath = (path, data, callback) => {
 	const keys = path ? path.split('.') : []
 	if (!path) {
 		return data
@@ -84,12 +84,12 @@ export const usePath = (path, data) => {
 	while (keys.length) {
 		const key = keys.shift()
 		if (!key) {
-			Message.warning(`数据源查找路径 ${path} 无效！`)
+			typeof callback === 'function' && callback(`数据源查找路径 ${path} 无效！`)
 			break
 		}
 		data = data[key]
 		if (data === undefined) {
-			Message.warning(`数据源查找路径 ${path}，在 ${key} 处未引用到有效数据！`)
+			typeof callback === 'function' && callback(`数据源查找路径 ${path}，在 ${key} 处未引用到有效数据！`)
 			break
 		}
 	}

@@ -115,16 +115,12 @@ export default class FuncData extends func {
 		if (typeof req === 'object') {
 			try {
 				return JSON.stringify(req, null, '\t')
-			} catch (e) {
-				console.warn(e)
-			}
+			} catch (e) {}
 		} else {
 			if (req) {
 				try {
 					return JSON.stringify(JSON.parse(req), null, '\t')
-				} catch (e) {
-					console.warn(e)
-				}
+				} catch (e) {}
 			}
 			return ''
 		}

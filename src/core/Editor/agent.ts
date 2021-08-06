@@ -207,7 +207,7 @@ export default class Agent extends EditorBase {
 		return this.screen.updateWidgetConfig(id, localConfigValue, customConfig)
 	}
 	/* 查找组件 */
-	findWidget (id: string, parent: any, path = []) {
+	findWidget(id: string, parent: any, path = []) {
 		return this.screen.findWidget(id, parent, path)
 	}
 
