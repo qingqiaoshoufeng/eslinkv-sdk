@@ -74,7 +74,7 @@ export default class DEditor extends Vue {
 	createWidget(e: any): void {
 		const widgetConfig = e.dataTransfer.getData('widget-config')
 		if (widgetConfig) {
-			this.editor.createWidget(e.offsetX, e.offsetY, JSON.parse(widgetConfig))
+			this.editor.createWidget(e.offsetX, e.offsetY, widgetConfig)
 		}
 	}
 

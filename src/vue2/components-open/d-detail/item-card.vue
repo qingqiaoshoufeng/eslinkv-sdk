@@ -2,13 +2,14 @@
 .widget-item-wrapper.pos-r
 	.fn-flex.flex-column.d-widget-list-card.pointer(
 		draggable="true",
-		@dragstart="dragstart($event)"
-	)
+		@dragstart="dragstart($event)",
+		@click="handleClick")
 		.d-widget-list-img.fn-flex(:style="{ backgroundImage: `url(${componentAvatar})` }")
 		h2.ellipsis(:title="componentTitle") {{ componentTitle }}
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import Editor from '@/core/Editor'
 
 @Component
 export default class ItemCard extends Vue {
@@ -19,6 +20,19 @@ export default class ItemCard extends Vue {
 	@Prop() componentVersion
 	@Prop() componentTitle
 	@Prop() market: boolean
+
+	editor = Editor.Instance()
+	handleClick(): void {
+		this.editor.screen.createWidget(0, 0, {
+			type: this.componentEnTitle,
+			config: this.componentConfig,
+			market: this.market,
+			componentVersion: this.componentVersion,
+			componentId: this.componentId,
+			startX: 0,
+			startY: 0,
+		})
+	}
 
 	/**
 	 * @description h5 原生拖拽事件
