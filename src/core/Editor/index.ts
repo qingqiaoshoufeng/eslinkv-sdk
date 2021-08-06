@@ -312,32 +312,6 @@ class Editor extends Agent {
 			this.screen.screenWidgets = { ...this.screen.screenWidgets }
 		}
 	}
-
-	findWidget (id: string, parent: any, path = []) {
-		for (const key in parent) {
-			if (id === parent[key].id) {
-				if (path.length) {
-					this._widgetCache[id] = path
-				}
-				return parent[key]
-			} else if (parent[key].children) {
-				if (this._widgetCache[id]) {
-					return this._resolveWidgetCache(id)
-				}
-				path.push(key)
-				return this.findWidget(id, parent[key].children, path)
-			}
-		}
-	}
-
-	_resolveWidgetCache (id) {
-		let path = this._widgetCache[id]
-		let res = this.screen.screenWidgets[path[0]]
-		for (let i = 1; i < path.length; i++) {
-			res = res.children[path[i]]
-		}
-		return res
-	}
 	
 	/**
 	 * @description 触发事件初始化

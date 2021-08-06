@@ -206,6 +206,10 @@ export default class Agent extends EditorBase {
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
 		return this.screen.updateWidgetConfig(id, localConfigValue, customConfig)
 	}
+	/* 查找组件 */
+	findWidget (id: string, parent: any, path = []) {
+		return this.screen.findWidget(id, parent, path)
+	}
 
 	/* ---------------------------------------------------Scene---------------------------------------------------*/
 	/* 场景数据 */

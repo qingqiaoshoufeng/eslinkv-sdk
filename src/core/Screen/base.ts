@@ -49,7 +49,6 @@ export default class Screen extends Factory<Screen> {
 	/* 大屏组件接口Headers */
 	screenHeaders: string
 	/* 更新大屏组件配置 */
-
 	screenFilter = {
 		enable: false, // 开启状态
 		grayscale: 0, // 灰度
@@ -59,38 +58,58 @@ export default class Screen extends Factory<Screen> {
 		saturate: 0, // 饱和度
 		hueRotate: 0, // 色相
 	}
+	/* 当前组件查找路径 */
+	_widgetPath = []
+	/* 当前组件缓存 */
+	_widgetCache = {}
+	
+	findWidget (id: string, parent: any, path = []) {
+		for (const key in parent) {
+			if (id === parent[key].id) {
+				if (path.length) {
+					this._widgetCache[id] = path
+				}
+				return parent[key]
+			} else if (parent[key].children) {
+				if (this._widgetCache[id]) {
+					return this._resolveWidgetCache(id)
+				}
+				path.push(key)
+				return this.findWidget(id, parent[key].children, path)
+			}
+		}
+	}
+
+	_resolveWidgetCache (id) {
+		let path = this._widgetCache[id]
+		let res = this.screenWidgets[path[0]]
+		for (let i = 1; i < path.length; i++) {
+			res = res.children[path[i]]
+		}
+		return res
+	}
+	
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
 		const mergedValue = localConfigValue
 			? configMerge(localConfigValue, commonConfigValue(localConfigValue.widgetType))
 			: commonConfigValue()
-		this.setWidget(id, this.screenWidgets, mergedValue, localConfigValue, customConfig)
-		// 过滤可用属性
-	}
-	private setWidget(id, obj, mergedValue, localConfigValue, customConfig = []): void {
-		for (const key in obj) {
-			if (obj[key]) {
-				if (id === obj[key].id) {
-					const inputConfig = Object.freeze(obj[key].config || {})
-					const res = configMerge(inputConfig, mergedValue)
-					res.widget.name = res.widget.name || '未知组件'
-					if (!obj[key].widgetType)
-						obj[key].widgetType = localConfigValue ? localConfigValue.widgetType || 'normal' : 'normal'
-					if (customConfig) {
-						customConfig.map(item => {
-							if (!item.prop.includes('config.config')) {
-								item.prop = `config.config.${item.prop}`
-							}
-						})
-						res.customConfig = [{ type: 'custom' }, ...customConfig]
-					}
-					obj[key].config = res
-				} else if (obj[key].children) {
-					if (Object.values(obj[key].children).length > 0)
-						this.setWidget(id, obj[key].children, mergedValue, localConfigValue, customConfig)
+		const target = this.findWidget(id, this.screenWidgets)
+		const inputConfig = Object.freeze(target.config || {})
+		const res = configMerge(inputConfig, mergedValue)
+		res.widget.name = res.widget.name || '未知组件'
+		if (!target.widgetType)
+			target.widgetType = localConfigValue ? localConfigValue.widgetType || 'normal' : 'normal'
+		if (customConfig) {
+			customConfig.map(item => {
+				if (!item.prop.includes('config.config')) {
+					item.prop = `config.config.${item.prop}`
 				}
-			}
+			})
+			res.customConfig = [{ type: 'custom' }, ...customConfig]
 		}
+		target.config = res
 	}
+	
 	changeLayoutMode(value: string): string {
 		let scaleX = 0,
 			scaleY = 1,
