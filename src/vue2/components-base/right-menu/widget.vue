@@ -75,11 +75,6 @@ export default class rightMenu extends Vue {
 		}).then(() => {
 			this.$Modal.info({
 				content: '收藏成功',
-				okText: '查看组件',
-				cancelText: '忽略',
-				onOk: () => {
-					this.$router.push('/collection/componentList')
-				},
 			})
 		})
 	}
