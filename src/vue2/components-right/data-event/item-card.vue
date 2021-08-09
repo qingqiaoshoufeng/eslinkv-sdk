@@ -14,7 +14,7 @@
 			placeholder="选择组件",
 			multiple,
 			filterable)
-			i-option(:value="k", :key="i", v-for="(k, i) in Object.keys(editor.screenWidgets)") {{ editor.screenWidgets[k].config.widget.name }}
+			i-option(:value="k", :key="i", v-for="(k, i) in Object.keys(editor.screenWidgets)") {{ editor.screen.findWidget(k, editor.screenWidgets).config.widget.name }}
 		i-select(
 			v-if="isComponentClass",
 			:style="{ marginBottom: '10px' }",
