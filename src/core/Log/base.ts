@@ -30,9 +30,7 @@ export default class Log {
 				)
 				break
 			case 'OLD_METHOD_WARN':
-				console.warn(
-					`\n错误代码    : ${this.code}\n错误组件id  : ${this.widget.id}\n错误内容    : ${this.errorMessage}`,
-				)
+				console.warn(`\n错误代码    : ${this.code}\n错误组件id  : 未知\n错误内容    : ${this.errorMessage}`)
 				break
 			case 'LOAD_COMPONENT_ERROR':
 				console.warn(`\n错误代码    : ${this.code}\n错误组件id  : 未知\n错误内容    : 组件初始化加载失败`)

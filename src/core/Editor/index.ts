@@ -326,14 +326,17 @@ class Editor extends Agent {
 	 */
 	eventTypesSetting(id: string, eventTypes: { key: string; label: string }[]) {
 		if (eventTypes && eventTypes.length) {
-			const obj = JSON.parse(JSON.stringify(this.screen.screenWidgets))
-			const target = this.findWidget(id, obj)
+			const target = this.findWidget(id, this.screen.screenWidgets)
 			target.eventTypes = eventTypes
-			if (!target.events) target.events = {}
+			const obj = {}
 			eventTypes.forEach(item => {
-				if (!target.events[item['key']]) target.events[item['key']] = []
+				if (!obj[item['key']]) obj[item['key']] = []
 			})
-			this.screen.screenWidgets = obj
+			if (!target.events) {
+				target.events = JSON.parse(JSON.stringify(obj))
+			} else {
+				target.events = JSON.parse(JSON.stringify({ ...target.events, ...obj }))
+			}
 		}
 	}
 

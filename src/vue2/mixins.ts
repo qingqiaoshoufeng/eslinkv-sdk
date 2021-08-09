@@ -57,9 +57,8 @@ export default {
 				if (!this.events[eventType]) {
 					this.editor.log.push(
 						new Log({
-							id: this.__widgetId__,
 							code: 'OLD_METHOD_WARN',
-							errorMessage: `检测到你使用旧API __handleClick__ 请及时更换新API __handleEvent__ \n\nhttps://eslink-web.yuque.com/books/share/55b0e7ab-4fac-41f5-9062-901636ef4792/phnay2`,
+							errorMessage: `${this.$parent.type} ${this.config.widget.componentVersion}检测到你使用旧API __handleClick__ 请及时更换新API __handleEvent__ \n\nhttps://eslink-web.yuque.com/books/share/55b0e7ab-4fac-41f5-9062-901636ef4792/phnay2`,
 						}),
 					)
 					this.__eventTypesSetting__([{ key: 'click', label: '点击事件' }])
