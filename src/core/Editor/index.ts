@@ -333,7 +333,7 @@ class Editor extends Agent {
 			eventTypes.forEach(item => {
 				if (!target.events[item['key']]) target.events[item['key']] = []
 			})
-			this.screen.screenWidgets[id] = obj[id]
+			this.screen.screenWidgets = obj
 		}
 	}
 

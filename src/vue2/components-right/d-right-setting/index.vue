@@ -25,7 +25,7 @@
 			v-if="editor.currentRightSettingIndex === index")
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import itemList from './item-list.vue'
 import { Icon, Input } from 'view-design'
 import ClickOutside from 'vue-click-outside'
@@ -44,16 +44,9 @@ export default class DRightSetting extends Vue {
 	editor: Editor = Editor.Instance()
 	title = ['基础', '数据', '交互', '自定义']
 	chooseList = []
-
-	close(): void {
-		this.editName = false
-	}
-
-	handleClick(index: number): void {
-		this.editor.selectRightSettingIndex(index)
-	}
-
-	mounted(): void {
+	
+	@Watch('editor.currentWidget.config.customConfig', { immediate: true })
+	customConfigChange(val) {
 		this.chooseList = [
 			{
 				key: [{ type: 'base' }],
@@ -65,9 +58,17 @@ export default class DRightSetting extends Vue {
 				key: [{ type: 'interactive' }],
 			},
 			{
-				key: this.editor.currentWidget.config.customConfig,
+				key: val || [],
 			},
 		]
+	}
+
+	close(): void {
+		this.editName = false
+	}
+
+	handleClick(index: number): void {
+		this.editor.selectRightSettingIndex(index)
 	}
 }
 </script>
