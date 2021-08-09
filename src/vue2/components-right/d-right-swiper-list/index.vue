@@ -6,7 +6,7 @@
 		.func-group-empty.fn-flex.flex-row(v-else)
 			span 暂无数据
 		template(v-for="(v, i) in list")
-			slot(:index="i", :activeIndex="index", v-if="i === index")
+			slot(:index="i", :activeIndex="index", :data="v" v-if="i === index")
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'

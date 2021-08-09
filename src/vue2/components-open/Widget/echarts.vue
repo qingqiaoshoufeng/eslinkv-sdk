@@ -15,7 +15,10 @@ export default class widgetNormal extends Vue {
 	}
 
 	created(): void {
-		;(this.$parent as any).__parseConfigValue__(this.value, this.customConfig)
+		;(this.$parent as any).__init__({
+			value: this.value,
+			customConfig: this.customConfig,
+		})
 	}
 }
 </script>

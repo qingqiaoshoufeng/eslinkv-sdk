@@ -25,7 +25,7 @@
 				i-option(:value="-1") 回收站
 		d-right-control(label="缩放比例")
 			i-input(v-model="scale", :style="{ width: '100px' }")
-	//d-right-echarts
+	d-right-echarts(v-if="editor.currentWidget.config.widgetType === 'echarts'")
 </template>
 <script lang="ts">
 import func from './func.mx'

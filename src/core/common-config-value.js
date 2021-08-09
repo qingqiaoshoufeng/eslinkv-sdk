@@ -66,7 +66,16 @@ const commonConfigValue = (type = 'normal') => {
 			borderWidth: 1,
 			show: false,
 		},
-		echartsSeries: [{ type: 'line' }],
+		echartsSeries: [{
+			type: 'line',
+			name: 'test',
+			seriesYKey: 'value',
+		}],
+		echartsTooltip: {
+			show: true,
+			triggerOn: 'mousemove|click',
+			trigger: 'item'
+		},
 		echartsYAxis: [
 			{
 				name: '萨达省',
@@ -114,8 +123,7 @@ const commonConfigValue = (type = 'normal') => {
 				offset: 5,
 			},
 		],
-		echartsXAnalysis: ['name'],
-		echartsYAnalysis: ['value'],
+		echartsXKey: 'name',
 	}
 	let obj = {}
 	switch (type) {

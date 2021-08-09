@@ -7,28 +7,29 @@ import { Component, Watch } from 'vue-property-decorator'
 import { widgetNormalMixin } from '@/vue2/index.js'
 import widgetEcharts from '@/vue2/components-open/Widget/echarts.vue'
 import { value, customConfig } from './index.component'
+import {mixins} from "vue-class-component";
 
 @Component({ components: { widgetEcharts } })
-export default class extends widgetNormalMixin {
+export default class extends mixins(widgetNormalMixin) {
 	value = value
 	customConfig = customConfig
 
 	setOption(data): void {
 		const grid = this.config.echartsGrid
-		const series = this.config.echartsSeries
-		this.config.echartsYAnalysis.forEach((key, index) => {
-			series[index].data = data.map(item => item[key])
-		})
 		const yAxis = this.config.echartsYAxis
 		const xAxis = this.config.echartsXAxis
-		this.config.echartsXAnalysis.forEach((key, index) => {
-			xAxis[index].data = data.map(item => item[key])
-		})
+		xAxis[0].data = data.map(item => item[this.config.echartsXKey])
 		this.instance.setOption({
 			grid,
-			series,
+			series: this.config.echartsSeries.map((v: any) => {
+				return {
+					...v,
+					data: data.map(item => item[v.seriesYKey])
+				}
+			}),
 			xAxis,
 			yAxis,
+			tooltip: this.config.echartsTooltip
 		})
 	}
 
