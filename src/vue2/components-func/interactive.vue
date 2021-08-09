@@ -28,7 +28,6 @@
 import func from '@/vue2/components-func/func.mx'
 import { Component } from 'vue-property-decorator'
 import DataEvent from '@/vue2/components-right/data-event/index.vue'
-import Widget from "@/core/Widget/base";
 
 @Component({
 	components: {
@@ -61,7 +60,7 @@ export default class FuncData extends func {
 
 	findWidgetEnable (arr: any[], parent: any): void {
 		for (const key in parent) {
-			if (parent[key].children) {
+			if (Object.keys(parent[key].children).length) {
 				this.findWidgetEnable(arr, parent[key].children)
 			} else {
 				if (parent[key].config.api.bind && parent[key].config.api.bind.enable) {

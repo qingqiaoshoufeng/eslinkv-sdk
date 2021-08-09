@@ -72,7 +72,7 @@ export default class Screen extends Factory<Screen> {
 		}
 		let res: any
 		for (const key in parent) {
-			if (parent[key].children) {
+			if (Object.keys(parent[key].children).length) {
 				if (this._widgetCache[id]) {
 					return this._resolveWidgetCache(id)
 				}
