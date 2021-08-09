@@ -7,7 +7,7 @@
 		item-card(@click="handleZIndexBottom")
 			i-icon(type="md-arrow-round-down")
 			span 置底
-	ul.list
+	ul.list(v-if="!isGroup")
 		item-card(@click="handleCollection")
 			i-icon(type="md-heart-outline")
 			span 收藏
