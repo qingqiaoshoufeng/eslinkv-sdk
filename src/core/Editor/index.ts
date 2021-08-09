@@ -165,6 +165,9 @@ class Editor extends Agent {
 		delete this.screen.screenWidgets[this.current.currentWidgetList[0]]
 		for (const key in item.children) {
 			this.screen.screenWidgets[key] = item.children[key]
+			if (this.screen._widgetCache[key]) {
+				delete this.screen._widgetCache[key]
+			}
 		}
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 	}

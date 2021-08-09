@@ -76,8 +76,7 @@ export default class Screen extends Factory<Screen> {
 				if (this._widgetCache[id]) {
 					return this._resolveWidgetCache(id)
 				}
-				path.push(key)
-				res = this.findWidget(id, parent[key].children, path)
+				res = this.findWidget(id, parent[key].children, [...path, key])
 				if (res) return res
 			}
 		}
