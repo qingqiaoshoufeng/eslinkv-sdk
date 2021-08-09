@@ -143,16 +143,6 @@ export default class FuncData extends func {
 		}
 	}
 
-	get relateList() {
-		const list = Object.values(this.editor.screenWidgets)
-			.filter((v: any) => v.config.api.bind.enable && v.scene === this.editor.currentSceneIndex)
-			.map((v: any) => {
-				const { id, name } = v.config.widget
-				return { id, name }
-			})
-		return list
-	}
-
 	updateApiSystem(value): void {
 		Object.assign(this.editor.currentWidget.config.api.system.params, value)
 		this.showDatabaseConfigModal = false
