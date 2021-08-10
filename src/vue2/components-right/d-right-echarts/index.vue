@@ -40,6 +40,21 @@
 					i-option(value="item") item
 					i-option(value="axis") axis
 					i-option(value="none") none
+		d-right-swiper-eye(
+			title="Y轴-左",
+			:enable="editor.current.currentWidget.config.echartsYAxis[0].show",
+			@open-click="editor.current.currentWidget.config.echartsYAxis[0].show = true",
+			@close-click="editor.current.currentWidget.config.echartsYAxis[0].show = false")
+			d-right-control(label="单位")
+				d-input(v-model="editor.current.currentWidget.config.echartsYAxis[0].title")
+		d-right-swiper-eye(
+			title="Y轴-右",
+			:enable="editor.current.currentWidget.config.echartsYAxis[1].show",
+			@open-click="editor.current.currentWidget.config.echartsYAxis[1].show = true",
+			@close-click="editor.current.currentWidget.config.echartsYAxis[1].show = false")
+			d-right-control(label="单位")
+				d-input(v-model="editor.current.currentWidget.config.echartsYAxis[1].title")
+				
 </template>
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
@@ -53,7 +68,7 @@ export default class DRightEcharts extends func {
 	}
 	
 	handleRemoveClick (index) {
-		this.editor.current.currentWidget.config.echartsSeries.push({})
+		this.editor.current.currentWidget.config.echartsSeries.splice(index, 1)
 	}
 }
 </script>

@@ -7,7 +7,6 @@ div
 			placeholder="类型")
 			i-option(value="bar") 柱形
 			i-option(value="line") 折线
-			i-option(value="area") 面积
 	d-right-control(label="显示名")
 		d-input(
 			v-model="echartsConfig.name",
@@ -16,6 +15,22 @@ div
 		d-input(
 			v-model="echartsConfig.seriesYKey",
 			:style="{ width: '100px' }")
+	d-right-control(label="对应Y轴")
+		i-select(
+			:style="{ marginBottom: '10px' }",
+			v-model="echartsConfig.yAxisIndex")
+			i-option(:value="0") 左侧
+			i-option(:value="1") 右侧
+	d-right-control(label="颜色")
+		i-color-picker(:alpha="true", v-model="echartsConfig.itemStyle.color")
+	d-right-control(label="线条样式" v-if="echartsConfig.type === 'line'")
+		i-select(
+			:style="{ marginBottom: '10px' }",
+			v-model="echartsConfig.lineStyle.type",
+			placeholder="类型")
+			i-option(value="solid") solid
+			i-option(value="dashed") dashed
+			i-option(value="dotted") dotted
 </template>
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
@@ -24,9 +39,6 @@ import dCode from '@/vue2/components-right/d-code/index.vue'
 
 @Component({ components: { dCode } })
 export default class FuncData extends func {
-	@Prop() activeIndex
 	@Prop() echartsConfig
-
-	
 }
 </script>

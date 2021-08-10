@@ -70,6 +70,13 @@ const commonConfigValue = (type = 'normal') => {
 			type: 'line',
 			name: 'test',
 			seriesYKey: 'value',
+			itemStyle: {
+				color: '#2e33a7'
+			},
+			lineStyle: {
+				type: 'solid',
+			},
+			yAxisIndex: 0
 		}],
 		echartsTooltip: {
 			show: true,
@@ -78,7 +85,35 @@ const commonConfigValue = (type = 'normal') => {
 		},
 		echartsYAxis: [
 			{
-				name: '萨达省',
+				show: true,
+				name: '万',
+				splitLine: {
+					show: true,
+					lineStyle: {
+						type: 'solid',
+						color: 'rgba(199, 209, 219, 0.2)',
+					},
+				},
+				type: 'value',
+				axisLabel: {
+					color: '#fff',
+					fontSize: 16,
+					lineHeight: 16,
+				},
+				axisLine: {
+					show: false,
+				},
+				axisTick: {
+					show: false,
+				},
+				nameTextStyle: {
+					color: '#fff',
+				},
+				offset: 5,
+			},
+			{
+				show: false,
+				name: '万',
 				splitLine: {
 					show: true,
 					lineStyle: {
