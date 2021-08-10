@@ -166,6 +166,7 @@ class Editor extends Agent {
 			{ width, height, widgetType, name, startX: 0, startY: 0 },
 			this.current.currentSceneIndex,
 		)
+		this.current.currentRightSettingIndex = 0
 		this.screen.screenWidgets = {
 			...this.screen.screenWidgets,
 			[widgetItem.id]: widgetItem,
