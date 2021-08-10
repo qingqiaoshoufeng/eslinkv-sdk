@@ -95,10 +95,10 @@ export default class rightMenu extends Vue {
 	}
 
 	hideWidget(): void {
-		const widget = this.editor.currentWidget.config.widget
-		widget.hide = !widget.hide
+		const id = this.editor.currentWidget.id
 		this.hideRightMenu()
 		this.handleUnActive()
+		this.editor.screen.screenWidgetsLays[id].hide = true
 	}
 
 	deleteWidget(): void {

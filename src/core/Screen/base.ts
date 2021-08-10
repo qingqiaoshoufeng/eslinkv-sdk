@@ -177,7 +177,7 @@ export default class Screen extends Factory<Screen> {
 		}
 		this.screenWidgetsLays = {
 			...this.screenWidgetsLays,
-			[widgetItem.id]: { scene: currentSceneIndex, id: widgetItem.id, zIndex: currentMaxZIndex },
+			[widgetItem.id]: { scene: currentSceneIndex, id: widgetItem.id, zIndex: currentMaxZIndex, hide: false },
 		}
 	}
 	/* 复制组件 */

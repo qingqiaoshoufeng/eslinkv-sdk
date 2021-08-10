@@ -74,7 +74,7 @@ export default class DEditor extends Vue {
 		const list = []
 		for (const key in this.editor.screen.screenWidgetsLays) {
 			const widget = this.editor.screen.screenWidgetsLays[key]
-			if (widget.scene === this.editor.current.currentSceneIndex || widget.scene === 0) {
+			if ((widget.scene === this.editor.current.currentSceneIndex || widget.scene === 0) && !widget.hide) {
 				list.push(widget)
 			}
 		}

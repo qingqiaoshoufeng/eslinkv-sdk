@@ -165,6 +165,7 @@ class Editor extends Agent {
 				id: item,
 				scene: this.current.currentSceneIndex,
 				zIndex: this.currentMaxZIndex,
+				hide: false,
 			}
 			delete this.screen.screenWidgetsLays[item]
 		})

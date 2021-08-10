@@ -2,14 +2,12 @@
 #screen(ref="canvas-wrapper", :style="editor.screen.screenStyle")
 	d-scene(:zIndex="1")
 		eslinkv-widget(v-for="item in sceneWidgets(0)", :id="item.id", :key="item.id", :children="item.children", readonly)
-			//:style="item.config.widget.hide ? 'display: none' : ''",
 		eslinkv-widget(
-			v-for="item in sceneWidgets(editor.current.currentSceneIndex)",
+			v-for="item in editor.current.currentSceneIndex === 0 ? [] : sceneWidgets(editor.current.currentSceneIndex)",
 			:id="item.id",
 			:key="item.id",
 			:children="item.children",
 			readonly)
-			//:style="item.config.widget.hide ? 'display: none' : ''",
 	d-scene(
 		v-for="(sceneId, index) in editor.current.currentCreateSceneList",
 		:key="sceneId",
@@ -21,7 +19,6 @@
 			:key="item.id",
 			:children="item.children",
 			readonly)
-		//:style="item.config.widget.hide ? 'display: none' : ''",
 	slot(v-if="editor.marketComponentLoading", name="loading")
 		load-mask(:show="true") 加载中...
 </template>
@@ -45,7 +42,8 @@ export default class DView extends Vue {
 	currentLayoutMode = getQueryString('layoutMode')
 
 	get sceneWidgets() {
-		return scene => Object.values(this.editor.screen.screenWidgetsLays).filter(item => item.scene === scene)
+		return scene =>
+			Object.values(this.editor.screen.screenWidgetsLays).filter(item => item.scene === scene && !item.hide)
 	}
 
 	beforeDestroy(): void {

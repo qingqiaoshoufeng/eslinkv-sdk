@@ -7,7 +7,7 @@ li.pointer.pos-r.d-left-scene-list-li(
 			h2 {{ editor.screen.screenWidgets[item.id].config.widget.name }}
 		.d-left-scene-right
 			i-icon(
-				v-if="editor.screen.screenWidgets[item.id].config.widget.hide",
+				v-if="editor.screen.screenWidgetsLays[item.id].hide",
 				type="md-eye-off",
 				title="显示",
 				@click="handleTaggerHide(item.id)",
@@ -51,8 +51,7 @@ export default class DLeftSceneItem extends Vue {
 	}
 
 	handleTaggerHide(id: string): void {
-		this.editor.screen.screenWidgets[id].config.widget.hide =
-			!this.editor.screen.screenWidgets[id].config.widget.hide
+		this.editor.screen.screenWidgetsLays[id].hide = !this.editor.screen.screenWidgetsLays[id].hide
 	}
 }
 </script>
