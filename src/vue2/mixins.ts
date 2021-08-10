@@ -87,7 +87,7 @@ export default {
 						}
 					}
 					if (item.eventClass === 'component') {
-						const coms = Object.values(this.editor.screenWidgets).filter((v: any) =>
+						const coms = Object.values(this.editor.screen.screenWidgets).filter((v: any) =>
 							item.ids.includes(v.id),
 						)
 						let data = usePath('', val, errorMessage => {
@@ -137,7 +137,7 @@ export default {
 		emitComponentUpdate(data): void {
 			if (this.config) {
 				this.config.api.bind.refIds.forEach((ref: any) => {
-					const widget = this.editor.screenWidgets[ref]
+					const widget = this.editor.screen.screenWidgets[ref]
 					if (!widget) return
 					let params = widget.config.api.params
 					if (params) {

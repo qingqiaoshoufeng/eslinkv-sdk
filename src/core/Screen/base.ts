@@ -12,7 +12,9 @@ export default class Screen extends Factory<Screen> {
 	/* 大屏名 */
 	screenName = '未命名'
 	/* 大屏组件配置 */
-	screenWidgets: any = {}
+	screenWidgets: { [key: string]: Widget } = {}
+	/* 大屏组件嵌套规则 */
+	screenWidgetsLays = {}
 	/* 大屏类型 CUSTOM:大屏 TEMPLATE:模版 */
 	screenType = 'CUSTOM'
 	/* 已废弃 */
@@ -58,44 +60,12 @@ export default class Screen extends Factory<Screen> {
 		saturate: 0, // 饱和度
 		hueRotate: 0, // 色相
 	}
-	/* 当前组件查找路径 */
-	_widgetPath = []
-	/* 当前组件缓存 */
-	_widgetCache = {}
-
-	findWidget(id: string, parent: any, path = []): Widget {
-		if (parent[id]) {
-			if (path.length) {
-				this._widgetCache[id] = path
-			}
-			return parent[id]
-		}
-		let res: any
-		for (const key in parent) {
-			if (Object.keys(parent[key].children).length) {
-				if (this._widgetCache[id]) {
-					return this._resolveWidgetCache(id)
-				}
-				res = this.findWidget(id, parent[key].children, [...path, key])
-				if (res) return res
-			}
-		}
-	}
-
-	_resolveWidgetCache(id: string): Widget {
-		const path = this._widgetCache[id]
-		let res = this.screenWidgets[path[0]]
-		for (let i = 1; i < path.length; i++) {
-			res = res.children[path[i]]
-		}
-		return res
-	}
 
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
 		const mergedValue = localConfigValue
 			? configMerge(localConfigValue, commonConfigValue(localConfigValue.widgetType))
 			: commonConfigValue()
-		const target = this.findWidget(id, this.screenWidgets)
+		const target = this.screenWidgets[id]
 		const inputConfig = Object.freeze(target.config || {})
 		const res = configMerge(inputConfig, mergedValue)
 		res.widget.name = res.widget.name || '未知组件'
@@ -205,11 +175,10 @@ export default class Screen extends Factory<Screen> {
 			...this.screenWidgets,
 			[widgetItem.id]: widgetItem,
 		}
-	}
-	/* 删除组件 */
-	deleteWidget(id: string): void {
-		this.screenWidgets[id].scene = -1
-		this.screenWidgets = { ...this.screenWidgets }
+		this.screenWidgetsLays = {
+			...this.screenWidgetsLays,
+			[widgetItem.id]: { scene: currentSceneIndex, id: widgetItem.id, zIndex: currentMaxZIndex },
+		}
 	}
 	/* 复制组件 */
 	copyWidget(copyId: string): void {

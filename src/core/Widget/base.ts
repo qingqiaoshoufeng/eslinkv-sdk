@@ -7,7 +7,6 @@ export default class Widget {
 	widgetType = 'normal'
 	scene: number | string
 	market: boolean
-	children = {}
 	settingDataHandle = []
 	settingData = {}
 	eventTypes = []
@@ -32,7 +31,6 @@ export default class Widget {
 			// settingData = {},
 			// eventTypes = [],
 			// events = {},
-			children,
 			widgetType,
 			type,
 			name,
@@ -55,7 +53,6 @@ export default class Widget {
 		const { layout = { size: {}, position: {} }, config = {}, widget = {}, api } = inputConfig || {}
 		if (!layout.size) layout.size = {}
 		if (!layout.position) layout.position = {}
-		if (children) this.children = children
 		if (widgetType) this.widgetType = widgetType
 		if (name) widget.name = name
 		if (width) layout.size.width = width

@@ -4,9 +4,11 @@
 		@click.stop="handleClick($event, child)",
 		:class="{ active: editor.currentWidgetList[0] === child.id }")
 		.d-left-scene-left
-			h2 {{ child.config.widget.name }}
+			h2 {{ editor.screen.screenWidgets[child.id].config.widget.name }}
 		.d-left-scene-right
-	scene-group(:childList="child.children", v-if="child.children")
+	scene-group(
+		:childList="editor.screen.screenWidgets[child.id].children",
+		v-if="editor.screen.screenWidgets[child.id].children")
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
@@ -19,10 +21,10 @@ export default class widgetGroupItem extends Vue {
 
 	handleClick(e, item): void {
 		if (e.shiftKey) {
-			this.editor.selectWidget(item)
+			this.editor.selectWidget(this.editor.screen.screenWidgets[item.id])
 		} else {
 			this.editor.unSelectWidget()
-			this.editor.selectWidget(item)
+			this.editor.selectWidget(this.editor.screen.screenWidgets[item.id])
 		}
 	}
 }

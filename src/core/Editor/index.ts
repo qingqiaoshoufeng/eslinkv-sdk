@@ -110,30 +110,13 @@ class Editor extends Agent {
 	/* 大屏场景组件关联 */
 	get sceneWidgets() {
 		const res = { 0: {} }
-		for (const widgetId in this.screenWidgets) {
-			if (this.screenWidgets[widgetId]) {
-				if (!res[this.screenWidgets[widgetId].scene]) res[this.screenWidgets[widgetId].scene] = {}
-				res[this.screenWidgets[widgetId].scene][widgetId] = this.screenWidgets[widgetId]
+		for (const widgetId in this.screen.screenWidgets) {
+			if (this.screen.screenWidgets[widgetId]) {
+				if (!res[this.screen.screenWidgets[widgetId].scene]) res[this.screen.screenWidgets[widgetId].scene] = {}
+				res[this.screen.screenWidgets[widgetId].scene][widgetId] = this.screen.screenWidgets[widgetId]
 			}
 		}
 		return res
-	}
-	get showWidgets() {
-		if (this.current.currentSceneIndex === 0) {
-			return {
-				...this.sceneWidgets[0],
-			}
-		} else {
-			let obj = {}
-			this.current.currentCreateSceneList.map(v => {
-				obj = { ...obj, ...this.sceneWidgets[v] }
-			})
-			return {
-				...this.sceneWidgets[0],
-				...this.sceneWidgets[this.current.currentSceneIndex],
-				...obj,
-			}
-		}
 	}
 	/* 刷新当前组件 */
 	refreshWidget(): void {
@@ -161,26 +144,16 @@ class Editor extends Agent {
 	}
 	/* 给组件取消打组 */
 	relieveWidgetGroup(): void {
-		const item = this.screen.screenWidgets[this.current.currentWidgetList[0]]
-		delete this.screen.screenWidgets[this.current.currentWidgetList[0]]
-		for (const key in item.children) {
-			this.screen.screenWidgets[key] = item.children[key]
-			if (this.screen._widgetCache[key]) {
-				delete this.screen._widgetCache[key]
-			}
-		}
+		const index = this.current.currentWidgetList[0]
+		const oldItem = this.screen.screenWidgetsLays[index]
+		delete this.screen.screenWidgetsLays[index]
+		delete this.screen.screenWidgets[index]
+		this.screen.screenWidgetsLays = { ...this.screen.screenWidgetsLays, ...oldItem.children }
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
+		this.current.unSelectWidget()
 	}
 	/* 给组件打组 */
 	createWidgetGroup(): void {
-		let children = {}
-		this.current.currentWidgetList.map(item => {
-			children = {
-				...children,
-				[item]: this.screen.screenWidgets[item],
-			}
-			delete this.screen.screenWidgets[item]
-		})
 		const offsetX = this.current.currentWidgetListConfig.left
 		const offsetY = this.current.currentWidgetListConfig.top
 		const width = this.current.currentWidgetListConfig.width
@@ -190,13 +163,23 @@ class Editor extends Agent {
 		const widgetItem = new Widget(
 			offsetX,
 			offsetY,
-			{ width, height, children, widgetType, name, startX: 0, startY: 0 },
+			{ width, height, widgetType, name, startX: 0, startY: 0 },
 			this.current.currentSceneIndex,
 		)
 		this.screen.screenWidgets = {
 			...this.screen.screenWidgets,
 			[widgetItem.id]: widgetItem,
 		}
+		const newItem = { children: {}, scene: this.current.currentSceneIndex, id: widgetItem.id }
+		this.current.currentWidgetList.forEach(item => {
+			newItem.children[item] = {
+				id: item,
+				scene: this.current.currentSceneIndex,
+				zIndex: this.currentMaxZIndex,
+			}
+			delete this.screen.screenWidgetsLays[item]
+		})
+		this.screen.screenWidgetsLays = { ...this.screen.screenWidgetsLays, [widgetItem.id]: newItem }
 		this.current.unSelectWidget()
 		this.current.selectWidget(widgetItem)
 	}
@@ -204,17 +187,24 @@ class Editor extends Agent {
 	deleteWidgets(): void {
 		this.currentWidgetList.map(item => {
 			this.screen.screenWidgets[item.id].scene = -1
+			this.screen.screenWidgetsLays[item.id].scene = -1
 		})
 		this.current.unSelectWidget()
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
 	}
 	/* 删除组件 */
 	deleteWidget(id: string): void {
+		if (!id) return
 		if (this.current.currentSceneIndex === -1) {
 			delete this.screen.screenWidgets[id]
+			delete this.screen.screenWidgetsLays[id]
 			this.screen.screenWidgets = { ...this.screen.screenWidgets }
+			this.screen.screenWidgetsLays = { ...this.screen.screenWidgetsLays }
 		} else {
-			if (id) this.screen.deleteWidget(id)
+			this.screen.screenWidgets[id].scene = -1
+			this.screen.screenWidgetsLays[id].scene = -1
+			this.screen.screenWidgets = { ...this.screen.screenWidgets }
+			this.screen.screenWidgetsLays = { ...this.screen.screenWidgetsLays }
 		}
 		if (id === this.currentWidgetList[0]) this.current.unSelectWidget()
 	}
@@ -260,10 +250,10 @@ class Editor extends Agent {
 	/* 获取大屏组件配置——根据zIndex排序 */
 	get sortByZIndexWidgetsList(): any {
 		const list = []
-		for (const key in this.screen.screenWidgets) {
-			const item = this.screen.screenWidgets[key]
-			if (item.scene === this.current.currentSceneIndex) {
-				list.push(item)
+		for (const key in this.screen.screenWidgetsLays) {
+			const widget = this.screen.screenWidgets[this.screen.screenWidgetsLays[key].id]
+			if (this.screen.screenWidgetsLays[key].scene === this.current.currentSceneIndex) {
+				list.push(widget)
 			}
 		}
 		list.sort((a, b) => {
@@ -303,7 +293,7 @@ class Editor extends Agent {
 	 */
 	setCustomEventConfig(id: string, val): void {
 		if (val && val.length) {
-			const target = this.findWidget(id, this.screen.screenWidgets)
+			const target = this.screen.screenWidgets[id]
 			target.customEventsConfig = val
 		}
 	}
@@ -312,7 +302,7 @@ class Editor extends Agent {
 	 */
 	dataSetting(id: string, list, data): void {
 		if (list && list.length) {
-			const target = this.findWidget(id, this.screen.screenWidgets)
+			const target = this.screen.screenWidgets[id]
 			if (list.length) target.settingDataHandle = list
 			if (target.settingData) {
 				if (data && Object.keys(target.settingData).length <= 0) target.settingData = data
@@ -326,7 +316,7 @@ class Editor extends Agent {
 	 */
 	eventTypesSetting(id: string, eventTypes: { key: string; label: string }[]) {
 		if (eventTypes && eventTypes.length) {
-			const target = this.findWidget(id, this.screen.screenWidgets)
+			const target = this.screen.screenWidgets[id]
 			target.eventTypes = eventTypes
 			const obj = {}
 			eventTypes.forEach(item => {
@@ -341,7 +331,7 @@ class Editor extends Agent {
 	}
 
 	request(method: Method, url: string, params: any, id): void {
-		const target = this.findWidget(id, this.screen.screenWidgets)
+		const target = this.screen.screenWidgets[id]
 		const path = target.config.api.path
 		const process = target.config.api.process
 		const loopTime = target.config.api.autoFetch.enable ? target.config.api.autoFetch.duration : 0

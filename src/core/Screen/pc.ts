@@ -20,6 +20,7 @@ export default class ScreenPc extends ScreenBase {
 	// }
 	clear(): void {
 		this.screenWidgets = {}
+		this.screenWidgetsLays = {}
 		this.screenType = 'CUSTOM'
 		this.screenLayoutMode = 'full-size'
 		this.screenName = '未命名'
@@ -58,6 +59,7 @@ export default class ScreenPc extends ScreenBase {
 			this.screenFilter = res.screenFilter
 		}
 		this.screenAvatar = res.screenAvatar
+		this.screenWidgetsLays = res.screenWidgetsLays
 		this.screenPublish = res.screenPublish
 		this.screenType = res.screenType || 'CUSTOM'
 		this.screenVersion = res.screenVersion
@@ -78,6 +80,7 @@ export default class ScreenPc extends ScreenBase {
 		for (const key in screenWidgets) {
 			if (screenWidgets[key].market) {
 				this.marketComponents.push({
+					id: key,
 					type: screenWidgets[key].type,
 					version: screenWidgets[key].config.widget.componentVersion,
 				})

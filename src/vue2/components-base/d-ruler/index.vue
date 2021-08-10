@@ -101,7 +101,7 @@ export default class DRuler extends Vue {
 			const maxPointerX = Math.max(this.startPointerX, endPointerX)
 			const maxPointerY = Math.max(this.startPointerY, endPointerY)
 			this.editor.unSelectWidgetList()
-			Object.values(this.editor.screenWidgets).forEach((v: Widget) => {
+			Object.values(this.editor.screen.screenWidgets).forEach((v: Widget) => {
 				// 只能框选当前场景下的组件
 				if (v.scene === this.editor.currentSceneIndex) {
 					const widgetStartX = Number(v.config.layout.position.left)

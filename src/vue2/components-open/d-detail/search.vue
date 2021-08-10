@@ -42,12 +42,12 @@ export default class DSearch extends Vue {
 			return
 		}
 		let arr = []
-		for (const key in this.editor.screenWidgets) {
+		for (const key in this.editor.screen.screenWidgets) {
 			if (
-				this.editor.screenWidgets[key].config.widget.name.includes(val) &&
-				this.editor.screenWidgets[key].scene !== -1
+				this.editor.screen.screenWidgets[key].config.widget.name.includes(val) &&
+				this.editor.screen.screenWidgets[key].scene !== -1
 			) {
-				arr.push(this.editor.screenWidgets[key])
+				arr.push(this.editor.screen.screenWidgets[key])
 			}
 		}
 		this.searchResult = arr

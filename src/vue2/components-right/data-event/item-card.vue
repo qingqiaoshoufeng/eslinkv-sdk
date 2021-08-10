@@ -14,7 +14,7 @@
 			placeholder="选择组件",
 			multiple,
 			filterable)
-			i-option(:value="k", :key="i", v-for="(k, i) in Object.keys(editor.screenWidgets)") {{ editor.screen.findWidget(k, editor.screenWidgets).config.widget.name }}
+			i-option(:value="k", :key="i", v-for="(k, i) in Object.keys(editor.screen.screenWidgets)") {{ editor.screen.screenWidgets[k].config.widget.name }}
 		i-select(
 			v-if="isComponentClass",
 			:style="{ marginBottom: '10px' }",
@@ -85,8 +85,7 @@ export default class FuncData extends func {
 	get customEventsConfig() {
 		const ids = this.editor.currentWidget.events[this.eventType][this.activeIndex].ids
 		if (ids.length !== 1) return []
-		const target = this.editor.screen.findWidget(ids[0], this.editor.screen.screenWidgets)
-		return target.customEventsConfig
+		return this.editor.screen.screenWidgets[ids[0]].customEventsConfig
 	}
 }
 </script>

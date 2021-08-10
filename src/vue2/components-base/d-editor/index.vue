@@ -11,9 +11,9 @@
 		#screen.pos-r(:style="canvasStyle", @drop="createWidget", @click.stop, @dragover.prevent)
 			// 小工具清单
 			item-card(
-				:item="item",
+				:id="item.id",
 				:key="item.id",
-				v-for="item in editor.showWidgets",
+				v-for="item in showWidgets",
 				:getRefLineParams="getRefLineParams",
 				:ref="item.id")
 			dr-more(v-show="editor.currentWidgetList&&editor.currentWidgetList.length>1")
@@ -70,7 +70,16 @@ export default class DEditor extends Vue {
 		}
 		return {}
 	}
-
+	get showWidgets() {
+		const list = []
+		for (const key in this.editor.screen.screenWidgetsLays) {
+			const widget = this.editor.screen.screenWidgetsLays[key]
+			if (widget.scene === this.editor.current.currentSceneIndex || widget.scene === 0) {
+				list.push(widget)
+			}
+		}
+		return list
+	}
 	createWidget(e: any): void {
 		const widgetConfig = e.dataTransfer.getData('widget-config')
 		if (widgetConfig) {

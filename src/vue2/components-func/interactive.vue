@@ -51,26 +51,13 @@ export default class FuncData extends func {
 		{ label: '从下至上滑动', value: 'slideInUp' },
 	]
 	get relateList() {
-		const list = Object.values(this.editor.screenWidgets)
-			.filter((v: any) => v.scene === this.editor.currentSceneIndex)
-		const res = []
-		this.findWidgetEnable(res, list)
-		return res
-	}
-
-	findWidgetEnable (arr: any[], parent: any): void {
-		for (const key in parent) {
-			if (Object.keys(parent[key].children).length) {
-				this.findWidgetEnable(arr, parent[key].children)
-			} else {
-				if (parent[key].config.api.bind && parent[key].config.api.bind.enable) {
-					arr.push({
-						id: parent[key].config.widget.id,
-						name: parent[key].config.widget.name
-					})
-				}
-			}
-		}
+		const list = Object.values(this.editor.screen.screenWidgets)
+			.filter((v: any) => v.config.api.bind.enable && v.scene === this.editor.currentSceneIndex)
+			.map((v: any) => {
+				const { id, name } = v.config.widget
+				return { id, name }
+			})
+		return list
 	}
 }
 </script>

@@ -3,8 +3,8 @@ component.widget-part.animate__animated(
 	:style="{ animationDuration, animationDelay }",
 	:is="currentComponent",
 	:class="animationClass",
-	:id="config.widget && config.widget.id",
-	v-bind="{ events, config, readonly, settingData, animation, ...$attrs }",
+	:id="id",
+	v-bind="{ events: item.events, config: item.config, readonly: item.readonly, settingData: item.settingData, animation: item.animation, ...$attrs }",
 	v-on="$listeners")
 	slot
 </template>
@@ -17,16 +17,11 @@ const prefix1 = 'market-'
 const prefix2 = 'eslinkv-'
 @Component
 export default class DWidget extends Vue {
-	@Prop({ default: 'normal' }) widgetType
-	@Prop({ default: false }) market
-	@Prop() type
-	@Prop() config
-	@Prop() animation
-	@Prop() events
-	@Prop() eventTypes
-	@Prop() settingData
-	@Prop({ default: false }) readonly
+	@Prop() id
 
+	get item() {
+		return this.editor.screen.screenWidgets[this.id]
+	}
 	componentVersion = ''
 	ready = false
 	animationClass = null
@@ -36,20 +31,20 @@ export default class DWidget extends Vue {
 
 	get currentComponent(): string | null {
 		if (this.ready) {
-			if (this.market && this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]) {
-				return `${prefix1}${this.type}-${this.componentVersion}`
+			if (this.item.market && this.editor.widgetLoaded[`${this.item.type}${this.componentVersion}`]) {
+				return `${prefix1}${this.item.type}-${this.componentVersion}`
 			}
-			return `${prefix2}${this.type}`
+			return `${prefix2}${this.item.type}`
 		}
 		return null
 	}
 	setAnimation(): void {
-		if (!this.animation) return
-		if (!this.animation.transitionEnable) {
+		if (!this.item.animation) return
+		if (!this.item.animation.transitionEnable) {
 			this.removeAnimation()
 			return
 		}
-		const { duration, enter, delay } = this.animation
+		const { duration, enter, delay } = this.item.animation
 		this.animationDuration = `${duration / 1000}s`
 		this.animationDelay = `${delay / 1000}s`
 		enter ? (this.animationClass = `animate__${enter}`) : void 0
@@ -58,44 +53,44 @@ export default class DWidget extends Vue {
 		this.animationClass = null
 	}
 	loadMarket(): void {
-		this.componentVersion = this.config.widget.componentVersion
-		if (this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]) {
+		this.componentVersion = this.item.config.widget.componentVersion
+		if (this.editor.widgetLoaded[`${this.item.type}${this.componentVersion}`]) {
 			this.ready = true
 		} else {
 			use({
-				componentEnTitle: this.type,
-				componentVersion: this.config.widget.componentVersion,
+				componentEnTitle: this.item.type,
+				componentVersion: this.item.config.widget.componentVersion,
 			})
 				.then(res => {
 					const script = document.createElement('script')
 					script.onload = () => {
 						this.ready = true
-						this.editor.updateWidgetLoaded(`${this.type}${this.componentVersion}`)
+						this.editor.updateWidgetLoaded(`${this.item.type}${this.componentVersion}`)
 						if (res.isCollection) {
-							res.componentConfig.widget.id = this.config.widget.id
-							this.editor.screenWidgets[this.config.widget.id].config = res.componentConfig
+							res.componentConfig.widget.id = this.item.config.widget.id
+							this.editor.screen.screenWidgets[this.item.config.widget.id].config = res.componentConfig
 						}
 					}
 					if (res) {
 						script.src = res.componentJsUrl
 						document.head.appendChild(script)
 					} else {
-						console.error(`${this.type}${this.componentVersion}加载组件失败`)
+						console.error(`${this.item.type}${this.componentVersion}加载组件失败`)
 					}
 				})
 				.catch(() => {
-					console.error(`${this.type}${this.componentVersion}加载组件失败`)
+					console.error(`${this.item.type}${this.componentVersion}加载组件失败`)
 				})
 		}
 	}
-	@Watch('config.widget.componentVersion', { deep: true })
+	@Watch('item.config.widget.componentVersion', { deep: true })
 	onComponentVersionChange(): void {
-		if (this.market) {
+		if (this.item.market) {
 			this.ready = false
 			this.loadMarket()
 		}
 	}
-	@Watch('animation.transitionEnable', { deep: true })
+	@Watch('item.animation.transitionEnable', { deep: true })
 	onAnimationEnabledChange(value: boolean): void {
 		value && this.setAnimation()
 	}
@@ -104,13 +99,13 @@ export default class DWidget extends Vue {
 		this.setAnimation()
 	}
 	mounted(): void {
-		if (this.market) {
+		if (this.item.market) {
 			this.loadMarket()
 		} else {
-			if (this.editor.widgetLoaded[`${this.type}${this.componentVersion}`]) {
+			if (this.editor.widgetLoaded[`${this.item.type}${this.componentVersion}`]) {
 				this.ready = true
 			} else {
-				Vue.component(`${prefix2}${this.type}`, this.editor.local.components[this.type])
+				Vue.component(`${prefix2}${this.item.type}`, this.editor.local.components[this.item.type])
 				this.ready = true
 			}
 		}

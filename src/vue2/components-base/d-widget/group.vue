@@ -10,16 +10,17 @@ import Editor from '@/core/Editor'
 
 @Component
 export default class DWidgetGroup extends Vue {
-	@Prop() config
+	@Prop() id
 	@Prop() children
-	@Prop() animation
 	animationClass = null
 	animationDuration = `.6s`
 	animationDelay = `0s`
 	editor: Editor = Editor.Instance()
-
+	get item() {
+		return this.editor.screen.screenWidgets[this.id]
+	}
 	get styles() {
-		const { layout } = this.config
+		const { layout } = this.item.config
 		return {
 			width: `${layout.size.width}px`,
 			height: `${layout.size.height}px`,
@@ -31,19 +32,19 @@ export default class DWidgetGroup extends Vue {
 	}
 
 	get stylesR() {
-		const { layout } = this.config
+		const { layout } = this.item.config
 		return {
 			left: `${-layout.position.left}px`,
 			top: `${-layout.position.top}px`,
 		}
 	}
 	setAnimation(): void {
-		if (!this.animation) return
-		if (!this.animation.transitionEnable) {
+		if (!this.item.animation) return
+		if (!this.item.animation.transitionEnable) {
 			this.removeAnimation()
 			return
 		}
-		const { duration, enter, delay } = this.animation
+		const { duration, enter, delay } = this.item.animation
 		this.animationDuration = `${duration / 1000}s`
 		this.animationDelay = `${delay / 1000}s`
 		enter ? (this.animationClass = `animate__${enter}`) : void 0
@@ -56,7 +57,7 @@ export default class DWidgetGroup extends Vue {
 	}
 
 	parseConfigValue(): void {
-		this.editor.updateWidgetConfig(this.config.widget.id, this.config)
+		this.editor.updateWidgetConfig(this.item.config.widget.id, this.item.config)
 	}
 
 	created(): void {

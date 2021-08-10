@@ -130,9 +130,6 @@ export default class Agent extends EditorBase {
 	get screenType(): any {
 		return this.screen.screenType
 	}
-	get screenWidgets(): any {
-		return this.screen.screenWidgets
-	}
 	/* 大屏名 */
 	get name(): string {
 		return this.screen.screenName
@@ -205,10 +202,6 @@ export default class Agent extends EditorBase {
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
 		return this.screen.updateWidgetConfig(id, localConfigValue, customConfig)
-	}
-	/* 查找组件 */
-	findWidget(id: string, parent: any, path = []) {
-		return this.screen.findWidget(id, parent, path)
 	}
 
 	/* ---------------------------------------------------Scene---------------------------------------------------*/

@@ -4,20 +4,20 @@ li.pointer.pos-r.d-left-scene-list-li(
 	@click.stop="handleClick($event, item)")
 	.parent.fn-flex
 		.d-left-scene-left
-			h2 {{ item.config.widget.name }}
+			h2 {{ editor.screen.screenWidgets[item.id].config.widget.name }}
 		.d-left-scene-right
 			i-icon(
-				v-if="item.config.widget.hide",
+				v-if="editor.screen.screenWidgets[item.id].config.widget.hide",
 				type="md-eye-off",
 				title="显示",
 				@click="handleTaggerHide(item.id)",
 				@click.stop)
 			i-icon(
 				style="margin-left: 10px",
-				v-if="item.config.widget.locked",
+				v-if="editor.screen.screenWidgets[item.id].config.widget.locked",
 				type="md-unlock",
 				title="解锁",
-				@click="handleUnLock(item.id)",
+				@click="handleUnLock(editor.screen.screenWidgets[item.id].id)",
 				@click.stop)
 	scene-group(:childList="item.children")
 </template>
@@ -39,19 +39,20 @@ export default class DLeftSceneItem extends Vue {
 
 	handleClick(e, item): void {
 		if (e.shiftKey) {
-			this.editor.selectWidget(item)
+			this.editor.selectWidget(this.editor.screen.screenWidgets[item.id])
 		} else {
 			this.editor.unSelectWidget()
-			this.editor.selectWidget(item)
+			this.editor.selectWidget(this.editor.screen.screenWidgets[item.id])
 		}
 	}
 
 	handleUnLock(id: string): void {
-		this.editor.screenWidgets[id].config.widget.locked = false
+		this.editor.screen.screenWidgets[id].config.widget.locked = false
 	}
 
 	handleTaggerHide(id: string): void {
-		this.editor.screenWidgets[id].config.widget.hide = !this.editor.screenWidgets[id].config.widget.hide
+		this.editor.screen.screenWidgets[id].config.widget.hide =
+			!this.editor.screen.screenWidgets[id].config.widget.hide
 	}
 }
 </script>

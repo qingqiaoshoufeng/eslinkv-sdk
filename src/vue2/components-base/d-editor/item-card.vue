@@ -1,13 +1,13 @@
 ﻿<template lang="pug">
 dr(
-	:key="item.id",
-	:ref="`widget_${item.id}`",
-	:id="item.id",
+	:key="id",
+	:ref="`widget_${id}`",
+	:id="id",
 	:scale-ratio="editor.zoom",
 	:draggable="widgetEditable(item)",
 	:resizable="widgetEditable(item)",
 	:scale="item.config.layout.scale",
-	:active="editor.currentWidgetList.includes(item.id) && widgetEditable(item)",
+	:active="editor.currentWidgetList.includes(id) && widgetEditable(item)",
 	:w="item.config.layout.size.width",
 	:h="item.config.layout.size.height",
 	:x="item.config.layout.position.left",
@@ -15,7 +15,7 @@ dr(
 	:z="item.config.layout.zIndex",
 	:snap="editor.current.autoAlignGuide",
 	:item="item",
-	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${item.id}`]",
+	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${id}`]",
 	:snap-to-target="['.d-editor-line', '.dr-unactive', '.d-ruler-guide-x', '.d-ruler-guide-y']",
 	@resizestop="onResizeStop",
 	@refLineParams="params => getRefLineParams(params, item)",
@@ -23,6 +23,7 @@ dr(
 	@on-click="handleClick($event, item)",
 	@contextmenu.native.stop="showRightMenu($event, item)")
 	eslinkv-widget(
+		:id="id",
 		:widgetType="item.widgetType",
 		:type="item.type",
 		:events="item.events",
@@ -30,8 +31,7 @@ dr(
 		:eventTypes="item.eventTypes",
 		:settingData="item.settingData",
 		:config="item.config",
-		:children="item.children",
-		:market="item.market")
+		:children="editor.screen.screenWidgetsLays[id].children",)
 </template>
 <script lang="ts">
 import dr from '@/vue2/components-base/d-dr/index.vue'
@@ -47,8 +47,12 @@ import Editor from '@/core/Editor'
 export default class ItemCard extends Vue {
 	editor: Editor = Editor.Instance()
 
-	@Prop() item
+	@Prop() id
 	@Prop() getRefLineParams
+
+	get item() {
+		return this.editor.screen.screenWidgets[this.id]
+	}
 
 	get style() {
 		return {
