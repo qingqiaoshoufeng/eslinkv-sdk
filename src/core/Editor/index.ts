@@ -1,4 +1,4 @@
-import Ruler from '@/core/ui/Ruler'
+﻿import Ruler from '@/core/ui/Ruler'
 import { uuid } from '@/core/utils'
 import { useList } from '@/vue2/api/marketComponent.api'
 import Agent from '@/core/Editor/agent'
@@ -83,8 +83,19 @@ class Editor extends Agent {
 	}
 	initScreenWidgetsLays(screen) {
 		if (!screen.screenWidgetsLays) {
-			// 兼容处理
-			// {[id]: {scene :0,zIndex: 10,hide: false} }
+			const obj = {}
+			for (const key in screen.screenWidgets) {
+				obj[key] = {
+					scene: screen.screenWidgets[key].scene,
+					hide: screen.screenWidgets[key].config.widget.hide,
+					id: key,
+					zIndex: screen.screenWidgets[key].config.layout.zIndex,
+				}
+				delete screen.screenWidgets[key].scene
+				delete screen.screenWidgets[key].config.widget.hide
+				delete screen.screenWidgets[key].config.layout.zIndex
+			}
+			this.screen.screenWidgetsLays = obj
 		} else {
 			this.screen.screenWidgetsLays = screen.screenWidgetsLays
 		}
@@ -131,12 +142,10 @@ class Editor extends Agent {
 		}
 	}
 	get currentMaxZIndex(): number {
-		return this.sortByZIndexWidgetsList.length ? this.sortByZIndexWidgetsList[0].config.layout.zIndex + 1 : 10
+		return 10
 	}
 	get currentMinZIndex(): number {
-		return this.sortByZIndexWidgetsList.length
-			? this.sortByZIndexWidgetsList[this.sortByZIndexWidgetsList.length - 1].config.layout.zIndex - 1
-			: 10
+		return 10
 	}
 	/* 添加组件 */
 	createWidget(offsetX: number, offsetY: number, data: any): void {
@@ -171,7 +180,12 @@ class Editor extends Agent {
 			...this.screen.screenWidgets,
 			[widgetItem.id]: widgetItem,
 		}
-		const newItem = { children: {}, scene: this.current.currentSceneIndex, id: widgetItem.id }
+		const newItem = {
+			children: {},
+			scene: this.current.currentSceneIndex,
+			id: widgetItem.id,
+			zIndex: this.currentMaxZIndex,
+		}
 		this.current.currentWidgetList.forEach(item => {
 			newItem.children[item] = {
 				id: item,

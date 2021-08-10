@@ -12,7 +12,7 @@ dr(
 	:h="item.config.layout.size.height",
 	:x="item.config.layout.position.left",
 	:y="item.config.layout.position.top",
-	:z="item.config.layout.zIndex",
+	:z="zIndex",
 	:snap="editor.current.autoAlignGuide",
 	:item="item",
 	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${id}`]",
@@ -24,6 +24,7 @@ dr(
 	@contextmenu.native.stop="showRightMenu($event, item)")
 	eslinkv-widget(
 		:id="id",
+		:zIndex="zIndex",
 		:widgetType="item.widgetType",
 		:type="item.type",
 		:events="item.events",
@@ -48,6 +49,7 @@ export default class ItemCard extends Vue {
 	editor: Editor = Editor.Instance()
 
 	@Prop() id
+	@Prop() zIndex
 	@Prop() getRefLineParams
 
 	get item() {
@@ -59,7 +61,7 @@ export default class ItemCard extends Vue {
 			transform: `translate3d(${this.item.config.layout.position.left}px, ${this.item.config.layout.position.top}px,0)`,
 			width: this.item.config.layout.size.width + 'px',
 			height: this.item.config.layout.size.height + 'px',
-			zIndex: this.item.config.layout.zIndex,
+			zIndex: this.zIndex,
 		}
 	}
 	handleClick(e, item): void {

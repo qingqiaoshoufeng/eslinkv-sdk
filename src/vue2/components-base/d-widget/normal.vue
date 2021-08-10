@@ -4,7 +4,7 @@ component.widget-part.animate__animated(
 	:is="currentComponent",
 	:class="animationClass",
 	:id="id",
-	v-bind="{ ...item, ...$attrs }",
+	v-bind="{ zIndex, ...item, ...$attrs }",
 	v-on="$listeners")
 	slot
 </template>
@@ -18,6 +18,7 @@ const prefix2 = 'eslinkv-'
 @Component
 export default class DWidget extends Vue {
 	@Prop() id
+	@Prop() zIndex
 
 	get item() {
 		return this.editor.screen.screenWidgets[this.id]

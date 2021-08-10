@@ -1,11 +1,18 @@
 <template lang="pug">
 #screen(ref="canvas-wrapper", :style="editor.screen.screenStyle")
 	d-scene(:zIndex="1")
-		eslinkv-widget(v-for="item in sceneWidgets(0)", :id="item.id", :key="item.id", :children="item.children", readonly)
+		eslinkv-widget(
+			v-for="item in sceneWidgets(0)",
+			:id="item.id",
+			:key="item.id",
+			:children="item.children",
+			readonly,
+			:zIndex="item.zIndex")
 		eslinkv-widget(
 			v-for="item in editor.current.currentSceneIndex === 0 ? [] : sceneWidgets(editor.current.currentSceneIndex)",
 			:id="item.id",
 			:key="item.id",
+			:zIndex="item.zIndex",
 			:children="item.children",
 			readonly)
 	d-scene(
@@ -16,6 +23,7 @@
 		eslinkv-widget(
 			v-for="item in sceneWidgets(sceneId)",
 			:id="item.id",
+			:zIndex="item.zIndex",
 			:key="item.id",
 			:children="item.children",
 			readonly)

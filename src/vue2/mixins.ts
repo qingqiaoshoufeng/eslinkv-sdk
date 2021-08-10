@@ -9,6 +9,7 @@ export default {
 		settingData: {
 			type: Object,
 		},
+		zIndex: {},
 		events: {
 			type: Object,
 			default() {
@@ -190,7 +191,7 @@ export default {
 			return {
 				width: `${layout.size.width}px`,
 				height: `${layout.size.height}px`,
-				zIndex: `${layout.zIndex}`,
+				zIndex: `${this.zIndex}`,
 				transform: `translate3d(${layout.position.left}px, ${layout.position.top}px,0) ${
 					layout.scale ? 'scale(' + layout.scale + ')' : ''
 				}`,

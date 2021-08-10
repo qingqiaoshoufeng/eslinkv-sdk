@@ -13,6 +13,7 @@
 			item-card(
 				:id="item.id",
 				:key="item.id",
+				:zIndex="item.zIndex",
 				v-for="item in showWidgets",
 				:getRefLineParams="getRefLineParams",
 				:ref="item.id")
