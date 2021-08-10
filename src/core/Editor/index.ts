@@ -107,17 +107,6 @@ class Editor extends Agent {
 			})
 		}
 	}
-	/* 大屏场景组件关联 */
-	get sceneWidgets() {
-		const res = { 0: {} }
-		for (const widgetId in this.screen.screenWidgets) {
-			if (this.screen.screenWidgets[widgetId]) {
-				if (!res[this.screen.screenWidgets[widgetId].scene]) res[this.screen.screenWidgets[widgetId].scene] = {}
-				res[this.screen.screenWidgets[widgetId].scene][widgetId] = this.screen.screenWidgets[widgetId]
-			}
-		}
-		return res
-	}
 	/* 刷新当前组件 */
 	refreshWidget(): void {
 		const item = this.screen.screenWidgets[this.current.currentWidgetList[0]]

@@ -1,56 +1,27 @@
 <template lang="pug">
 #screen(ref="canvas-wrapper", :style="editor.screen.screenStyle")
 	d-scene(:zIndex="1")
+		eslinkv-widget(v-for="item in sceneWidgets(0)", :id="item.id", :key="item.id", :children="item.children", readonly)
+			//:style="item.config.widget.hide ? 'display: none' : ''",
 		eslinkv-widget(
-			v-for="item in editor.sceneWidgets[0]",
-			:widget-type="item.widgetType",
+			v-for="item in sceneWidgets(editor.current.currentSceneIndex)",
+			:id="item.id",
 			:key="item.id",
-			:type="item.type",
-			:config="item.config",
-			:events="item.events",
-			:animation="item.animation",
-			:eventTypes="item.eventTypes",
 			:children="item.children",
-			:settingData="item.settingData",
-			:ref="item.id",
-			:market="item.market",
-			:style="item.config.widget.hide ? 'display: none' : ''",
 			readonly)
-		eslinkv-widget(
-			v-for="item in editor.current.currentSceneIndex === 0 ? [] : editor.sceneWidgets[editor.current.currentSceneIndex]",
-			:widget-type="item.widgetType",
-			:key="item.id",
-			:type="item.type",
-			:config="item.config",
-			:events="item.events",
-			:animation="item.animation",
-			:eventTypes="item.eventTypes",
-			:children="item.children",
-			:settingData="item.settingData",
-			:ref="item.id",
-			:market="item.market",
-			:style="item.config.widget.hide ? 'display: none' : ''",
-			readonly)
+			//:style="item.config.widget.hide ? 'display: none' : ''",
 	d-scene(
 		v-for="(sceneId, index) in editor.current.currentCreateSceneList",
 		:key="sceneId",
 		:sceneId="sceneId",
 		:zIndex="index + 2")
 		eslinkv-widget(
-			v-for="item in editor.sceneWidgets[sceneId]",
-			:widget-type="item.widgetType",
+			v-for="item in sceneWidgets(sceneId)",
+			:id="item.id",
 			:key="item.id",
-			:type="item.type",
-			:config="item.config",
-			:events="item.events",
-			:animation="item.animation",
-			:eventTypes="item.eventTypes",
 			:children="item.children",
-			:settingData="item.settingData",
-			:ref="item.id",
-			:market="item.market",
-			:style="item.config.widget.hide ? 'display: none' : ''",
 			readonly)
+		//:style="item.config.widget.hide ? 'display: none' : ''",
 	slot(v-if="editor.marketComponentLoading", name="loading")
 		load-mask(:show="true") 加载中...
 </template>
@@ -72,6 +43,10 @@ import { linkList } from '@/vue2/api/screen.api.js'
 export default class DView extends Vue {
 	editor: Editor = Editor.Instance()
 	currentLayoutMode = getQueryString('layoutMode')
+
+	get sceneWidgets() {
+		return scene => Object.values(this.editor.screen.screenWidgetsLays).filter(item => item.scene === scene)
+	}
 
 	beforeDestroy(): void {
 		document.documentElement.removeEventListener('keydown', this.init)

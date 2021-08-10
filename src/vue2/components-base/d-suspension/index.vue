@@ -48,7 +48,7 @@ export default class DSuspension extends Vue {
 	updateInfo = []
 	async update() {
 		const req = []
-		const obj = this.editor.sceneWidgets[this.editor.current.currentSceneIndex]
+		const obj = this.editor.screen.screenWidgets
 		if (obj) {
 			Object.values(obj).forEach((v: any) => {
 				if (v.market) {

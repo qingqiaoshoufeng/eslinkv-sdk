@@ -20,6 +20,7 @@ export default class DWidgetGroup extends Vue {
 		return this.editor.screen.screenWidgets[this.id]
 	}
 	get styles() {
+		if (!this.item) return {}
 		const { layout } = this.item.config
 		return {
 			width: `${layout.size.width}px`,
@@ -32,6 +33,7 @@ export default class DWidgetGroup extends Vue {
 	}
 
 	get stylesR() {
+		if (!this.item) return {}
 		const { layout } = this.item.config
 		return {
 			left: `${-layout.position.left}px`,
@@ -57,14 +59,11 @@ export default class DWidgetGroup extends Vue {
 	}
 
 	parseConfigValue(): void {
-		this.editor.updateWidgetConfig(this.item.config.widget.id, this.item.config)
-	}
-
-	created(): void {
-		this.__init__()
+		this.editor.updateWidgetConfig(this.id, this.item.config)
 	}
 
 	mounted(): void {
+		// this.__init__()
 		this.setAnimation()
 	}
 }

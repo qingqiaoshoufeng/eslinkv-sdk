@@ -74,9 +74,7 @@ export default class UpdateDrawer extends Vue {
 			onOk: () => {
 				this.checkAllGroup.forEach((v: any) => {
 					const t = this.data.find((m: any) => m.componentTitle === v)
-					this.editor.sceneWidgets[this.editor.current.currentSceneIndex][
-						t.componentId
-					].config.widget.componentVersion = t.componentVersion
+					this.editor.screen.screenWidgets[t.componentId].config.widget.componentVersion = t.componentVersion
 					this.currentVal = false
 					this.$Message.success('组件升级成功')
 				})
