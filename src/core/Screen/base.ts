@@ -157,6 +157,7 @@ export default class Screen extends Factory<Screen> {
 			screenWidth: this.screenWidth,
 			screenName: this.screenName,
 			screenPlatform: this.screenPlatform,
+			screenWidgetsLays: this.screenWidgetsLays,
 			screenVersion: versionToNum(this.currentVersion),
 			screenLayoutMode: this.screenLayoutMode,
 			screenMainScene: this.screenMainScene,

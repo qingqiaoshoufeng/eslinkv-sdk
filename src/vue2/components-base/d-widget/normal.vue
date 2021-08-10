@@ -4,7 +4,7 @@ component.widget-part.animate__animated(
 	:is="currentComponent",
 	:class="animationClass",
 	:id="id",
-	v-bind="{ events: item.events, config: item.config, readonly: item.readonly, settingData: item.settingData, animation: item.animation, ...$attrs }",
+	v-bind="{ ...item, ...$attrs }",
 	v-on="$listeners")
 	slot
 </template>

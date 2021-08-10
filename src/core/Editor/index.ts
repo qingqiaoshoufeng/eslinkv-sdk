@@ -77,6 +77,11 @@ class Editor extends Agent {
 			})
 		} else {
 			this.screen.screenWidgets = screen.screenWidgets
+			if (!screen.screenWidgetsLays) {
+			} else {
+				console.log(1)
+				this.screen.screenWidgetsLays = screen.screenWidgetsLays
+			}
 		}
 	}
 	/* 放大画布 */
@@ -315,7 +320,7 @@ class Editor extends Agent {
 			if (!target.events) {
 				target.events = JSON.parse(JSON.stringify(obj))
 			} else {
-				target.events = JSON.parse(JSON.stringify({ ...target.events, ...obj }))
+				target.events = JSON.parse(JSON.stringify({ ...obj, ...target.events }))
 			}
 		}
 	}
