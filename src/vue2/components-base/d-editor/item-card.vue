@@ -31,7 +31,7 @@ dr(
 		:eventTypes="item.eventTypes",
 		:settingData="item.settingData",
 		:config="item.config",
-		:children="editor.screen.screenWidgetsLays[id].children",)
+		:children="editor.screen.screenWidgetsLays[id].children")
 </template>
 <script lang="ts">
 import dr from '@/vue2/components-base/d-dr/index.vue'
@@ -93,7 +93,11 @@ export default class ItemCard extends Vue {
 			const diffTop = top - this.editor.currentWidget.config.layout.position.top
 			this.editor.currentWidget.config.layout.position.left = left
 			this.editor.currentWidget.config.layout.position.top = top
-			this.onGroupDragStop(this.editor.currentWidget, diffLeft, diffTop)
+			this.onGroupDragStop(
+				this.editor.screen.screenWidgetsLays[this.editor.currentWidgetList[0]],
+				diffLeft,
+				diffTop,
+			)
 		}
 	}
 
@@ -101,12 +105,12 @@ export default class ItemCard extends Vue {
 		if (item.children) {
 			if (Object.values(item.children).length > 0)
 				for (let key in item.children) {
-					item.children[key].config.layout.position.left =
-						Number(item.children[key].config.layout.position.left) + diffLeft
-					item.children[key].config.layout.position.top =
-						Number(item.children[key].config.layout.position.top) + diffTop
+					this.editor.screen.screenWidgets[key].config.layout.position.left =
+						Number(this.editor.screen.screenWidgets[key].config.layout.position.left) + diffLeft
+					this.editor.screen.screenWidgets[key].config.layout.position.top =
+						Number(this.editor.screen.screenWidgets[key].config.layout.position.top) + diffTop
 					this.onGroupDragStop(item.children[key], diffLeft, diffTop)
-					item.children = { ...item.children }
+					this.editor.screen.screenWidgets = { ...this.editor.screen.screenWidgets }
 				}
 		}
 	}
