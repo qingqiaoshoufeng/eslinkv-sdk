@@ -72,18 +72,24 @@ class Editor extends Agent {
 						}
 					}
 					this.screen.screenWidgets = screen.screenWidgets
+					this.initScreenWidgetsLays(screen)
 					this.marketComponentLoading = false
 				})
 			})
 		} else {
 			this.screen.screenWidgets = screen.screenWidgets
-			if (!screen.screenWidgetsLays) {
-			} else {
-				console.log(1)
-				this.screen.screenWidgetsLays = screen.screenWidgetsLays
-			}
+			this.initScreenWidgetsLays(screen)
 		}
 	}
+	initScreenWidgetsLays(screen) {
+		if (!screen.screenWidgetsLays) {
+			// 兼容处理
+			// {[id]: {scene :0,zIndex: 10,hide: false} }
+		} else {
+			this.screen.screenWidgetsLays = screen.screenWidgetsLays
+		}
+	}
+
 	/* 放大画布 */
 	zoomIn(step = 2): void {
 		this.current.zoomIn(step)
@@ -181,8 +187,7 @@ class Editor extends Agent {
 	/* 删除多个组件 */
 	deleteWidgets(): void {
 		this.currentWidgetList.map(item => {
-			this.screen.screenWidgets[item.id].scene = -1
-			this.screen.screenWidgetsLays[item.id].scene = -1
+			this.screen.screenWidgetsLays[item].scene = -1
 		})
 		this.current.unSelectWidget()
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
@@ -270,17 +275,22 @@ class Editor extends Agent {
 	}
 	/* 清除当前场景的组件 */
 	clearWidgetByCurrentScene(): void {
-		for (const key in this.screen.screenWidgets) {
-			if (
-				this.current.currentSceneIndex == -1 &&
-				this.screen.screenWidgets[key].scene === this.current.currentSceneIndex
-			) {
-				delete this.screen.screenWidgets[key]
-			} else if (this.screen.screenWidgets[key].scene === this.current.currentSceneIndex) {
-				this.screen.screenWidgets[key].scene = -1
+		if (this.current.currentSceneIndex == -1) {
+			for (const key in this.screen.screenWidgetsLays) {
+				if (this.screen.screenWidgetsLays[key].scene === -1) {
+					delete this.screen.screenWidgets[key]
+					delete this.screen.screenWidgetsLays[key]
+				}
+			}
+		} else {
+			for (const key in this.screen.screenWidgetsLays) {
+				if (this.screen.screenWidgetsLays[key].scene === this.current.currentSceneIndex) {
+					this.screen.screenWidgetsLays[key].scene = -1
+				}
 			}
 		}
 		this.screen.screenWidgets = { ...this.screen.screenWidgets }
+		this.screen.screenWidgetsLays = { ...this.screen.screenWidgetsLays }
 	}
 
 	/**
