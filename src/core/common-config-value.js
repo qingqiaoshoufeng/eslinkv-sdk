@@ -7,7 +7,6 @@ const commonConfigValue = (type = 'normal') => {
 			id: Date.now(),
 			componentVersion: '',
 			locked: false,
-			hide: false,
 		},
 		layout: {
 			size: {
@@ -19,7 +18,6 @@ const commonConfigValue = (type = 'normal') => {
 				left: 0,
 				top: 0,
 			},
-			zIndex: 10,
 			scale: 1,
 		},
 		config: { colorTheme },
@@ -66,22 +64,24 @@ const commonConfigValue = (type = 'normal') => {
 			borderWidth: 1,
 			show: false,
 		},
-		echartsSeries: [{
-			type: 'line',
-			name: 'test',
-			seriesYKey: 'value',
-			itemStyle: {
-				color: '#2e33a7'
+		echartsSeries: [
+			{
+				type: 'line',
+				name: 'test',
+				seriesYKey: 'value',
+				itemStyle: {
+					color: '#2e33a7',
+				},
+				lineStyle: {
+					type: 'solid',
+				},
+				yAxisIndex: 0,
 			},
-			lineStyle: {
-				type: 'solid',
-			},
-			yAxisIndex: 0
-		}],
+		],
 		echartsTooltip: {
 			show: true,
 			triggerOn: 'mousemove|click',
-			trigger: 'item'
+			trigger: 'item',
 		},
 		echartsYAxis: [
 			{

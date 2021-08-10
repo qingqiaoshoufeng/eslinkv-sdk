@@ -141,11 +141,22 @@ class Editor extends Agent {
 			})
 		}
 	}
+
+	get currentSceneWidget() {
+		return Object.values(this.screen.screenWidgetsLays)
+			.filter(item => item.scene === this.current.currentSceneIndex)
+			.sort((a, b) => {
+				return b.zIndex - a.zIndex - 1
+			})
+	}
+
 	get currentMaxZIndex(): number {
-		return 10
+		return this.currentSceneWidget.length ? this.currentSceneWidget[0].zIndex + 1 : 10
 	}
 	get currentMinZIndex(): number {
-		return 10
+		return this.currentSceneWidget.length
+			? this.currentSceneWidget[this.currentSceneWidget.length - 1].zIndex - 1
+			: 10
 	}
 	/* 添加组件 */
 	createWidget(offsetX: number, offsetY: number, data: any): void {

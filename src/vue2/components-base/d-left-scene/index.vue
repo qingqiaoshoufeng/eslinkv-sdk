@@ -9,9 +9,9 @@
 			i-option(:value="key", v-for="(item, key) in editor.sceneObj", :key="key") {{ item.name }}
 			i-option(:value="-1") 回收站
 	ul.d-scrollbar.d-left-scene-list
-		draggable(:value="currentSceneWidget", @change="sceneWidgetDragEnd")
+		draggable(:value="editor.currentSceneWidget", @change="sceneWidgetDragEnd")
 			transition-group
-				item-card(v-for="item in currentSceneWidget", :key="item.id", :item="item")
+				item-card(v-for="item in editor.currentSceneWidget", :key="item.id", :item="item")
 	.d-left-scene-bottom.fn-flex.flex-row
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('clear')") 清空
 		.d-left-scene-bottom-btn.text-center(@click="handleSetScene('create')") 新增
@@ -43,14 +43,6 @@ import { market } from '@/vue2/api/marketComponentType.api'
 export default class DLeftScene extends Vue {
 	editor: Editor = Editor.Instance()
 	editScene = false
-
-	get currentSceneWidget() {
-		return Object.values(this.editor.screen.screenWidgetsLays)
-			.filter(item => item.scene === this.editor.current.currentSceneIndex)
-			.sort((a, b) => {
-				return b.zIndex - a.zIndex - 1
-			})
-	}
 
 	changeSceneIndex(index: string | number): void {
 		this.editor.selectSceneIndex(index)
@@ -100,8 +92,8 @@ export default class DLeftScene extends Vue {
 
 	sceneWidgetDragEnd(e): void {
 		debugger
-		const oldItem = this.editor.screen.screenWidgetsLays[this.currentSceneWidget[e.moved.oldIndex].id]
-		const newItem = this.editor.screen.screenWidgetsLays[this.currentSceneWidget[e.moved.newIndex].id]
+		const oldItem = this.editor.screen.screenWidgetsLays[this.editor.currentSceneWidget[e.moved.oldIndex].id]
+		const newItem = this.editor.screen.screenWidgetsLays[this.editor.currentSceneWidget[e.moved.newIndex].id]
 		if (oldItem.zIndex === newItem.zIndex) {
 			if (e.moved.newIndex > e.moved.oldIndex) {
 				newItem.zIndex++
