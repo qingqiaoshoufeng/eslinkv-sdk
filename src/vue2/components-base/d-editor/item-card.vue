@@ -15,7 +15,7 @@ dr(
 	:z="zIndex",
 	:snap="editor.current.autoAlignGuide",
 	:item="item",
-	:class="[{ locked: item.config.widget.locked, 'dr-hide': item.config.widget.hide }, `widget-${id}`]",
+	:class="[{ locked: item.config.widget.locked }, `widget-${id}`]",
 	:snap-to-target="['.d-editor-line', '.dr-unactive', '.d-ruler-guide-x', '.d-ruler-guide-y']",
 	@resizestop="onResizeStop",
 	@refLineParams="params => getRefLineParams(params, item)",
@@ -123,7 +123,7 @@ export default class ItemCard extends Vue {
 	}
 
 	widgetEditable({ config }): boolean {
-		return !config.widget.locked && !config.widget.hide
+		return !config.widget.locked
 	}
 }
 </script>

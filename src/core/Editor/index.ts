@@ -133,11 +133,13 @@ class Editor extends Agent {
 	refreshWidget(): void {
 		const item = this.screen.screenWidgets[this.current.currentWidgetList[0]]
 		if (item) {
+			this.unSelectWidget()
 			delete this.screen.screenWidgets[this.current.currentWidgetList[0]]
 			this.screen.screenWidgets = { ...this.screen.screenWidgets }
 			setTimeout(() => {
 				this.screen.screenWidgets[item.id] = item
 				this.screen.screenWidgets = { ...this.screen.screenWidgets }
+				this.selectWidget(item)
 			})
 		}
 	}

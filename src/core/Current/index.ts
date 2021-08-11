@@ -109,9 +109,6 @@ export default class Current extends Factory<Current> {
 	}
 	/* 选中组件 */
 	selectWidget(widget: Widget): void {
-		if (widget.config.widget.hide) {
-			return
-		}
 		if (this.currentWidgetList.includes(widget.id)) {
 			this.currentWidgetList.splice(this.currentWidgetList.indexOf(widget.id), 1)
 		} else {
