@@ -2,7 +2,7 @@
 .d-manage-modal-control-data
 	d-right-swiper-eye(
 		title="入场动画",
-		:show="true"
+		:show="true",
 		@open-click="editor.currentWidget.animation.transitionEnable = true",
 		@close-click="editor.currentWidget.animation.transitionEnable = false",
 		:enable="editor.currentWidget.animation.transitionEnable")
@@ -52,7 +52,12 @@ export default class FuncData extends func {
 	]
 	get relateList() {
 		const list = Object.values(this.editor.screen.screenWidgets)
-			.filter((v: any) => v.config.api.bind.enable && v.scene === this.editor.currentSceneIndex)
+			.filter(
+				(v: any) =>
+					v.config.api.bind &&
+					v.config.api.bind.enable &&
+					this.editor.screen.screenWidgetsLays[v.id].scene === this.editor.currentSceneIndex,
+			)
 			.map((v: any) => {
 				const { id, name } = v.config.widget
 				return { id, name }

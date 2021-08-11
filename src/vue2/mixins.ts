@@ -56,14 +56,19 @@ export default {
 		__handleEvent__(eventType = 'click', val): void {
 			if (this.events) {
 				if (!this.events[eventType]) {
-					this.editor.log.push(
-						new Log({
-							code: 'OLD_METHOD_WARN',
-							errorMessage: `${this.$parent.type} ${this.config.widget.componentVersion}检测到你使用旧API __handleClick__ 请及时更换新API __handleEvent__ \n\nhttps://eslink-web.yuque.com/books/share/55b0e7ab-4fac-41f5-9062-901636ef4792/phnay2`,
-						}),
-					)
-					this.__eventTypesSetting__([{ key: 'click', label: '点击事件' }])
-					return
+					if (this.eventTypes) {
+						this.__eventTypesSetting__(this.eventTypes)
+						return
+					} else {
+						this.editor.log.push(
+							new Log({
+								code: 'OLD_METHOD_WARN',
+								errorMessage: `${this.$parent.type} ${this.config.widget.componentVersion}检测到你使用旧API __handleClick__ 请及时更换新API __handleEvent__ \n\nhttps://eslink-web.yuque.com/books/share/55b0e7ab-4fac-41f5-9062-901636ef4792/phnay2`,
+							}),
+						)
+						this.__eventTypesSetting__([{ key: 'click', label: '点击事件' }])
+						return
+					}
 				}
 				this.events[eventType].forEach(item => {
 					let finalType = item.triggerType
@@ -157,10 +162,10 @@ export default {
 		__init__(obj): void {
 			this.__configReady__ = true
 			const { value, customConfig, setting, settingData, eventTypes, customEventsConfig } = obj
-			this.parseConfigValue(value, customConfig)
 			this.__eventTypesSetting__(eventTypes)
 			this.editor.dataSetting(this.config.widget.id, setting, settingData)
 			this.editor.setCustomEventConfig(this.config.widget.id, customEventsConfig)
+			this.parseConfigValue(value, customConfig)
 		},
 		parseConfigValue(localConfigValue, customConfig) {
 			return this.editor.updateWidgetConfig(this.config.widget.id, localConfigValue, customConfig)
