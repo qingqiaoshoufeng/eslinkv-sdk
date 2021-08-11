@@ -118,6 +118,9 @@ export default class ScreenPc extends ScreenBase {
 					delete item.config.api.system.params.tableName
 				}
 			}
+			if (item.config.layout) {
+				delete item.config.layout.position.value
+			}
 			if (item.config.animation) {
 				item.animation = item.config.animation
 				delete item.config.animation

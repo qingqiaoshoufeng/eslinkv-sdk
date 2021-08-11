@@ -14,7 +14,6 @@ const commonConfigValue = (type = 'normal') => {
 				height: 200,
 			},
 			position: {
-				value: 'absolute',
 				left: 0,
 				top: 0,
 			},

@@ -103,7 +103,7 @@ export default class DRuler extends Vue {
 			this.editor.unSelectWidgetList()
 			Object.values(this.editor.screen.screenWidgets).forEach((v: Widget) => {
 				// 只能框选当前场景下的组件
-				if (v.scene === this.editor.currentSceneIndex) {
+				if (this.editor.screen.screenWidgetsLays[v.id].scene === this.editor.currentSceneIndex) {
 					const widgetStartX = Number(v.config.layout.position.left)
 					const widgetStartY = Number(v.config.layout.position.top)
 					const widgetEndX = Number(v.config.layout.position.left) + Number(v.config.layout.size.width)
