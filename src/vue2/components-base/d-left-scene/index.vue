@@ -91,7 +91,6 @@ export default class DLeftScene extends Vue {
 	}
 
 	sceneWidgetDragEnd(e): void {
-		debugger
 		const oldItem = this.editor.screen.screenWidgetsLays[this.editor.currentSceneWidget[e.moved.oldIndex].id]
 		const newItem = this.editor.screen.screenWidgetsLays[this.editor.currentSceneWidget[e.moved.newIndex].id]
 		if (oldItem.zIndex === newItem.zIndex) {
