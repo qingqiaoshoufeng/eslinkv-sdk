@@ -30,7 +30,8 @@ export default class DScene extends Vue {
 		} else {
 			// 关闭场景
 			this.$emit('beforeSceneDestroy')
-			this.editor.current.currentCreateSceneList.splice(this.sceneId, 1)
+			const index = this.editor.current.currentCreateSceneList.findIndex(v => v === this.sceneId)
+			this.editor.current.currentCreateSceneList.splice(index, 1)
 			this.editor.current.sceneAnimate = ''
 			let event = new CustomEvent('DestroyScene', { detail: { index: this.sceneId } })
 			document.dispatchEvent(event)
