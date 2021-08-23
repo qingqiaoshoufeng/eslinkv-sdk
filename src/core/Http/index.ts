@@ -47,7 +47,7 @@ export default class Http extends Emitter {
 	}
 
 	private push2Wait(task: Task) {
-		this.waitPool.push(task)
+		this.waitPool.unshift(task)
 		// this.sortTask()
 		task.status = Task.STATUS_WAITTING
 		this.emit(Http.POOL_ADD)

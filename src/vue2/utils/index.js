@@ -81,6 +81,7 @@ export const usePath = (path, data, callback) => {
 	if (!path) {
 		return data
 	}
+	keys.shift()
 	while (keys.length) {
 		const key = keys.shift()
 		if (!key) {
