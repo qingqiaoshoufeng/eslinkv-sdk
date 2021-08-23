@@ -37,7 +37,11 @@ export default class HttpBase {
 			request
 				.request(requestConfig)
 				.then((res: any) => {
-					resolve(res.data)
+					if (url.includes('api/impalaByQueryId')) {
+						resolve(res.data)
+					} else {
+						resolve(res)
+					}
 				})
 				.catch((error: any) => {
 					reject(error)

@@ -71,7 +71,7 @@ export default {
 			this.editor.request(method, url, params, this.__widgetId__)
 		},
 		innerQuery(api): void {
-			const { interface: innerUrl, params: conditions, method = 'POST' } = api.system
+			const { interface: innerUrl, params: conditions, method = 'GET' } = api.system
 			if (!innerUrl) return
 			// 解析 params
 			let params = { ...parseParams(api.params) }
@@ -87,7 +87,7 @@ export default {
 			if (!Object.keys(params).length) return
 			params.queryId = params.dataAnalyseId
 			params.params = JSON.stringify(params)
-			this.editor.request(method, '/server/' + innerUrl, params, this.__widgetId__)
+			this.editor.request('GET', '/server/' + innerUrl, params, this.__widgetId__)
 		},
 		dispatchQuery(api): void {
 			if (!api.system || !api.system.enable) {
