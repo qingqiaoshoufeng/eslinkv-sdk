@@ -1,6 +1,6 @@
 {
 	"name": "@eslinkv/core",
-	"version": "1.0.54",
+	"version": "1.0.55",
 	"main": "lib/core.umd.min.js",
 	"types": "types/index.d.ts",
 	"dependencies": {
