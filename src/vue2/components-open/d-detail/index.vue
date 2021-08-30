@@ -75,9 +75,8 @@ export default class DDetail extends Vue {
 	preview(): void {
 		const scene = this.editor.mainScene ? `&scene=${this.editor.mainScene}` : ''
 		if (this.isNew) {
-			this.editor.screenCache.add('previewData', this.editor.screen).then(() => {
-				window.open(`${location.origin}/detail/preview?layoutMode=${this.editor.layoutMode}${scene}`)
-			})
+			sessionStorage.setItem('previewData', JSON.stringify(this.editor.screen))
+			window.open(`${location.origin}/detail/preview?layoutMode=${this.editor.layoutMode}${scene}`)
 		} else {
 			window.open(
 				`${location.origin}/detail/${this.$route.params.id}?layoutMode=${this.editor.layoutMode}${scene}`,
@@ -97,9 +96,7 @@ export default class DDetail extends Vue {
 		this.isNew = !id
 		if (id) {
 			if (id === 'preview') {
-				this.editor.screenCache.get('previewData').then(res => {
-					this.editor.init(res)
-				})
+				this.editor.init(JSON.parse(sessionStorage.getItem('previewData')))
 			} else {
 				detail({ screenId: id }).then(res => {
 					this.editor.init(res)
