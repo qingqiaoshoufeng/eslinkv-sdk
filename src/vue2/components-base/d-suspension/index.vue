@@ -15,7 +15,6 @@
 		:active="editor.screen.screenFilter.enable")
 		global-filter(v-model="filterShow")
 	item-card(
-		v-if="editor.currentWidgetList[0] && editor.currentWidget",
 		title="主题风格",
 		icon="md-color-palette",
 		@click="themeShow = true")

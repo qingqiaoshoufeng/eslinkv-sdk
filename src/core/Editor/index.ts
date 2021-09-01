@@ -131,15 +131,15 @@ class Editor extends Agent {
 	}
 	/* 刷新当前组件 */
 	refreshWidget(): void {
-		const item = this.screen.screenWidgets[this.current.currentWidgetList[0]]
+		const item = this.screen.screenWidgetsLays[this.current.currentWidgetList[0]]
 		if (item) {
+			delete this.screen.screenWidgetsLays[this.current.currentWidgetList[0]]
 			this.unSelectWidget()
-			delete this.screen.screenWidgets[this.current.currentWidgetList[0]]
-			this.screen.screenWidgets = { ...this.screen.screenWidgets }
+			this.screen.screenWidgetsLays = { ...this.screen.screenWidgetsLays }
 			setTimeout(() => {
-				this.screen.screenWidgets[item.id] = item
-				this.screen.screenWidgets = { ...this.screen.screenWidgets }
-				this.selectWidget(item)
+				this.screen.screenWidgetsLays[item.id] = item
+				this.screen.screenWidgetsLays = { ...this.screen.screenWidgetsLays }
+				this.selectWidget(this.screen.screenWidgets[item.id])
 			})
 		}
 	}
@@ -239,6 +239,7 @@ class Editor extends Agent {
 	/* 复制组件 */
 	copyWidget(): void {
 		this.screen.copyWidget(this.current.currentWidgetList[0])
+		this.initScreenWidgetsLays({screenWidgets: this.screen.screenWidgets})
 	}
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
