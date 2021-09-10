@@ -79,12 +79,10 @@ export default {
 							case 'openScene':
 								if (this.editor.current.currentCreateSceneList.includes(sceneId)) return
 								this.editor.activeWidgetId = this.config.widget.id
-								this.editor.current.sceneAnimate = item.animate || 'fadeIn'
-								this.editor.openScene(sceneId)
+								this.editor.openScene(sceneId, item.animate)
 								break
 							case 'closeScene':
-								this.editor.current.sceneAnimate = item.animate || 'fadeOut'
-								this.editor.closeScene(sceneId)
+								this.editor.closeScene(sceneId, item.animate)
 								break
 							case 'changeScene':
 								this.editor.selectSceneIndex(sceneId)

@@ -18,7 +18,7 @@ export default class DScene extends Vue {
 			this.editor.current.activeSceneId === this.sceneId ||
 			this.editor.current.currentSceneIndex === this.sceneId
 		) {
-			return `scene-container animated ${this.editor.current.sceneAnimate}`
+			return `scene-container animated ${this.editor.current.sceneAnimationMap[this.sceneId]}`
 		}
 		return 'scene-container'
 	}
@@ -32,7 +32,6 @@ export default class DScene extends Vue {
 			this.$emit('beforeSceneDestroy')
 			const index = this.editor.current.currentCreateSceneList.findIndex(v => v === this.sceneId)
 			this.editor.current.currentCreateSceneList.splice(index, 1)
-			this.editor.current.sceneAnimate = ''
 			let event = new CustomEvent('DestroyScene', { detail: { index: this.sceneId } })
 			document.dispatchEvent(event)
 			event = null

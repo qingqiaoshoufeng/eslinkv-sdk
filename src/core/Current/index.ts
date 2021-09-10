@@ -11,8 +11,6 @@ export default class Current extends Factory<Current> {
 	autoAlignGuide = true
 	/* 拖动模式/预览模式 控制组件内部事件关闭 */
 	currentEventDisabled = true
-	/* 当前场景动画 */
-	sceneAnimate = ''
 	/* 被激活的场景对应组件 */
 	activeWidgetId = ''
 	/* 被激活的场景id */
@@ -48,6 +46,7 @@ export default class Current extends Factory<Current> {
 		z: 0,
 	}
 	currentRightSettingIndex = 0
+    sceneAnimationMap = {}
 
 	constructor(obj: any) {
 		super()
@@ -60,7 +59,6 @@ export default class Current extends Factory<Current> {
 		this.activeSceneId = 0
 		this.currentRightSettingIndex = 0
 		this.activeWidgetId = ''
-		this.sceneAnimate = ''
 		this.currentWidget = {}
 		this.currentSceneIndex = 0
 		this.currentWidgetList = []
@@ -145,12 +143,16 @@ export default class Current extends Factory<Current> {
 	}
 	/* 打开场景 */
 	openScene(id: number | string, animate?: string): void {
-		this.sceneAnimate = animate || this.sceneAnimate
+		this.sceneAnimationMap = {
+            [id]: animate || 'fadeIn',
+            ...this.sceneAnimationMap
+        }
 		this.activeSceneId = id
 		this.currentCreateSceneList.push(id)
 	}
 	/* 关闭场景 */
-	closeScene(id: string): void {
+	closeScene(id: string, animate?: string): void {
+        this.sceneAnimationMap[id] = animate || 'fadeOut'
 		const index = this.currentCreateSceneList.findIndex(v => v === id)
 		if (index === -1) return
 		this.activeSceneId = id

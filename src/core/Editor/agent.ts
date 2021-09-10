@@ -71,12 +71,12 @@ export default class Agent extends EditorBase {
 		this.current.selectSceneIndex(sceneIndex)
 	}
 	/* 打开场景 */
-	openScene(id: string): void {
-		if (this.editorStatus === 'inPreview') this.current.openScene(id)
+	openScene(id: string, animate?: string): void {
+		if (this.editorStatus === 'inPreview') this.current.openScene(id, animate)
 	}
 	/* 关闭场景 */
-	closeScene(id: string): void {
-		if (this.editorStatus === 'inPreview') this.current.closeScene(id)
+	closeScene(id: string, animate?: string): void {
+		if (this.editorStatus === 'inPreview') this.current.closeScene(id, animate)
 	}
 	get offsetX(): number {
 		return this.current.offsetX
