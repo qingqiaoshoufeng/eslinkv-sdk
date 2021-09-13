@@ -6,13 +6,15 @@
 			:style="{ marginRight: '10px', width: '156px' }")
 			i-option(:value="item.componentVersion", v-for="(item, i) in versionList", :key="i") {{ item.componentVersion }}
 		i-switch(v-model="editor.currentWidget.market")
+	theme
 </template>
 <script lang="ts">
 import func from './func.mx'
 import { Component } from 'vue-property-decorator'
 import { getVersionList } from '@/vue2/api/marketComponent.api'
+import theme from './theme.vue'
 
-@Component
+@Component({components: {theme}})
 export default class FuncCustom extends func {
 	versionList = []
 

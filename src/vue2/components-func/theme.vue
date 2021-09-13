@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-manage-modal-control-base
+div
 	d-right-control(label="色盘")
 		i-color-picker(
 			:alpha="true",
