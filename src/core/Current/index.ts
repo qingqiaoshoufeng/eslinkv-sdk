@@ -144,15 +144,24 @@ export default class Current extends Factory<Current> {
 	/* 打开场景 */
 	openScene(id: number | string, animate?: string): void {
 		this.sceneAnimationMap = {
-            [id]: animate || 'fadeIn',
-            ...this.sceneAnimationMap
-        }
+			...this.sceneAnimationMap,
+			[id]: {
+				type: 'open',
+				value: animate || 'fadeIn'
+			},
+		}
 		this.activeSceneId = id
 		this.currentCreateSceneList.push(id)
 	}
 	/* 关闭场景 */
 	closeScene(id: string, animate?: string): void {
-        this.sceneAnimationMap[id] = animate || 'fadeOut'
+		this.sceneAnimationMap = {
+			...this.sceneAnimationMap,
+			[id]: {
+				type: 'close',
+				value: animate || 'fadeOut'
+			},
+		}
 		const index = this.currentCreateSceneList.findIndex(v => v === id)
 		if (index === -1) return
 		this.activeSceneId = id

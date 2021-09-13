@@ -14,17 +14,14 @@ export default class DScene extends Vue {
 	editor: Editor = Editor.Instance()
 
 	get currentAnimate(): string {
-		if (
-			this.editor.current.activeSceneId === this.sceneId ||
-			this.editor.current.currentSceneIndex === this.sceneId
-		) {
-			return `scene-container animated ${this.editor.current.sceneAnimationMap[this.sceneId]}`
+		if (this.editor.current.currentCreateSceneList.includes(this.sceneId)) {
+			return `scene-container animated ${this.editor.current.sceneAnimationMap[this.sceneId].value}`
 		}
 		return 'scene-container'
 	}
 
 	animationend(): void {
-		if (this.editor.current.activeWidgetId) {
+		if (this.editor.current.sceneAnimationMap[this.sceneId].type === 'open') {
 			// 打开场景
 			this.$emit('sceneLoaded')
 		} else {
