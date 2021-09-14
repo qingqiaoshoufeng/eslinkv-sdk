@@ -194,6 +194,12 @@ export default class Screen extends Factory<Screen> {
 		layout.position.left = 10 + Number(layout.position.left)
 		layout.position.top = 10 + Number(layout.position.top)
 		this.screenWidgets = { ...this.screenWidgets, [id]: newWidget }
+		const newLays = JSON.parse(JSON.stringify(this.screenWidgetsLays[copyId]))
+		newLays.id = id
+		this.screenWidgetsLays = {
+			...this.screenWidgetsLays,
+			[id]: newLays
+		}
 	}
 	/* 更新组件 */
 	updateComponentTarget(id, target, value): void {

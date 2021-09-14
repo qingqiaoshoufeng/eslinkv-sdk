@@ -239,7 +239,6 @@ class Editor extends Agent {
 	/* 复制组件 */
 	copyWidget(): void {
 		this.screen.copyWidget(this.current.currentWidgetList[0])
-		this.initScreenWidgetsLays({screenWidgets: this.screen.screenWidgets})
 	}
 	/* 更新大屏组件配置 */
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
