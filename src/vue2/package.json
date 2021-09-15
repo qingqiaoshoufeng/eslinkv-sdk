@@ -33,5 +33,6 @@
     "lib/fonts",
     "lib/img",
     "types"
-  ]
+  ],
+  "devDependencies": {}
 }

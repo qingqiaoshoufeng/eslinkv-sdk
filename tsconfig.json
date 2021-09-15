@@ -26,6 +26,14 @@
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},
-	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "types/common.d.ts", "types/vue.d.ts"],
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+		"typings/common.d.ts",
+		"typings/vue.d.ts",
+		"typings/shims-tsx.d.ts",
+		"typings/shims-vue.d.ts"
+	],
 	"exclude": ["node_modules", "src/demo", "src/core/lib", "src/vue2/lib"]
 }

@@ -2,6 +2,7 @@
 node_modules
 mock
 dist
+lib
 **.min.js
 public
 asset
@@ -32,5 +33,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-src/core/lib
-src/vue2/lib

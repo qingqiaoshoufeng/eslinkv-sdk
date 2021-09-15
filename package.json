@@ -7,7 +7,7 @@
 		"lib-core": "vue-cli-service build --mode build --target lib --dest src/core/lib src/core/index.js --name core",
 		"lib-vue2": "vue-cli-service build --mode build --target lib --dest src/vue2/lib src/vue2/index.js --name v2",
 		"stylelint": "stylelint 'src/**/*.{scss,vue}' --config '.stylelintrc.js' --fix",
-		"commit": "git add .&&git cz"
+		"commit": "git add .&&git-cz"
 	},
 	"types": "vue2.d.ts",
 	"dependencies": {
@@ -37,7 +37,7 @@
 		"@babel/plugin-transform-classes": "^7.14.2",
 		"@babel/plugin-transform-runtime": "^7.12.1",
 		"@commitlint/cli": "^9.1.2",
-		"@commitlint/config-conventional": "^9.1.2",
+		"@commitlint/config-conventional": "^13.1.0",
 		"@prettier/plugin-pug": "^1.13.5",
 		"@typescript-eslint/eslint-plugin": "^4.20.0",
 		"@typescript-eslint/parser": "^4.20.0",
@@ -53,6 +53,7 @@
 		"babel-plugin-import": "^1.13.0",
 		"babel-plugin-transform-class-properties": "^6.24.1",
 		"commitizen": "^4.2.3",
+		"commitlint-config-cz": "^0.13.2",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^6.7.2",
 		"eslint-plugin-flowtype": "^5.4.0",
@@ -63,6 +64,8 @@
 		"eslint-plugin-sonarjs": "^0.6.0",
 		"eslint-plugin-standard": "^5.0.0",
 		"eslint-plugin-vue": "^6.2.2",
+		"esno": "^0.9.1",
+		"git-cz": "^4.7.6",
 		"husky": "^4.3.8",
 		"iview-loader": "^1.3.0",
 		"lint-staged": "^10.5.4",
@@ -76,28 +79,23 @@
 		"stylelint-config-standard": "^20.0.0",
 		"stylelint-scss": "^3.19.0",
 		"svg-sprite-loader": "^5.2.1",
-		"typescript": "^4.1.5",
+		"typescript": "^4.4.2",
 		"vue-template-compiler": "^2.6.12",
 		"webpack-bundle-analyzer": "^3.9.0"
 	},
 	"husky": {
 		"hooks": {
-			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-			"pre-commit": "lint-staged"
+			"pre-commit": "lint-staged",
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
 		}
 	},
 	"config": {
 		"commitizen": {
-			"path": "./node_modules/cz-conventional-changelog"
+			"path": "git-cz"
 		}
 	},
-	"files": [
-		"lib",
-		"vue2.d.ts"
-	],
 	"license": "MIT",
-	"_customHasUsedEsStandard": true,
 	"lint-staged": {
-		"*.{js,jsx,ts,tsx,html,css,vue,less,scss}": "prettier  --plugin-search-dir ./node_modules --write"
+		"*.{js,ts,css,vue,scss}": "prettier  --plugin-search-dir ./node_modules --config .prettierrc --write"
 	}
 }
