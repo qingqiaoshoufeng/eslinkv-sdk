@@ -19,14 +19,12 @@
 </template>
 <script>
 import selectQuery from './selectQuery'
-import { Modal, Tabs, TabPane, Button } from 'view-design'
+import { Modal, Button } from 'view-design'
 
 export default {
 	components: {
 		selectQuery,
 		Modal,
-		Tabs,
-		TabPane,
 		Button,
 	},
 	props: {

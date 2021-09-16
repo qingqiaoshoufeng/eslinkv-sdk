@@ -136,6 +136,20 @@ export default {
 				this.$emit('getQueryCond', obj)
 			},
 		},
+		lastQuery: {
+			handler() {
+				if (this.dataType === '0') {
+					const { projectId, dataAnalyseId } = this.lastQuery
+					this.getProList()
+					this.selectObjModel.projectId = projectId
+					this.selectObjModel.dataAnalyseId = dataAnalyseId
+				} else {
+					this.$nextTick(() => {
+						this.$refs.selectSource.reShow(this.lastQuery)
+					})
+				}
+			},
+		},
 		dataType: {
 			deep: true,
 			immediate: true,
