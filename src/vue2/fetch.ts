@@ -65,7 +65,7 @@ export default {
 		},
 		outerQuery(api): void {
 			const { url, method } = api
-			if (!url) return
+			if (!url || url === '/') return
 			// 解析 params
 			const params = parseParams(api.params)
 			this.editor.request(method, url, params, this.__widgetId__)

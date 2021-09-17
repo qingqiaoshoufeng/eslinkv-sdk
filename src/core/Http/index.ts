@@ -1,7 +1,7 @@
 import Emitter from './emitter'
 import Task from './task'
 export default class Http extends Emitter {
-	limit = 1
+	limit = 6
 	/* 大屏组件接口Domain */
 	screenDomain: string
 	/* 大屏组件接口Headers */
@@ -14,7 +14,7 @@ export default class Http extends Emitter {
 	private waitPool: Array<Task> = []
 
 	//请求任务队列
-	private currentPool: Array<Task> = []
+	private currentPool: number = 0
 	private loading = false
 	static POOL_START = 'pool_start'
 	static POOL_ADD = 'pool_add'
@@ -80,30 +80,29 @@ export default class Http extends Emitter {
 
 	private run() {
 		this.loading = true
-		if (this.waitPool.length > 0) {
-			this.currentPool = this.waitPool.splice(0, this.limit)
-			const list: Array<Promise<any>> = []
-			this.currentPool.forEach(task => {
+		if (this.waitPool.length) {
+			while (this.currentPool < this.limit && this.waitPool.length) {
+				const task = this.waitPool.shift()
+				this.currentPool++
 				task.status = Task.STATUS_READY
-				list.push(task.execut({ screenDomain: this.screenDomain, screenHeaders: this.screenHeaders }))
-			})
-			//todo allSettled 兼容性问题
-			Promise.allSettled(list).then(result => {
-				this.emit(Http.POOL_UPDATE)
-				result.forEach((res, index) => {
-					const t: Task = this.currentPool[index]
-					if (res.status === 'rejected') {
-						if (t.loopTime === 0) {
-							this.retry(t, res)
+				console.log(task.url, this.waitPool.length)
+				task.execut({ screenDomain: this.screenDomain, screenHeaders: this.screenHeaders })
+					.then(r => {
+						this.emit(Http.POOL_UPDATE)
+						task.status = Task.STATUS_FINISH
+						task.thenCb(r)
+					})
+					.catch(error => {
+						if (task.loopTime === 0) {
+							this.retry(task, error)
 						}
-					} else {
-						t.status = Task.STATUS_FINISH
-						t.thenCb(res.value)
-					}
-					t.lastTime = Date.now()
-				})
-				this.run()
-			})
+					})
+					.finally(() => {
+						this.currentPool--
+						task.lastTime = Date.now()
+						this.run()
+					})
+			}
 		} else {
 			this.stop()
 		}
@@ -117,7 +116,7 @@ export default class Http extends Emitter {
 	public abortAll(): void {
 		this.waitPool = []
 		this.loopPool = {}
-		this.currentPool = []
+		this.currentPool = 0
 		this.stop()
 		this.stopLoop()
 	}
