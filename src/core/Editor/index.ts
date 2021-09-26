@@ -363,9 +363,9 @@ class Editor extends Agent {
 		}
 	}
 
-	request(method: Method, url: string, params: any, id): void {
+	request(method: Method, url: string, params: any, id, isSystem = false): void {
 		const target = this.screen.screenWidgets[id]
-		const path = target.config.api.path
+		const path = isSystem ? target.config.api.system.path : target.config.api.path
 		const process = target.config.api.process
 		const loopTime = target.config.api.autoFetch.enable ? target.config.api.autoFetch.duration : 0
 		this.http.screenDomain = this.screen.screenDomain
