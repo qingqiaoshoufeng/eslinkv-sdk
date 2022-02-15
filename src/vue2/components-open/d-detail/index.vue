@@ -2,6 +2,9 @@
 .d-detail.fn-flex(v-if="show")
 	left
 	ul.d-detail-right.fn-flex
+		li.fn-flex.flex-column.pointer(@click.stop="openScreenHistoryRecord")
+			e-svg(icon-class="smile", :size="18")
+			span 历史记录
 		li.fn-flex.flex-column.pointer(@click.stop="search")
 			e-svg(icon-class="search", :size="18")
 			span 搜索
@@ -28,6 +31,7 @@
 				label.ivu-btn.ivu-btn-primary.d-detail-import-button(for="originFile") 选择导入文件
 	search(v-model="searchModal", :hide="() => (searchModal = false)")
 	notice(v-model="noticeModal")
+	historyRecord(v-model="historyRecordModal", :screenHistoryRecord="screenHistoryRecord")
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
@@ -36,6 +40,7 @@ import loadMask from '../load-mask/index.vue'
 import { downloadFile, getQueryString } from '@/vue2/utils'
 import search from './search.vue'
 import notice from './notice.vue'
+import historyRecord from './history-record.vue'
 import Editor from '@/core/Editor'
 import { detail, detailFile, create, update } from '@/vue2/api/screen.api'
 import { screenShareUpdate } from '@/vue2/api/screenShare.api'
@@ -53,17 +58,20 @@ import left from './left.vue'
 		search,
 		notice,
 		left,
+		historyRecord,
 	},
 })
 export default class DDetail extends Vue {
 	@Prop({ default: true }) show: boolean
 	editor: Editor = Editor.Instance()
+	screenHistoryRecord = []
 	loadingMsg = 'loading…'
 	shareModal = false
 	searchModal = false
 	loading = false
 	importModal = false
 	noticeModal = false
+	historyRecordModal = false
 	isNew = true
 	notice(): void {
 		this.noticeModal = true
@@ -71,7 +79,9 @@ export default class DDetail extends Vue {
 	search(): void {
 		this.searchModal = true
 	}
-
+	openScreenHistoryRecord(): void {
+		this.historyRecordModal = true
+	}
 	preview(): void {
 		const scene = this.editor.mainScene ? `&scene=${this.editor.mainScene}` : ''
 		if (this.isNew) {
@@ -100,6 +110,7 @@ export default class DDetail extends Vue {
 			} else {
 				detail({ screenId: id }).then(res => {
 					this.editor.init(res)
+					this.screenHistoryRecord = res.screenHistoryRecord || []
 				})
 			}
 		} else if (file) {
@@ -130,48 +141,50 @@ export default class DDetail extends Vue {
 	}
 
 	handleSave(): void {
-		let isNew = false
-		this.$Modal.confirm({
-			title: `确定${this.isNew || isNew ? '创建' : '更新'}大屏吗？`,
-			okText: '确定',
-			cancelText: '取消',
-			onOk: () => {
-				this.loading = true
-				const screenData = this.editor.screenData()
-				const sceneData = this.editor.sceneData()
-				if (this.isNew || isNew) {
-					create({
-						...screenData,
-						...sceneData,
+		// let isNew = false
+		// this.$Modal.confirm({
+		// 	title: `确定${this.isNew || isNew ? '创建' : '更新'}大屏吗？`,
+		// 	okText: '确定',
+		// 	cancelText: '取消',
+		// 	onOk: () => {
+		this.loading = true
+		const screenData = this.editor.screenData()
+		const sceneData = this.editor.sceneData()
+		if (this.isNew) {
+			create({
+				...screenData,
+				...sceneData,
+			})
+				.then(res => {
+					this.$Message.success('保存成功！')
+					screenShareUpdate({
+						screenId: res.screenId,
+						screenGuide: this.editor.ruler.guideLines,
 					})
-						.then(res => {
-							this.$Message.success('保存成功！')
-							screenShareUpdate({
-								screenId: res.screenId,
-								screenGuide: this.editor.ruler.guideLines,
-							})
-							this.loading = false
-							this.$router.back()
-						})
-						.catch(() => {
-							this.loading = false
-						})
-				} else {
-					update({
-						...screenData,
-						...sceneData,
-						screenId: this.editor.screenId,
-					})
-						.then(() => {
-							this.$Message.success('修改成功')
-							this.loading = false
-						})
-						.catch(() => {
-							this.loading = false
-						})
-				}
-			},
-		})
+					this.loading = false
+					this.screenHistoryRecord = res.screenHistoryRecord || []
+					// this.$router.back()
+				})
+				.catch(() => {
+					this.loading = false
+				})
+		} else {
+			update({
+				...screenData,
+				...sceneData,
+				screenId: this.editor.screenId,
+			})
+				.then(res => {
+					this.$Message.success('修改成功')
+					this.loading = false
+					this.screenHistoryRecord = res.screenHistoryRecord || []
+				})
+				.catch(() => {
+					this.loading = false
+				})
+		}
+		// },
+		// })
 	}
 
 	handleFile(e: any): void {

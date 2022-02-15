@@ -2,9 +2,9 @@ const path = require('path')
 const pkg = require('./package.json')
 const isProduction = process.env.NODE_ENV === 'production'
 const needReport = false
-const proxyUrl = 'http://192.168.1.44:2000'
+// const proxyUrl = 'http://192.168.1.44:2000'
 // const proxyUrl = 'http://eslinkv.eslink.cc'
-// const proxyUrl = 'http://127.0.0.1:7001'
+const proxyUrl = 'http://127.0.0.1:7001'
 // const proxyUrl = 'http://10.30.3.156:7001'
 // const proxyUrl = 'https://kv-etbc.eslink.com'
 
@@ -38,9 +38,9 @@ module.exports = {
 			'^/node': {
 				target: proxyUrl,
 				changeOrigin: true,
-				// pathRewrite: {
-				// 	'^/node': '/',
-				// },
+				pathRewrite: {
+					'^/node': '/',
+				},
 			},
 			'^/server': {
 				target: proxyUrl,
