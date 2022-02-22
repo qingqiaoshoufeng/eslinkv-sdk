@@ -60,6 +60,8 @@ export default class Screen extends Factory<Screen> {
 		saturate: 0, // 饱和度
 		hueRotate: 0, // 色相
 	}
+	/* 使用的历史记录的id */
+	recordId = null
 
 	updateWidgetConfig(id: string, localConfigValue: any, customConfig: any): any {
 		const mergedValue = localConfigValue
@@ -161,6 +163,7 @@ export default class Screen extends Factory<Screen> {
 			screenVersion: versionToNum(this.currentVersion),
 			screenLayoutMode: this.screenLayoutMode,
 			screenMainScene: this.screenMainScene,
+			recordId: this.recordId,
 		}
 	}
 	/* 添加组件 */
@@ -198,7 +201,7 @@ export default class Screen extends Factory<Screen> {
 		newLays.id = id
 		this.screenWidgetsLays = {
 			...this.screenWidgetsLays,
-			[id]: newLays
+			[id]: newLays,
 		}
 	}
 	/* 更新组件 */

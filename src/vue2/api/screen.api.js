@@ -63,6 +63,22 @@ export function linkList(data) {
 	})
 }
 
+export function screenHistoryList(data) {
+	return request({
+		url: '/screenHistory/list',
+		method: 'post',
+		data,
+		headers,
+	})
+}
+export function screenPublish(data) {
+	return request({
+		url: '/screenPublish/save',
+		method: 'post',
+		data,
+		headers,
+	})
+}
 export function detailFile(url) {
 	return requestNoBaseURL({
 		url,

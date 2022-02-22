@@ -180,6 +180,14 @@ export default class Agent extends EditorBase {
 	set mainScene(screenMainScene: string | number) {
 		this.screen.screenMainScene = screenMainScene
 	}
+	/* 大屏使用的历史记录id */
+	get recordId(): string {
+		return this.screen.recordId
+	}
+	/* 大屏使用的历史记录id */
+	set recordId(recordId: string) {
+		this.screen.recordId = recordId
+	}
 	/* 获取大屏数据 */
 	screenData(): any {
 		return this.screen.screenData()

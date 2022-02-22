@@ -46,7 +46,7 @@ export default class Current extends Factory<Current> {
 		z: 0,
 	}
 	currentRightSettingIndex = 0
-    sceneAnimationMap = {}
+	sceneAnimationMap = {}
 
 	constructor(obj: any) {
 		super()
@@ -147,7 +147,7 @@ export default class Current extends Factory<Current> {
 			...this.sceneAnimationMap,
 			[id]: {
 				type: 'open',
-				value: animate || 'fadeIn'
+				value: animate || 'fadeIn',
 			},
 		}
 		this.activeSceneId = id
@@ -159,7 +159,7 @@ export default class Current extends Factory<Current> {
 			...this.sceneAnimationMap,
 			[id]: {
 				type: 'close',
-				value: animate || 'fadeOut'
+				value: animate || 'fadeOut',
 			},
 		}
 		const index = this.currentCreateSceneList.findIndex(v => v === id)

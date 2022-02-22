@@ -40,6 +40,7 @@ export default class ScreenPc extends ScreenBase {
 			saturate: 0,
 			hueRotate: 0,
 		}
+		this.recordId = null
 	}
 	/* 初始化配置 */
 	init(res: any): any {
@@ -72,6 +73,7 @@ export default class ScreenPc extends ScreenBase {
 		this.screenBackGroundImage = res.screenBackGroundImage
 		this.screenMainScene = res.screenMainScene
 		this.screenPlatform = res.screenPlatform
+		this.recordId = res.recordId
 		return this.initWidget(res)
 	}
 	/* 序列化children */

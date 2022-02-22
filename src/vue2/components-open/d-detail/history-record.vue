@@ -2,10 +2,12 @@
 d-drawer(title="历史记录", v-model="currentVal")
 	.drawer-tool.fn-flex.flex-column
 		ul
-			li.fn-flex.flex-column.align-items--flex-start.cursor-point(v-for="item in screenHistoryRecord", @click="initEditor(item)") 
-				p 标题： {{item.screenName}}
-				p 保存时间：{{new Date(item.updateTime).toLocaleDateString()}}
-				
+			li.fn-flex.flex-column.align-items--flex-start.cursor-point(
+				v-for="item in screenHistoryRecord", 
+				@click="initEditor(item)",
+				:class="{'highlight-item': editor.recordId === item.recordId}")
+					p 标题： {{item.screenName}}
+					p 保存时间：{{item.updateTime}}
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
@@ -85,6 +87,9 @@ export default class Notice extends Vue {
 		&:hover {
 			background-color: #aeaeae;
 		}
+	}
+	.highlight-item {
+		background-color: #aeaeae;
 	}
 }
 </style>

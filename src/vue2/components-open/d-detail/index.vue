@@ -23,6 +23,9 @@
 		li.fn-flex.flex-column.pointer(@click="handleSave")
 			e-svg(icon-class="save", :size="20")
 			span 保存
+		li.fn-flex.flex-column.pointer(@click="handlePublish")
+			e-svg(icon-class="publish", :size="20")
+			span 发布
 	load-mask(:show="loading") {{ loadingMsg }}
 	i-modal(v-model="importModal", :footer-hide="true")
 		i-form
@@ -42,7 +45,7 @@ import search from './search.vue'
 import notice from './notice.vue'
 import historyRecord from './history-record.vue'
 import Editor from '@/core/Editor'
-import { detail, detailFile, create, update } from '@/vue2/api/screen.api'
+import { detail, detailFile, create, update, screenHistoryList, screenPublish } from '@/vue2/api/screen.api'
 import { screenShareUpdate } from '@/vue2/api/screenShare.api'
 import left from './left.vue'
 
@@ -110,7 +113,9 @@ export default class DDetail extends Vue {
 			} else {
 				detail({ screenId: id }).then(res => {
 					this.editor.init(res)
-					this.screenHistoryRecord = res.screenHistoryRecord || []
+				})
+				screenHistoryList({ screenId: id }).then(res => {
+					this.screenHistoryRecord = res.historyRecords || []
 				})
 			}
 		} else if (file) {
@@ -140,53 +145,64 @@ export default class DDetail extends Vue {
 		})
 	}
 
-	handleSave(): void {
-		// let isNew = false
-		// this.$Modal.confirm({
-		// 	title: `确定${this.isNew || isNew ? '创建' : '更新'}大屏吗？`,
-		// 	okText: '确定',
-		// 	cancelText: '取消',
-		// 	onOk: () => {
+	async handleSave(): Promise<void> {
 		this.loading = true
 		const screenData = this.editor.screenData()
 		const sceneData = this.editor.sceneData()
 		if (this.isNew) {
-			create({
-				...screenData,
-				...sceneData,
-			})
-				.then(res => {
-					this.$Message.success('保存成功！')
-					screenShareUpdate({
-						screenId: res.screenId,
-						screenGuide: this.editor.ruler.guideLines,
-					})
-					this.loading = false
-					this.screenHistoryRecord = res.screenHistoryRecord || []
-					// this.$router.back()
+			try {
+				const res = await create({
+					...screenData,
+					...sceneData,
 				})
-				.catch(() => {
-					this.loading = false
+				this.$Message.success('保存成功！')
+				screenShareUpdate({
+					screenId: res.screenId,
+					screenGuide: this.editor.ruler.guideLines,
 				})
+				this.editor.recordId = res.recordId
+				const usedInComponentDevMode = process?.env?.VUE_APP_DEVMODE === '1'
+				screenHistoryList({ screenId: res.screenId }).then(res => {
+					this.screenHistoryRecord = res.historyRecords || []
+				})
+				if (!usedInComponentDevMode) {
+					this.$router.push(`/editor/manger/${res.screenId}`)
+				}
+			} finally {
+				this.loading = false
+			}
 		} else {
-			update({
+			try {
+				const res = await update({
+					...screenData,
+					...sceneData,
+					screenId: this.editor.screenId,
+				})
+				this.$Message.success('修改成功')
+				this.editor.recordId = res.recordId
+				screenHistoryList({ screenId: res.screenId }).then(historyRes => {
+					this.screenHistoryRecord = historyRes.historyRecords || []
+				})
+			} finally {
+				this.loading = false
+			}
+		}
+	}
+	async handlePublish(): Promise<void> {
+		await this.handleSave()
+		this.loading = true
+		const screenData = this.editor.screenData()
+		const sceneData = this.editor.sceneData()
+		try {
+			await screenPublish({
 				...screenData,
 				...sceneData,
-				screenId: this.editor.screenId,
 			})
-				.then(res => {
-					this.$Message.success('修改成功')
-					this.loading = false
-					this.screenHistoryRecord = res.screenHistoryRecord || []
-				})
-				.catch(() => {
-					this.loading = false
-				})
+			this.$Message.success('发布成功')
+		} finally {
+			this.loading = false
 		}
-		// },
-		// })
 	}
-
 	handleFile(e: any): void {
 		const file = e.target.files[0]
 		const reader = new FileReader()
