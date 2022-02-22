@@ -20,7 +20,7 @@
 		li.fn-flex.flex-column.pointer(@click="importModal = true")
 			e-svg(icon-class="import", :size="20")
 			span 导入
-		li.fn-flex.flex-column.pointer(@click="handleSave")
+		li.fn-flex.flex-column.pointer(@click="handleSave(true)")
 			e-svg(icon-class="save", :size="20")
 			span 保存
 		li.fn-flex.flex-column.pointer(@click="handlePublish")
@@ -145,7 +145,7 @@ export default class DDetail extends Vue {
 		})
 	}
 
-	async handleSave(): Promise<void> {
+	async handleSave(jump = false): Promise<void> {
 		this.loading = true
 		const screenData = this.editor.screenData()
 		const sceneData = this.editor.sceneData()
@@ -165,8 +165,8 @@ export default class DDetail extends Vue {
 				screenHistoryList({ screenId: res.screenId }).then(res => {
 					this.screenHistoryRecord = res.historyRecords || []
 				})
-				if (!usedInComponentDevMode) {
-					this.$router.push(`/editor/manger/${res.screenId}`)
+				if (jump && !usedInComponentDevMode) {
+					location.href = `/editor/manger/${res.screenId}`
 				}
 			} finally {
 				this.loading = false
