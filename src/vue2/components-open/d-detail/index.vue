@@ -161,11 +161,10 @@ export default class DDetail extends Vue {
 					screenGuide: this.editor.ruler.guideLines,
 				})
 				this.editor.recordId = res.recordId
-				const usedInComponentDevMode = process?.env?.VUE_APP_DEVMODE === '1'
 				screenHistoryList({ screenId: res.screenId }).then(res => {
 					this.screenHistoryRecord = res.historyRecords || []
 				})
-				if (jump && !usedInComponentDevMode) {
+				if (jump) {
 					location.href = `/editor/manger/${res.screenId}`
 				}
 			} finally {
