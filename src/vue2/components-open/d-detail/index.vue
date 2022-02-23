@@ -167,6 +167,7 @@ export default class DDetail extends Vue {
 				if (jump) {
 					location.href = `/editor/manger/${res.screenId}`
 				}
+				return res.screenId
 			} finally {
 				this.loading = false
 			}
@@ -182,13 +183,14 @@ export default class DDetail extends Vue {
 				screenHistoryList({ screenId: res.screenId }).then(historyRes => {
 					this.screenHistoryRecord = historyRes.historyRecords || []
 				})
+				return res.screenId
 			} finally {
 				this.loading = false
 			}
 		}
 	}
 	async handlePublish(): Promise<void> {
-		await this.handleSave()
+		const screenId = await this.handleSave()
 		this.loading = true
 		const screenData = this.editor.screenData()
 		const sceneData = this.editor.sceneData()
@@ -196,8 +198,12 @@ export default class DDetail extends Vue {
 			await screenPublish({
 				...screenData,
 				...sceneData,
+				screenId,
 			})
 			this.$Message.success('发布成功')
+			if (this.isNew) {
+				location.href = `/editor/manger/${screenId}`
+			}
 		} finally {
 			this.loading = false
 		}
